@@ -19,7 +19,7 @@ services:
   backend:
     build:
       context: ./backend
-    command: sh -c "uv sync && uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    command: sh -c "uv sync --frozen --no-dev && uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
     ports:
       - "8000:8000"
     working_dir: /app
@@ -28,9 +28,7 @@ services:
     volumes:
       - ./backend:/app
       - backend-uv-cache:/root/.cache/uv
-      - backend-venv:/app/.venv
 
 volumes:
   frontend-node-modules:
   backend-uv-cache:
-  backend-venv:

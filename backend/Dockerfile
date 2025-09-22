@@ -2,17 +2,23 @@
 FROM python:3.13-slim AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    UV_LINK_MODE=copy
 
-RUN pip install --no-cache-dir uv
+# Install dependencies required to install uv and build packages
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y curl build-essential \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -LsSf https://astral.sh/uv/install.sh | sh \
+    && ln -s /root/.local/bin/uv /usr/local/bin/uv
 
 WORKDIR /app
 
 # Copy project metadata for dependency installation
 COPY pyproject.toml uv.lock ./
 
-# Pre-populate the virtual environment layer for faster starts
-RUN uv sync --no-dev || true
+# Pre-populate the virtual environment layer for faster starts (ignore failures in cold builds)
+RUN uv sync --frozen --no-dev || true
 
 # Copy the remaining application code
 COPY . .
