@@ -1,0 +1,36 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "5173:5173"
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - frontend-node-modules:/app/node_modules
+    depends_on:
+      backend:
+        condition: service_started
+
+  backend:
+    build:
+      context: ./backend
+    command: sh -c "uv sync && uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    working_dir: /app
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend:/app
+      - backend-uv-cache:/root/.cache/uv
+      - backend-venv:/app/.venv
+
+volumes:
+  frontend-node-modules:
+  backend-uv-cache:
+  backend-venv:

@@ -1,0 +1,10 @@
+[project]
+name = "prempage-backend"
+version = "0.1.0"
+description = "Boilerplate FastAPI service for Prempage V2"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.117.1",
+    "loguru>=0.7.3",
+    "uvicorn[standard]>=0.36.0",
+]

@@ -25,3 +25,8 @@ dist-ssr
 
 # Webflow export
 prempage-webflow/
+
+# Python virtual environments
+.venv/
+backend/.venv/
+backend/.python-version

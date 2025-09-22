@@ -1,12 +1,13 @@
-# Prempage V2 React App
+# Prempage V2
 
-This repository hosts a Vite-powered React single-page application scaffolded with the JavaScript template. It includes fast-refresh hot reloading and linting out of the box so you can focus on building features.
+This repository hosts the Prempage V2 front end (React + Vite) and a companion FastAPI backend. Both layers are intentionally lightweight so you can iterate quickly while keeping the stack easy to reason about.
 
 ## Prerequisites
-- Node.js 18 or newer
-- npm 9 or newer (bundled with recent Node.js releases)
+- Node.js 18 or newer (includes npm ≥ 9)
+- Python 3.13 or newer
+- [uv](https://github.com/astral-sh/uv) Python package manager (already bundled in this repo's tooling)
 
-## Getting Started
+## Frontend (React + Vite)
 1. Install dependencies:
    ```bash
    npm install
@@ -15,22 +16,61 @@ This repository hosts a Vite-powered React single-page application scaffolded wi
    ```bash
    npm run dev
    ```
-   The app is served at the URL printed in the terminal (defaults to http://localhost:5173).
+   The app will be available at the URL printed in the terminal (defaults to http://localhost:5173).
+3. Build for production:
+   ```bash
+   npm run build
+   ```
 
-## Available Scripts
+### Frontend Scripts
 - `npm run dev` – start the Vite dev server with React Fast Refresh.
 - `npm run build` – create a production build in the `dist/` directory.
 - `npm run preview` – preview the production build locally.
 - `npm run lint` – run ESLint against the project source.
 
+## Backend (FastAPI + uv)
+1. Change into the backend project:
+   ```bash
+   cd backend
+   ```
+2. Sync the virtual environment (installs dependencies into `.venv/`):
+   ```bash
+   uv sync
+   ```
+3. Run the API locally with autoreload enabled:
+   ```bash
+   uv run uvicorn main:app --reload
+   ```
+   The service listens on http://127.0.0.1:8000 by default. A health check is available at `/health`.
+
+### Backend Notes
+- FastAPI app lives in `backend/main.py` and is pre-configured with Loguru logging.
+- Adjust logging behavior in `configure_logging()` as your deployment targets evolve.
+- When adding dependencies, run `uv add <package>` from the `backend/` directory to keep the lockfile in sync.
+
 ## Project Structure
 - `src/` – React components, entry point (`main.jsx`), and global styles (`index.css`).
 - `public/` – Static assets copied as-is to the build output.
+- `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
 - `vite.config.js` – Vite configuration (React plugin already configured).
 - `eslint.config.js` – ESLint setup for the project.
-- `prempage-webflow/` – Imported Webflow export ready to integrate as needed.
+- `prempage-webflow/` – Imported Webflow export available for reference/integration (ignored by git).
 
 ## Next Steps
-- Replace the placeholder React component in `src/App.jsx` with your application UI.
+- Replace the placeholder React component in `src/App.jsx` with real UI tied to your data model.
 - Integrate assets or templates from `prempage-webflow/` into your React components.
-- Add environment-specific configuration or routing as your feature set grows.
+- Flesh out API routes in `backend/main.py` and introduce routers/modules as features grow.
+- Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
+
+## Running with Docker Compose
+1. Build and start both services:
+   ```bash
+   docker compose up --build
+   ```
+   The frontend lives at http://localhost:5173 and the FastAPI backend responds at http://localhost:8000.
+2. Code changes on the host trigger hot reloads inside the containers (`npm run dev` and `uvicorn --reload`).
+3. Stop the stack when you are done:
+   ```bash
+   docker compose down
+   ```
+   Add `-v` to also clear the cached `node_modules` and virtual environment volumes if you need a clean reinstall.
