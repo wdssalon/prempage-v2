@@ -1,0 +1,44 @@
+:root {
+  --primary-text: #1f2a44;
+  --primary: #1b3a57;
+  --white: #ffffff;
+  --link: #2f7fbf;
+  --secondary-background: #f0f4f8;
+  --eerie-black-text: #0f172a;
+  --primary-light: #4b6b8a;
+}
+
+/* Add any additional overrides or custom styles below */
+.list {
+    font-size: 16px;
+}
+
+/* BREAKPOINTS – large screens cascade up */
+@media (min-width: 1280px) {
+  /* Styles for 1280px and up */
+}
+
+@media (min-width: 1440px) {
+  /* Styles for 1440px and up */
+}
+
+@media (min-width: 1920px) {
+  /* Styles for 1920px and up */
+}
+
+/* BREAKPOINTS – small screens cascade down */
+
+/* Tablet */
+@media (max-width: 991px) {
+  /* Styles for 991px and down */
+}
+
+/* Mobile landscape */
+@media (max-width: 767px) {
+  /* Styles for 767px and down */
+}
+
+/* Mobile portrait */
+@media (max-width: 478px) {
+  /* Styles for 478px and down */
+}

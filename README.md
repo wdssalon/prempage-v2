@@ -3,7 +3,7 @@
 This repository hosts the Prempage V2 front end (React + Vite) and a companion FastAPI backend. Both layers are intentionally lightweight so you can iterate quickly while keeping the stack easy to reason about.
 
 ## Prerequisites
-- Node.js 18 or newer (includes npm ≥ 9)
+- Node.js 24 or newer (includes npm ≥ 10)
 - Python 3.13 or newer
 - [uv](https://github.com/astral-sh/uv) Python package manager (already bundled in this repo's tooling)
 
@@ -43,6 +43,10 @@ This repository hosts the Prempage V2 front end (React + Vite) and a companion F
    ```
    The service listens on http://127.0.0.1:8000 by default. A health check is available at `/health`.
 
+   **API Documentation:**
+   - Interactive docs (Swagger UI): http://localhost:8000/docs
+   - Alternative docs (ReDoc): http://localhost:8000/redoc
+
 ### Backend Notes
 - FastAPI app lives in `backend/main.py` and is pre-configured with Loguru logging.
 - Adjust logging behavior in `configure_logging()` as your deployment targets evolve.
@@ -63,14 +67,30 @@ This repository hosts the Prempage V2 front end (React + Vite) and a companion F
 - Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
 
 ## Running with Docker Compose
-1. Build and start both services:
-   ```bash
-   docker compose up --build
-   ```
-   The frontend lives at http://localhost:5173 and the FastAPI backend responds at http://localhost:8000.
-2. Code changes on the host trigger hot reloads inside the containers (`npm run dev` and `uvicorn --reload`).
-3. Stop the stack when you are done:
-   ```bash
-   docker compose down
-   ```
-   Add `-v` to also clear the cached `node_modules` and virtual environment volumes if you need a clean reinstall.
+
+### Initial Setup or After Changes to Dependencies
+Use `--build` to rebuild images when:
+- First time running the project
+- After changes to `package.json`, `pyproject.toml`, or `uv.lock`
+- After changes to Dockerfiles
+- When you need a fresh build
+
+```bash
+docker compose up --build -d
+```
+
+### Regular Development
+For day-to-day development when only source code changes:
+```bash
+docker compose up -d
+```
+
+The frontend lives at http://localhost:5173 and the FastAPI backend responds at http://localhost:8000.
+
+Code changes on the host trigger hot reloads inside the containers (`npm run dev` and `uvicorn --reload`).
+
+### Stopping Services
+```bash
+docker compose down
+```
+Add `-v` to also clear the cached `node_modules` and virtual environment volumes if you need a clean reinstall.
