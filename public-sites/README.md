@@ -1,14 +1,14 @@
 # Progressive Way Therapy Static Site
 
-This repo contains the static export for the Progressive Way Therapy site. Production-ready HTML, CSS, and JS live under `public/`; the root folder holds documentation and any supporting tooling.
+This repo now houses multiple Progressive Way Therapy static exports. Production-ready HTML, CSS, and JS live under `sites/<slug>/`; the root folder holds shared tooling and documentation.
 
 ## Deploying
 
 - Platform: Render static site
-- Publish directory: `public/`
+- Publish directory: point each service at the corresponding `sites/<slug>/` folder.
 - Build command: *(leave blank)*
 
-Pushes to `public/` are deployed automatically.
+Pushes to the selected `sites/<slug>/` directory deploy automatically once Render is configured for that slug.
 
 ## Where to Start
 

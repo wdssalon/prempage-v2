@@ -70,6 +70,12 @@ uv run uvicorn main:app --reload  # http://localhost:8000
 - Hot reloading for both frontend and backend
 - Volume mounting for live code updates
 
+## Static Site Workspace
+- The `public-sites/` directory houses the tooling and instructions for the static site deployments.
+- Brand-specific exports reside in `public-sites/sites/<site-slug>/`. Keep CSS overrides, fonts, and HTML changes scoped within the relevant site bundle. Per-site `images/` directories are gitignored by default.
+- Read `public-sites/AGENTS.md` before automating updates; it captures the guardrails for section rotation, copy edits, navigation rules, and override assets.
+- End-to-end build guidance (intake, planning, page assembly, QA) lives in `public-sites/generate-website.md` alongside supporting references such as `client-overview.md`, `template/page-build-edit-overview.md`, and `template/sections.yaml`.
+
 ### Data Storage
 
 Currently lightweight setup with:
@@ -174,7 +180,6 @@ This ensures all changes are deliberate and agreed upon.
 
 ## VERY IMPORTANT
 
-- when planning, always present options with pros/cons BEFORE making a decision.
 - Focus on writing clear, DRY, simple code.
 - Only add abstrction when it's justified. Do not over-engineer!!
 - DO NOT include any dead code. Remove any you find.

@@ -1,6 +1,6 @@
 # Prempage V2
 
-This repository hosts the Prempage V2 front end (React + Vite) and a companion FastAPI backend. Both layers are intentionally lightweight so you can iterate quickly while keeping the stack easy to reason about.
+This repository hosts the Prempage V2 front end (React + Vite), a companion FastAPI backend, and the static-site workspace used to build and deploy the static sites. All three live side-by-side so the whole project lifecycle—from app development to static marketing exports—travels in a single repo.
 
 ## Prerequisites
 - Node.js 24 or newer (includes npm ≥ 10)
@@ -56,9 +56,19 @@ This repository hosts the Prempage V2 front end (React + Vite) and a companion F
 - `src/` – React components, entry point (`main.jsx`), and global styles (`index.css`).
 - `public/` – Static assets copied as-is to the build output.
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
+- `public-sites/` – Static site toolkit and exports. Contains process docs (`generate-website.md`, `client-overview.md`, `AGENTS.md`), reusable templates under `template/`, and production-ready HTML/CSS/JS in `public-sites/sites/<site-slug>/` when a brand is ready to ship.
 - `vite.config.js` – Vite configuration (React plugin already configured).
 - `eslint.config.js` – ESLint setup for the project.
 - `prempage-webflow/` – Imported Webflow export available for reference/integration (ignored by git).
+
+## Static Sites
+- The `public-sites/` directory houses the tooling and instructions for the static site deployments.
+
+- Read `public-sites/README.md` for deployment notes when pushing updates to the static export.
+- Follow `public-sites/generate-website.md` for the multi-phase build process and guardrails. Supporting references—`client-overview.md`, `template/page-build-edit-overview.md`, and `template/sections.yaml`—live in the same directory.
+- Automation or human operators should review `public-sites/AGENTS.md` before editing; it centralizes the LLM-specific rules for updating copy, sections, and overrides.
+
+Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
 ## Next Steps
 - Replace the placeholder React component in `src/App.jsx` with real UI tied to your data model.

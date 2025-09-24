@@ -14,7 +14,8 @@ This document is the control center for LLM-driven work in the Progressive Way T
 Keep these sources authoritative—do not duplicate instructions elsewhere.
 
 ## Repository Layout
-- `public/`: production-ready static export; edit HTML pages here. Subdirectories include:
+- `sites/`: production-ready static exports organized by site slug (e.g., `sites/progressivewaytherapy-clarity/`). Each site folder mirrors the previous `public/` structure and contains:
+  - `index.html` + supporting `.html` pages.
   - `overrides/`: custom CSS (`custom.css`), JS (`custom.js`), and font loader (`fonts-loader.js`).
   - `images/`: WebP assets served on the site.
   - `css/`, `js/`, etc.: builder-generated bundles—avoid editing unless absolutely required.
@@ -29,7 +30,7 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 - Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Rotate CTA blocks so `wds-getting-started-section` and the `wds-trust-section*` variants share time with other closing layouts once they have shipped.
 - Keep the hero rotation log current—cycle through all four hero variants (`wds-hero-section-1/2/3` and `wds-parallax-section`) before repeating one, and make sure `wds-parallax-section` headlines at least one page in every four-page run. Document any exception in the tracker before moving forward.
 - Maintain the `## Sections Remaining To Use` list in `client-overview.md`, removing section IDs once they have appeared on a page. This list only tracks content sections—navigation and footer components are handled separately during the global assembly pass.
-- Use the frozen HTML in `template/page-examples/` as reference material only; do not copy them back into `public/` once new pages are generated. **Exception**: Always duplicate the canonical Contact and Blog pages from `template/page-examples/contact.html`, `template/page-examples/blog.html`, and the Blog detail examples (e.g., `template/page-examples/blog/how-will-therapy-affect-my-journey.html`) when building those specific pages. DO NOT EVER reuse this shortcut for any other page.
+- Use the frozen HTML in `template/page-examples/` as reference material only; do not copy them back into a live `sites/<slug>/` directory once new pages are generated. **Exception**: Always duplicate the canonical Contact and Blog pages from `template/page-examples/contact.html`, `template/page-examples/blog.html`, and the Blog detail examples (e.g., `template/page-examples/blog/how-will-therapy-affect-my-journey.html`) when building those specific pages. DO NOT EVER reuse this shortcut for any other page.
 - Treat navigation and footer updates as global operations: once finalized, propagate changes to every page via search/replace.
 - Update SEO metadata in each page `<head>` using the placeholders defined in `template/page-shell.html`.
 - Rely on the HTML comment markers in `template/template.html` (mirrored across `template/page-examples/`) to grab complete navigation and footer blocks without trimming required wrappers.
@@ -45,21 +46,21 @@ Use the primary docs as the source of truth and walk through them in order:
 - `generate-website.md` Phase 5 with `template/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
 
 ## Overrides & Theming
-- Manage visual tokens and overrides in `public/overrides/custom.css`; it loads after the core styles.
+- Manage visual tokens and overrides in `sites/<slug>/overrides/custom.css`; it loads after the core styles for that site.
 - Define shared color and spacing tokens at the top of that file (inside the `:root` block) so updates cascade site-wide.
 - A responsive scaffolding block is prepped in that file with min/max breakpoints (1280, 1440, 1920, 991, 767, 478) to keep breakpoint-specific tweaks centralized.
-- Update custom scripts in `public/overrides/custom.js`; they execute after the default script bundle in `public/js/`.
-- Manage fonts via `public/overrides/fonts-loader.js`:
+- Update custom scripts in `sites/<slug>/overrides/custom.js`; they execute after the default script bundle in the matching `sites/<slug>/js/` directory.
+- Manage fonts via `sites/<slug>/overrides/fonts-loader.js`:
   - Edit `FONT_CONFIG` entries (Google families + fallback stacks).
-  - Mirror fallback stacks in the primary `public/css/` bundle’s `:root` variables.
+  - Mirror fallback stacks in the primary `sites/<slug>/css/` bundle’s `:root` variables.
   - Request only the weights used in design to keep WebFont payloads lean.
 
 - Initial page builds may leave placeholder images. The dedicated workflow in `images/images-overview.md` covers sourcing, WebP conversion, alt text, and social share specs.
-- When converting assets, keep only the WebP file in `public/images/` and remove intermediate formats after optimization.
+- When converting assets, keep only the WebP file in `sites/<slug>/images/` and remove intermediate formats after optimization.
 
 ## Deployment & Ops
-- Deployment settings live in `README.md`; automation must preserve the `public/` directory layout so Render continues to publish correctly.
-- If additional tooling/scripts are required, keep sources in the repo root and emit final assets into `public/`.
+- Deployment settings live in `README.md`; automation must preserve each `sites/<slug>/` directory layout so Render continues to publish correctly.
+- If additional tooling/scripts are required, keep sources in the repo root and emit final assets into the appropriate `sites/<slug>/` directory.
 
 Always cross-check instructions here with `generate-website.md` and the linked docs before making changes. When you discover a new constraint, update this file (not the README) so automation stays aligned with human expectations.
 

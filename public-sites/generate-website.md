@@ -5,7 +5,7 @@ This guide summarizes the end-to-end flow for producing a website build inside t
 ## Phase 0: Repo + Tooling Context
 - Run through `new-website-repo-checklist.md` to create a fresh repository (or confirm the current repo was already cloned from the starter) before beginning any Phase 1 work.
 - Review `AGENTS.md` for the authoritative guardrails on directory layout, overrides, fonts, colors, and deployment.
-- Ensure your working copy in `public/` matches the current export; rely on the assets in `template/` (`template.html`, `sections.yaml`, `page-shell.html`, `page-build-edit-overview.md`) during later phases.
+- Ensure your working copy inside the target `sites/<slug>/` directory matches the current export; rely on the assets in `template/` (`template.html`, `sections.yaml`, `page-shell.html`, `page-build-edit-overview.md`) during later phases.
 
 ## Phase 1: Intake & Discovery
 1. **Receive the brief**
@@ -33,8 +33,8 @@ This guide summarizes the end-to-end flow for producing a website build inside t
    - Add a `## Section Usage Tracker` matrix beneath the approved scope. Include a `Hero Used` column and one column for each high-priority section family so you can mark a `1` whenever that block appears on a page and surface repetition in real time.
    - Create a `## Sections Remaining To Use` list right after the tracker. Seed it with every content-section `element_id` from `template/sections.yaml` (exclude navigation and footer components). When the list empties, immediately repopulate it with any sections that have fewer than two uses recorded in the tracker so second-pass builds still promote variety.
 2. **Create working copies**
-   - Duplicate `template/page-shell.html` into the relevant location (e.g., `public/about.html`) for each approved page before starting copy. Skip navigation-only parents; they do not receive their own HTML file unless the user asks for one. The shell preloads global styles, scripts, and placeholders for actual pages.
-   - Consult the frozen layouts in `template/page-examples/` for inspiration, but remember the live build should generate fresh HTML under `public/`. **Exception**: When building `contact.html`, `blog.html`, or any blog detail page, copy the canonical markup directly from their counterparts in `template/page-examples/` and treat those files as the master versions. Update only the content, metadata, and links required for the live export.
+   - Duplicate `template/page-shell.html` into the relevant site folder (e.g., `sites/<slug>/about.html`) for each approved page before starting copy. Skip navigation-only parents; they do not receive their own HTML file unless the user asks for one. The shell preloads global styles, scripts, and placeholders for actual pages.
+   - Consult the frozen layouts in `template/page-examples/` for inspiration, but remember the live build should generate fresh HTML under `sites/<slug>/`. **Exception**: When building `contact.html`, `blog.html`, or any blog detail page, copy the canonical markup directly from their counterparts in `template/page-examples/` and treat those files as the master versions. Update only the content, metadata, and links required for the live export.
 
 ## Phase 3: Build Each Page
 For every page, repeat the following sequence:

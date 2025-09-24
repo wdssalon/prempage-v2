@@ -12,7 +12,7 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 - **Images**: leave placeholders during the build-and-copy phase. Image sourcing and optimization instructions live in `images/images-overview.md` and happen once copy is approved.
 - **Section usage**: only use predefined sections listed in `template/sections.yaml`. Always copy html sections from `template/template.html` EXACTLY, DO NOT MAKE MISTAKES DURING THE COPY/PASTE. DO NOT create new structural elements. Treat the `template/template.html` file as read-only, NEVER update this file. 
 - **Section coverage log**: maintain the `## Section Usage Tracker` table in `client-overview.md`. Review it before outlining or selecting sections, and update the table immediately after each page is finalized so every layout is accounted for during the build.
-- **Reference layouts**: the starter repo includes frozen examples under `template/page-examples/`. Use them to understand baseline composition, not as drop-in replacements for the pages you generate in `public/`.
+- **Reference layouts**: the starter repo includes frozen examples under `template/page-examples/`. Use them to understand baseline composition, not as drop-in replacements for the pages you generate in `sites/<slug>/`.
 - **Special-case pages**: `contact.html`, `blog.html`, and all blog detail pages (inside `template/page-examples/blog/`) must be duplicated directly from their counterparts inside `template/page-examples/` before editing copy, links, and metadata. DO NOT EVER duplicate any other pages from `template/page-examples/`.
 - **Content slots**: populate all required headings, CTAs, lists, and copy. If a slot isn’t needed, remove that element instead of leaving it blank.
 - **Class/structure integrity**: never modify class names, wrapper divs, or data attributes. Change inner text and attributes (like `href`/`src`/`alt`) only.
@@ -56,7 +56,7 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 
 6. **Finalize SEO metadata**
    - Fill in the `<title>`, `meta name="description"`, canonical URL, and robots directive in the `<head>` once navigation/footer links are final.
-   - Match OG/Twitter title, description, and image fields to the page content. Leave the image fields on placeholders unless provided—specs live in `public/images/README.md`.
+   - Match OG/Twitter title, description, and image fields to the page content. Leave the image fields on placeholders unless provided—specs live in `images/images-overview.md` (and `sites/<slug>/images/README.md` if present).
    - Confirm metadata stays unique per page, fits character limits, and references live URLs.
 
 7. **Validation**
