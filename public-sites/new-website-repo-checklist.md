@@ -36,21 +36,21 @@ This playbook covers the manual steps for spinning up a brand-new website reposi
    - Run similar replacements for slugs (e.g., `clarity` → `new-project-slug`).
 2. Double-check the following hotspots:
    - `README.md` (site name, deployment notes).
-   - `client-overview.md` (brand header + scope section).
+   - `sites/<slug>/client-overview.md` (brand header + scope section).
    - `sites/<slug>/` HTML files (SEO metadata, structured data).
    - `sites/<slug>/overrides/custom.css` or other theme tokens that mention the old brand.
 
 ## 4. Refresh configuration files
 1. Update Render (or target host) metadata inside `README.md` if deployment settings differ.
 2. If the new project uses a different domain, adjust canonical URLs inside each page head during the build process.
-3. Confirm the `## Approved Page Scope` block in `client-overview.md` matches the new site's page plan. Document which navigation items are parent-only triggers so the build skips generating standalone pages for them unless the user later requests one. Remove any leftover references that are specific to Progressive Way Therapy.
+3. Confirm the `## Approved Page Scope` block in `sites/<slug>/client-overview.md` matches the new site's page plan. Document which navigation items are parent-only triggers so the build skips generating standalone pages for them unless the user later requests one. Remove any leftover references that are specific to Progressive Way Therapy.
 
 ## 5. Reset progress trackers
 1. Clear or rewrite any TODO markers carried over from the template.
 2. If imagery will change, leave the placeholders but update alt-text TODOs with project-specific reminders.
 3. Ensure navigation/footer links point to the upcoming page URLs (or carry TODO tags).
 4. Remove the demo HTML pages from the chosen `sites/<slug>/` directory so the new build starts clean.
-5. Remove the `client-overview.md` file (but keep `template/client-overview.md` which you can reference once Phase 1 work begins).
+5. Remove the site-specific `client-overview.md` file (typically `sites/<slug>/client-overview.md`) but keep the tooling reference at `tooling/<template-slug>/client-overview.md`, which you can reference once Phase 1 work begins.
 
 ## 6. Create the initial commit
 1. Review the diff to verify all brand references were updated:

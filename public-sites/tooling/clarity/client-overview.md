@@ -1,5 +1,8 @@
 # Progressive Way Therapy — Client Overview
 
+## Template
+clarity
+
 ## Brand Snapshot
 - **Practice**: Progressive Way Therapy PLLC, owned by Blanca Kleinfall, M.Ed., LPC.
 - **Modality**: 100% telehealth; serves adult clients located anywhere in Texas.
@@ -96,11 +99,6 @@
   - Privacy Practices
 - Contact
 - Client Portal *(external page)*
-
-## Special Page Handling
-- `contact.html` – Start from `tooling/clarity/page-examples/contact.html` and adjust only the copy, links, and SEO metadata needed for the live export. Do not rebuild this page from individual sections.
-- `blog.html` – Duplicate the list view at `tooling/clarity/page-examples/blog.html` whenever the Blog landing page ships; update post data and metadata in place.
-- Blog detail pages – Use the HTML under `tooling/clarity/page-examples/blog/` (e.g., `how-will-therapy-affect-my-journey.html`) as the master layout for each article. Swap content without altering the structure, and never source a detail page from scratch.
 
 ## Section Usage Tracker
 *Update this table after each page build. List section IDs exactly as they appear in `tooling/clarity/sections.yaml`; if a block is missing from the catalog, record the `id` from `tooling/clarity/template.html` and flag it in Notes. Use the `Hero Used` column to enforce the four-hero rotation. Mark a `1` in each section column when that block appears on the page so repeated patterns surface quickly. Include navigation and footer blocks once they are added site-wide.*

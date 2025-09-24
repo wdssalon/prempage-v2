@@ -4,46 +4,48 @@ This document is the control center for LLM-driven work in the Progressive Way T
 
 ## Core References
 - `generate-website.md`: top-level flow for producing or refreshing the site.
-- `template/client-overview.md`: baseline client brief template to reference before drafting a new project's overview.
-- `template/page-build-edit-overview.md`: detailed page build/edit checklist (sections, copy swaps, QA).
-- `template/sections.yaml`: IDs for every approved template section; use these to map outlines to markup.
-- `template/page-shell.html`: base HTML head + structural scaffolding with SEO placeholders.
+- `tooling/<template-slug>/client-overview.md` (e.g., `tooling/clarity/client-overview.md`): baseline client brief template to reference before drafting a new project's overview.
+- `tooling/<template-slug>/page-build-edit-overview.md`: detailed page build/edit checklist (sections, copy swaps, QA) for the selected template family.
+- `tooling/<template-slug>/sections.yaml`: IDs for every approved section in that template family; use these to map outlines to markup.
+- `tooling/<template-slug>/page-shell.html`: base HTML head + structural scaffolding with SEO placeholders.
 - `images/images-overview.md`: imagery sourcing, optimization, and social-share requirements.
-- `template/page-examples/`: snapshot copies of the starter HTML pages—review them for layout inspiration before generating fresh output.
+- `tooling/<template-slug>/page-examples/`: snapshot copies of the starter HTML pages—review them for layout inspiration before generating fresh output.
+- `sites/<slug>/client-overview.md`: the active project brief and build tracker for each live site (includes the `Template` value identifying which tooling set to use).
 
 Keep these sources authoritative—do not duplicate instructions elsewhere.
 
 ## Repository Layout
 - `sites/`: production-ready static exports organized by site slug (e.g., `sites/progressivewaytherapy-clarity/`). Each site folder mirrors the previous `public/` structure and contains:
   - `index.html` + supporting `.html` pages.
+  - `client-overview.md`: canonical build brief for that site, including the `Template` selector and trackers.
   - `overrides/`: custom CSS (`custom.css`), JS (`custom.js`), and font loader (`fonts-loader.js`).
   - `images/`: WebP assets served on the site.
   - `css/`, `js/`, etc.: builder-generated bundles—avoid editing unless absolutely required.
-- `template/`: reusable building blocks (`template.html`, page shell, section catalog, docs).
-- Repo root: documentation (`README.md`, `generate-website.md`, this file) and any tooling you introduce.
+- `tooling/`: reusable building blocks grouped by template family (currently `clarity/` and `horizon/`). Each family includes `template.html`, `sections.yaml`, `page-shell.html`, `page-build-edit-overview.md`, `client-overview.md` (sample), and reference `page-examples/`.
+- Repo root: documentation (`README.md`, `generate-website.md`, this file) and any additional tooling you introduce.
 
 ## Editing Guardrails
-- Enforce the structural rules in `template/page-build-edit-overview.md`—that document governs section selection, copy swaps, and QA.
-- When reusing markup, copy directly from `template/template.html` (or an existing page) so original classes and data attributes remain intact.
-- Never edit `template/template.html`; treat it as a read-only source of canonical markup.
+- Enforce the structural rules in the relevant `tooling/<template-slug>/page-build-edit-overview.md`—that document governs section selection, copy swaps, and QA.
+- When reusing markup, copy directly from `tooling/<template-slug>/template.html` (or an existing page) so original classes and data attributes remain intact.
+- Never edit `tooling/<template-slug>/template.html`; treat it as a read-only source of canonical markup.
 - During the first end-to-end site build, ensure each distinct section style from the catalog is used at least once to deliver a varied launch experience. Use the `## Section Usage Tracker` table in `client-overview.md` to log the sections added to every page as you build.
 - Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Rotate CTA blocks so `wds-getting-started-section` and the `wds-trust-section*` variants share time with other closing layouts once they have shipped.
 - Keep the hero rotation log current—cycle through all four hero variants (`wds-hero-section-1/2/3` and `wds-parallax-section`) before repeating one, and make sure `wds-parallax-section` headlines at least one page in every four-page run. Document any exception in the tracker before moving forward.
 - Maintain the `## Sections Remaining To Use` list in `client-overview.md`, removing section IDs once they have appeared on a page. This list only tracks content sections—navigation and footer components are handled separately during the global assembly pass.
-- Use the frozen HTML in `template/page-examples/` as reference material only; do not copy them back into a live `sites/<slug>/` directory once new pages are generated. **Exception**: Always duplicate the canonical Contact and Blog pages from `template/page-examples/contact.html`, `template/page-examples/blog.html`, and the Blog detail examples (e.g., `template/page-examples/blog/how-will-therapy-affect-my-journey.html`) when building those specific pages. DO NOT EVER reuse this shortcut for any other page.
+- Use the frozen HTML in `tooling/<template-slug>/page-examples/` as reference material only; do not copy them back into a live `sites/<slug>/` directory once new pages are generated. **Exception**: Always duplicate the canonical Contact and Blog pages from the matching template family (e.g., `tooling/clarity/page-examples/contact.html`, `tooling/clarity/page-examples/blog.html`, and the Blog detail examples) when building those specific pages. DO NOT EVER reuse this shortcut for any other page.
 - Treat navigation and footer updates as global operations: once finalized, propagate changes to every page via search/replace.
-- Update SEO metadata in each page `<head>` using the placeholders defined in `template/page-shell.html`.
-- Rely on the HTML comment markers in `template/template.html` (mirrored across `template/page-examples/`) to grab complete navigation and footer blocks without trimming required wrappers.
+- Update SEO metadata in each page `<head>` using the placeholders defined in the selected `tooling/<template-slug>/page-shell.html`.
+- Rely on the HTML comment markers in `tooling/<template-slug>/template.html` (mirrored across that template’s `page-examples/`) to grab complete navigation and footer blocks without trimming required wrappers.
 - When a navigation item has child pages, treat the parent label as a navigation-only trigger. Do not generate a standalone HTML page for that parent unless the user explicitly requests one.
 
 ## Automation Workflow
 Use the primary docs as the source of truth and walk through them in order:
 - Start with `new-website-repo-checklist.md` whenever a fresh project repository is needed so naming and Git history are reset before Phase 1 work begins; do not move into Phase 1 until that checklist confirms the new repo is ready.
 - `generate-website.md` Phase 1 → intake, `client-overview.md`, and page list approval before any builds.
-- `generate-website.md` Phase 2 + 3 with `template/page-build-edit-overview.md` → create shells, map sections, and draft copy page-by-page.
+- `generate-website.md` Phase 2 + 3 with `tooling/<template-slug>/page-build-edit-overview.md` → create shells, map sections, and draft copy page-by-page.
   - Maintain the `## Approved Page Scope` section in `client-overview.md` as the canonical build sequence while working through those pages.
-- `generate-website.md` Phase 4 with `template/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
-- `generate-website.md` Phase 5 with `template/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
+- `generate-website.md` Phase 4 with `tooling/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
+- `generate-website.md` Phase 5 with `tooling/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
 
 ## Overrides & Theming
 - Manage visual tokens and overrides in `sites/<slug>/overrides/custom.css`; it loads after the core styles for that site.

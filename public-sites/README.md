@@ -14,12 +14,12 @@ Pushes to the selected `sites/<slug>/` directory deploy automatically once Rende
 
 - `generate-website.md`: high-level website creation playbook.
 - `AGENTS.md`: detailed guardrails for LLM automation (editing conventions, overrides, theming).
-- `template/page-build-edit-overview.md`: step-by-step instructions for assembling or refreshing individual pages.
-- `template/page-examples/`: frozen copies of the baseline HTML layouts—use them as references before generating new pages.
+- `tooling/<template-slug>/page-build-edit-overview.md`: step-by-step instructions for assembling or refreshing individual pages in the selected template family.
+- `tooling/<template-slug>/page-examples/`: frozen copies of the baseline HTML layouts—use them as references before generating new pages.
 - `images/images-overview.md`: image sourcing, optimization, and social-share asset requirements.
 - `new-website-repo-checklist.md`: manual process for cloning this template into a brand-new project repository.
 
 ## Need More Detail?
 
-- `template/template.html`: canonical markup reference for every section.
+- `tooling/<template-slug>/template.html`: canonical markup reference for every section in that template family.
 - Deployment or operational changes should follow the conventions documented in the files above; avoid duplicating instructions across docs so each source stays authoritative.

@@ -1,14 +1,14 @@
 # Dev image for the Prempage React frontend
 FROM node:20-alpine AS base
 
-WORKDIR /app
+WORKDIR /app/client
 
 # Install dependencies separately for better layer caching
-COPY package.json package-lock.json ./
+COPY client/package.json client/package-lock.json ./
 RUN npm ci
 
 # Copy the rest of the frontend sources
-COPY . .
+COPY client ./
 
 EXPOSE 5173
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]

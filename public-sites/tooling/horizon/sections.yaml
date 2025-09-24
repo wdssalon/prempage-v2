@@ -1,0 +1,640 @@
+# Reference map of reusable sections available in tooling/horizon/template.html
+# Each entry documents where to find the markup, the intent of the section,
+# and which content slots an LLM should populate when building a page.
+
+sections:
+  - key: navigation_primary
+    label: "Sticky navigation with mobile drawer"
+    element_id: "wds-navigation"
+    selector: "#wds-navigation"
+    category: navigation
+    description: |
+      Two-tier navigation that includes desktop menu, mobile toggle, and specialty flyout.
+      Update link labels and URLs inline; structure must remain intact for interactions to work.
+    content_slots:
+      - name: logo_primary
+        type: image
+        selector: "nav.mobile-nav img.image-4"
+        notes: "Replace src with site logo. Use a single WebP file."
+      - name: nav_links_primary
+        type: list
+        selector: "ul.menu.genesis-nav-menu.menu-primary > li > a"
+        recommended_length: "4-6 items; each label 1-3 words (≤18 characters)."
+        notes: "Edit link text and href for each top-level item."
+      - name: nav_links_specialties
+        type: list
+        selector: ".nav-menu-list.specilities .link-2"
+        recommended_length: "Up to 8 items; each label 2-4 words (≤24 characters)."
+        notes: "Secondary flyout items. Mirror primary service offerings or remove block if unused."
+      - name: cta_contact
+        type: cta
+        selector: "a.button_primary"
+        recommended_length: "2-3 words (≤18 characters)."
+        notes: "Primary header CTA. Keep concise (2-3 words)."
+
+  - key: hero_split_primary
+    label: "Hero – split copy with dual CTA"
+    element_id: "wds-hero-section-1"
+    selector: "#wds-hero-section-1"
+    category: hero
+    rotation_priority: hero_cycle
+    description: "Primary hero with headline, subheading, supporting line, and two calls to action."
+    content_slots:
+      - name: heading
+        type: rich_text
+        selector: "h1.heading_style_h1"
+        recommended_length: "Max 100 characters."
+        notes: "Supports inline <span class='text-color-primary'> to highlight keywords."
+      - name: subheading
+        type: text
+        selector: "div.heading_style_h3"
+        recommended_length: "One short sentence (≤90 characters)."
+      - name: support_line
+        type: text
+        selector: "div.heading_style_h4"
+        recommended_length: "Single sentence (≤140 characters); line break optional via <br>."
+      - name: primary_cta
+        type: cta
+        selector: "div.button_new_wrapper a.button_primary"
+        recommended_length: "2-3 words (≤22 characters)."
+        notes: "Update link text and href. Keep text <= 24 chars."
+      - name: secondary_cta
+        type: cta
+        selector: "a.button_secondary"
+        recommended_length: "2-3 words (≤22 characters)."
+        notes: "Optional secondary action. Remove entire anchor if not needed."
+      - name: scroll_hint
+        type: icon
+        selector: "a.div-block-11 img.arrow_down_svg"
+        notes: "Swap icon only if brand requires; ensure descriptive alt text."
+
+  - key: parallax_callout
+    label: "Parallax statement with single CTA"
+    element_id: "wds-parallax-section"
+    selector: "#wds-parallax-section"
+    category: banner
+    rotation_priority: hero_cycle
+    description: |
+      Overlay panel used for succinct mission statement. Background graphic controlled by adjacent .parallax-bg section.
+      Commonly used immediately after the hero as a stacked headline banner, but can drop anywhere on the page, including the top hero section.
+    content_slots:
+      - name: heading
+        type: text
+        selector: "h2.heading_style_h2"
+        recommended_length: "Approx. 80-100 characters."
+      - name: bullet_points
+        type: list
+        selector: "div.listing_wrapper .list_item p"
+        recommended_length: "Single bullet (1 sentence ≤120 characters)."
+        notes: "Keep to a single line of copy (one bullet). Aim for one sentence that reinforces the headline."
+      - name: cta
+        type: cta
+        selector: "div.button_new_wrapper a.button_primary"
+        recommended_length: "2-3 words (≤22 characters)."
+        notes: "Single action button."
+    media_guidance: "Set parallax background via CSS by updating the .parallax-bg background-image."
+
+  - key: about_split_image_left
+    label: "Two-column about section – image left"
+    element_id: "wds-about-section-1"
+    selector: "#wds-about-section-1"
+    category: about
+    description: "Image left, text right with four bullet list items and CTA."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "h2.heading_style_h2"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: bullet_items
+        type: list
+        selector: "div.listing_wrapper .list_item p"
+        recommended_length: "3-4 bullets; each ≤140 characters."
+        notes: "Keep to 3–4 list items; short sentences."
+      - name: cta
+        type: cta
+        selector: "div.button_new_wrapper a.button_primary"
+        recommended_length: "2-3 words (≤22 characters)."
+    media_slots:
+      - name: feature_image
+        selector: "div.image_block img"
+        notes: "Single WebP image, horizontal orientation recommended."
+
+  - key: about_split_image_right
+    label: "Two-column about section – image right"
+    element_id: "wds-about-section"
+    selector: "#wds-about-section"
+    category: about
+    description: "Mirror layout of about_split_image_left with list content on left and image on right."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "#wds-about-section h2.heading_style_h2"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: bullet_items
+        type: list
+        selector: "#wds-about-section .listing_wrapper .list_item p"
+        recommended_length: "3-4 bullets; each ≤140 characters."
+      - name: cta
+        type: cta
+        selector: "#wds-about-section .button_new_wrapper a.button_primary"
+        recommended_length: "2-3 words (≤22 characters)."
+    media_slots:
+      - name: feature_image
+        selector: "#wds-about-section .image_block img"
+
+  - key: team_profile_light
+    label: "Profile section – light background"
+    element_id: "wds-team-section-1"
+    selector: "#wds-team-section-1"
+    category: bio
+    description: "Text-first bio with CTA on colored background and portrait on right."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "#wds-team-section-1 h2.heading_style_h2"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: body
+        type: rich_text
+        selector: "#wds-team-section-1 .heading_wrapper > p"
+        recommended_length: "2-3 short paragraphs; 130-180 words total."
+      - name: cta
+        type: cta
+        selector: "#wds-team-section-1 .button_new_wrapper a.button_primary"
+        recommended_length: "2-3 words (≤22 characters)."
+    media_slots:
+      - name: portrait
+        selector: "#wds-team-section-1 .image-block img"
+        notes: "Use transparent PNG/SVG logo or portrait with circular crop."
+
+  - key: team_profile_dark
+    label: "Profile section – dark background"
+    element_id: "wds-team-section"
+    selector: "#wds-team-section"
+    category: bio
+    description: "Image on left, white text on dark gradient, CTA styled as outlined button."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "#wds-team-section h2.heading_style_h2"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: body
+        type: rich_text
+        selector: "#wds-team-section .heading_wrapper > p"
+        recommended_length: "2-3 short paragraphs; 130-180 words total."
+      - name: cta
+        type: cta
+        selector: "#wds-team-section .button_new_wrapper a"
+        recommended_length: "2-4 words (≤28 characters)."
+    media_slots:
+      - name: portrait
+        selector: "#wds-team-section .image-block img"
+
+  - key: services_cards_trio
+    label: "Three service cards with narrative follow-up"
+    element_id: "wds-help-section-1"
+    selector: "#wds-help-section-1"
+    category: services
+    description: |
+      Grid of three hand-drawn card titles with supporting paragraph and CTA links,
+      followed by a long-form narrative block containing heading, paragraphs, and bullet list. Suitable for describing core offerings or pillars.
+    content_slots:
+      - name: heading
+        type: text
+        selector: "section.help_section h1.heading_style_h1"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: cards
+        type: repeater
+        selector: "section.help_section .grid-3 .block"
+        fields:
+          title:
+            selector: "h2.heading_style_h2"
+            recommended_length: "2-4 words (≤45 characters)."
+          description:
+            selector: "div.block-2 > p"
+            recommended_length: "1-2 sentences (≤220 characters)."
+          cta_label:
+            selector: "a.button_secondary div"
+            recommended_length: "2-3 words (≤22 characters)."
+          cta_href:
+            selector: "a.button_secondary@href"
+      - name: story_heading
+        type: text
+        selector: "section.help_section .div-block-3-copy h2"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: story_body
+        type: rich_text
+        selector: "section.help_section .div-block-3-copy p"
+        recommended_length: "3-4 paragraphs; 180-260 words total."
+      - name: story_bullets
+        type: list
+        selector: "section.help_section .div-block-3-copy ul li"
+        recommended_length: "3-4 bullets; each ≤140 characters."
+    media_slots:
+      - name: accent_image
+        selector: "section.help_section img.image-6"
+        notes: "Visible on desktop at top or mobile within story block."
+
+  - key: process_steps
+    label: "Process timeline with three steps"
+    element_id: "wds-getting-started-section"
+    selector: "#wds-getting-started-section"
+    category: process
+    description: "Three numbered blocks outlining onboarding steps with brief paragraphs."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "#wds-getting-started-section h1.heading_style_h1"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: steps
+        type: repeater
+        selector: "#wds-getting-started-section .bullet-block"
+        fields:
+          title:
+            selector: ".bullet-title .text-size-large"
+            recommended_length: "Short phrase (≤60 characters)."
+          description:
+            selector: "p"
+            recommended_length: "1-2 sentences (≤200 characters)."
+
+  - key: faq_accordion
+    label: "Two-column FAQ accordion"
+    element_id: "wds-faqs-1"
+    selector: "#wds-faqs-1"
+    category: faq
+    rotation_priority: underused
+    description: "Eyebrow + heading column paired with an accordion list. Ideal for addressing common objections late in the page."
+    content_slots:
+      - name: eyebrow
+        type: text
+        selector: "#wds-faqs-1 .heading_style_h5"
+        optional: true
+        recommended_length: "1-4 words (≤40 characters)."
+      - name: heading
+        type: text
+        selector: "#wds-faqs-1 h1.heading_style_h2"
+        recommended_length: "One line (≤90 characters)."
+      - name: faqs
+        type: repeater
+        selector: "#wds-faqs-1 .accordion-item"
+        recommended_length: "3-5 questions."
+        fields:
+          question:
+            selector: ".accordion-item__title h2"
+            recommended_length: "Question phrased as a single sentence (≤110 characters)."
+          answer:
+            selector: ".accordion-item-content .text-block-4"
+            recommended_length: "1-2 short paragraphs (≤220 characters)."
+
+  - key: cta_banner_left
+    label: "Wide CTA banner with left-aligned copy"
+    element_id: "wds-trust-section"
+    selector: "#wds-trust-section"
+    category: cta
+    rotation_priority: cta_cycle
+    description: "Primary call-to-action with large heading and button. Background uses existing gradient overlay."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "#wds-trust-section h1.heading_style_h1"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: eyebrow
+        type: text
+        selector: "#wds-trust-section .heading_style_h5"
+        optional: true
+        recommended_length: "1-4 words (≤40 characters)."
+      - name: cta
+        type: cta
+        selector: "#wds-trust-section .button_new_wrapper a"
+        recommended_length: "2-3 words (≤22 characters)."
+
+  - key: intro_feature_panel
+    label: "Feature intro with hero copy and supporting narrative"
+    element_id: "wds-hero-section-2"
+    selector: "#wds-hero-section-2"
+    category: hero
+    rotation_priority: hero_cycle
+    description: |
+      Secondary hero featuring large heading/subheading, single CTA, decorative accent image,
+      and extended body copy with bullet list. Useful for deep dives into cornerstone services or philosophies.
+    content_slots:
+      - name: headline
+        type: rich_text
+        selector: "section.intro_section h1.heading_style_h1"
+        recommended_length: "MAX 3 WORDS. NO MORE THAN 3 WORDS. Use exactly two words in the base copy and a third word inside the <span class='text-span'> wrapper.Total ≤40 characters."
+      - name: subheadline
+        type: text
+        selector: "section.intro_section h2.heading_style_h3"
+        recommended_length: "One sentence (≤120 characters)."
+      - name: primary_cta
+        type: cta
+        selector: "section.intro_section .button_new_wrapper a.button_primary"
+        recommended_length: "2-3 words (≤22 characters)."
+      - name: narrative_heading
+        type: text
+        selector: "section.intro_section .div-block-3-copy h2"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: narrative_body
+        type: rich_text
+        selector: "section.intro_section .div-block-3-copy > p"
+        recommended_length: "3-4 paragraphs; 200-280 words total."
+      - name: narrative_bullets
+        type: list
+        selector: "section.intro_section .div-block-3-copy ul li"
+        recommended_length: "3-4 bullets; each ≤130 characters."
+    media_slots:
+      - name: accent_frame
+        selector: "section.intro_section img.image-6:not(.mobile-only)"
+      - name: mobile_image
+        selector: "section.intro_section img.mobile-only"
+        notes: "Displayed only on small screens."
+
+  - key: wave_story_primary
+    label: "Wave section with narrative + bullet list"
+    element_id: "wds-wave-section-1"
+    selector: "#wds-wave-section-1"
+    category: story
+    description: "Full-width colored background with wave top border, heading, paragraph, bullet list, and closing paragraph."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "section.wave_section.bg-color-primary h2"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: intro_paragraph
+        type: rich_text
+        selector: "section.wave_section.bg-color-primary p.text-color-white.spacer-medium"
+        recommended_length: "3-4 sentences; 180-260 words total."
+      - name: bullets
+        type: list
+        selector: "section.wave_section.bg-color-primary ul li"
+        recommended_length: "4 bullets; each ≤140 characters."
+      - name: closing_paragraph
+        type: text
+        selector: "section.wave_section.bg-color-primary ul + p"
+        recommended_length: "1-2 sentences (≤200 characters)."
+
+  - key: specialties_grid_four
+    label: "Four-column specialties grid"
+    element_id: "wds-specialities-section-1"
+    selector: "#wds-specialities-section-1"
+    category: services
+    description: "Compact grid for highlighting four focus areas with short descriptions."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "section.area-sections h2.heading_style_h2"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: specialties
+        type: repeater
+        selector: "section.area-sections .grid-4 > div"
+        fields:
+          title:
+            selector: "h3"
+            recommended_length: "2-4 words (≤45 characters)."
+          description:
+            selector: "p"
+            recommended_length: "1-2 sentences (≤200 characters)."
+
+  - key: cta_banner_centered
+    label: "Centered CTA banner"
+    element_id: "wds-trust-section-1"
+    selector: "#wds-trust-section-1"
+    category: cta
+    rotation_priority: cta_cycle
+    description: "Symmetrical CTA with eyebrow text, centered heading, and single button."
+    content_slots:
+      - name: eyebrow
+        type: text
+        selector: "section.trust-section .trust-wrap.x-center .heading_style_h5"
+        optional: true
+        recommended_length: "1-4 words (≤40 characters)."
+      - name: heading
+        type: text
+        selector: "section.trust-section .trust-wrap.x-center h1"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: cta
+        type: cta
+        selector: "section.trust-section .trust-wrap.x-center a.button_primary"
+        recommended_length: "2-3 words (≤22 characters)."
+
+  - key: cta_banner_centered_secondary
+    label: "Centered CTA banner – accent button"
+    element_id: "wds-trust-section-2"
+    selector: "#wds-trust-section-2"
+    category: cta
+    rotation_priority: cta_cycle
+    description: "Compact CTA panel with eyebrow text, prominent heading, and a single primary button. Ideal for closing pages with a direct booking ask."
+    content_slots:
+      - name: eyebrow
+        type: text
+        selector: "#wds-trust-section-2 .heading_style_h5"
+        optional: true
+        recommended_length: "1-4 words (≤40 characters)."
+      - name: heading
+        type: text
+        selector: "#wds-trust-section-2 h1.heading_style_h1"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: cta_label
+        type: cta
+        selector: "#wds-trust-section-2 .button_primary div"
+        recommended_length: "2-3 words (≤22 characters)."
+      - name: cta_href
+        selector: "#wds-trust-section-2 .button_primary@href"
+
+  - key: hero_banner_simple
+    label: "Hero banner with right-aligned image"
+    element_id: "wds-hero-section-3"
+    selector: "#wds-hero-section-3"
+    category: hero
+    rotation_priority: hero_cycle
+    description: "Text-only hero stacked above a large illustrative image positioned to the right."
+    content_slots:
+      - name: headline
+        type: text
+        selector: "section.hero_section_one h1"
+        recommended_length: "One sentence (≤90 characters)."
+      - name: subheadline
+        type: text
+        selector: "section.hero_section_one h2"
+        recommended_length: "One sentence (≤100 characters)."
+    media_slots:
+      - name: feature_image
+        selector: "section.hero_section_one img.image-align-right-ab"
+        notes: "Large decorative image; ensure high-resolution WebP."
+
+  - key: intro_longform
+    label: "Long-form narrative section"
+    element_id: "wds-intro-section"
+    selector: "#wds-intro-section"
+    category: story
+    description: "Eyebrow + large heading followed by substantial paragraph content."
+    content_slots:
+      - name: eyebrow
+        type: text
+        selector: "section.intro_section_2 h2.heading_style_h4"
+        recommended_length: "1-4 words (≤40 characters)."
+      - name: heading
+        type: text
+        selector: "section.intro_section_2 h1.heading_style_h2"
+        recommended_length: "One sentence (≤80 characters)."
+      - name: body
+        type: rich_text
+        selector: "section.intro_section_2 p"
+        recommended_length: "2-3 paragraphs; 180-260 words total."
+
+  - key: testimonials_slider
+    label: "Testimonials slider"
+    element_id: "wds-testimonials-section-1"
+    selector: "#wds-testimonials-section-1"
+    category: social-proof
+    rotation_priority: underused
+    description: "Carousel with star icon, section heading, and three sliding testimonials."
+    content_slots:
+      - name: eyebrow
+        type: text
+        selector: "section.testinonials-section .heading_style_h4-2"
+        optional: true
+        recommended_length: "1-3 words (≤40 characters)."
+      - name: testimonials
+        type: repeater
+        selector: "section.testinonials-section .w-slider-mask .w-slide"
+        fields:
+          quote_heading:
+            selector: ".review-box h2"
+            recommended_length: "One sentence (≤110 characters)."
+          quote_body:
+            selector: ".review-box p:first-of-type"
+            recommended_length: "3-4 sentences (≤320 characters)."
+          attribution:
+            selector: ".review-box p:last-of-type"
+            recommended_length: "Name + descriptor (≤60 characters)."
+      - name: footer_cta
+        type: cta
+        selector: "section.testinonials-section .d-flex .button_new_wrapper:first-child a"
+        optional: true
+        recommended_length: "2-3 words (≤22 characters)."
+
+  - key: specialties_cards_vertical
+    label: "Vertical specialties cards"
+    element_id: "wds-specialities-section-2"
+    selector: "#wds-specialities-section-2"
+    category: services
+    description: "Stacked cards for describing niche focuses with paragraph detail."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "section.specialties-section h2.heading_style_h2"
+        recommended_length: "One sentence (≤100 characters)."
+      - name: cards
+        type: repeater
+        selector: "section.specialties-section .specility-card"
+        fields:
+          title:
+            selector: "h3"
+            recommended_length: "2-4 words (≤45 characters)."
+          description:
+            selector: ".paragraph"
+            recommended_length: "2-3 sentences (≤260 characters)."
+
+  - key: credentials_list
+    label: "Certification + credentials list"
+    element_id: "wds-certification-section-1"
+    selector: "#wds-certification-section-1"
+    category: credentials
+    description: "Compact list for licensing, training, or affiliations on muted background."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "section.certification-section h4"
+        recommended_length: "One line (≤90 characters)."
+      - name: items
+        type: list
+        selector: "section.certification-section .entrance-animations"
+        recommended_length: "4-6 items; each ≤80 characters."
+
+  - key: membership_grid
+    label: "Membership / resource grid"
+    element_id: "wds-circle-images-section-1"
+    selector: "#wds-circle-images-section-1"
+    category: resources
+    description: "Grid of feature blocks each with image, title, short paragraph, and CTA."
+    content_slots:
+      - name: heading
+        type: text
+        selector: "section.member_section h1.heading_style_h1"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: eyebrow
+        type: text
+        selector: "section.member_section .heading_style_h4"
+        optional: true
+        recommended_length: "1-3 words (≤40 characters)."
+      - name: cards
+        type: repeater
+        selector: "section.member_section .member_block"
+        fields:
+          image_src:
+            selector: "img.member-image@src"
+          title:
+            selector: "h2"
+            recommended_length: "2-4 words (≤45 characters)."
+          description:
+            selector: ".paragraph"
+            recommended_length: "1-2 sentences (≤200 characters)."
+          cta_label:
+            selector: "a.button_primary div"
+            recommended_length: "2-3 words (≤22 characters)."
+          cta_href:
+            selector: "a.button_primary@href"
+    media_guidance: "Replace each card image with a single web-optimized asset; ensure consistent aspect ratios."
+
+  - key: footer_primary
+    label: "Primary footer with CTA and link columns"
+    element_id: "wds-footer-section-1"
+    selector: "#wds-footer-section-1"
+    category: footer
+    description: "Top footer featuring large CTA on left and two link columns on right."
+    content_slots:
+      - name: cta_heading
+        type: text
+        selector: "section.footer-section h2.heading_style_h2"
+        recommended_length: "One sentence (≤110 characters)."
+      - name: cta_body
+        type: text
+        selector: "section.footer-section .max-w p"
+        recommended_length: "1-2 sentences (≤160 characters)."
+      - name: cta_button
+        type: cta
+        selector: "section.footer-section .button_new_wrapper a"
+        recommended_length: "2-3 words (≤22 characters)."
+      - name: link_columns
+        type: repeater
+        selector: "section.footer-section .footer-link-block"
+        fields:
+          column_heading:
+            selector: "h3, h4"
+            recommended_length: "1-3 words (≤32 characters)."
+          links:
+            selector: ".footer-link-list .footer-link"
+            recommended_length: "3-5 links; each label ≤24 characters."
+
+  - key: footer_secondary
+    label: "Secondary footer strip"
+    element_id: "wds-footer-section-2"
+    selector: "#wds-footer-section-2"
+    category: footer
+    description: "Logo, address, legal links, and phone number."
+    content_slots:
+      - name: logo
+        type: image
+        selector: "section.footer-section-2 img.footer-image"
+      - name: address
+        type: text
+        selector: "section.footer-section-2 .footer-content .t3:first-of-type"
+        recommended_length: "Single line (≤120 characters)."
+      - name: legal_links
+        type: list
+        selector: "section.footer-section-2 .footer-link-wrapper a"
+        recommended_length: "Up to 3 links; each label ≤24 characters."
+      - name: copyright
+        type: text
+        selector: "section.footer-section-2 .footer-content .t3:last-of-type"
+        recommended_length: "One line (≤120 characters)."

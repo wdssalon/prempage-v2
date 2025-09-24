@@ -8,21 +8,26 @@ This repository hosts the Prempage V2 front end (React + Vite), a companion Fast
 - [uv](https://github.com/astral-sh/uv) Python package manager (already bundled in this repo's tooling)
 
 ## Frontend (React + Vite)
-1. Install dependencies:
+1. Change into the frontend workspace:
+   ```bash
+   cd client
+   ```
+2. Install dependencies:
    ```bash
    npm install
    ```
-2. Start the development server with hot reloading:
+3. Start the development server with hot reloading:
    ```bash
    npm run dev
    ```
    The app will be available at the URL printed in the terminal (defaults to http://localhost:5173).
-3. Build for production:
+4. Build for production:
    ```bash
    npm run build
    ```
 
 ### Frontend Scripts
+Run these from `client/`:
 - `npm run dev` – start the Vite dev server with React Fast Refresh.
 - `npm run build` – create a production build in the `dist/` directory.
 - `npm run preview` – preview the production build locally.
@@ -53,12 +58,9 @@ This repository hosts the Prempage V2 front end (React + Vite), a companion Fast
 - When adding dependencies, run `uv add <package>` from the `backend/` directory to keep the lockfile in sync.
 
 ## Project Structure
-- `src/` – React components, entry point (`main.jsx`), and global styles (`index.css`).
-- `public/` – Static assets copied as-is to the build output.
+- `client/` – React frontend root with entry files (`index.html`, `main.jsx`, `App.jsx`), global styles, static assets under `client/public/`, and all frontend tooling (`package.json`, `vite.config.js`, `eslint.config.js`).
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
 - `public-sites/` – Static site toolkit and exports. Contains process docs (`generate-website.md`, `client-overview.md`, `AGENTS.md`), reusable templates under `template/`, and production-ready HTML/CSS/JS in `public-sites/sites/<site-slug>/` when a brand is ready to ship.
-- `vite.config.js` – Vite configuration (React plugin already configured).
-- `eslint.config.js` – ESLint setup for the project.
 - `prempage-webflow/` – Imported Webflow export available for reference/integration (ignored by git).
 
 ## Static Sites
@@ -71,7 +73,7 @@ This repository hosts the Prempage V2 front end (React + Vite), a companion Fast
 Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
 ## Next Steps
-- Replace the placeholder React component in `src/App.jsx` with real UI tied to your data model.
+- Replace the placeholder React component in `client/App.jsx` with real UI tied to your data model.
 - Integrate assets or templates from `prempage-webflow/` into your React components.
 - Flesh out API routes in `backend/main.py` and introduce routers/modules as features grow.
 - Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
@@ -81,7 +83,7 @@ Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sit
 ### Initial Setup or After Changes to Dependencies
 Use `--build` to rebuild images when:
 - First time running the project
-- After changes to `package.json`, `pyproject.toml`, or `uv.lock`
+- After changes to `client/package.json`, `pyproject.toml`, or `uv.lock`
 - After changes to Dockerfiles
 - When you need a fresh build
 

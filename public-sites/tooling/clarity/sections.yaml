@@ -1,4 +1,4 @@
-# Reference map of reusable sections available in template/template.html
+# Reference map of reusable sections available in tooling/clarity/template.html
 # Each entry documents where to find the markup, the intent of the section,
 # and which content slots an LLM should populate when building a page.
 
