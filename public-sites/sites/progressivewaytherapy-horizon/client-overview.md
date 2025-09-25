@@ -1,4 +1,4 @@
-# Horizon Template — Client Overview (Sample)
+# Progressive Way Therapy — Client Overview
 
 ## Template
 horizon
@@ -129,6 +129,14 @@ horizon
 - WhyChooseUs
 - Testimonials
 - FinalCTA
+
+## TODOs
+- [x] Move scope from "Approved Page Scope" into the Horizon template starter so future projects inherit the expanded hierarchy.
+- [x] Confirm Tailwind tokens in `app/globals.css` still reflect the soft purple, sage green, and earth brown palette before extending for new sections.
+- [x] Verify `app/layout.tsx` is loading the Playfair Display + Inter pairing; add weight variants if future sections need additional emphasis.
+- [x] Maintain `lucide-react` icons (Heart, Shield, Video, Calendar) as the core set and select complementary inclusive icons for new sections as they are outlined.
+- [ ] Draft Phase 3 section outlines for Home and About to confirm hero/section rotation before coding.
+- [ ] Capture any new section IDs we introduce in `templates/horizon/config.yaml` if we expand beyond the current catalog.
 
 ## Content Guardrails
 - Lead every page with belonging and psychological safety before logistics or CTAs.

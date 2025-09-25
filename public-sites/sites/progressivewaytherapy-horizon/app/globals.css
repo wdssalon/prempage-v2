@@ -155,6 +155,18 @@
     border-radius: 60% 40% 40% 60% / 60% 30% 70% 40%;
   }
 
+  .organic-border-soft {
+    border-radius: 58% 42% 55% 45% / 52% 58% 42% 48%;
+  }
+
+  .organic-border-wave {
+    border-radius: 65% 35% 50% 50% / 55% 45% 55% 45%;
+  }
+
+  .organic-border-tilt {
+    border-radius: 45% 55% 60% 40% / 48% 62% 38% 52%;
+  }
+
   .gentle-hover {
     @apply transition-all duration-300 ease-warm;
   }

@@ -57,8 +57,8 @@ export default {
         "nature-green": "hsl(var(--nature-green))",
       },
       fontFamily: {
-        serif: ['Playfair Display', 'serif'],
-        body: ['Inter', 'sans-serif'],
+        serif: ['var(--font-serif)', 'serif'],
+        body: ['var(--font-body)', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',

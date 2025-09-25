@@ -55,6 +55,7 @@ This guide explains how to build or update pages for the Horizon template—the 
 - Manage typography with `next/font` inside `app/layout.tsx`, mirroring the brand-approved pairings logged in `client-overview.md`. Register additional weights before referencing them in components.
 - Horizon ships with the `lucide-react` icon library. When a section requires icon swaps, select from that package only after the brand voice and theming direction are approved. Treat icon choices as a visual token distinct from imagery—log decisions in `client-overview.md` so subsequent pages reuse the same set.
 - For bespoke interactions or analytics, add lightweight scripts to `app/providers.tsx` or component-level effects rather than mutating the compiled output under `.next/` or `out/`.
+- Organic image frames live in `app/globals.css` as `organic-border`, `organic-border-soft`, `organic-border-wave`, and `organic-border-tilt`. Apply these classes (with `overflow-hidden` + `shadow-*`) to image wrappers when you need varied blob silhouettes. Introduce new variants in the same file if future projects request additional shapes.
 
 ## Final QA
 - Run `npm run lint` and `npm run build` to catch type or static-export errors.

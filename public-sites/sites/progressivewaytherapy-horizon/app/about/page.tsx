@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 import AboutSection from "@/components/About";
+import Footer from "@/components/Footer";
+import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import {
   CalendarDays,
   Compass,
@@ -17,6 +15,8 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const philosophyHighlights = [
   {
@@ -156,67 +156,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <main className="pt-40 md:pt-48 pb-24 space-y-24">
-        {/* Page Hero */}
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-warm" aria-hidden="true" />
-          <div className="absolute -right-20 top-24 w-80 h-80 bg-soft-purple/30 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="absolute -left-24 bottom-8 w-72 h-72 bg-sage-green/20 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="relative container mx-auto px-4 max-w-4xl text-center py-20">
-            <div className="inline-flex items-center px-4 py-2 bg-sage-green/20 rounded-full text-sage-green font-medium fade-in-up">
-              Blanca Kleinfall, M.Ed., LPC
-            </div>
-            <h1
-              className="mt-6 text-4xl md:text-5xl font-serif text-soft-purple fade-in-up"
-              style={{ animationDelay: "0.1s" }}
-            >
-              Therapy that honors your whole, complex self
-            </h1>
-            <p
-              className="mt-6 text-lg md:text-xl text-earth-brown/80 leading-relaxed fade-in-up"
-              style={{ animationDelay: "0.2s" }}
-            >
-              I show up as a progressive, justice-minded therapist to hold space for identities that are too often
-              misunderstood. We&apos;ll build a therapeutic relationship rooted in authenticity, consent, and deep care.
-            </p>
-            <div
-              className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-earth-brown/80 fade-in-up"
-              style={{ animationDelay: "0.3s" }}
-            >
-              <div className="flex items-center space-x-2">
-                <HeartHandshake className="w-5 h-5 text-soft-purple" />
-                <span>Identity-affirming &amp; liberation focused</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <ShieldCheck className="w-5 h-5 text-sage-green" />
-                <span>Trauma-informed &amp; EMDR trained</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Leaf className="w-5 h-5 text-earth-brown" />
-                <span>Mind-body resourcing &amp; nervous system care</span>
-              </div>
-            </div>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 fade-in-up" style={{ animationDelay: "0.4s" }}>
-              <Button size="lg" className="btn-consultation text-base">
-                Book a Free Consultation
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-soft-purple border-soft-purple/40 hover:bg-soft-purple/10"
-                onClick={() => {
-                  const aboutSection = document.getElementById("about");
-                  if (aboutSection) {
-                    aboutSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }
-                }}
-              >
-                Explore Blanca&apos;s Approach
-              </Button>
-            </div>
-          </div>
-        </section>
-
+      <main className="pt-32 md:pt-40 pb-24 space-y-24">
         {/* Core Bio Section */}
         <AboutSection />
 
@@ -351,20 +291,23 @@ export default function AboutPage() {
         {/* Closing CTA */}
         <section className="px-4">
           <div className="container mx-auto max-w-5xl">
-            <div className="rounded-3xl bg-gradient-to-r from-sage-green to-nature-green text-primary-foreground p-12 shadow-warm text-center fade-in-up">
-              <h2 className="text-3xl font-serif mb-4">Ready to create space for your healing?</h2>
-              <p className="text-lg text-primary-foreground/80 max-w-3xl mx-auto">
+            <div className="rounded-3xl bg-gradient-to-r from-sage-green to-nature-green text-cream p-12 shadow-warm text-center fade-in-up">
+              <h2 className="text-3xl font-serif mb-4 text-cream">Ready to create space for your healing?</h2>
+              <p className="text-lg text-cream/85 max-w-3xl mx-auto">
                 Let&apos;s connect for a free 15-minute consultation to explore if we&apos;re the right fit. Bring your real self—
                 your story is welcome here.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <Button size="lg" className="btn-consultation text-base">
+                <Button
+                  size="lg"
+                  className="rounded-md px-8 text-base font-semibold bg-cream text-sage-green shadow-soft hover:shadow-warm hover:bg-cream/95 transition-all duration-300 ease-warm"
+                >
                   Schedule Your Free Consultation
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  className="bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10"
+                  className="bg-transparent border-cream/60 text-cream hover:bg-cream/10 hover:text-sage-green"
                   onClick={() => router.push("/#contact")}
                 >
                   Contact Blanca
