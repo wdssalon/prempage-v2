@@ -36,3 +36,8 @@ __pycache__/
 # Static Sites
 public-sites/images
 public-sites/sites/*/images/
+public-sites/sites/*/.next/
+public-sites/sites/*/out/
+public-sites/sites/*/node_modules/
+public-sites/sites/*/public/assets/
+public-sites/sites/*/package-lock.json

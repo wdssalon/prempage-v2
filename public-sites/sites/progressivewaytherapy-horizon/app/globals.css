@@ -1,0 +1,302 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Progressive Way Therapy Design System - Warm, empathetic, earth tones */
+
+@layer base {
+  :root {
+    /* Warm earth tone palette */
+    --background: 30 47% 93%;
+    --foreground: 0 0% 29%;
+
+    --card: 30 47% 96%;
+    --card-foreground: 0 0% 29%;
+
+    --popover: 30 47% 96%;
+    --popover-foreground: 0 0% 29%;
+
+    /* Calming sage primary */
+    --primary: 136 23% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Blush secondary */
+    --secondary: 343 80% 94%;
+    --secondary-foreground: 0 0% 29%;
+
+    /* Gentle taupe neutrals */
+    --muted: 17 33% 84%;
+    --muted-foreground: 17 20% 35%;
+
+    --accent: 342 40% 75%;
+    --accent-foreground: 0 0% 29%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 35 35% 97%;
+
+    --border: 17 27% 82%;
+    --input: 343 80% 96%;
+    --ring: 136 23% 53%;
+
+    /* Warm, organic curves */
+    --radius: 0.75rem;
+
+    /* Therapy-specific colors */
+    --sage-green: 136 23% 53%;
+    --warm-tan: 17 33% 84%;
+    --soft-purple: 342 40% 75%;
+    --earth-brown: 17 28% 60%;
+    --cream: 30 47% 93%;
+    --nature-green: 141 27% 43%;
+
+    /* Gradients for depth and warmth */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--sage-green) / 0.85), hsl(var(--soft-purple) / 0.75));
+    --gradient-warm: linear-gradient(180deg, hsl(var(--cream)), hsl(var(--warm-tan)));
+    --gradient-nature: linear-gradient(45deg, hsl(var(--nature-green)), hsl(var(--sage-green)));
+
+    /* Shadows for gentle elevation */
+    --shadow-soft: 0 4px 20px -4px hsl(var(--sage-green) / 0.18);
+    --shadow-warm: 0 8px 32px -8px hsl(var(--earth-brown) / 0.14);
+    --shadow-gentle: 0 2px 12px -2px hsl(var(--soft-purple) / 0.12);
+
+    /* Animation easing for gentle transitions */
+    --ease-warm: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-gentle: all 0.3s var(--ease-warm);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Cozy evening palette */
+    --background: 347 12% 15%;
+    --foreground: 337 45% 91%;
+
+    --card: 347 12% 18%;
+    --card-foreground: 337 45% 91%;
+
+    --popover: 347 12% 18%;
+    --popover-foreground: 337 45% 91%;
+
+    --primary: 136 23% 56%;
+    --primary-foreground: 347 12% 15%;
+
+    --secondary: 341 20% 35%;
+    --secondary-foreground: 337 45% 91%;
+
+    --muted: 347 12% 24%;
+    --muted-foreground: 337 35% 70%;
+
+    --accent: 342 35% 45%;
+    --accent-foreground: 337 45% 91%;
+
+    --destructive: 0 62% 42%;
+    --destructive-foreground: 337 45% 91%;
+
+    --border: 347 12% 25%;
+    --input: 347 12% 25%;
+    --ring: 136 23% 56%;
+
+    /* Dark theme gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--sage-green) / 0.6), hsl(var(--soft-purple) / 0.45));
+    --gradient-warm: linear-gradient(180deg, hsl(347 12% 18%), hsl(341 20% 24%));
+    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.35);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body leading-relaxed;
+    overflow-x: hidden;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  /* Typography system for therapy website */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-soft-purple leading-tight;
+  }
+
+  .hero-title {
+    @apply text-5xl md:text-6xl lg:text-7xl font-serif font-light text-cream drop-shadow-lg;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-serif text-soft-purple mb-6;
+  }
+
+  .subsection-title {
+    @apply text-xl md:text-2xl font-serif text-sage-green mb-4;
+  }
+
+  /* Organic shapes and gentle animations */
+  .organic-border {
+    border-radius: 60% 40% 40% 60% / 60% 30% 70% 40%;
+  }
+
+  .gentle-hover {
+    @apply transition-all duration-300 ease-warm;
+  }
+
+  .gentle-hover:hover {
+    @apply transform -translate-y-1 shadow-warm;
+  }
+
+  /* Scroll animations */
+  .fade-in-up {
+    @apply translate-y-8 opacity-0 transition-all duration-700 ease-warm;
+  }
+
+  .fade-in-up.visible {
+    @apply translate-y-0 opacity-100;
+  }
+
+  /* Therapy-specific utilities */
+  .safe-space {
+    @apply bg-gradient-to-br from-cream to-warm-tan;
+  }
+
+  .inclusive-card {
+    @apply bg-card border border-border rounded-2xl p-6 shadow-gentle;
+  }
+}
+
+@layer components {
+  /* Custom button variants for therapy context */
+  .btn-consultation {
+    @apply bg-gradient-to-r from-sage-green to-nature-green text-primary-foreground 
+           px-8 py-4 rounded-full font-semibold text-lg shadow-soft
+           hover:shadow-warm hover:scale-105 transition-all duration-300 ease-warm;
+  }
+
+  .btn-gentle {
+    @apply bg-warm-tan text-earth-brown px-6 py-3 rounded-full font-medium
+           hover:bg-soft-purple hover:text-primary-foreground 
+           transition-all duration-300 ease-warm shadow-gentle;
+  }
+
+  /* Navigation styles */
+  .nav-warm {
+    @apply bg-gradient-to-r from-cream to-background backdrop-blur-md shadow-gentle;
+  }
+
+  /* Service cards */
+  .service-card {
+    @apply inclusive-card gentle-hover cursor-pointer
+           bg-gradient-to-br from-card to-warm-tan/20;
+  }
+
+  /* Mobile navigation specific styles */
+  .mobile-toolbar {
+    --mobile-toolbar-height: 112px;
+    @apply fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-4
+           bg-white/90 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md
+           border-b border-border/50;
+    height: var(--mobile-toolbar-height);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  @media (min-width: 640px) {
+    .mobile-toolbar {
+      --mobile-toolbar-height: 144px;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .mobile-toolbar {
+      --mobile-toolbar-height: 160px;
+    }
+  }
+
+  .mobile-menu-overlay {
+    @apply fixed inset-0 z-[90] flex flex-col bg-black/20 backdrop-blur-sm
+           transition-opacity duration-200 ease-in-out;
+    overscroll-behavior: contain;
+  }
+
+  .mobile-menu-content {
+    --mobile-cta-height: 96px;
+    @apply relative w-full h-full bg-white/95 backdrop-blur-sm
+           transition-all duration-200 ease-in-out transform flex flex-col overflow-hidden;
+    padding-top: calc(var(--mobile-toolbar-height, 112px) + env(safe-area-inset-top) + 12px);
+    padding-bottom: calc(var(--mobile-cta-height, 96px) + env(safe-area-inset-bottom));
+  }
+
+  .menu-panel {
+    @apply flex-1 overflow-y-auto px-4;
+    padding-top: 1rem;
+    padding-bottom: 2.5rem;
+    scroll-padding-top: 1rem;
+    -webkit-overflow-scrolling: touch;
+    animation: menu-panel-fade 220ms ease-out;
+    will-change: opacity, transform;
+  }
+
+  .menu-panel.reduced-motion {
+    @apply transition-opacity;
+  }
+
+  .mobile-cta-bar {
+    @apply fixed left-0 right-0 bottom-0 bg-white/95 backdrop-blur-sm border-t border-border/20 p-4;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .hamburger-line {
+    @apply block h-[2px] w-6 rounded bg-current transition-transform duration-500 ease-in-out;
+  }
+
+  .hamburger-line:first-child {
+    @apply -translate-y-1.5;
+  }
+
+  .hamburger-line:last-child {
+    @apply translate-y-1.5;
+  }
+
+  .hamburger-open .hamburger-line:first-child {
+    @apply translate-y-0 rotate-45;
+  }
+
+  .hamburger-open .hamburger-line:last-child {
+    @apply translate-y-0 -rotate-45;
+  }
+
+  @keyframes menu-panel-fade {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-panel {
+    animation: none !important;
+    transform: none !important;
+  }
+}
