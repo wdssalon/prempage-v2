@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Heart } from "lucide-react";
+import { Heart, MapPin, Phone } from "lucide-react";
 
 const heroImage = "/assets/hero-therapy.jpg";
 
