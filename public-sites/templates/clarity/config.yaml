@@ -51,3 +51,12 @@ imagery:
 exceptions:
   copy_sections_verbatim: true
   allow_structural_edits: false
+
+theming:
+  overrides_dir: sites/<slug>/overrides
+  color_tokens_file: overrides/custom.css
+  font_loader_file: overrides/fonts-loader.js
+  script_hook_file: overrides/custom.js
+  icon_library:
+    type: none
+    notes: "Clarity ships SVG/iconography baked into the static sections—treat icon swaps as image replacements rather than overriding a shared library."

@@ -38,6 +38,8 @@ uv sync        # install dependencies with uv
 uv run uvicorn app.main:app --reload --port 8080 --env-file .env
 ```
 
+A health check is available at http://localhost:8080/health.
+
 ### Docker
 
 To run the service through the repository's compose stack (mirrors the Render deployment):
@@ -47,6 +49,7 @@ docker compose up form-relay
 ```
 
 The container exposes port 8080 and loads configuration from `services/form-relay/.env`.
+Health endpoint: `http://localhost:8080/health`.
 
 Submit a test payload:
 

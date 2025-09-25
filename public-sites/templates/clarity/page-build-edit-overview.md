@@ -65,6 +65,13 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
    - Match OG/Twitter title, description, and image fields to the page content. Leave the image fields on placeholders unless provided—specs live in `images/images-overview.md` (and `sites/<slug>/images/README.md` if present).
    - Confirm metadata stays unique per page, fits character limits, and references live URLs.
 
+## Overrides & Theming
+- Keep visual tweaks inside `sites/<slug>/overrides/custom.css`. The file loads after the template styles so CSS variables and overrides there win the cascade.
+- Define shared tokens at the top of `custom.css` inside the `:root` block (colors, spacing, typography). The prebuilt responsive scaffolding uses breakpoints at 1280, 1440, 1920, 991, 767, and 478px—group breakpoint-specific adjustments under those media queries so updates stay centralized.
+- Place bespoke scripts in `sites/<slug>/overrides/custom.js`. That file executes after the core bundles in `sites/<slug>/js/`, so use it for lightweight interactions or analytics hooks.
+- Manage fonts through `sites/<slug>/overrides/fonts-loader.js`: adjust `FONT_CONFIG` entries, mirror fallback stacks in `sites/<slug>/css/:root`, and request only the weights needed by the site to keep payloads lean.
+- Clarity does not ship a reusable icon library. Treat inline SVGs and iconography bundled with each section as imagery assets—only swap them during the dedicated image workflow if stakeholders provide replacements.
+
 ## Final QA
 - Check that all required content slots are filled.
 - Confirm links and CTA targets are correct.

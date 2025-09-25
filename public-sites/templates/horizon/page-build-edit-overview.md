@@ -50,6 +50,12 @@ This guide explains how to build or update pages for the Horizon template—the 
 4. **Imagery workflow**
    - When assets are ready, follow `images/images-overview.md` to replace placeholders. Keep filenames in `public/assets` consistent.
 
+## Overrides & Theming
+- Update shared colors and spacing tokens through the Tailwind layers in `app/globals.css`. When a new token is needed, extend `tailwind.config.ts` first so utility classes stay type-safe and consistent.
+- Manage typography with `next/font` inside `app/layout.tsx`, mirroring the brand-approved pairings logged in `client-overview.md`. Register additional weights before referencing them in components.
+- Horizon ships with the `lucide-react` icon library. When a section requires icon swaps, select from that package only after the brand voice and theming direction are approved. Treat icon choices as a visual token distinct from imagery—log decisions in `client-overview.md` so subsequent pages reuse the same set.
+- For bespoke interactions or analytics, add lightweight scripts to `app/providers.tsx` or component-level effects rather than mutating the compiled output under `.next/` or `out/`.
+
 ## Final QA
 - Run `npm run lint` and `npm run build` to catch type or static-export errors.
 - Review the `## Section Usage Tracker` in `client-overview.md` to ensure layout rotation is satisfied.

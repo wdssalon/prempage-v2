@@ -25,13 +25,15 @@ const Navigation = () => {
     <header className="fixed top-0 left-0 right-0 z-50 nav-warm border-b border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-40">
-          <div className="flex items-center">
+        <div className="flex items-center">
+          <Link href="/" aria-label="Go to home" className="flex items-center focus:outline-none">
             <img
               src={logoSrc}
               alt="Progressive Way Therapy Logo"
               className="w-48 h-36 sm:w-56 sm:h-42 md:w-64 md:h-48 object-contain"
             />
-          </div>
+          </Link>
+        </div>
 
           <nav className="hidden xl:flex items-center space-x-6" aria-label="Primary">
             <ul className="flex items-center space-x-6">

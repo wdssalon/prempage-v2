@@ -51,6 +51,7 @@ Phase 6: QA Check-in
 2. **Synthesize the brief into `client-overview.md`**
    - Begin from the canonical template stored at `templates/<template-slug>/client-overview.md`; reference it before creating the site-specific `client-overview.md` under `sites/<slug>/`.
    - Capture the core facts about the client, the project goals, audience, and positioning.
+   - Log the brand’s visual tokens: note the approved palette, typography stack, and any icon style guidance supplied by the user. This becomes the reference for later theming decisions.
    - Unless stated otherwise by the user, use the content provided to asertain the writing voice, tonal guardrails, and key phrases as the foundation for the copy/content/style which the LLM will use across the new website. 
 3. **Create the page list**
    - Identify every page the site requires (home, about, services, blog landing, detail pages, etc.), referencing the brief and any legacy URLs.
@@ -73,6 +74,11 @@ Phase 6: QA Check-in
    - Build a `## Sections Remaining To Use` list immediately after the tracker. Seed it with every content-section identifier from the template’s catalog (for example, the entries in `templates/<template-slug>/sections.yaml`).
    - Note any rotation rules or must-use sections in the tracker notes column before moving on so you can target them as skeletons are created.
 
+3. **Confirm theming entry points**
+   - Review `templates/<template-slug>/config.yaml > theming` to locate the override files for colors, fonts, and optional scripts.
+   - Translate the approved palette and typography from `client-overview.md` into those override hooks (for example, seed CSS variables in `overrides/custom.css` or extend Tailwind tokens). Do not commit changes yet—record the plan in `client-overview.md > TODOs` so it guides implementation during skeleton builds.
+   - If `theming.icon_library.type` is not `none`, select the icon family and primary glyphs that match the brand direction. Document the choice alongside the palette/typography notes. Skip icon selection entirely when the template reports `type: none` (Clarity behaves this way); treat in-section icons as imagery instead.
+
 ## Phase 3: Build Page Skeletons
 For every approved page, repeat the following sequence. Follow any template-specific exceptions (for example, duplicating canonical pages) documented in the relevant `templates/<template-slug>/page-build-edit-overview.md`, and honor the canonical editing guardrails in `AGENTS.md` (copy sections/components exactly, no structural rewrites).
 1. **Create working copies**
@@ -93,6 +99,10 @@ For every approved page, repeat the following sequence. Follow any template-spec
 5. **Log structure choices**
    - Record the selected hero and section IDs in the `## Section Usage Tracker` with a note that copy is pending. This keeps rotation planning accurate even before content is drafted.
    - Leave the `## Sections Remaining To Use` list untouched until copy is finalized in Phase 4.
+
+6. **Apply global theming**
+   - Implement the palette and typography decisions using the override hooks captured in Phase 2 once the first skeleton is stable. Keep the changes scoped to the files listed under `config.yaml > theming`.
+   - If the template exposes an icon library, swap component-level icon props at this point so that later copy passes reference the correct glyphs. Skip this step entirely when the template reports `theming.icon_library.type: none`.
 
 ## Phase 4: Draft Page Copy
 1. **Populate copy**

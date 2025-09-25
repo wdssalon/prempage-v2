@@ -7,6 +7,7 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronRight, ChevronLeft, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -250,6 +251,14 @@ const MobileNavigation = () => {
     router.push("/#book-consultation");
   }, [closeMenu, router]);
 
+  const handleLogoClick = useCallback(() => {
+    setPanelStack(["main"]);
+    setCurrentPanelId("main");
+    if (isMenuOpen) {
+      closeMenu();
+    }
+  }, [closeMenu, isMenuOpen, setPanelStack, setCurrentPanelId]);
+
   useEffect(() => {
     return () => {
       document.documentElement.style.overflow = "";
@@ -329,12 +338,19 @@ const MobileNavigation = () => {
     <>
       <header className="mobile-toolbar">
         <div className="flex items-center">
-          <img
-            src={logoSrc}
-            alt="Progressive Way Therapy"
-            className="object-contain h-full w-auto"
-            style={{ maxHeight: "calc(var(--mobile-toolbar-height, 112px) - 16px)" }}
-          />
+          <Link
+            href="/"
+            onClick={handleLogoClick}
+            className="flex items-center focus:outline-none"
+            aria-label="Go to home"
+          >
+            <img
+              src={logoSrc}
+              alt="Progressive Way Therapy Logo"
+              className="object-contain h-full w-auto"
+              style={{ maxHeight: "calc(var(--mobile-toolbar-height, 112px) - 16px)" }}
+            />
+          </Link>
         </div>
 
         <button

@@ -12,7 +12,13 @@ from loguru import logger
 from .clients.salon import SalonSubmission, forward_to_salon
 from .config import Settings, get_settings
 from .logging import configure_logging
-from .schemas import ErrorResponse, SubmissionContext, SubmissionRequest, SubmissionResponse
+from .schemas import (
+    ErrorResponse,
+    HealthResponse,
+    SubmissionContext,
+    SubmissionRequest,
+    SubmissionResponse,
+)
 from .telemetry import configure_sentry
 
 
@@ -152,5 +158,14 @@ def create_app() -> FastAPI:
         await forward_to_salon(salon_payload)
 
         return SubmissionResponse(submission_id=context.submission_id)
+
+    @app.get(
+        "/health",
+        response_model=HealthResponse,
+        tags=["health"],
+        summary="Service health check",
+    )
+    async def health() -> HealthResponse:
+        return HealthResponse(service=settings.service_name)
 
     return app

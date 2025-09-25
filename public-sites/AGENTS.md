@@ -16,12 +16,7 @@ This document is the control center for LLM-driven work in the `public-sites` wo
 Keep these sources authoritative—do not duplicate instructions elsewhere.
 
 ## Repository Layout
-- `sites/`: production-ready static exports organized by site slug (e.g., `sites/<client-slug>-<template>/`). Each site folder mirrors the previous `public/` structure and contains:
-  - `index.html` + supporting `.html` pages.
-  - `client-overview.md`: canonical build brief for that site, including the `Template` selector and trackers.
-  - `overrides/`: custom CSS (`custom.css`), JS (`custom.js`), and font loader (`fonts-loader.js`).
-  - `images/`: WebP assets served on the site.
-  - `css/`, `js/`, etc.: builder-generated bundles—avoid editing unless absolutely required.
+- `sites/`: production-ready exports organized by site slug (e.g., `sites/<client-slug>-<template>/`). Directory structure depends on the template family—static kits like Clarity ship HTML bundles with an `overrides/` folder, while app-driven kits like Horizon include the full Next.js project (`app/`, `.next/`, `out/`, etc.). Every site folder contains the canonical `client-overview.md` for that build plus any template-specific override entry points detailed in the template’s build guide.
 - `templates/`: reusable building blocks grouped by template family (currently `clarity/` and `horizon/`, with more to come). Each family includes structured config (`config.yaml`), build guide, sample client overview, component/catalog references, and page examples.
 - Repo root: documentation (`README.md`, `generate-website.md`, this file) and any additional utilities you introduce.
 
@@ -49,14 +44,9 @@ Use the primary docs as the source of truth and walk through them in order:
 - `generate-website.md` Phase 6 with `templates/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
 
 ## Overrides & Theming
-- Manage visual tokens and overrides in `sites/<slug>/overrides/custom.css`; it loads after the core styles for that site.
-- Define shared color and spacing tokens at the top of that file (inside the `:root` block) so updates cascade site-wide.
-- A responsive scaffolding block is prepped in that file with min/max breakpoints (1280, 1440, 1920, 991, 767, 478) to keep breakpoint-specific tweaks centralized.
-- Update custom scripts in `sites/<slug>/overrides/custom.js`; they execute after the default script bundle in the matching `sites/<slug>/js/` directory.
-- Manage fonts via `sites/<slug>/overrides/fonts-loader.js`:
-  - Edit `FONT_CONFIG` entries (Google families + fallback stacks).
-  - Mirror fallback stacks in the primary `sites/<slug>/css/` bundle’s `:root` variables.
-  - Request only the weights used in design to keep WebFont payloads lean.
+- Use the override entry points defined by the active template’s build guide (`templates/<template-slug>/page-build-edit-overview.md`). Static exports (Clarity) rely on the `overrides/` directory documented there, while app-based templates (Horizon) push changes through Tailwind tokens, shared components, or Next.js configuration.
+- Keep visual tokens and global styles centralized—update the template-defined variable files or CSS/JS override hooks instead of editing compiled bundles (`css/`, `js/`, `.next/`, etc.).
+- When additional scripts or fonts are required, follow the process in the relevant template guide so assets load after the core bundles without duplicating imports.
 
 - Initial page builds may leave placeholder images. The dedicated workflow in `images/images-overview.md` covers sourcing, WebP conversion, alt text, and social share specs. During copy passes, leave every `<img>` `src` exactly as provided in the template—do not swap in icons or alternate assets even if they already exist in the repo.
 - When converting assets, keep only the WebP file in `sites/<slug>/images/` and remove intermediate formats after optimization.

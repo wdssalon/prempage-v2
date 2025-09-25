@@ -59,3 +59,12 @@ notes:
   - Reference Tailwind tokens in app/globals.css; introduce new tokens via tailwind.config.ts before use.
   - Load Playfair Display and Inter via next/font or head tags if the deployment target requires explicit font imports.
   - Import section components from src/components; avoid duplicating markup manually.
+
+theming:
+  color_tokens_file: app/globals.css
+  tailwind_extend_file: tailwind.config.ts
+  font_strategy: next/font in app/layout.tsx
+  icon_library:
+    type: npm_package
+    package: lucide-react
+    usage: "Import icons from 'lucide-react' and keep selections consistent with the brand direction logged in client-overview.md."

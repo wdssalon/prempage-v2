@@ -105,7 +105,8 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
    uv run --directory services/form-relay uvicorn app.main:app --reload --port 8080 --env-file .env
    ```
 
-See `services/form-relay/README.md` for curl examples and Sentry configuration notes.
+   See `services/form-relay/README.md` for curl examples and Sentry configuration notes.
+   A health check is available at http://localhost:8080/health.
 
 ## Next Steps
 - Replace the placeholder React component in `client/src/App.tsx` with real UI tied to your data model.

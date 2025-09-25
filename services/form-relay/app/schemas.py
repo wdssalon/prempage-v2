@@ -59,3 +59,12 @@ class ErrorResponse(BaseModel):
     status: Literal["error"] = "error"
     message: str
     detail: str | None = None
+
+
+class HealthResponse(BaseModel):
+    """Service health payload."""
+
+    status: Literal["ok"] = "ok"
+    service: str
+    message: str = "Service is healthy"
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
