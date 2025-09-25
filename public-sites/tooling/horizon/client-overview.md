@@ -61,17 +61,12 @@ horizon
    - Depression Therapy
    - Women’s Issues
 5. **Telehealth** – Logistics, tech requirements, statewide access reminder.
-6. **Get Started** *(full page + parent trigger for intake resources)*
-   - Appointment Request
+6. **Get Started** *(navigation parent only; no standalone page unless requested)*
    - Rates & Insurance
    - FAQs
    - Privacy Practices
-7. **Appointment Request** – Dedicated CTA page (can mirror/form embed if provided).
-8. **Rates & Insurance** – Pricing, out-of-network guidance, sliding scale info.
-9. **FAQs** – Common questions about therapy, telehealth, readiness.
-10. **Privacy Practices** – HIPAA notice, downloadable forms (placeholder until supplied).
-11. **Contact** – Email/phone, consult CTA, scheduler prompt, service area reminder.
-12. **Client Portal** – Maintain but confirm placement in nav/footer; no standalone page needed beyond link out.
+7. **Contact** – Email/phone, consult CTA, scheduler prompt, service area reminder.
+8. **Client Portal** – Maintain but confirm placement in nav/footer; no standalone page needed beyond link out.
 
 ## Approved Page Scope
 - Home
@@ -93,7 +88,6 @@ horizon
   - Women’s Issues
 - Telehealth
 - Get Started *(navigation parent only; use to surface specialty pages in the menu)*
-  - Appointment Request
   - Rates & Insurance
   - FAQs
   - Privacy Practices
@@ -105,22 +99,6 @@ horizon
 
 | Page | Hero Used | Sections Used | wds-wave-section-1 | wds-parallax-section | wds-specialities-section-1 | wds-specialities-section-2 | wds-team-section | wds-team-section-1 | wds-circle-images-section-1 | wds-getting-started-section | wds-trust-section | wds-trust-section-1 | wds-help-section-1 | wds-intro-section | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Home (`index.html`) | `wds-hero-section-1` | `wds-hero-section-1`, `wds-parallax-section`, `wds-about-section-1`, `wds-specialities-section-2`, `wds-testimonials-section-1`, `wds-trust-section-2` |  | 1 |  | 1 |  |  |  |  |  |  |  |  | Catalog update needed for `wds-trust-section-2` |
-| About (`about.html`) | `wds-hero-section-2` | `wds-hero-section-2`, `wds-wave-section-1`, `wds-team-section`, `wds-getting-started-section`, `wds-certification-section-1`, `wds-trust-section-1` | 1 |  |  |  | 1 |  |  | 1 |  | 1 |  |  |  |
-| Ketamine Therapy (`ketamine-therapy.html`) | `wds-hero-section-1` | `wds-hero-section-1`, `wds-intro-section`, `wds-specialities-section-2`, `wds-wave-section-1`, `wds-getting-started-section`, `wds-trust-section` | 1 |  |  | 1 |  |  |  | 1 | 1 |  |  | 1 |  |
-| EMDR (`emdr.html`) | `wds-hero-section-3` | `wds-hero-section-3`, `wds-intro-section`, `wds-specialities-section-1`, `wds-about-section`, `wds-help-section-1`, `wds-trust-section-1` |  |  | 1 |  |  |  |  |  |  | 1 | 1 | 1 |  |
-| Abortion Support (`abortion-support.html`) | `wds-parallax-section` | `wds-parallax-section`, `wds-intro-section`, `wds-specialities-section-1`, `wds-wave-section-1`, `wds-getting-started-section`, `wds-trust-section` | 1 | 1 | 1 |  |  |  |  | 1 | 1 |  |  | 1 | Parallax used as hero |
-| Anxiety Counseling (`anxiety-counseling.html`) | `wds-hero-section-3` | `wds-hero-section-3`, `wds-intro-section`, `wds-specialities-section-2`, `wds-team-section-1`, `wds-circle-images-section-1`, `wds-getting-started-section`, `wds-trust-section` |  |  |  | 1 |  | 1 | 1 | 1 | 1 |  |  | 1 | Introduced first uses of `wds-team-section-1` and `wds-circle-images-section-1`. |
-| Trauma Counseling (`trauma-counseling.html`) | `wds-hero-section-2` | `wds-hero-section-2`, `wds-wave-section-1`, `wds-specialities-section-2`, `wds-team-section`, `wds-getting-started-section`, `wds-trust-section-1` | 1 |  |  | 1 | 1 |  |  | 1 |  | 1 |  |  |  |
-| Relationship Safety (`relationship-safety.html`) | `wds-hero-section-1` | `wds-hero-section-1`, `wds-parallax-section`, `wds-about-section-1`, `wds-specialities-section-1`, `wds-help-section-1`, `wds-getting-started-section`, `wds-trust-section` |  | 1 | 1 |  |  |  |  | 1 | 1 |  | 1 |  |  |
-| Grief Support (`grief-support.html`) | `wds-hero-section-3` | `wds-hero-section-3`, `wds-intro-section`, `wds-wave-section-1`, `wds-specialities-section-2`, `wds-team-section`, `wds-getting-started-section`, `wds-trust-section-1` | 1 |  |  | 1 | 1 |  |  | 1 |  | 1 |  | 1 |  |
-| Immigrant/Refugee Support (`immigrant-refugee-support.html`) | `wds-hero-section-2` | `wds-hero-section-2`, `wds-wave-section-1`, `wds-specialities-section-1`, `wds-team-section-1`, `wds-getting-started-section`, `wds-trust-section` | 1 |  | 1 |  |  | 1 |  | 1 | 1 |  |  |  |  |
-| Individual Therapy (`individual-therapy.html`) | `wds-hero-section-1` | `wds-hero-section-1`, `wds-intro-section`, `wds-circle-images-section-1`, `wds-specialities-section-2`, `wds-help-section-1`, `wds-getting-started-section`, `wds-trust-section-1` |  |  |  | 1 |  |  | 1 | 1 |  | 1 | 1 | 1 |  |
-| LGBTQIA+ Therapy (`lgbtqia-therapy.html`) | `wds-hero-section-3` | `wds-hero-section-3`, `wds-intro-section`, `wds-specialities-section-1`, `wds-wave-section-1`, `wds-team-section-1`, `wds-getting-started-section`, `wds-trust-section` | 1 |  | 1 |  |  | 1 |  | 1 | 1 |  |  | 1 |  |
-| Pregnancy Support (`pregnancy-support.html`) | `wds-hero-section-2` | `wds-hero-section-2`, `wds-specialities-section-2`, `wds-about-section-1`, `wds-team-section`, `wds-getting-started-section`, `wds-trust-section-1` |  |  |  | 1 | 1 |  |  | 1 |  | 1 |  |  |  |
-| Sexual Trauma Support (`sexual-trauma-support.html`) | `wds-hero-section-3` | `wds-hero-section-3`, `wds-parallax-section`, `wds-intro-section`, `wds-specialities-section-2`, `wds-team-section`, `wds-help-section-1`, `wds-getting-started-section`, `wds-trust-section-1` |  | 1 |  | 1 | 1 |  |  | 1 |  | 1 | 1 | 1 |  |
-| Depression Therapy (`depression-therapy.html`) | `wds-hero-section-1` | `wds-hero-section-1`, `wds-intro-section`, `wds-wave-section-1`, `wds-specialities-section-1`, `wds-team-section-1`, `wds-help-section-1`, `wds-getting-started-section`, `wds-trust-section-1` | 1 |  | 1 |  |  | 1 |  | 1 |  | 1 | 1 | 1 |  |
-| Women’s Issues (`womens-issues.html`) | `wds-hero-section-2` | `wds-hero-section-2`, `wds-specialities-section-2`, `wds-circle-images-section-1`, `wds-team-section-1`, `wds-getting-started-section`, `wds-trust-section` |  |  |  | 1 |  | 1 | 1 | 1 | 1 |  |  |  |  |
 
 ## Layout Rotation Checklist
 - Before outlining a new page, review the two most recent entries above and choose at least one section ID that does **not** appear in either. If page requirements force a repeat, document the rationale in the Notes column when logging the new page.
@@ -129,7 +107,4 @@ horizon
 
 ## Sections Remaining To Use
 *Update this list after every page build so unused template sections stay front-and-center. When the list empties, immediately repopulate it with any sections that have appeared fewer than two times in the tracker above. Excludes navigation and footer components.*
-- `wds-about-section`
-- `wds-certification-section-1`
-- `wds-testimonials-section-1`
-- `wds-trust-section-2`
+- TBD.. need to add here

@@ -1,6 +1,6 @@
 # Page Build & Edit Overview
 
-This guide covers the end-to-end workflow for building net-new pages or editing existing ones while staying faithful to the Progressive Way Therapy static export. Use it alongside `tooling/clarity/sections.yaml` (section catalog) and the client-specific configs (`client-overview.md` if created yet, sampled located at `tooling/clarity/client-overview.md`).
+This guide covers the end-to-end workflow for building net-new pages or editing existing ones while staying faithful to the Clarity template static export. Use it alongside `tooling/clarity/sections.yaml` (section catalog) and the client-specific configs (`client-overview.md` if created yet, sampled located at `tooling/clarity/client-overview.md`).
 
 ## Global Rules
 - **Confirm approvals first**: do not begin page work until both `client-overview.md` and the page list have been approved per `generate-website.md` Phase 1.
@@ -9,7 +9,7 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 - **Shared blocks**: every page must include the navigation (`navigation_primary`) immediately after `<body>` and the two footer sections (`footer_primary`, `footer_secondary`) before `</body>`.
 - **Head + scripts**: keep all stylesheet/script references. Update `<title>`, meta description, canonical URL, OG/Twitter tags, and social share image so each page has unique, accurate SEO coverage.
 - **Navigation parents**: when a navigation item simply groups child pages, leave it as a trigger without producing a standalone HTML page. Build that parent as its own page only if the user explicitly requests it.
-- **Images**: leave placeholders during the build-and-copy phase. Do not change image `src` values (even to existing icons or assets) while drafting copy. Image sourcing and optimization instructions live in `images/images-overview.md` and happen once copy is approved.
+- **Images**: keep the template-provided image references untouched while drafting copy. Do not change any `src` values (even to existing icons or assets). Image sourcing and optimization instructions live in `images/images-overview.md` and happen once copy is approved.
 - **Circle image sections**: `wds-circle-images-section-1` and similar blocks expect the template’s circular WebP portraits. Keep those image references intact until the dedicated image workflow provides replacements.
 - **Section usage**: only use predefined sections listed in `tooling/clarity/sections.yaml`. Always copy HTML sections from `tooling/clarity/template.html` exactly—never hand-type or partially rebuild them. This includes nested icons, slider/nav wrappers, visually hidden nodes, and `data-*` attributes. DO NOT create new structural elements. Treat the `tooling/clarity/template.html` file as read-only, NEVER update this file. 
 - **Section coverage log**: maintain the `## Section Usage Tracker` table in `client-overview.md`. Review it before outlining or selecting sections, and update the table immediately after each page is finalized so every layout is accounted for during the build.
@@ -30,6 +30,7 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 2. **Select sections**
    - Map each outline item to a section ID from `tooling/clarity/sections.yaml`.
    - For new builds, rotate the hero variants (`wds-hero-section-1`, `wds-hero-section-2`, `wds-hero-section-3`, `wds-parallax-section`). Record the hero used for each page in the tracker, review the last three hero entries before outlining the next page, and pick an unused variant before repeating one. If rotation cannot be satisfied (e.g., page requirements demand a specific hero), note the exception in the tracker. Ensure `wds-parallax-section` appears as the primary hero at least once in every four-page cycle; using it mid-page does not count toward this requirement.
+   - Rotate closing CTA coverage so `wds-getting-started-section` and the `wds-trust-section*` variants alternate across the build. Use the `## Section Usage Tracker` notes column to capture any intentional repeats.
    - Consult the `## Section Usage Tracker` to prioritize sections that have not yet been used. During the very first site build, cycle through the full catalog so every section style appears at least once—variety across pages keeps the launch set feeling bespoke.
    - Cross-check the `## Sections Remaining To Use` list in `client-overview.md` and intentionally target outstanding IDs when it supports the outline.
    - When editing, confirm the existing markup still aligns with approved sections; if not, swap it for the correct block from `tooling/clarity/template.html`.

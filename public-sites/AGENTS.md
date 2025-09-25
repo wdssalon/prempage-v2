@@ -1,6 +1,6 @@
 # AGENTS NOTES
 
-This document is the control center for LLM-driven work in the Progressive Way Therapy repo. It collects the rules, file locations, and references you must follow when automating site updates.
+This document is the control center for LLM-driven work in the `public-sites` workspace. It collects the rules, file locations, and references you must follow when automating site updates.
 
 ## Core References
 - `generate-website.md`: top-level flow for producing or refreshing the site.
@@ -15,7 +15,7 @@ This document is the control center for LLM-driven work in the Progressive Way T
 Keep these sources authoritative—do not duplicate instructions elsewhere.
 
 ## Repository Layout
-- `sites/`: production-ready static exports organized by site slug (e.g., `sites/progressivewaytherapy-clarity/`). Each site folder mirrors the previous `public/` structure and contains:
+- `sites/`: production-ready static exports organized by site slug (e.g., `sites/<client-slug>-<template>/`). Each site folder mirrors the previous `public/` structure and contains:
   - `index.html` + supporting `.html` pages.
   - `client-overview.md`: canonical build brief for that site, including the `Template` selector and trackers.
   - `overrides/`: custom CSS (`custom.css`), JS (`custom.js`), and font loader (`fonts-loader.js`).
@@ -30,8 +30,8 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 - After pasting a section, only edit literal copy, alt text, or link targets. If copy changes require adding/removing list items or cards, duplicate the template element and adjust the text rather than altering surrounding structure.
 - Never edit `tooling/<template-slug>/template.html`; treat it as a read-only source of canonical markup.
 - During the first end-to-end site build, ensure each distinct section style from the catalog is used at least once to deliver a varied launch experience. Use the `## Section Usage Tracker` table in `client-overview.md` to log the sections added to every page as you build.
-- Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Rotate CTA blocks so `wds-getting-started-section` and the `wds-trust-section*` variants share time with other closing layouts once they have shipped.
-- Keep the hero rotation log current—cycle through all four hero variants (`wds-hero-section-1/2/3` and `wds-parallax-section`) before repeating one, and make sure `wds-parallax-section` headlines at least one page in every four-page run. Document any exception in the tracker before moving forward.
+- Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Follow the CTA rotation rules documented in the template’s `page-build-edit-overview.md` so closing layouts stay varied once they ship.
+- Keep the hero rotation log current by applying the template-specific guidance in `tooling/<template-slug>/page-build-edit-overview.md`. Document any exception in the tracker before moving forward.
 - Maintain the `## Sections Remaining To Use` list in `client-overview.md`, removing section IDs once they have appeared on a page. This list only tracks content sections—navigation and footer components are handled separately during the global assembly pass.
 - Use the frozen HTML in `tooling/<template-slug>/page-examples/` as reference material only; do not copy them back into a live `sites/<slug>/` directory once new pages are generated. **Exception**: Always duplicate the canonical Contact and Blog pages from the matching template family (e.g., `tooling/clarity/page-examples/contact.html`, `tooling/clarity/page-examples/blog.html`, and the Blog detail examples) when building those specific pages. DO NOT EVER reuse this shortcut for any other page.
 - Treat navigation and footer updates as global operations: once finalized, propagate changes to every page via search/replace.

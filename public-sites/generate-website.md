@@ -58,16 +58,16 @@ For Contact and Blog pages, skip the outline/section selection steps below and i
    - Update CTA targets, internal links, and alt text placeholders as needed—only adjust literal text/attribute values. If you need extra list items or cards, duplicate the template element instead of altering surrounding markup.
    - Update the `## Section Usage Tracker` entry for this page with the final section IDs, the hero selection, and `1`s in each relevant section column before moving to the next build.
    - Immediately remove those IDs from the `## Sections Remaining To Use` list so the outstanding inventory stays accurate. If the list empties, restock it with any sections that still show fewer than two uses in the tracker. Navigation and footer components are managed during the global assembly phase and are not part of this list.
-5. **Stash imagery placeholders**
+5. **Do not update any image references at this stage**
    - Leave image references as-is. Do not update any image references at this stage—this includes avoiding swaps to alternate assets already in the repo (icons, logos, etc.). There is a dedicated workflow for updating images, which lives in `images/images-overview.md`, and this will be done at a later stage.
 
 ## Phase 4: Site-Wide Assembly
 1. **Finalize navigation**
    - Once all pages exist, design the site navigation structure (top-level items plus nesting where appropriate).
    - Treat top-level items with child pages as navigation-only triggers unless the user has approved a standalone page for that label.
-   - Replace the shell placeholders on every page with the `navigation_primary` block (`#wds-navigation`) from `tooling/<template-slug>/template.html`, using the comment markers to copy the full component and updating links to the correct `.html` files.
+   - Replace the shell placeholders on every page with the `navigation_primary` block from `tooling/<template-slug>/template.html` (for the current templates this is the `#wds-navigation` component). Use the comment markers to copy the full component and update links to the correct `.html` files.
 2. **Add shared components**
-   - Insert both approved footer sections—`footer_primary` (`#wds-footer-section-1`) and the nested `footer_secondary` block (`.footer-section-2`)—from `tooling/<template-slug>/template.html` into each page, customizing contact details and links as required. The comment markers in the template show the exact start and end points.
+   - Insert both approved footer sections—`footer_primary` and its nested `footer_secondary` block—from `tooling/<template-slug>/template.html` into each page, customizing contact details and links as required. For the current templates these map to `#wds-footer-section-1` and `.footer-section-2`. The comment markers in the template show the exact start and end points.
    - Apply navigation and footer updates only after copy is locked so the same structure appears on every page.
 3. **Lock in page metadata**
    - Update the `<title>`, meta description, canonical URL, robots directive, and OG/Twitter tags, and anything else inside each page’s `<head>` that has the `UPDATE` placeholder. Use the placeholders in the selected `tooling/<template-slug>/page-shell.html` as a checklist.
@@ -75,7 +75,7 @@ For Contact and Blog pages, skip the outline/section selection steps below and i
 
 ## Phase 5: QA Check-in
 - Verify that every page references only the allowed sections, and that navigation + footers are identical across the site.
-- Review the `## Section Usage Tracker` to confirm the hero rotation and layout rotation rules have been met (including `wds-parallax-section` serving as a hero in the last four-page cycle).
+- Review the `## Section Usage Tracker` to confirm the hero rotation and layout rotation rules have been met.
 - Run through the relevant `tooling/<template-slug>/page-build-edit-overview.md` for the deeper validation checklist (links, alt text, SEO metadata, etc.).
 - Summarize QA findings (including outstanding TODOs) for the user before handoff.
 
