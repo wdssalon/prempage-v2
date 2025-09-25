@@ -21,4 +21,8 @@ class HealthCheckResponse(BaseModel):
     service: ServiceMetadata
     message: str = "Service is healthy"
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
+    uptime_seconds: float = Field(
+        default=0,
+        ge=0,
+        description="Number of seconds the service has been running",
+    )

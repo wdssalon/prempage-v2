@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 import sys
 
 from fastapi import FastAPI
@@ -45,6 +46,7 @@ app = FastAPI(
 )
 
 SERVICE_METADATA = ServiceMetadata(name="prempage-backend", version=app.version)
+SERVICE_START_TIME = datetime.now(timezone.utc)
 
 
 @app.get(
@@ -59,6 +61,7 @@ async def health() -> HealthCheckResponse:
     return HealthCheckResponse(
         status="ok",
         service=SERVICE_METADATA,
+        uptime_seconds=(datetime.now(timezone.utc) - SERVICE_START_TIME).total_seconds(),
     )
 
 

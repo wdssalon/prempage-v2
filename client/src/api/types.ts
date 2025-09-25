@@ -39,6 +39,12 @@ export interface components {
        * Format: date-time
        */
       timestamp?: string;
+      /**
+       * Uptime Seconds
+       * @description Number of seconds the service has been running
+       * @default 0
+       */
+      uptime_seconds?: number;
     };
     /**
      * ServiceMetadata

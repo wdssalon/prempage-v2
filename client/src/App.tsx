@@ -64,6 +64,12 @@ function App() {
               Message: {health.message ?? 'No message provided'}
             </p>
             <p>
+              Uptime:{' '}
+              {typeof health.uptime_seconds === 'number'
+                ? `${health.uptime_seconds.toFixed(1)}s`
+                : 'Unavailable'}
+            </p>
+            <p>
               Timestamp:{' '}
               {health.timestamp
                 ? new Date(health.timestamp).toLocaleString()

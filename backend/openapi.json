@@ -54,6 +54,13 @@
             "type": "string",
             "format": "date-time",
             "title": "Timestamp"
+          },
+          "uptime_seconds": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Uptime Seconds",
+            "description": "Number of seconds the service has been running",
+            "default": 0
           }
         },
         "type": "object",
