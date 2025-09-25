@@ -7,6 +7,8 @@ import sys
 from fastapi import FastAPI
 from loguru import logger
 
+from schemas import HealthCheckResponse, ServiceMetadata
+
 
 def configure_logging() -> None:
     """Configure Loguru to emit structured logs to stdout."""
@@ -42,12 +44,22 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+SERVICE_METADATA = ServiceMetadata(name="prempage-backend", version=app.version)
 
-@app.get("/health", tags=["health"], summary="Health check")
-async def health() -> dict[str, str]:
-    """Return a simple health payload for monitoring."""
+
+@app.get(
+    "/health",
+    tags=["health"],
+    summary="Health check",
+    response_model=HealthCheckResponse,
+)
+async def health() -> HealthCheckResponse:
+    """Return operational metadata used by availability probes."""
     logger.debug("Health endpoint called")
-    return {"status": "ok"}
+    return HealthCheckResponse(
+        status="ok",
+        service=SERVICE_METADATA,
+    )
 
 
 if __name__ == "__main__":

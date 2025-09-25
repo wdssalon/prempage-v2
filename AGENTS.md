@@ -95,6 +95,15 @@ Currently lightweight setup with:
 - Vite production builds
 - FastAPI production deployment patterns
 
+### Backend ↔ Frontend Contract
+
+End-to-end types are generated from the FastAPI OpenAPI schema. When you update Pydantic models in the backend:
+- Run `uv run python export_openapi.py` from `backend/` to refresh `openapi.json`.
+- Run `pnpm openapi:types` from `client/` to regenerate `client/src/api/types.ts` via `openapi-typescript`.
+- Consume the resulting types in client helpers (example: `client/src/api/health.ts`) to keep fetch logic aligned with the API.
+
+The sample `/health` route returns a `HealthCheckResponse` payload that exercises the full pipeline—Pydantic model → OpenAPI schema → generated TypeScript type → React component display.
+
 ### Data Persistence
 
 - Backend configured for easy database integration

@@ -95,6 +95,16 @@ Currently lightweight setup with:
 - Vite production builds
 - FastAPI production deployment patterns
 
+### Backend ↔ Frontend Contract
+
+API types flow from backend to frontend automatically:
+- Update Pydantic schemas (example: `backend/schemas.py`).
+- Export the OpenAPI document with `uv run python export_openapi.py` inside `backend/`.
+- Regenerate TypeScript bindings with `pnpm openapi:types` from `client/`.
+- Import the generated shapes—`client/src/api/health.ts` shows how to wrap a fetch with strong typing and how `client/src/App.tsx` renders the typed response.
+
+The `/health` endpoint is our reference contract; it surfaces service metadata, message, and a timestamp to validate the end-to-end generation path.
+
 ### Data Persistence
 
 - Backend configured for easy database integration

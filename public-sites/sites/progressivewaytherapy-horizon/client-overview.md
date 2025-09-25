@@ -95,7 +95,7 @@ horizon
 - Client Portal *(external page)*
 
 ## Section Usage Tracker
-*Update this table after each page build. List section IDs exactly as they appear in `tooling/horizon/sections.yaml`; if a block is missing from the catalog, record the `id` from `tooling/horizon/template.html` and flag it in Notes. Use the `Hero Used` column to enforce the four-hero rotation. Mark a `1` in each section column when that block appears on the page so repeated patterns surface quickly. Include navigation and footer blocks once they are added site-wide.*
+*Update this table after each page build. List section IDs exactly as they appear in `templates/horizon/sections.yaml`; if a block is missing from the catalog, record the `id` from `templates/horizon/template.html` and flag it in Notes. Use the `Hero Used` column to enforce the four-hero rotation. Mark a `1` in each section column when that block appears on the page so repeated patterns surface quickly. Include navigation and footer blocks once they are added site-wide.*
 
 | Page | Hero Used | Sections Used | wds-wave-section-1 | wds-parallax-section | wds-specialities-section-1 | wds-specialities-section-2 | wds-team-section | wds-team-section-1 | wds-circle-images-section-1 | wds-getting-started-section | wds-trust-section | wds-trust-section-1 | wds-help-section-1 | wds-intro-section | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

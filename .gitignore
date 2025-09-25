@@ -31,6 +31,7 @@ prempage-webflow/
 .venv/
 backend/.venv/
 backend/.python-version
+__pycache__/
 
 # Static Sites
 public-sites/images

@@ -73,6 +73,23 @@ Run these from `client/`:
 
 Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
+## Backend ↔ Frontend Contract
+
+- Pydantic schemas live in `backend/schemas.py`. The `/health` endpoint in `backend/main.py` returns a `HealthCheckResponse` sample payload that exercises the contract.
+- Export the OpenAPI schema anytime those models change:
+  ```bash
+  cd backend
+  uv run python export_openapi.py
+  ```
+- Generate TypeScript bindings by running from `client/`:
+  ```bash
+  pnpm openapi:types
+  ```
+  This writes `client/src/api/types.ts` via `openapi-typescript`.
+- Use the generated types to keep fetch helpers and UI in sync. See `client/src/api/health.ts` for a typed fetch wrapper and `client/src/App.tsx` for how the React view consumes that data.
+
+Docker builds run the same pipeline, so containerized runs will always ship matching backend and frontend contracts.
+
 ## Next Steps
 - Replace the placeholder React component in `client/src/App.tsx` with real UI tied to your data model.
 - Integrate assets or templates from `prempage-webflow/` into your React components.

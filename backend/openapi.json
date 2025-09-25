@@ -1,0 +1,88 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Prempage Backend",
+    "summary": "Boilerplate FastAPI service for Prempage V2",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health check",
+        "description": "Return operational metadata used by availability probes.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthCheckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded",
+              "error"
+            ],
+            "title": "Status"
+          },
+          "service": {
+            "$ref": "#/components/schemas/ServiceMetadata"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Service is healthy"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "service"
+        ],
+        "title": "HealthCheckResponse",
+        "description": "Standard payload returned by the health check endpoint."
+      },
+      "ServiceMetadata": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "version"
+        ],
+        "title": "ServiceMetadata",
+        "description": "Metadata describing the running backend service."
+      }
+    }
+  }
+}
