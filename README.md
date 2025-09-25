@@ -3,7 +3,7 @@
 This repository hosts the Prempage V2 front end (React + Vite), a companion FastAPI backend, and the static-site workspace used to build and deploy the static sites. All three live side-by-side so the whole project lifecycle—from app development to static marketing exports—travels in a single repo.
 
 ## Prerequisites
-- Node.js 24 or newer (includes npm ≥ 10)
+- Node.js 24 or newer (Corepack with pnpm ≥ 8)
 - Python 3.13 or newer
 - [uv](https://github.com/astral-sh/uv) Python package manager (already bundled in this repo's tooling)
 
@@ -14,25 +14,25 @@ This repository hosts the Prempage V2 front end (React + Vite), a companion Fast
    ```
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 3. Start the development server with hot reloading:
    ```bash
-   npm run dev
+   pnpm dev
    ```
    The app will be available at the URL printed in the terminal (defaults to http://localhost:5173).
 4. Build for production:
    ```bash
-   npm run build
+   pnpm build
    ```
 
 ### Frontend Scripts
 Run these from `client/`:
-- `npm run dev` – start the Vite dev server with React Fast Refresh.
-- `npm run build` – create a production build in the `dist/` directory.
-- `npm run preview` – preview the production build locally.
-- `npm run lint` – run ESLint against the project source.
-- `npm run typecheck` – run the TypeScript compiler in no-emit mode.
+- `pnpm dev` – start the Vite dev server with React Fast Refresh.
+- `pnpm build` – create a production build in the `dist/` directory.
+- `pnpm preview` – preview the production build locally.
+- `pnpm lint` – run ESLint against the project source.
+- `pnpm typecheck` – run the TypeScript compiler in no-emit mode.
 
 ## Backend (FastAPI + uv)
 1. Change into the backend project:
@@ -100,7 +100,7 @@ docker compose up -d
 
 The frontend lives at http://localhost:5173 and the FastAPI backend responds at http://localhost:8000.
 
-Code changes on the host trigger hot reloads inside the containers (`npm run dev` and `uvicorn --reload`).
+Code changes on the host trigger hot reloads inside the containers (`pnpm dev` and `uvicorn --reload`).
 
 ### Stopping Services
 ```bash

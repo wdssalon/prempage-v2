@@ -11,7 +11,7 @@ Prempage V2 is a modern full-stack application featuring:
 ## Running the Application
 
 **Prerequisites:**
-- Node.js 24 or newer (includes npm ≥ 10)
+- Node.js 24 or newer (Corepack with pnpm ≥ 8)
 - Python 3.13 or newer
 - Docker and Docker Compose
 
@@ -32,8 +32,8 @@ docker compose down
 **Option 2: Native Development**
 ```bash
 # Frontend
-npm install
-npm run dev  # http://localhost:5173
+pnpm install
+pnpm dev  # http://localhost:5173
 
 # Backend
 cd backend
@@ -99,7 +99,7 @@ Currently lightweight setup with:
 
 - Backend configured for easy database integration
 - uv.lock ensures reproducible Python environments
-- package-lock.json for consistent Node.js dependencies
+- pnpm-lock.yaml for consistent Node.js dependencies
 
 ## Evaluation Criteria
 
@@ -110,10 +110,10 @@ TBD..
 
 **Frontend:**
 ```bash
-npm run lint        # ESLint code quality checks
-npm run typecheck   # Run the TypeScript compiler w/out emitting files
-npm run build       # Production build verification
-npm run preview     # Preview production build
+pnpm lint        # ESLint code quality checks
+pnpm typecheck   # Run the TypeScript compiler w/out emitting files
+pnpm build       # Production build verification
+pnpm preview     # Preview production build
 ```
 
 **Backend:**

@@ -99,6 +99,7 @@ horizon
 
 | Page | Hero Used | Sections Used | wds-wave-section-1 | wds-parallax-section | wds-specialities-section-1 | wds-specialities-section-2 | wds-team-section | wds-team-section-1 | wds-circle-images-section-1 | wds-getting-started-section | wds-trust-section | wds-trust-section-1 | wds-help-section-1 | wds-intro-section | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| About | custom-about-hero | custom-about-overview, custom-values, custom-journey, custom-credentials |  |  |  |  |  |  |  |  |  |  |  |  | Exception: bespoke sections created pending Horizon catalog updates. |
 
 ## Layout Rotation Checklist
 - Before outlining a new page, review the two most recent entries above and choose at least one section ID that does **not** appear in either. If page requirements force a repeat, document the rationale in the Notes column when logging the new page.
@@ -108,3 +109,4 @@ horizon
 ## Sections Remaining To Use
 *Update this list after every page build so unused template sections stay front-and-center. When the list empties, immediately repopulate it with any sections that have appeared fewer than two times in the tracker above. Excludes navigation and footer components.*
 - TBD.. need to add here
+- Note: About page relies on custom markup until official Horizon sections catalog is documented.
