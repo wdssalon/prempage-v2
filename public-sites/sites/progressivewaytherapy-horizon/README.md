@@ -9,6 +9,19 @@ This project rebuilds the **Progressive Way Therapy** marketing site using Next.
 - shadcn/ui component collection (Radix UI + Tailwind)
 - @tanstack/react-query, lucide-react icons, sonner toasts, and the original utility libraries
 
+## Styling and UI Stack
+
+The visual system combines Tailwind utilities with theme tokens defined in `app/globals.css` and extended in `tailwind.config.ts`. Styling-related tooling and dependencies include:
+
+- `tailwindcss` with custom CSS variables for color, typography, motion, and organic shadows.
+- `postcss` with `autoprefixer`; `@tailwindcss/typography` is available if rich-text prose blocks are introduced.
+- `tailwindcss-animate` exposing reusable animation utilities that wrap the custom keyframes registered in the Tailwind config.
+- shadcn/ui component layer backed by the Radix primitive suite (`@radix-ui/*`) for accessible dialogs, menus, sliders, tabs, etc.
+- Utility helpers `class-variance-authority`, `clsx`, and `tailwind-merge` to manage variant-driven class composition.
+- `lucide-react` supplying iconography for navigation, feature cards, and CTA clusters.
+- Interaction extras already bundled with the project: `cmdk` (command palette shell), `sonner` + `next-themes` (theme-aware toasts), `input-otp`, `vaul` drawers, `embla-carousel-react`, `react-day-picker`, `react-resizable-panels`, `recharts`, and form helpers (`react-hook-form`, `@hookform/resolvers`, `zod`). These can be tapped when adding more advanced UI without pulling new dependencies.
+- Typography expects Playfair Display (serif headings) and Inter (sans body). Add the fonts via `next/font` or `<link>` tags in `app/layout.tsx` wherever the host environment does not inject them automatically.
+
 ## Getting started
 ```bash
 npm install
