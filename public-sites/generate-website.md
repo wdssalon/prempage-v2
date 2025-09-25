@@ -74,7 +74,7 @@ Phase 6: QA Check-in
    - Note any rotation rules or must-use sections in the tracker notes column before moving on so you can target them as skeletons are created.
 
 ## Phase 3: Build Page Skeletons
-For every approved page, repeat the following sequence. Follow any template-specific exceptions (for example, duplicating canonical pages) documented in the relevant `templates/<template-slug>/page-build-edit-overview.md`.
+For every approved page, repeat the following sequence. Follow any template-specific exceptions (for example, duplicating canonical pages) documented in the relevant `templates/<template-slug>/page-build-edit-overview.md`, and honor the canonical editing guardrails in `AGENTS.md` (copy sections/components exactly, no structural rewrites).
 1. **Create working copies**
    - Use the scaffold provided by the active template to spin up a working file for each approved page (e.g., copy the static `page-shell.html`, generate a new route file, etc.). Skip navigation-only parents when the scope treats them as menu triggers—only create them if the user explicitly asks for a standalone page.
    - Consult the frozen layouts in `templates/<template-slug>/page-examples/` for inspiration, but generate fresh output in the target site workspace unless the template-specific guide explicitly instructs you to duplicate a canonical page.
@@ -103,7 +103,8 @@ For every approved page, repeat the following sequence. Follow any template-spec
    - Update the `## Section Usage Tracker` entry for this page with any copy-related notes, confirm the hero selection, and mark `1`s in each relevant section column once the page is drafted.
    - Immediately remove those IDs from the `## Sections Remaining To Use` list so the outstanding inventory stays accurate. If the list empties, restock it with any sections that still show fewer than two uses in the tracker. Navigation and footer components are managed during the global assembly phase and are not part of this list.
 3. **Hold imagery updates**
-   - Leave image references as-is. Do not update any `src` values at this stage—this includes avoiding swaps to alternate assets already in the repo (icons, logos, etc.). There is a dedicated workflow for updating images, which lives in `images/images-overview.md`, and this will be done after copy is approved.
+   - Leave image references as-is. Do not update any `src` values at this stage—this includes avoiding swaps to alternate assets already in the repo (icons, logos, etc.).
+   - When stakeholders supply new assets or explicitly request imagery work, run the documented workflow in `images/images-overview.md` after copy is approved.
 
 ## Phase 5: Site-Wide Assembly
 1. **Finalize navigation**
@@ -121,6 +122,6 @@ For every approved page, repeat the following sequence. Follow any template-spec
 - Verify that every page references only the allowed sections, and that navigation + footers are identical across the site.
 - Review the `## Section Usage Tracker` to confirm the hero rotation and layout rotation rules have been met.
 - Run through the relevant `templates/<template-slug>/page-build-edit-overview.md` for the deeper validation checklist (links, alt text, SEO metadata, etc.).
-- Summarize QA findings (including outstanding TODOs) for the user before handoff.
+- Prepare the QA artifacts for handoff: updated `client-overview.md` tracker status, outstanding TODO list, and a brief QA summary covering blockers, follow-ups, and ready-to-ship pages.
 
 Keep this document updated as new steps (imagery, QA, deployment) are formalized so it remains the authoritative starting point for any new build.

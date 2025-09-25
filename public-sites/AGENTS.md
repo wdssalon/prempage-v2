@@ -26,19 +26,18 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 - Repo root: documentation (`README.md`, `generate-website.md`, this file) and any additional utilities you introduce.
 
 ## Editing Guardrails
-- Enforce the structural rules in the relevant `templates/<template-slug>/page-build-edit-overview.md`—that document governs section selection, copy swaps, and QA.
+*This section is the canonical rule set for all template families. Other docs may reference these guardrails, but new or updated requirements must land here first.*
+- Enforce the structural rules in the relevant `templates/<template-slug>/page-build-edit-overview.md`—that document governs section selection, copy swaps, and QA cadence.
 - When you need canonical identifiers (hero variants, nav selectors, required duplicates), read them from `templates/<template-slug>/config.yaml` and avoid hard-coding values elsewhere.
-- When reusing markup, **copy the entire section verbatim** from `templates/<template-slug>/template.html` (or a vetted live page). Never retype or rebuild portions by hand. This includes nested SVGs, slider/nav wrappers, hidden accessibility helpers, and `data-*` attributes—if it exists in the template, it must exist in the page.
-- After pasting a section, only edit literal copy, alt text, or link targets. If copy changes require adding/removing list items or cards, duplicate the template element and adjust the text rather than altering surrounding structure.
-- Never edit `templates/<template-slug>/template.html`; treat it as a read-only source of canonical markup.
+- When reusing markup/components, use the canonical implementation the template provides (copy the static block, import the shared component, hook up the CMS partial). Never retype or rebuild portions by hand. This includes nested SVGs, slider/nav wrappers, hidden accessibility helpers, and `data-*` attributes—if it exists in the template, it must exist in the page.
+- After integrating a section, only edit literal copy, alt text, or link targets. If copy changes require additional list items or cards, duplicate the template element and adjust the text rather than altering surrounding structure.
+- Treat the template catalogs as read-only assets (`template.html`, component exports, etc.). Do not edit them directly.
 - During the first end-to-end site build, ensure each distinct section style from the catalog is used at least once to deliver a varied launch experience. Use the `## Section Usage Tracker` table in `client-overview.md` to log the sections added to every page as you build.
-- Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Follow the CTA rotation rules documented in the template’s `page-build-edit-overview.md` so closing layouts stay varied once they ship.
-- Keep the hero rotation log current by applying the template-specific guidance in `templates/<template-slug>/page-build-edit-overview.md`. Document any exception in the tracker before moving forward.
+- Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Apply hero/CTA rotation rules from `config.yaml` + the template build guide so closing layouts stay varied once they ship.
 - Maintain the `## Sections Remaining To Use` list in `client-overview.md`, removing section IDs once they have appeared on a page. This list only tracks content sections—navigation and footer components are handled separately during the global assembly pass.
-- Use the frozen HTML in `templates/<template-slug>/page-examples/` as reference material only; do not copy them back into a live `sites/<slug>/` directory once new pages are generated. **Exception**: Always duplicate the canonical Contact and Blog pages from the matching template family (e.g., `templates/clarity/page-examples/contact.html`, `templates/clarity/page-examples/blog.html`, and the Blog detail examples) when building those specific pages. DO NOT EVER reuse this shortcut for any other page.
-- Treat navigation and footer updates as global operations: once finalized, propagate changes to every page via search/replace.
-- Update SEO metadata in each page `<head>` using the placeholders defined in the selected `templates/<template-slug>/page-shell.html`.
-- Rely on the HTML comment markers in `templates/<template-slug>/template.html` (mirrored across that template’s `page-examples/`) to grab complete navigation and footer blocks without trimming required wrappers.
+- Use the frozen layouts in `templates/<template-slug>/page-examples/` as reference material only. If `config.yaml > page_generation.duplicate_examples` lists canonical pages (e.g., contact/blog for Clarity), duplicate only those examples when instructed.
+- Treat navigation and footer updates as global operations: once finalized, propagate changes to every page via the appropriate shared component or static block.
+- Populate page-level SEO metadata using the hooks defined by the selected template scaffold (`page-shell.html`, layout component, etc.).
 - When a navigation item has child pages, treat the parent label as a navigation-only trigger. Do not generate a standalone HTML page for that parent unless the user explicitly requests one.
 
 ## Automation Workflow
