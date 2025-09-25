@@ -1,0 +1,53 @@
+# Template metadata for Clarity. Update values here to keep automation and docs in sync.
+template:
+  name: Clarity
+  slug: clarity
+  version: 1.0.0
+  technology: static-webflow
+  description: "Static Webflow export adapted for Prempage builds."
+
+scaffolding:
+  page_shell: page-shell.html
+  section_catalog: sections.yaml
+  component_catalog: template.html
+  examples_dir: page-examples
+  client_overview_template: client-overview.md
+  build_guide: page-build-edit-overview.md
+
+page_generation:
+  scaffold_method: copy_static_html
+  content_markers:
+    start: "<!-- PAGE CONTENT START -->"
+    end: "<!-- PAGE CONTENT END -->"
+  duplicate_examples:
+    - contact
+    - blog
+    - blog-detail
+  navigation_block_selector: "#wds-navigation"
+  footer_block_selectors:
+    - "#wds-footer-section-1"
+    - ".footer-section-2"
+  navigation_parents_are_triggers: true
+
+rotation_rules:
+  hero:
+    variants:
+      - wds-hero-section-1
+      - wds-hero-section-2
+      - wds-hero-section-3
+      - wds-parallax-section
+    notes: "Rotate heroes so the same variant does not appear in consecutive pages; ensure `wds-parallax-section` headlines at least one page every four builds."
+  closing_cta:
+    preferred_variants:
+      - wds-getting-started-section
+      - wds-trust-section-1
+      - wds-trust-section-2
+    notes: "Alternate closing CTA sections to avoid repetition across the site."
+
+imagery:
+  swap_stage: after_copy_approval
+  instructions_ref: ../../images/images-overview.md
+
+exceptions:
+  copy_sections_verbatim: true
+  allow_structural_edits: false

@@ -1,20 +1,20 @@
 # Page Build & Edit Overview
 
-This guide covers the end-to-end workflow for building net-new pages or editing existing ones while staying faithful to the Clarity template static export. Use it alongside `templates/clarity/sections.yaml` (section catalog) and the client-specific configs (`client-overview.md` if created yet, sampled located at `templates/clarity/client-overview.md`).
+This guide covers the end-to-end workflow for building net-new pages or editing existing ones while staying faithful to the Clarity template static export. Use it alongside `templates/clarity/config.yaml` (canonical metadata + selectors), `templates/clarity/sections.yaml` (section catalog), and the client-specific configs (`client-overview.md` if created yet, sampled located at `templates/clarity/client-overview.md`).
 
 ## Global Rules
 - **Confirm approvals first**: do not begin page work until both `client-overview.md` and the page list have been approved per `generate-website.md` Phase 1.
 - **Follow the scope log**: use the `## Approved Page Scope` section inside `client-overview.md` as the authoritative source for page order, priorities, and any sequencing instructions.
-- **Start from the shell**: copy `templates/clarity/page-shell.html` before you begin. It carries the full `<head>` setup, navigation/footer placeholders, and global scripts so each page stays consistent. Update the `<title>` and all SEO meta tags (description, canonical URL, OG/Twitter data, social image) as you go.
-- **Shared blocks**: every page must include the navigation (`navigation_primary`) immediately after `<body>` and the two footer sections (`footer_primary`, `footer_secondary`) before `</body>`.
+- **Start from the shell**: copy the file referenced at `config.yaml > scaffolding.page_shell` (currently `page-shell.html`) before you begin. It carries the full `<head>` setup, navigation/footer placeholders, and global scripts so each page stays consistent. Update the `<title>` and all SEO meta tags (description, canonical URL, OG/Twitter data, social image) as you go.
+- **Shared blocks**: every page must include the navigation and footer components listed under `config.yaml > page_generation` (navigation block selector + footer block selectors). Place the navigation immediately after `<body>` and the footer wrappers before `</body>`.
 - **Head + scripts**: keep all stylesheet/script references. Update `<title>`, meta description, canonical URL, OG/Twitter tags, and social share image so each page has unique, accurate SEO coverage.
 - **Navigation parents**: when a navigation item simply groups child pages, leave it as a trigger without producing a standalone HTML page. Build that parent as its own page only if the user explicitly requests it.
 - **Images**: keep the template-provided image references untouched while drafting copy. Do not change any `src` values (even to existing icons or assets). Image sourcing and optimization instructions live in `images/images-overview.md` and happen once copy is approved.
 - **Circle image sections**: `wds-circle-images-section-1` and similar blocks expect the template’s circular WebP portraits. Keep those image references intact until the dedicated image workflow provides replacements.
-- **Section usage**: only use predefined sections listed in `templates/clarity/sections.yaml`. Always copy HTML sections from `templates/clarity/template.html` exactly—never hand-type or partially rebuild them. This includes nested icons, slider/nav wrappers, visually hidden nodes, and `data-*` attributes. DO NOT create new structural elements. Treat the `templates/clarity/template.html` file as read-only, NEVER update this file. 
+- **Section usage**: only use predefined sections listed in `templates/clarity/sections.yaml`. Always copy HTML sections from the component catalog referenced at `config.yaml > scaffolding.component_catalog` (currently `template.html`) exactly—never hand-type or partially rebuild them. This includes nested icons, slider/nav wrappers, visually hidden nodes, and `data-*` attributes. DO NOT create new structural elements. Treat the catalog file as read-only.
 - **Section coverage log**: maintain the `## Section Usage Tracker` table in `client-overview.md`. Review it before outlining or selecting sections, and update the table immediately after each page is finalized so every layout is accounted for during the build.
 - **Reference layouts**: the starter repo includes frozen examples under `templates/clarity/page-examples/`. Use them to understand baseline composition, not as drop-in replacements for the pages you generate in `sites/<slug>/`.
-- **Special-case pages**: `contact.html`, `blog.html`, and all blog detail pages (inside `templates/clarity/page-examples/blog/`) must be duplicated directly from their counterparts inside `templates/clarity/page-examples/` before editing copy, links, and metadata. DO NOT EVER duplicate any other pages from `templates/clarity/page-examples/`.
+- **Special-case pages**: duplicate every page listed under `config.yaml > page_generation.duplicate_examples` (currently contact, blog, and blog detail pages) directly from `templates/clarity/page-examples/` before editing copy, links, and metadata. DO NOT EVER duplicate any other pages from that directory.
 - **Content slots**: populate all required headings, CTAs, lists, and copy. If a slot isn’t needed, remove that element instead of leaving it blank.
 - **Class/structure integrity**: never modify class names, wrapper divs, or data attributes. Change inner text and attributes (like `href`/`src`/`alt`) only.
 - **Copy discipline**: keep character counts and sentence cadence close to the original to preserve layout and animations. Maintain the same number of bullets, testimonials, and CTAs unless intentionally redesigning.
@@ -29,15 +29,15 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 
 2. **Select sections**
    - Map each outline item to a section ID from `templates/clarity/sections.yaml`.
-   - For new builds, rotate the hero variants (`wds-hero-section-1`, `wds-hero-section-2`, `wds-hero-section-3`, `wds-parallax-section`). Record the hero used for each page in the tracker, review the last three hero entries before outlining the next page, and pick an unused variant before repeating one. If rotation cannot be satisfied (e.g., page requirements demand a specific hero), note the exception in the tracker. Ensure `wds-parallax-section` appears as the primary hero at least once in every four-page cycle; using it mid-page does not count toward this requirement.
-   - Rotate closing CTA coverage so `wds-getting-started-section` and the `wds-trust-section*` variants alternate across the build. Use the `## Section Usage Tracker` notes column to capture any intentional repeats.
+   - Follow the hero rotation guidance documented in `config.yaml > rotation_rules.hero`. Record the hero used for each page in the tracker, review the last three hero entries before outlining the next page, and pick an unused variant before repeating one. If rotation cannot be satisfied (e.g., page requirements demand a specific hero), note the exception in the tracker.
+   - Rotate closing CTA coverage per `config.yaml > rotation_rules.closing_cta`. Use the `## Section Usage Tracker` notes column to capture any intentional repeats.
    - Consult the `## Section Usage Tracker` to prioritize sections that have not yet been used. During the very first site build, cycle through the full catalog so every section style appears at least once—variety across pages keeps the launch set feeling bespoke.
    - Cross-check the `## Sections Remaining To Use` list in `client-overview.md` and intentionally target outstanding IDs when it supports the outline.
-   - When editing, confirm the existing markup still aligns with approved sections; if not, swap it for the correct block from `templates/clarity/template.html`.
+   - When editing, confirm the existing markup still aligns with approved sections; if not, swap it for the correct block from the component catalog noted in `config.yaml`.
    - Ensure each chosen section suits the content (services, testimonials, FAQ, etc.).
 
 3. **Build (or confirm) the skeleton**
-   - For new pages: make a copy of `templates/clarity/page-shell.html` and paste the relevant sections from `templates/clarity/template.html` between the `<!-- PAGE CONTENT START -->` and `<!-- PAGE CONTENT END -->` markers in order.
+   - For new pages: make a copy of the shell referenced in `config.yaml > scaffolding.page_shell` and paste the relevant sections from the component catalog (`config.yaml > scaffolding.component_catalog`) between the markers defined at `config.yaml > page_generation.content_markers`.
    - After pasting each section, compare it to the source markup (diff tool or side-by-side) to ensure every node—from SVGs to hidden slider dots—matches exactly before editing copy.
    - For existing pages: verify the current structure matches the approved sections. If discrepancies exist, replace the block with the correct template markup.
    - Do not alter the underlying structure of each section; simply include or retain the required blocks in sequence.
@@ -53,8 +53,8 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 
 5. **Navigation + footer**
    - After the last page’s copy is locked, define the site navigation structure (with nesting where relevant) using the approved page list.
-   - Replace the navigation placeholder in the shell with the `#wds-navigation` block copied from `templates/clarity/template.html`; the HTML comments mark the start/end of the component so you can grab it cleanly before updating labels and links.
-   - Swap the footer placeholder with the full `#wds-footer-section-1` wrapper (which includes the nested `.footer-section-2` block) and tailor its content.
+   - Replace the navigation placeholder in the shell with the block referenced by `config.yaml > page_generation.navigation_block_selector` (currently `#wds-navigation`) copied from the component catalog; the HTML comments mark the start/end of the component so you can grab it cleanly before updating labels and links.
+   - Swap the footer placeholder with the block(s) listed under `config.yaml > page_generation.footer_block_selectors` (currently `#wds-footer-section-1` with nested `.footer-section-2`) and tailor their content.
    - Apply the finalized navigation and both footers across every page in the same pass so the markup remains identical site-wide.
 
 6. **Finalize SEO metadata**

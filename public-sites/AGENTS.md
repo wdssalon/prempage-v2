@@ -4,10 +4,11 @@ This document is the control center for LLM-driven work in the `public-sites` wo
 
 ## Core References
 - `generate-website.md`: top-level flow for producing or refreshing the site.
+- `templates/<template-slug>/config.yaml`: structured metadata for the template family (tech stack, scaffolds, canonical components, rotation rules). Treat this as the machine-readable source of truth for automation.
 - `templates/<template-slug>/client-overview.md` (e.g., `templates/clarity/client-overview.md`): baseline client brief template to reference before drafting a new project's overview.
-- `templates/<template-slug>/page-build-edit-overview.md`: detailed page build/edit checklist (sections, copy swaps, QA) for the selected template family.
-- `templates/<template-slug>/sections.yaml`: IDs for every approved section in that template family; use these to map outlines to markup.
-- `templates/<template-slug>/page-shell.html`: base HTML head + structural scaffolding with SEO placeholders.
+- `templates/<template-slug>/page-build-edit-overview.md`: narrative build/edit checklist; defer to the config for exact identifiers and assets.
+- `templates/<template-slug>/sections.yaml`: IDs for every approved section in that template family; use these to map outlines to markup when applicable.
+- `templates/<template-slug>/page-shell.html`: base HTML head + structural scaffolding with SEO placeholders (for static templates).
 - `images/images-overview.md`: imagery sourcing, optimization, and social-share requirements.
 - `templates/<template-slug>/page-examples/`: snapshot copies of the starter HTML pages—review them for layout inspiration before generating fresh output.
 - `sites/<slug>/client-overview.md`: the active project brief and build tracker for each live site (includes the `Template` value identifying which template kit to use).
@@ -26,6 +27,7 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 
 ## Editing Guardrails
 - Enforce the structural rules in the relevant `templates/<template-slug>/page-build-edit-overview.md`—that document governs section selection, copy swaps, and QA.
+- When you need canonical identifiers (hero variants, nav selectors, required duplicates), read them from `templates/<template-slug>/config.yaml` and avoid hard-coding values elsewhere.
 - When reusing markup, **copy the entire section verbatim** from `templates/<template-slug>/template.html` (or a vetted live page). Never retype or rebuild portions by hand. This includes nested SVGs, slider/nav wrappers, hidden accessibility helpers, and `data-*` attributes—if it exists in the template, it must exist in the page.
 - After pasting a section, only edit literal copy, alt text, or link targets. If copy changes require adding/removing list items or cards, duplicate the template element and adjust the text rather than altering surrounding structure.
 - Never edit `templates/<template-slug>/template.html`; treat it as a read-only source of canonical markup.
@@ -42,10 +44,10 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 ## Automation Workflow
 Use the primary docs as the source of truth and walk through them in order:
 - `generate-website.md` Phase 1 → intake, `client-overview.md`, and page list approval before any builds.
-- `generate-website.md` Phase 2 + 3 with `templates/<template-slug>/page-build-edit-overview.md` → create shells, map sections, and draft copy page-by-page.
+- `generate-website.md` Phases 2-4 with `templates/<template-slug>/page-build-edit-overview.md` → prep trackers, build skeletons, and draft copy page-by-page.
   - Maintain the `## Approved Page Scope` section in `client-overview.md` as the canonical build sequence while working through those pages.
-- `generate-website.md` Phase 4 with `templates/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
-- `generate-website.md` Phase 5 with `templates/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
+- `generate-website.md` Phase 5 with `templates/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
+- `generate-website.md` Phase 6 with `templates/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
 
 ## Overrides & Theming
 - Manage visual tokens and overrides in `sites/<slug>/overrides/custom.css`; it loads after the core styles for that site.
