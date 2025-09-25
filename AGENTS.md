@@ -5,7 +5,8 @@
 Prempage V2 is a modern full-stack application featuring:
 - **Frontend**: React 19.1.1 + Vite 7.1.6 with TypeScript support
 - **Backend**: FastAPI with Python 3.13 and uv package management
-- **Development**: Docker Compose setup with hot reloading
+- **Microservices**: Additional FastAPI services under `services/` (e.g., `form-relay` for static form submissions)
+- **Development**: Docker Compose setup with hot reloading across frontend, backend, and services
 - **Architecture**: Lightweight, fast iteration focused design
 
 ## Running the Application
@@ -19,7 +20,7 @@ Prempage V2 is a modern full-stack application featuring:
 
 **Option 1: Docker Compose (Recommended)**
 ```bash
-# Initial setup or after dependency changes
+# Initial setup or after dependency changes (frontend, backend, form-relay)
 docker compose up --build -d
 
 # Regular development
@@ -27,6 +28,9 @@ docker compose up -d
 
 # Stop services
 docker compose down
+
+# Start specific services (example: backend + form relay)
+docker compose up backend form-relay
 ```
 
 **Option 2: Native Development**
@@ -39,6 +43,11 @@ pnpm dev  # http://localhost:5173
 cd backend
 uv sync
 uv run uvicorn main:app --reload  # http://localhost:8000
+
+# Form Relay microservice
+cp services/form-relay/.env.example services/form-relay/.env  # first time only
+uv sync --directory services/form-relay
+uv run --directory services/form-relay uvicorn app.main:app --reload --port 8080 --env-file .env  # http://localhost:8080
 ```
 
 ## Core Requirements
@@ -66,8 +75,8 @@ uv run uvicorn main:app --reload  # http://localhost:8000
 - Loguru for logging
 
 **Development:**
-- Docker Compose multi-container setup
-- Hot reloading for both frontend and backend
+- Docker Compose multi-container setup (frontend, backend, form-relay)
+- Hot reloading for all containers
 - Volume mounting for live code updates
 
 ## Static Site Workspace
@@ -88,7 +97,7 @@ Currently lightweight setup with:
 **Development:**
 - Docker Compose for local development
 - Hot reloading enabled
-- Ports: Frontend :5173, Backend :8000
+- Ports: Frontend :5173, Backend :8000, Form Relay :8080
 
 **Production Ready:**
 - Containerized applications

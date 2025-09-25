@@ -29,6 +29,22 @@ services:
       - ./backend:/app
       - backend-uv-cache:/root/.cache/uv
 
+  form-relay:
+    build:
+      context: ./services/form-relay
+    command: sh -c "uv sync --frozen --no-dev && uv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload"
+    ports:
+      - "8080:8080"
+    working_dir: /app
+    env_file:
+      - ./services/form-relay/.env
+    volumes:
+      - ./services/form-relay:/app
+      - form-relay-uv-cache:/root/.cache/uv
+    environment:
+      - PYTHONUNBUFFERED=1
+
 volumes:
   frontend-node-modules:
   backend-uv-cache:
+  form-relay-uv-cache:

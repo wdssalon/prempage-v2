@@ -358,7 +358,6 @@ const MobileNavigation = () => {
           ref={overlayRef}
           className="mobile-menu-overlay"
           onClick={handleBackdropClick}
-          aria-hidden="true"
         >
           <div
             ref={menuRef}

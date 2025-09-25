@@ -61,6 +61,7 @@ Run these from `client/`:
 ## Project Structure
 - `client/` – React frontend root with entry files (`index.html`, `src/main.tsx`, `src/App.tsx`), global styles, static assets under `client/public/`, and all frontend tooling (`package.json`, `tsconfig.json`, `vite.config.ts`, `eslint.config.js`).
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
+- `services/` – Standalone microservices. Currently contains `form-relay/` (FastAPI service for static-site form submissions).
 - `public-sites/` – Static site toolkit and exports. Contains process docs (`generate-website.md`, `client-overview.md`, `AGENTS.md`), reusable templates under `template/`, and production-ready HTML/CSS/JS in `public-sites/sites/<site-slug>/` when a brand is ready to ship.
 - `prempage-webflow/` – Imported Webflow export available for reference/integration (ignored by git).
 
@@ -90,6 +91,22 @@ Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sit
 
 Docker builds run the same pipeline, so containerized runs will always ship matching backend and frontend contracts.
 
+## Form Relay Service
+
+`services/form-relay/` hosts a standalone FastAPI service that accepts static-site form submissions and forwards them to the Salon backend (forwarding is stubbed today). To work on it locally:
+
+1. Copy the example env file and edit values as needed:
+   ```bash
+   cp services/form-relay/.env.example services/form-relay/.env
+   ```
+2. Install dependencies and run the dev server:
+   ```bash
+   uv sync --directory services/form-relay
+   uv run --directory services/form-relay uvicorn app.main:app --reload --port 8080 --env-file .env
+   ```
+
+See `services/form-relay/README.md` for curl examples and Sentry configuration notes.
+
 ## Next Steps
 - Replace the placeholder React component in `client/src/App.tsx` with real UI tied to your data model.
 - Integrate assets or templates from `prempage-webflow/` into your React components.
@@ -97,6 +114,8 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
 - Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
 
 ## Running with Docker Compose
+
+Each service ships its own Dockerfile (`Dockerfile.frontend`, `backend/Dockerfile`, `services/form-relay/Dockerfile`). The compose stack stitches them together for local development, and Render can consume the same images for deployment.
 
 ### Initial Setup or After Changes to Dependencies
 Use `--build` to rebuild images when:
@@ -115,9 +134,15 @@ For day-to-day development when only source code changes:
 docker compose up -d
 ```
 
-The frontend lives at http://localhost:5173 and the FastAPI backend responds at http://localhost:8000.
+The frontend lives at http://localhost:5173, the main FastAPI backend responds at http://localhost:8000, and the form relay service listens at http://localhost:8080.
 
 Code changes on the host trigger hot reloads inside the containers (`pnpm dev` and `uvicorn --reload`).
+
+To start specific services, list them explicitly. For example, to bring up the backend and form relay only:
+
+```bash
+docker compose up backend form-relay
+```
 
 ### Stopping Services
 ```bash

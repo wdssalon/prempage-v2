@@ -32,6 +32,7 @@ prempage-webflow/
 backend/.venv/
 backend/.python-version
 __pycache__/
+services/form-relay/.env
 
 # Static Sites
 public-sites/images

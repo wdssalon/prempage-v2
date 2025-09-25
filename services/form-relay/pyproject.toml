@@ -1,0 +1,32 @@
+[project]
+name = "form-relay"
+version = "0.1.0"
+description = "Prempage form relay service"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.117.1",
+    "loguru>=0.7.3",
+    "pydantic-settings>=2.6.1",
+    "sentry-sdk>=2.19.2",
+    "uvicorn[standard]>=0.36.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "app",
+    "pyproject.toml",
+    "README.md",
+    "allowed-origins.json",
+]
