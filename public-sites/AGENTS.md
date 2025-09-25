@@ -21,7 +21,7 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
   - `overrides/`: custom CSS (`custom.css`), JS (`custom.js`), and font loader (`fonts-loader.js`).
   - `images/`: WebP assets served on the site.
   - `css/`, `js/`, etc.: builder-generated bundles—avoid editing unless absolutely required.
-- `templates/`: reusable building blocks grouped by template family (currently `clarity/` and `horizon/`). Each family includes `template.html`, `sections.yaml`, `page-shell.html`, `page-build-edit-overview.md`, `client-overview.md` (sample), and reference `page-examples/`.
+- `templates/`: reusable building blocks grouped by template family (currently `clarity/`, with more to come). Each family includes `template.html`, `sections.yaml`, `page-shell.html`, `page-build-edit-overview.md`, `client-overview.md` (sample), and reference `page-examples/`.
 - Repo root: documentation (`README.md`, `generate-website.md`, this file) and any additional utilities you introduce.
 
 ## Editing Guardrails

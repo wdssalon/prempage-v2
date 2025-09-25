@@ -38,7 +38,7 @@ Phase 5: QA Check-in
 
 ## Phase 0: Repo + Tooling Context
 - Review `AGENTS.md` for the authoritative guardrails on directory layout, overrides, fonts, colors, and deployment.
-- Open `sites/<slug>/client-overview.md` to confirm the active project brief and note the `Template` value (e.g., `clarity`, `horizon`). That selector determines which template kit to use.
+- Open `sites/<slug>/client-overview.md` to confirm the active project brief and note the `Template` value (e.g., `clarity`). That selector determines which template kit to use.
 - Ensure your working copy inside the target `sites/<slug>/` directory matches the current export; rely on the assets in `templates/<template-slug>/` (`template.html`, `sections.yaml`, `page-shell.html`, `page-build-edit-overview.md`, `page-examples/`) during later phases.
 
 ## Phase 1: Intake & Discovery
