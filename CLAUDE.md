@@ -55,7 +55,7 @@ uv run uvicorn main:app --reload  # http://localhost:8000
 **Frontend:**
 - React 19.1.1 with React DOM
 - Vite 7.1.6 (build tool)
-- TypeScript support
+- TypeScript-first scaffold (source in `client/src`)
 - ESLint 9.35.0 for code quality
 
 **Backend:**
@@ -111,6 +111,7 @@ TBD..
 **Frontend:**
 ```bash
 npm run lint        # ESLint code quality checks
+npm run typecheck   # Run the TypeScript compiler w/out emitting files
 npm run build       # Production build verification
 npm run preview     # Preview production build
 ```

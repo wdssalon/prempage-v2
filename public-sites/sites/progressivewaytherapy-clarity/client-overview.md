@@ -93,12 +93,11 @@ clarity
   - Women’s Issues
 - Telehealth
 - Get Started *(navigation parent only; use to surface specialty pages in the menu)*
-  - Appointment Request
   - Rates & Insurance
   - FAQs
   - Privacy Practices
 - Contact
-- Client Portal *(external page)*
+- Client Portal *(external link, do not create a page)*
 
 ## Section Usage Tracker
 *Update this table after each page build. List section IDs exactly as they appear in `tooling/clarity/sections.yaml`; if a block is missing from the catalog, record the `id` from `tooling/clarity/template.html` and flag it in Notes. Use the `Hero Used` column to enforce the four-hero rotation. Mark a `1` in each section column when that block appears on the page so repeated patterns surface quickly. Include navigation and footer blocks once they are added site-wide.*
@@ -121,6 +120,12 @@ clarity
 | Sexual Trauma Support (`sexual-trauma-support.html`) | `wds-hero-section-3` | `wds-hero-section-3`, `wds-parallax-section`, `wds-intro-section`, `wds-specialities-section-2`, `wds-team-section`, `wds-help-section-1`, `wds-getting-started-section`, `wds-trust-section-1` |  | 1 |  | 1 | 1 |  |  | 1 |  | 1 | 1 | 1 |  |
 | Depression Therapy (`depression-therapy.html`) | `wds-hero-section-1` | `wds-hero-section-1`, `wds-intro-section`, `wds-wave-section-1`, `wds-specialities-section-1`, `wds-team-section-1`, `wds-help-section-1`, `wds-getting-started-section`, `wds-trust-section-1` | 1 |  | 1 |  |  | 1 |  | 1 |  | 1 | 1 | 1 |  |
 | Women’s Issues (`womens-issues.html`) | `wds-hero-section-2` | `wds-hero-section-2`, `wds-specialities-section-2`, `wds-circle-images-section-1`, `wds-team-section-1`, `wds-getting-started-section`, `wds-trust-section` |  |  |  | 1 |  | 1 | 1 | 1 | 1 |  |  |  |  |
+| Telehealth (`telehealth.html`) | `wds-parallax-section` | `wds-parallax-section`, `wds-about-section`, `wds-certification-section-1`, `wds-intro-section`, `wds-testimonials-section-1`, `wds-trust-section-2` |  | 1 |  |  |  |  |  |  |  |  |  | 1 | Used `wds-trust-section-2`; add column when catalog updates. |
+| Get Started (`get-started.html`) | `wds-hero-section-2` | `wds-hero-section-2`, `wds-intro-section`, `wds-help-section-1`, `wds-circle-images-section-1`, `wds-getting-started-section`, `wds-trust-section` |  |  |  |  |  |  | 1 | 1 | 1 |  | 1 |  | Covers onboarding flow and resource toolkit. |
+| Rates &amp; Insurance (`rates-insurance.html`) | `wds-hero-section-3` | `wds-hero-section-3`, `wds-intro-section`, `wds-specialities-section-2`, `wds-wave-section-1`, `wds-certification-section-1`, `wds-trust-section-1` | 1 |  |  | 1 |  |  |  |  |  | 1 |  | 1 | Pricing, reimbursement, and sliding scale overview. |
+| FAQs (`faqs.html`) | `wds-parallax-section` | `wds-parallax-section`, `wds-intro-section`, `wds-faqs-1`, `wds-trust-section` |  | 1 |  |  |  |  |  |  |  |  |  |  | Includes `wds-faqs-1`; add column when catalog updates. |
+| Privacy Practices (`privacy-practices.html`) | `wds-hero-section-1` | `wds-hero-section-1`, `wds-about-section-1`, `wds-wave-section-1`, `wds-certification-section-1`, `wds-trust-section-1` | 1 |  |  |  |  |  |  |  |  | 1 | 1 |  | Detailed confidentiality and compliance overview. |
+| Contact (`contact.html`) | `n/a` | Canonical contact layout (`blog-inner-section` form block) |  |  |  |  |  |  |  |  |  |  |  |  | Uses template contact example; hero not applicable. |
 
 ## Layout Rotation Checklist
 - Before outlining a new page, review the two most recent entries above and choose at least one section ID that does **not** appear in either. If page requirements force a repeat, document the rationale in the Notes column when logging the new page.
@@ -129,7 +134,4 @@ clarity
 
 ## Sections Remaining To Use
 *Update this list after every page build so unused template sections stay front-and-center. When the list empties, immediately repopulate it with any sections that have appeared fewer than two times in the tracker above. Excludes navigation and footer components.*
-- `wds-about-section`
-- `wds-certification-section-1`
-- `wds-testimonials-section-1`
-- `wds-trust-section-2`
+- All tracked sections currently appear >=2 times; refresh list after the next underutilized section ships.

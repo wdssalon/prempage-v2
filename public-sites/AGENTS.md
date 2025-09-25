@@ -26,7 +26,8 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 
 ## Editing Guardrails
 - Enforce the structural rules in the relevant `tooling/<template-slug>/page-build-edit-overview.md`—that document governs section selection, copy swaps, and QA.
-- When reusing markup, copy directly from `tooling/<template-slug>/template.html` (or an existing page) so original classes and data attributes remain intact.
+- When reusing markup, **copy the entire section verbatim** from `tooling/<template-slug>/template.html` (or a vetted live page). Never retype or rebuild portions by hand. This includes nested SVGs, slider/nav wrappers, hidden accessibility helpers, and `data-*` attributes—if it exists in the template, it must exist in the page.
+- After pasting a section, only edit literal copy, alt text, or link targets. If copy changes require adding/removing list items or cards, duplicate the template element and adjust the text rather than altering surrounding structure.
 - Never edit `tooling/<template-slug>/template.html`; treat it as a read-only source of canonical markup.
 - During the first end-to-end site build, ensure each distinct section style from the catalog is used at least once to deliver a varied launch experience. Use the `## Section Usage Tracker` table in `client-overview.md` to log the sections added to every page as you build.
 - Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Rotate CTA blocks so `wds-getting-started-section` and the `wds-trust-section*` variants share time with other closing layouts once they have shipped.
@@ -57,7 +58,7 @@ Use the primary docs as the source of truth and walk through them in order:
   - Mirror fallback stacks in the primary `sites/<slug>/css/` bundle’s `:root` variables.
   - Request only the weights used in design to keep WebFont payloads lean.
 
-- Initial page builds may leave placeholder images. The dedicated workflow in `images/images-overview.md` covers sourcing, WebP conversion, alt text, and social share specs.
+- Initial page builds may leave placeholder images. The dedicated workflow in `images/images-overview.md` covers sourcing, WebP conversion, alt text, and social share specs. During copy passes, leave every `<img>` `src` exactly as provided in the template—do not swap in icons or alternate assets even if they already exist in the repo.
 - When converting assets, keep only the WebP file in `sites/<slug>/images/` and remove intermediate formats after optimization.
 
 ## Deployment & Ops

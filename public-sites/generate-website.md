@@ -50,15 +50,16 @@ For Contact and Blog pages, skip the outline/section selection steps below and i
    - Follow the `## Layout Rotation Checklist` in `client-overview.md` while outlining so you hit the hero rotation rules and introduce at least one section not present in the last two pages.
 3. **Assemble the skeleton**
    - Paste the chosen sections between the `<!-- PAGE CONTENT START -->` markers inside the page shell.
-   - Maintain original class names, wrappers, and data attributes.
+   - Copy the entire section exactly as it appears in `tooling/<template-slug>/template.html` (or the approved source page). Do not hand-recreate markup—this includes SVG icons, slider arrows/dots, visually hidden helpers, and `data-*` attributes.
+   - Maintain original class names, wrappers, and data attributes. After pasting, compare against the source block to confirm the structure matches 1:1 before moving on.
 4. **Populate copy**
    - Rewrite every text element using the tone and voice codified in `client-overview.md`.
    - Keep character counts close to the original template to preserve layout balance and interaction timing.
-   - Update CTA targets, internal links, and alt text placeholders as needed.
+   - Update CTA targets, internal links, and alt text placeholders as needed—only adjust literal text/attribute values. If you need extra list items or cards, duplicate the template element instead of altering surrounding markup.
    - Update the `## Section Usage Tracker` entry for this page with the final section IDs, the hero selection, and `1`s in each relevant section column before moving to the next build.
    - Immediately remove those IDs from the `## Sections Remaining To Use` list so the outstanding inventory stays accurate. If the list empties, restock it with any sections that still show fewer than two uses in the tracker. Navigation and footer components are managed during the global assembly phase and are not part of this list.
 5. **Stash imagery placeholders**
-   - Leave image references as-is. Do not update any image references at this stage. There is a dedicated workflow for updating images, which lives in `images/images-overview.md`, and this will be done at a later stage.
+   - Leave image references as-is. Do not update any image references at this stage—this includes avoiding swaps to alternate assets already in the repo (icons, logos, etc.). There is a dedicated workflow for updating images, which lives in `images/images-overview.md`, and this will be done at a later stage.
 
 ## Phase 4: Site-Wide Assembly
 1. **Finalize navigation**

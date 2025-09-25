@@ -1,17 +1,3 @@
-:root {
-  --primary-text: #1f2a44;
-  --primary: #1b3a57;
-  --white: #ffffff;
-  --link: #2f7fbf;
-  --secondary-background: #f0f4f8;
-  --eerie-black-text: #0f172a;
-  --primary-light: #4b6b8a;
-}
-
-/* Add any additional overrides or custom styles below */
-.list {
-    font-size: 16px;
-}
 
 /* BREAKPOINTS – large screens cascade up */
 @media (min-width: 1280px) {
@@ -41,4 +27,128 @@
 /* Mobile portrait */
 @media (max-width: 478px) {
   /* Styles for 478px and down */
+}
+
+/* Mobile menu toggle + panels */
+.mobile-menu-overlay[hidden] {
+  display: none;
+}
+
+.mobile-menu-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-menu-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-menu-content {
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-overlay.is-open .mobile-menu-content {
+  transform: translateX(0);
+}
+
+.menu-panel {
+  display: none;
+}
+
+.menu-panel[data-active="true"] {
+  display: block;
+}
+
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+.mobile-menu-back svg {
+  flex-shrink: 0;
+}
+
+/* Testimonial slider */
+.testimonial-indicators button {
+  border: none;
+  padding: 0;
+  background-color: hsl(var(--border));
+}
+
+.testimonial-indicators button.is-active {
+  width: 2rem;
+  background-color: hsl(var(--sage-green));
+}
+
+.testimonial-nav:focus-visible,
+.testimonial-indicators button:focus-visible {
+  outline: 2px solid hsl(var(--soft-purple));
+  outline-offset: 2px;
+}
+
+@media (min-width: 1280px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1279px) {
+  .desktop-nav-only {
+    display: none !important;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (min-width: 1280px) {
+  .xl\:flex {
+    display: flex !important;
+  }
+  .xl\:inline-flex {
+    display: inline-flex !important;
+  }
+  .xl\:hidden {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1279px) {
+  .xl\:flex,
+  .xl\:inline-flex {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+  .xl\:flex {
+    display: flex !important;
+  }
+  .xl\:inline-flex {
+    display: inline-flex !important;
+  }
+  .xl\:block {
+    display: block !important;
+  }
+  .xl\:inline-block {
+    display: inline-block !important;
+  }
+  .xl\:hidden {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1279px) {
+  .xl\:flex,
+  .xl\:inline-flex,
+  .xl\:block,
+  .xl\:inline-block {
+    display: none !important;
+  }
 }

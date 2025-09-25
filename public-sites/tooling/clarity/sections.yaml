@@ -459,7 +459,7 @@ sections:
     media_slots:
       - name: feature_image
         selector: "section.hero_section_one img.image-align-right-ab"
-        notes: "Large decorative image; ensure high-resolution WebP."
+        notes: "Large decorative image; leave the default WebP in place until the dedicated imagery workflow replaces it."
 
   - key: intro_longform
     label: "Long-form narrative section"
@@ -584,7 +584,7 @@ sections:
             recommended_length: "2-3 words (≤22 characters)."
           cta_href:
             selector: "a.button_primary@href"
-    media_guidance: "Replace each card image with a single web-optimized asset; ensure consistent aspect ratios."
+    media_guidance: "Leave the template WebP images in place during copy work; swap in final assets during the dedicated imagery pass."
 
   - key: footer_primary
     label: "Primary footer with CTA and link columns"

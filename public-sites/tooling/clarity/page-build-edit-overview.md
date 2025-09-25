@@ -9,8 +9,9 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 - **Shared blocks**: every page must include the navigation (`navigation_primary`) immediately after `<body>` and the two footer sections (`footer_primary`, `footer_secondary`) before `</body>`.
 - **Head + scripts**: keep all stylesheet/script references. Update `<title>`, meta description, canonical URL, OG/Twitter tags, and social share image so each page has unique, accurate SEO coverage.
 - **Navigation parents**: when a navigation item simply groups child pages, leave it as a trigger without producing a standalone HTML page. Build that parent as its own page only if the user explicitly requests it.
-- **Images**: leave placeholders during the build-and-copy phase. Image sourcing and optimization instructions live in `images/images-overview.md` and happen once copy is approved.
-- **Section usage**: only use predefined sections listed in `tooling/clarity/sections.yaml`. Always copy html sections from `tooling/clarity/template.html` EXACTLY, DO NOT MAKE MISTAKES DURING THE COPY/PASTE. DO NOT create new structural elements. Treat the `tooling/clarity/template.html` file as read-only, NEVER update this file. 
+- **Images**: leave placeholders during the build-and-copy phase. Do not change image `src` values (even to existing icons or assets) while drafting copy. Image sourcing and optimization instructions live in `images/images-overview.md` and happen once copy is approved.
+- **Circle image sections**: `wds-circle-images-section-1` and similar blocks expect the template’s circular WebP portraits. Keep those image references intact until the dedicated image workflow provides replacements.
+- **Section usage**: only use predefined sections listed in `tooling/clarity/sections.yaml`. Always copy HTML sections from `tooling/clarity/template.html` exactly—never hand-type or partially rebuild them. This includes nested icons, slider/nav wrappers, visually hidden nodes, and `data-*` attributes. DO NOT create new structural elements. Treat the `tooling/clarity/template.html` file as read-only, NEVER update this file. 
 - **Section coverage log**: maintain the `## Section Usage Tracker` table in `client-overview.md`. Review it before outlining or selecting sections, and update the table immediately after each page is finalized so every layout is accounted for during the build.
 - **Reference layouts**: the starter repo includes frozen examples under `tooling/clarity/page-examples/`. Use them to understand baseline composition, not as drop-in replacements for the pages you generate in `sites/<slug>/`.
 - **Special-case pages**: `contact.html`, `blog.html`, and all blog detail pages (inside `tooling/clarity/page-examples/blog/`) must be duplicated directly from their counterparts inside `tooling/clarity/page-examples/` before editing copy, links, and metadata. DO NOT EVER duplicate any other pages from `tooling/clarity/page-examples/`.
@@ -36,6 +37,7 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 
 3. **Build (or confirm) the skeleton**
    - For new pages: make a copy of `tooling/clarity/page-shell.html` and paste the relevant sections from `tooling/clarity/template.html` between the `<!-- PAGE CONTENT START -->` and `<!-- PAGE CONTENT END -->` markers in order.
+   - After pasting each section, compare it to the source markup (diff tool or side-by-side) to ensure every node—from SVGs to hidden slider dots—matches exactly before editing copy.
    - For existing pages: verify the current structure matches the approved sections. If discrepancies exist, replace the block with the correct template markup.
    - Do not alter the underlying structure of each section; simply include or retain the required blocks in sequence.
    - Skip this step for navigation-only parent items—they remain label triggers unless the user signs off on building a full page.

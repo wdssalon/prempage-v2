@@ -32,6 +32,7 @@ Run these from `client/`:
 - `npm run build` – create a production build in the `dist/` directory.
 - `npm run preview` – preview the production build locally.
 - `npm run lint` – run ESLint against the project source.
+- `npm run typecheck` – run the TypeScript compiler in no-emit mode.
 
 ## Backend (FastAPI + uv)
 1. Change into the backend project:
@@ -58,7 +59,7 @@ Run these from `client/`:
 - When adding dependencies, run `uv add <package>` from the `backend/` directory to keep the lockfile in sync.
 
 ## Project Structure
-- `client/` – React frontend root with entry files (`index.html`, `main.jsx`, `App.jsx`), global styles, static assets under `client/public/`, and all frontend tooling (`package.json`, `vite.config.js`, `eslint.config.js`).
+- `client/` – React frontend root with entry files (`index.html`, `src/main.tsx`, `src/App.tsx`), global styles, static assets under `client/public/`, and all frontend tooling (`package.json`, `tsconfig.json`, `vite.config.ts`, `eslint.config.js`).
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
 - `public-sites/` – Static site toolkit and exports. Contains process docs (`generate-website.md`, `client-overview.md`, `AGENTS.md`), reusable templates under `template/`, and production-ready HTML/CSS/JS in `public-sites/sites/<site-slug>/` when a brand is ready to ship.
 - `prempage-webflow/` – Imported Webflow export available for reference/integration (ignored by git).
@@ -73,7 +74,7 @@ Run these from `client/`:
 Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
 ## Next Steps
-- Replace the placeholder React component in `client/App.jsx` with real UI tied to your data model.
+- Replace the placeholder React component in `client/src/App.tsx` with real UI tied to your data model.
 - Integrate assets or templates from `prempage-webflow/` into your React components.
 - Flesh out API routes in `backend/main.py` and introduce routers/modules as features grow.
 - Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
