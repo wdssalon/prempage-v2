@@ -56,7 +56,7 @@ const Hero = () => {
             <Button
               variant="outline"
               size="lg"
-              className="text-cream border-cream/30 hover:bg-cream/10 backdrop-blur-sm px-8 py-4 bg-transparent"
+              className="text-cream hover:text-white border-cream/30 hover:bg-cream/10 backdrop-blur-sm px-8 py-4 bg-transparent"
             >
               Learn About Our Services
             </Button>

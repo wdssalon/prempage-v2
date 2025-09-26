@@ -79,7 +79,7 @@ const Services = () => {
                     ))}
                   </ul>
 
-                  <Button variant="ghost" className="group w-full justify-between">
+                  <Button variant="ghost" className="group w-full justify-between hover:bg-soft-purple/20 hover:text-soft-purple">
                     Learn More
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>

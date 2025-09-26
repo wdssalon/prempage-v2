@@ -88,7 +88,7 @@ const Testimonials = () => {
               variant="ghost"
               size="icon"
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple"
             >
               <ChevronLeft className="w-6 h-6" />
             </Button>
@@ -97,7 +97,7 @@ const Testimonials = () => {
               variant="ghost"
               size="icon"
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple"
             >
               <ChevronRight className="w-6 h-6" />
             </Button>

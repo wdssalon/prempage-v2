@@ -63,10 +63,10 @@ const Footer = () => {
 
           <div className="border-t border-cream/30 pt-8 mb-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
                 <Button
                   variant="outline"
-                  className="text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center"
+                  className="text-earth-brown hover:text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center w-full sm:w-auto px-6 transition-all duration-200 ease-warm hover:-translate-y-0.5 hover:shadow-gentle"
                 >
                   <Lock className="w-4 h-4 mr-2" />
                   Client Portal
@@ -74,11 +74,14 @@ const Footer = () => {
                 </Button>
 
                 <Button
+                  asChild
                   variant="outline"
-                  className="text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center"
+                  className="text-earth-brown hover:text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center w-full sm:w-auto px-6 transition-all duration-200 ease-warm hover:-translate-y-0.5 hover:shadow-gentle"
                 >
-                  <Globe className="w-4 h-4 mr-2" />
-                  Español
+                  <a href="#contact">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Get Started
+                  </a>
                 </Button>
               </div>
 

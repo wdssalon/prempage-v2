@@ -39,7 +39,7 @@ const FinalCTA = () => {
               <MessageSquare className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Send a Message</h3>
               <p className="text-cream/80 text-sm mb-4">Share your story and questions securely</p>
-              <Button variant="outline" className="w-full text-cream border-cream/30 hover:bg-cream/10 bg-transparent">
+              <Button variant="outline" className="w-full text-cream hover:text-white border-cream/30 hover:bg-cream/10 bg-transparent">
                 Contact Form
               </Button>
             </div>
@@ -48,7 +48,7 @@ const FinalCTA = () => {
               <Calendar className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Direct Scheduling</h3>
               <p className="text-cream/80 text-sm mb-4">Book your first session online</p>
-              <Button variant="outline" className="w-full text-cream border-cream/30 hover:bg-cream/10 bg-transparent">
+              <Button variant="outline" className="w-full text-cream hover:text-white border-cream/30 hover:bg-cream/10 bg-transparent">
                 View Calendar
               </Button>
             </div>

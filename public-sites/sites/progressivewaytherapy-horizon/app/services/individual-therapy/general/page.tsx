@@ -273,7 +273,7 @@ export default function GeneralIndividualTherapyPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <main className="pt-36 md:pt-44 space-y-24 pb-24">
+      <main className="pt-28 md:pt-40 space-y-24 pb-24">
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-hero" aria-hidden="true" />
           <div
@@ -303,7 +303,7 @@ export default function GeneralIndividualTherapyPage() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="bg-transparent backdrop-blur-sm border-cream/30 text-cream hover:bg-cream/10 px-8 py-4"
+                  className="bg-transparent backdrop-blur-sm border-cream/30 text-cream hover:text-white hover:bg-cream/10 px-8 py-4"
                 >
                   <Link href="/services/specialized-support">Explore specialized support</Link>
                 </Button>
