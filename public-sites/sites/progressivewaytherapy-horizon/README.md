@@ -1,4 +1,4 @@
-# Progressive Way Therapy -Horizon Template
+# Progressive Way Therapy - Horizon Template
 
 This directory hosts the client-specific instance of the Horizon template. Follow the shared instructions in `public-sites/templates/horizon/README.md` for development, build, and deployment details.
 

@@ -30,10 +30,14 @@ jobs:
           version: 9
           run_install: false
 
+      - name: Determine pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
       - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: ~/.pnpm-store
+          path: ${{ steps.pnpm-store.outputs.path }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('public-sites/sites/progressivewaytherapy-horizon/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
