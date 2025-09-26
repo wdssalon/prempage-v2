@@ -47,8 +47,21 @@ async function main() {
   }
 
   if (!hasImagesDir) {
-    await fs.rm(assetsDir, { recursive: true, force: true });
-    await fs.mkdir(assetsDir, { recursive: true });
+    let manifestExists = false;
+    try {
+      await fs.access(manifestPath);
+      manifestExists = true;
+    } catch (manifestErr) {
+      if (!(manifestErr && manifestErr.code === 'ENOENT')) {
+        throw manifestErr;
+      }
+    }
+
+    if (manifestExists) {
+      console.warn(`[sync-site-assets] No images directory found for ${siteDir}; keeping existing manifest.`);
+      return;
+    }
+
     await fs.mkdir(path.dirname(manifestPath), { recursive: true });
     await fs.writeFile(manifestPath, JSON.stringify({}, null, 2) + '\n');
     console.warn(`[sync-site-assets] No images directory found for ${siteDir}; wrote empty manifest.`);

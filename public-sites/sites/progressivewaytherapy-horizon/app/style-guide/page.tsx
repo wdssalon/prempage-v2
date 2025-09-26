@@ -242,6 +242,12 @@ type ButtonCombo = {
   swatchStyle?: React.CSSProperties;
 };
 
+type ButtonPreviewVariant = {
+  label: string;
+  className: string;
+  wrapperClassName: string;
+};
+
 type ButtonStyle = {
   name: string;
   description: string;
@@ -250,6 +256,7 @@ type ButtonStyle = {
   variant?: ButtonProps["variant"];
   size?: ButtonProps["size"];
   previewClassName?: string;
+  previewVariants?: ButtonPreviewVariant[];
   notes?: string[];
   combos?: ButtonCombo[];
 };
@@ -292,9 +299,21 @@ const buttonStyles: ButtonStyle[] = [
   {
     name: "Secondary CTA",
     description: "Lower-intent actions such as learn-more links. Apply `.btn-secondary` on `<Button variant=\"unstyled\">`.",
-    className: "btn-secondary is-on-light",
+    className: "btn-secondary",
     variant: "unstyled",
     label: "Explore Services",
+    previewVariants: [
+      {
+        label: "Default",
+        className: "btn-secondary",
+        wrapperClassName: "bg-gradient-dusk",
+      },
+      {
+        label: "On Light",
+        className: "btn-secondary is-on-light",
+        wrapperClassName: "bg-background",
+      },
+    ],
     notes: [
       "Pair with primary CTA for supportive actions.",
       "Add `.is-fluid` for full-width buttons. Tag trailing icons with `data-icon-trail=\"true\"` to align them right and animate subtly.",
@@ -772,20 +791,46 @@ const StyleGuide = () => {
                       </div>
                       <p className="text-xs font-mono uppercase tracking-wide text-muted-foreground">{button.className}</p>
                     </div>
-                    <div
-                      className={cn(
-                        "mt-6 flex items-center justify-center rounded-xl border border-border/30 bg-background p-6 shadow-inner",
-                        button.previewClassName,
-                      )}
-                    >
-                      <Button
-                        variant={button.variant}
-                        {...(button.size ? { size: button.size } : {})}
-                        className={button.className}
+                    {button.previewVariants ? (
+                      <div className="mt-6 space-y-4">
+                        {button.previewVariants.map((preview) => (
+                          <div key={`${button.name}-${preview.label}`}>
+                            <p className="text-xs font-mono uppercase tracking-wide text-muted-foreground mb-2">
+                              {preview.label}
+                            </p>
+                            <div
+                              className={cn(
+                                "flex items-center justify-center rounded-xl border border-border/30 p-6 shadow-inner",
+                                preview.wrapperClassName,
+                              )}
+                            >
+                              <Button
+                                variant={button.variant}
+                                {...(button.size ? { size: button.size } : {})}
+                                className={preview.className}
+                              >
+                                {button.label}
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div
+                        className={cn(
+                          "mt-6 flex items-center justify-center rounded-xl border border-border/30 bg-background p-6 shadow-inner",
+                          button.previewClassName,
+                        )}
                       >
-                        {button.label}
-                      </Button>
-                    </div>
+                        <Button
+                          variant={button.variant}
+                          {...(button.size ? { size: button.size } : {})}
+                          className={button.className}
+                        >
+                          {button.label}
+                        </Button>
+                      </div>
+                    )}
                     {button.notes?.length ? (
                       <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                         {button.notes.map((note) => (
