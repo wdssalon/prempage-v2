@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SITE_SLUG: progressivewaytherapy-horizon
+      NEXT_TELEMETRY_DISABLED: '1'
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -41,6 +42,14 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('public-sites/sites/progressivewaytherapy-horizon/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
+
+      - name: Cache Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: public-sites/sites/${{ env.SITE_SLUG }}/.next/cache
+          key: ${{ runner.os }}-next-${{ env.SITE_SLUG }}-${{ hashFiles('public-sites/sites/progressivewaytherapy-horizon/pnpm-lock.yaml', 'public-sites/sites/progressivewaytherapy-horizon/**/*.[jt]s', 'public-sites/sites/progressivewaytherapy-horizon/**/*.[jt]sx', 'public-sites/sites/progressivewaytherapy-horizon/**/*.json', 'public-sites/sites/progressivewaytherapy-horizon/**/*.mjs', 'public-sites/sites/progressivewaytherapy-horizon/**/*.css') }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ env.SITE_SLUG }}-
 
       - name: Build static site
         run: ./public-sites/scripts/build-static-site.sh "$SITE_SLUG"
