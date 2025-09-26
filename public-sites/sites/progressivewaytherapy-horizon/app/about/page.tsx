@@ -298,7 +298,7 @@ export default function AboutPage() {
                 your story is welcome here.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <Button variant="unstyled" className="btn-consultation">
+                <Button variant="unstyled" className="btn-primary">
                   Schedule Your Free Consultation
                 </Button>
                 <Button variant="unstyled" className="btn-gentle" onClick={() => router.push("/#contact")}>

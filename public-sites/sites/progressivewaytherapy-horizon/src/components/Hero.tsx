@@ -51,7 +51,7 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="unstyled" className="btn-consultation is-on-dark">
+            <Button variant="unstyled" className="btn-primary is-on-dark">
               <Phone />
               Book Free 15-Minute Consultation
             </Button>

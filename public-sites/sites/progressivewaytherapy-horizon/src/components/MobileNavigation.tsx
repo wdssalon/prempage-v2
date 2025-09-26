@@ -426,7 +426,7 @@ const MobileNavigation = () => {
             </div>
 
             <div className="mobile-cta-bar">
-              <Button onClick={handleCTAClick} variant="unstyled" className="btn-consultation is-medium is-fluid">
+              <Button onClick={handleCTAClick} variant="unstyled" className="btn-primary is-medium is-fluid">
                 <Phone />
                 Book Free Consultation
               </Button>

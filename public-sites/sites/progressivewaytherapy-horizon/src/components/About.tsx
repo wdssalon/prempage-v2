@@ -100,7 +100,7 @@ const About = () => {
                   </div>
                 </div>
 
-                <Button variant="unstyled" className="btn-consultation">
+                <Button variant="unstyled" className="btn-primary">
                   Schedule Your Free Consultation
                 </Button>
               </div>

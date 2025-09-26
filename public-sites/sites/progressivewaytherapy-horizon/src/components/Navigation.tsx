@@ -191,7 +191,7 @@ const Navigation = () => {
           </nav>
 
           <div className="hidden xl:flex items-center">
-            <Button variant="unstyled" className="btn-consultation is-compact">
+            <Button variant="unstyled" className="btn-primary is-compact">
               <Phone />
               Book Free Consultation
             </Button>

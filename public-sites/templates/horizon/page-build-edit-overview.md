@@ -23,7 +23,7 @@ This guide explains how to build or update pages for the Horizon template—the 
 ## CTA & Combo Styling Reference
 - Every style-guide token now ships with a light/dark strategy—use the `.is-on-dark` or `.is-on-light` combos whenever a component moves off its default background.
 - Typography: base `heading`/`text` classes assume light panels; append `.is-on-dark` (and `.text.is-contrast` when needed) on dusk gradients or photography.
-- Primary CTA (`.btn-consultation`): gradient treatment for light surfaces. Add `.is-on-dark` over hero overlays or safe-space sections so the outline and glow stay visible. Use `.is-medium` for stacked cards or mobile nav, `.is-compact` when space is tight in desktop headers.
+- Primary CTA (`.btn-primary`): gradient treatment for light surfaces. Add `.is-on-dark` over hero overlays or safe-space sections so the outline and glow stay visible. Use `.is-medium` for stacked cards or mobile nav, `.is-compact` when space is tight in desktop headers.
 - Secondary CTA (`.btn-secondary`): default suited to dark backdrops. Add `.is-on-light` on cream, tan, or card surfaces. `.is-fluid` stretches full width; tag trailing icons with `data-icon-trail="true"` for subtle motion.
 - Gentle CTA (`.btn-gentle`): optimized for light cards. Use `.is-on-dark` on evening gradients. Shares the `.is-fluid` helper; trailing icons can also use `data-icon-trail="true"`.
 - Contrast CTA (`.btn-contrast`): outline for dark sections. Apply `.is-on-light` on pale backgrounds. `.is-fluid` mirrors the secondary CTA coverage, with `data-icon-trail="true"` handling icon motion.

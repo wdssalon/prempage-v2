@@ -223,7 +223,7 @@ const typography: TypographyToken[] = [
     classes: ["text", "is-contrast"],
     sample: "Optimized for low-light overlays",
     guidance: "Use when copy sits on dark gradients or photography. Combine with `.heading.is-on-dark` or `.btn-contrast`.",
-    previewClassName: "bg-gradient-dusk text-soft-cream",
+    previewClassName: "bg-background",
   },
 ];
 
@@ -257,11 +257,11 @@ type ButtonStyle = {
 const buttonStyles: ButtonStyle[] = [
   {
     name: "Primary CTA",
-    description: "Default booking or high-intent actions. Apply `.btn-consultation` on `<Button variant=\"unstyled\">`.",
-    className: "btn-consultation",
+    description: "Default booking or high-intent actions. Apply `.btn-primary` on `<Button variant=\"unstyled\">`.",
+    className: "btn-primary",
     label: "Book Free Consultation",
     variant: "unstyled",
-    previewClassName: "bg-gradient-nature motion-gradient-pan border-none shadow-contrast",
+    previewClassName: "bg-background",
     notes: [
       "Reserve one per viewport for the main conversion.",
       "Add `.is-medium` for inline panels or stacked layouts, `.is-compact` for navigation bars.",
@@ -292,7 +292,7 @@ const buttonStyles: ButtonStyle[] = [
   {
     name: "Secondary CTA",
     description: "Lower-intent actions such as learn-more links. Apply `.btn-secondary` on `<Button variant=\"unstyled\">`.",
-    className: "btn-secondary",
+    className: "btn-secondary is-on-light",
     variant: "unstyled",
     label: "Explore Services",
     notes: [
@@ -323,7 +323,7 @@ const buttonStyles: ButtonStyle[] = [
     className: "btn-gentle",
     label: "Request Info",
     variant: "unstyled",
-    previewClassName: "bg-soft-cream/70",
+    previewClassName: "bg-background",
     notes: [
       "Use for nurturing or secondary funnels inside content blocks.",
       "Use `.is-fluid` when the card should span full width; trailing icons can still use `data-icon-trail=\"true\"` for motion.",
@@ -349,10 +349,10 @@ const buttonStyles: ButtonStyle[] = [
   {
     name: "Contrast CTA",
     description: "Use `.btn-contrast` on dark sections or imagery overlays while keeping copy legible.",
-    className: "btn-contrast",
+    className: "btn-contrast is-on-light",
     label: "See Evening Availability",
     variant: "unstyled",
-    previewClassName: "bg-gradient-dusk text-soft-cream border-none shadow-contrast",
+    previewClassName: "bg-background",
     notes: [
       "Ideal for newsletter bands, contrast panels, or footer prompts.",
       "`.is-fluid` mirrors the secondary CTA helper when you need full-width coverage. Trailing icons can use `data-icon-trail=\"true\"` for motion.",
@@ -381,7 +381,7 @@ const buttonStyles: ButtonStyle[] = [
     className: "btn-muted",
     label: "Download Intake Packet",
     variant: "unstyled",
-    previewClassName: "bg-warm-tan/40",
+    previewClassName: "bg-background",
     notes: [
       "Save for tertiary prompts so primary/secondary CTAs stay distinct.",
       "Supports `.is-fluid` when you need edge-to-edge coverage; trailing icons respond to `data-icon-trail=\"true\"`.",
@@ -407,7 +407,7 @@ const buttonStyles: ButtonStyle[] = [
   {
     name: "Ghost Link",
     description: "Inline navigation inside cards or lists. Keep copy concise so the underline stays crisp.",
-    className: "btn-ghost-link",
+    className: "btn-ghost-link is-on-light",
     variant: "unstyled",
     label: "Learn More",
     notes: [
@@ -739,7 +739,7 @@ const StyleGuide = () => {
                           </div>
                           <div
                             className={cn(
-                              "mt-4 rounded-xl border border-border/30 bg-background/80 p-6",
+                              "mt-4 rounded-xl border border-border/30 bg-background p-6",
                               type.previewClassName,
                             )}
                           >
@@ -759,7 +759,7 @@ const StyleGuide = () => {
               <h2 className="heading is-section mb-2">Button Treatments</h2>
               <p className="text-muted-foreground max-w-3xl">
                 Always use the shared <code>&lt;Button&gt;</code> component for accessibility and focus states. Layer brand-specific
-                classes on top. Limit pages to one primary `.btn-consultation` CTA per viewport.
+                classes on top. Limit pages to one primary `.btn-primary` CTA per viewport.
               </p>
             </div>
               <div className="grid gap-6 md:grid-cols-2">
@@ -774,7 +774,7 @@ const StyleGuide = () => {
                     </div>
                     <div
                       className={cn(
-                        "mt-6 flex items-center justify-center rounded-xl border border-border/30 bg-gradient-dusk p-6 shadow-inner",
+                        "mt-6 flex items-center justify-center rounded-xl border border-border/30 bg-background p-6 shadow-inner",
                         button.previewClassName,
                       )}
                     >
@@ -945,7 +945,7 @@ const StyleGuide = () => {
               <div>
                 <h3 className="heading is-subsection mb-2">Calls-to-Action</h3>
                 <ul className="space-y-2 text-muted-foreground">
-                  <li>• Reserve `.btn-consultation` for booking/consult prompts only.</li>
+                  <li>• Reserve `.btn-primary` for booking/consult prompts only.</li>
                   <li>• Use outline buttons for secondary actions and ensure contrast on dark imagery.</li>
                   <li>• Avoid stacking more than two CTAs together; prefer one primary and one secondary.</li>
                 </ul>

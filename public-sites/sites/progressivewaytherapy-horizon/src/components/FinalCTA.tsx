@@ -34,7 +34,7 @@ const FinalCTA = () => {
               <Phone className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Free Consultation</h3>
               <p className="text-cream/80 text-sm mb-4">15-minute phone call to see if we're a good fit</p>
-              <Button variant="unstyled" className="btn-consultation is-on-dark is-fluid">
+              <Button variant="unstyled" className="btn-primary is-on-dark is-fluid">
                 Book Now
               </Button>
             </div>

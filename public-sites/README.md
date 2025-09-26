@@ -19,6 +19,7 @@ This repo is contains instructions to create and build websites from templates f
 - Store raw imagery in `sites/<slug>/images/`; files keep their readable names and optional subfolders. The directory stays gitignored, so treat it as working storage rather than a committed artifact.
 - Run `pnpm run assets:sync` from the site directory (automatically triggered before `pnpm dev`, `pnpm build`, and `pnpm check`). It hashes content into `public/assets/` and regenerates `src/data/asset-manifest.json` so React components reference `getAssetUrl("filename.ext")`.
 - `public-sites/scripts/build-static-site.sh <slug>` now exports the Next.js `out/` folder into `public-sites/dist/<slug>/` and copies the manifest as `assets-manifest.json` for downstream CDN uploads.
+- `public-sites/scripts/build-static-site.sh <slug>` now exports the Next.js `out/` folder into `public-sites/dist/<slug>/`, copies the manifest as `assets-manifest.json`, and automatically sets `NEXT_PUBLIC_ASSET_BASE` to `${BUNNY_PULL_ZONE_BASE_URL}/${slug}` when a Bunny base URL is present in `.env`.
 - To push assets to Bunny, set the environment described below and run `pnpm run assets:upload` after building; the helper uploads hashed files to storage and emits `public-sites/dist/<slug>/assets-manifest.cdn.json` with CDN URLs.
 
 ### Bunny Upload Environment

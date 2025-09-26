@@ -296,7 +296,7 @@ export default function GeneralIndividualTherapyPage() {
                 together alone. Every session is a brave space to exhale, feel seen, and build liberation in real time.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button asChild variant="unstyled" className="btn-consultation is-medium">
+                <Button asChild variant="unstyled" className="btn-primary is-medium">
                   <Link href="/#contact">Book a free consultation</Link>
                 </Button>
                 <Button asChild variant="unstyled" className="btn-secondary">
@@ -575,7 +575,7 @@ export default function GeneralIndividualTherapyPage() {
               a pace that feels doable. You never have to do this alone.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button asChild variant="unstyled" className="btn-consultation is-medium">
+              <Button asChild variant="unstyled" className="btn-primary is-medium">
                 <Link href="/#contact">Start with a free consultation</Link>
               </Button>
               <Button asChild variant="unstyled" className="btn-gentle">
