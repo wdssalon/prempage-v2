@@ -473,22 +473,22 @@
   }
 
   .btn-secondary {
-    @apply border border-sage-green/40 bg-transparent text-deep-forest;
+    @apply border border-soft-cream/50 bg-white/10 text-soft-cream backdrop-blur-sm;
     transition: color 0.26s var(--ease-warm), background-color 0.26s var(--ease-warm), box-shadow 0.26s var(--ease-warm);
   }
 
   .btn-secondary:hover {
-    @apply text-soft-cream;
-    background-color: hsl(var(--deep-forest));
+    background-color: hsla(var(--soft-cream) / 0.18);
+    color: hsl(var(--soft-cream));
     box-shadow: var(--shadow-soft);
   }
 
   .btn-secondary.is-on-dark {
-    @apply border-soft-cream/60 text-soft-cream;
+    @apply border-soft-cream/70 text-soft-cream;
   }
 
   .btn-secondary.is-on-dark:hover {
-    background-color: hsla(var(--soft-cream) / 0.12);
+    background-color: hsla(var(--soft-cream) / 0.18);
     color: hsl(var(--soft-cream));
   }
 
