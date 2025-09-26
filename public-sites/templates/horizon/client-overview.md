@@ -1,8 +1,5 @@
 # Horizon Template — Client Overview (Sample)
 
-## Template
-horizon
-
 ## Brand Snapshot
 - **Owner**: Blanca (Bianca) Kleinfall, progressive-minded therapist based in Texas.
 - **Practice**: Progressive Way Therapy — virtual-first individual therapy for adults statewide.
@@ -45,7 +42,7 @@ horizon
 - **Client Portal**: Direct access for existing clients with reminders of available resources (scheduling, paperwork, secure messaging).
 - **Contact**: Invitation to reach out, Texas telehealth availability, preferred contact methods, hours, and alternative access accommodations.
 
-## Approved Page Scope
+## Approved Website Structure
 - Home (`/`)
   - Purpose: Welcome progressive-minded adults with a calming hero, highlight core audiences, and surface the consultation CTA.
 - About (`/about`)

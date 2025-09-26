@@ -16,10 +16,10 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Progressive Way Therapy | Warmway Connect",
   description: "Progressive, inclusive therapy for LGBTQIA+, BIPOC, and marginalized communities across Texas.",
-};
+} satisfies Metadata;
 
 export default function RootLayout({
   children,

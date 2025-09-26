@@ -1,0 +1,11 @@
+services:
+  - type: static_site
+    name: progressivewaytherapy-horizon
+    repo: https://github.com/wdssalon/prempage-v2.git
+    branch: master
+    root: public-sites/sites/progressivewaytherapy-horizon
+    buildCommand: pnpm install --frozen-lockfile && pnpm run check
+    publishPath: out
+    envVars:
+      - key: NODE_VERSION
+        value: 20

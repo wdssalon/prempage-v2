@@ -11,7 +11,7 @@ This document is the control center for LLM-driven work in the `public-sites` wo
 - `templates/<template-slug>/page-shell.html`: base HTML head + structural scaffolding with SEO placeholders (for static templates).
 - `images/images-overview.md`: imagery sourcing, optimization, and social-share requirements.
 - `templates/<template-slug>/page-examples/`: snapshot copies of the starter HTML pages—review them for layout inspiration before generating fresh output.
-- `sites/<slug>/client-overview.md`: the active project brief and build tracker for each live site (includes the `Template` value identifying which template kit to use).
+- `sites/<slug>/client-overview.md`: the active project brief and build tracker for each live site. Derive the template kit from the site slug suffix (e.g., `*-clarity`, `*-horizon`) or the co-located configuration files when you need to pull assets from `templates/<template-slug>/`.
 
 Keep these sources authoritative—do not duplicate instructions elsewhere.
 
@@ -39,7 +39,7 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 Use the primary docs as the source of truth and walk through them in order:
 - `generate-website.md` Phase 1 → intake, `client-overview.md`, and page list approval before any builds.
 - `generate-website.md` Phases 2-4 with `templates/<template-slug>/page-build-edit-overview.md` → prep trackers, build skeletons, and draft copy page-by-page.
-  - Maintain the `## Approved Page Scope` section in `client-overview.md` as the canonical build sequence while working through those pages.
+  - Maintain the `## Approved Website Structure` section in `client-overview.md` as the canonical build sequence while working through those pages.
 - `generate-website.md` Phase 5 with `templates/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
 - `generate-website.md` Phase 6 with `templates/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
 

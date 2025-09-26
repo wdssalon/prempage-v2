@@ -71,8 +71,8 @@ Run these from `client/`:
 - Read `public-sites/README.md` for deployment notes when pushing updates to the static export.
 - Follow `public-sites/generate-website.md` for the multi-phase build process and guardrails. Supporting references—`client-overview.md`, `template/page-build-edit-overview.md`, and `template/sections.yaml`—live in the same directory.
 - Automation or human operators should review `public-sites/AGENTS.md` before editing; it centralizes the LLM-specific rules for updating copy, sections, and overrides.
-
-Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
+- Template-specific build/deploy instructions live under `public-sites/templates/<template>/README.md`. Run `./public-sites/scripts/build-static-site.sh <site-slug>` to mimic the production static export (`pnpm run check` → `out/`).
+- Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
 ## Backend ↔ Frontend Contract
 
@@ -113,6 +113,16 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
 - Integrate assets or templates from `prempage-webflow/` into your React components.
 - Flesh out API routes in `backend/main.py` and introduce routers/modules as features grow.
 - Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
+
+## AI-Assisted Editing Roadmap
+- Goal: ship an internal, behind-auth GPT-5-Codex powered editor that can safely update `public-sites/sites/<slug>` in place while keeping deployments reproducible and auditable.
+- Hosting: start with a single Render Private Service (process-level jail) backed by a persistent disk; every session is confined to `/opt/render/project/src/sites/<slug>` via path normalization and explicit allowlists.
+- Scope: v1 focuses on internal teammates editing existing site bundles; brand-new site scaffolds stay a local Codex workflow until the hosted pipeline proves stable.
+- Tooling surface: only expose `list_dir`, `read_file`, `search`, `apply_patch`, `write_file`, and a `run_script` wrapper for vetted commands (`fmt`, `lint`, `build`). Budgets cap file size, patch size, call count, and wall time.
+- Workflow: React chat UI → FastAPI orchestrator → GPT-5-Codex tool calls → git worktree per session → format/lint/build gates → commit + diff summary surfaced to the UI. Publish jobs run the static export and call the Render deploy hook.
+- Preview: keep a Next.js/Vite dev server running against the same disk for near-instant hot reload during editing; production builds stay in background workers.
+- Guardrails: per-site mutexes, audit log of tool calls, secret redaction on reads, automatic halt after repeated failures, and git history for rollback.
+- Status: plan only. Update this section as we finalize tool schemas, disk sizing, or decide to move off Render.
 
 ## Running with Docker Compose
 

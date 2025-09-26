@@ -1,13 +1,15 @@
 {
   "name": "progressivewaytherapy-horizon",
   "private": true,
+  "type": "module",
   "version": "0.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "pnpm build",
+    "check": "pnpm lint && pnpm build",
     "start": "next start",
-    "lint": "next lint",
-    "export": "next build"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -72,6 +74,7 @@
     "eslint-config-next": "^14.2.10",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-tailwindcss": "^3.18.2",
     "globals": "^15.15.0",
     "lovable-tagger": "^1.1.9",
     "postcss": "^8.5.6",

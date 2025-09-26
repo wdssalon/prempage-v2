@@ -42,7 +42,7 @@ Phase 6: QA Check-in
 
 ## Phase 0: Repo + Tooling Context
 - Review `AGENTS.md` for the authoritative guardrails on directory layout, overrides, fonts, colors, and deployment.
-- Open `sites/<slug>/client-overview.md` to confirm the active project brief and note the `Template` value (e.g., `clarity`). That selector determines which template kit to use.
+- Open `sites/<slug>/client-overview.md` to confirm the active project brief. Use the site slug suffix (for example `*-clarity`, `*-horizon`) or the companion `render.yaml` file to identify which template kit is in play before pulling references from `templates/<template-slug>/`.
 - Ensure your working copy inside the target `sites/<slug>/` directory matches the current export; gather the template resources in `templates/<template-slug>/` (`config.yaml` for structured metadata plus the catalog, scaffolds, checklists, and example pages) for reference during later phases.
 
 ## Phase 1: Intake & Discovery
@@ -63,12 +63,12 @@ Phase 6: QA Check-in
    - Share the summary and outline directly in chat without waiting for a follow-up request—include file path references and format the page list as a nested hierarchy so structure is obvious.
    - If the navigation starts to feel crowded, suggest concise label options or grouping ideas in the same update so the user can respond quickly. But never remove items in the navigation until you are told to do so by the user.
    - Capture any revisions from the user and hold further work until both artifacts are confirmed.
-   - Once approved, append a new `## Approved Page Scope` section to `client-overview.md` that captures the final list, priorities, and sequencing notes so the build plan lives alongside the brand guidance.
+   - Once approved, append a new `## Approved Website Structure` section to `client-overview.md` that captures the final list, priorities, and sequencing notes so the build plan lives alongside the brand guidance.
 
 
 ## Phase 2: Plan the Page Set
 1. **Record the approved scope**
-   - Populate the `## Approved Page Scope` section in `client-overview.md` with the confirmed page list, priorities, and sequencing guidance from the user so the build order is clear for future steps.
+   - Populate the `## Approved Website Structure` section in `client-overview.md` with the confirmed page list, priorities, and sequencing guidance from the user so the build order is clear for future steps.
    - Add a `## Section Usage Tracker` matrix beneath the approved scope. Include a `Hero Used` column and one column for each high-priority section family so you can mark a `1` whenever that block appears on a page and surface repetition in real time.
 2. **Prep the section inventory**
    - Build a `## Sections Remaining To Use` list immediately after the tracker. Seed it with every content-section identifier from the template’s catalog (for example, the entries in `templates/<template-slug>/sections.yaml`).

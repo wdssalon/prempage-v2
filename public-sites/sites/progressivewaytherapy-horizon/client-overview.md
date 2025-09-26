@@ -1,8 +1,5 @@
 # Progressive Way Therapy — Client Overview
 
-## Template
-horizon
-
 ## Brand Snapshot
 - **Owner**: Blanca (Bianca) Kleinfall, progressive-minded therapist based in Texas.
 - **Practice**: Progressive Way Therapy — virtual-first individual therapy for adults statewide.
@@ -45,7 +42,7 @@ horizon
 - **Client Portal**: Direct access for existing clients with reminders of available resources (scheduling, paperwork, secure messaging).
 - **Contact**: Invitation to reach out, Texas telehealth availability, preferred contact methods, hours, and alternative access accommodations.
 
-## Approved Page Scope
+## Approved Website Structure
 - Home (`/`)
   - Purpose: Welcome progressive-minded adults with a calming hero, highlight core audiences, and surface the consultation CTA.
 - About (`/about`)
@@ -131,7 +128,7 @@ horizon
 - FinalCTA
 
 ## TODOs
-- [x] Move scope from "Approved Page Scope" into the Horizon template starter so future projects inherit the expanded hierarchy.
+- [x] Move structure details from "Approved Website Structure" into the Horizon template starter so future projects inherit the expanded hierarchy.
 - [x] Confirm Tailwind tokens in `app/globals.css` still reflect the soft purple, sage green, and earth brown palette before extending for new sections.
 - [x] Verify `app/layout.tsx` is loading the Playfair Display + Inter pairing; add weight variants if future sections need additional emphasis.
 - [x] Maintain `lucide-react` icons (Heart, Shield, Video, Calendar) as the core set and select complementary inclusive icons for new sections as they are outlined.

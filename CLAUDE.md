@@ -84,6 +84,7 @@ uv run --directory services/form-relay uvicorn app.main:app --reload --port 8080
 - Brand-specific exports reside in `public-sites/sites/<site-slug>/`. Keep CSS overrides, fonts, and HTML changes scoped within the relevant site bundle. Per-site `images/` directories are gitignored by default.
 - Read `public-sites/AGENTS.md` before automating updates; it captures the guardrails for section rotation, copy edits, navigation rules, and override assets.
 - End-to-end build guidance (intake, planning, page assembly, QA) lives in `public-sites/generate-website.md` alongside supporting references such as `client-overview.md`, `template/page-build-edit-overview.md`, and `template/sections.yaml`.
+- Template-specific docs live under `public-sites/templates/<template>/`. Use `./public-sites/scripts/build-static-site.sh <site-slug>` to reproduce the static export pipeline locally.
 
 ### Data Storage
 
@@ -205,3 +206,13 @@ This ensures all changes are deliberate and agreed upon.
 - Only add abstrction when it's justified. Do not over-engineer!!
 - DO NOT include any dead code. Remove any you find.
 - Always ask before adding complexity to support backwards compatibility.
+
+## AI-Assisted Editing Roadmap
+- Goal: ship an internal, behind-auth GPT-5-Codex powered editor that can safely update `public-sites/sites/<slug>` in place while keeping deployments reproducible and auditable.
+- Hosting: start with a single Render Private Service (process-level jail) backed by a persistent disk; every session is confined to `/opt/render/project/src/sites/<slug>` via path normalization and explicit allowlists.
+- Scope: v1 focuses on internal teammates editing existing site bundles; brand-new site scaffolds stay a local Codex workflow until the hosted pipeline proves stable.
+- Tooling surface: only expose `list_dir`, `read_file`, `search`, `apply_patch`, `write_file`, and a `run_script` wrapper for vetted commands (`fmt`, `lint`, `build`). Budgets cap file size, patch size, call count, and wall time.
+- Workflow: React chat UI → FastAPI orchestrator → GPT-5-Codex tool calls → git worktree per session → format/lint/build gates → commit + diff summary surfaced to the UI. Publish jobs run the static export and call the Render deploy hook.
+- Preview: keep a Next.js/Vite dev server running against the same disk for near-instant hot reload during editing; production builds stay in background workers.
+- Guardrails: per-site mutexes, audit log of tool calls, secret redaction on reads, automatic halt after repeated failures, and git history for rollback.
+- Status: plan only. Update this section as we finalize tool schemas, disk sizing, or decide to move off Render.

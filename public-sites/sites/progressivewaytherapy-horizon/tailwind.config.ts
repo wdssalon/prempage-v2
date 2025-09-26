@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -47,7 +48,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+        },
         /* Therapy-specific warm earth tones */
         "sage-green": "hsl(var(--sage-green))",
         "warm-tan": "hsl(var(--warm-tan))",
@@ -55,6 +63,8 @@ export default {
         "earth-brown": "hsl(var(--earth-brown))",
         "cream": "hsl(var(--cream))",
         "nature-green": "hsl(var(--nature-green))",
+        "sidebar-border": "hsl(var(--sidebar-border))",
+        "sidebar-ring": "hsl(var(--sidebar-ring))",
       },
       fontFamily: {
         serif: ['var(--font-serif)', 'serif'],
@@ -106,6 +116,10 @@ export default {
           "0%": { opacity: "0", transform: "translateX(-30px)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
+        "caret-blink": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.3s ease-warm",
@@ -114,8 +128,9 @@ export default {
         "warm-pulse": "warm-pulse 2s ease-in-out infinite",
         "fade-in-up": "fade-in-up 0.6s ease-warm",
         "slide-in-left": "slide-in-left 0.6s ease-warm",
+        "caret-blink": "caret-blink 1s step-end infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

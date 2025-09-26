@@ -133,21 +133,9 @@
     overflow-x: hidden;
   }
 
-  /* Typography system for therapy website */
+  /* Typography base styles */
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif text-soft-purple leading-tight;
-  }
-
-  .hero-title {
-    @apply text-5xl md:text-6xl lg:text-7xl font-serif font-light text-cream drop-shadow-lg;
-  }
-
-  .section-title {
-    @apply text-3xl md:text-4xl font-serif text-soft-purple mb-6;
-  }
-
-  .subsection-title {
-    @apply text-xl md:text-2xl font-serif text-sage-green mb-4;
   }
 
   /* Organic shapes and gentle animations */
@@ -195,6 +183,54 @@
 }
 
 @layer components {
+  .heading {
+    @apply font-serif leading-tight text-soft-purple;
+  }
+
+  .heading.is-display {
+    @apply text-5xl md:text-6xl lg:text-7xl font-light;
+  }
+
+  .heading.is-section {
+    @apply text-3xl md:text-4xl;
+  }
+
+  .heading.is-subsection {
+    @apply text-xl md:text-2xl text-sage-green;
+  }
+
+  .heading.is-compact {
+    @apply tracking-tight;
+  }
+
+  .heading.is-on-dark {
+    @apply text-cream;
+  }
+
+  .heading.is-muted {
+    @apply text-soft-purple/80;
+  }
+
+  .text {
+    @apply text-base text-foreground/90 leading-relaxed;
+  }
+
+  .text.is-lead {
+    @apply text-lg text-muted-foreground;
+  }
+
+  .text.is-caption {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .text.is-on-dark {
+    @apply text-cream/85;
+  }
+
+  .text.is-muted {
+    @apply text-muted-foreground;
+  }
+
   /* Custom button variants for therapy context */
   .btn-consultation {
     @apply bg-gradient-to-r from-sage-green to-nature-green text-primary-foreground 
@@ -206,6 +242,14 @@
     @apply bg-warm-tan text-earth-brown px-6 py-3 rounded-full font-medium
            hover:bg-soft-purple hover:text-primary-foreground 
            transition-all duration-300 ease-warm shadow-gentle;
+  }
+
+  .btn-secondary {
+    @apply border-cream/30 text-cream hover:text-white hover:bg-cream/10 bg-transparent;
+  }
+
+  .btn-ghost-link {
+    @apply text-soft-purple hover:text-soft-purple hover:bg-soft-purple/20;
   }
 
   /* Navigation styles */

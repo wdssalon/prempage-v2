@@ -299,12 +299,7 @@ export default function GeneralIndividualTherapyPage() {
                 <Button asChild size="lg" className="btn-consultation text-base">
                   <Link href="/#contact">Book a free consultation</Link>
                 </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="bg-transparent backdrop-blur-sm border-cream/30 text-cream hover:text-white hover:bg-cream/10 px-8 py-4"
-                >
+                <Button asChild variant="outline" size="lg" className="btn-secondary backdrop-blur-sm px-8 py-4">
                   <Link href="/services/specialized-support">Explore specialized support</Link>
                 </Button>
               </div>
@@ -331,13 +326,13 @@ export default function GeneralIndividualTherapyPage() {
           <div className="container mx-auto px-4 py-20 max-w-6xl grid gap-12 md:grid-cols-2 items-start">
             <div className="space-y-6 fade-in-up">
               <Badge className="bg-sage-green/10 text-sage-green border-sage-green/40">Belonging comes first</Badge>
-              <h2 className="section-title">Come as the whole person you are</h2>
-              <p className="text-muted-foreground text-lg">
+              <h2 className="heading is-section mb-4">Come as the whole person you are</h2>
+              <p className="text is-lead">
                 Your story deserves a therapist who sees the intersections, honors the culture you bring with you, and
                 never asks you to tone down your truth. Blanca sits beside you as an ally, making sure therapy feels like
                 a shared breath—not a checklist.
               </p>
-              <p className="text-muted-foreground">
+              <p className="text text-muted-foreground">
                 We name systemic pressure, celebrate identity, and practice rest so you can move through life with more
                 steadiness and support.
               </p>
@@ -354,8 +349,8 @@ export default function GeneralIndividualTherapyPage() {
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${highlight.iconBg}`}>
                       <Icon className={`w-6 h-6 ${highlight.iconColor}`} />
                     </div>
-                    <h3 className="subsection-title mb-2">{highlight.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{highlight.description}</p>
+                    <h3 className="heading is-subsection mb-2">{highlight.title}</h3>
+                    <p className="text text-sm text-muted-foreground leading-relaxed">{highlight.description}</p>
                   </div>
                 );
               })}
@@ -367,8 +362,8 @@ export default function GeneralIndividualTherapyPage() {
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-14 fade-in-up">
               <Badge className="bg-soft-purple/10 text-soft-purple border-soft-purple/30">Session rhythm</Badge>
-              <h2 className="section-title">Each session is co-authored</h2>
-              <p className="text-muted-foreground">
+              <h2 className="heading is-section mb-4">Each session is co-authored</h2>
+              <p className="text is-lead">
                 Therapy isn&apos;t performance. We move gently, return to safety whenever you need, and celebrate every
                 moment of self-trust along the way.
               </p>
@@ -388,7 +383,7 @@ export default function GeneralIndividualTherapyPage() {
                       </div>
                       <span className="text-sm uppercase tracking-wide text-earth-brown/80">{item.step}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                    <p className="text text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                     {/* decorative connector removed per design tweak */}
                   </div>
                 );
@@ -402,8 +397,8 @@ export default function GeneralIndividualTherapyPage() {
             <div className="grid gap-10 md:grid-cols-[1.25fr_1fr] items-start">
               <div className="space-y-6 fade-in-up">
                 <Badge className="bg-warm-tan/50 text-earth-brown border-earth-brown/30">Modalities in practice</Badge>
-                <h2 className="section-title">Blending science, intuition, and liberation</h2>
-                <p className="text-muted-foreground">
+                <h2 className="heading is-section mb-4">Blending science, intuition, and liberation</h2>
+                <p className="text is-lead">
                   Blanca draws from evidence-based approaches while centering your lived experience. We adapt in real
                   time so every tool feels like it belongs in your life, not someone else&apos;s workbook.
                 </p>
@@ -439,8 +434,8 @@ export default function GeneralIndividualTherapyPage() {
                     <div className="w-12 h-12 rounded-2xl bg-soft-purple/15 flex items-center justify-center">
                       <Icon className="w-6 h-6 text-soft-purple" />
                     </div>
-                    <h3 className="subsection-title mb-1">{modality.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed flex-1">{modality.description}</p>
+                    <h3 className="heading is-subsection mb-1">{modality.title}</h3>
+                    <p className="text text-sm text-muted-foreground leading-relaxed flex-1">{modality.description}</p>
                   </div>
                 );
               })}
@@ -452,12 +447,12 @@ export default function GeneralIndividualTherapyPage() {
           <div className="container mx-auto px-4 max-w-6xl grid gap-12 md:grid-cols-[1.2fr_1fr] items-center">
             <div className="space-y-6 fade-in-up">
               <Badge className="bg-soft-purple/20 text-soft-purple border-soft-purple/30">Identity-centered care</Badge>
-              <h2 className="section-title">Your identities deserve celebration, not explanation</h2>
-              <p className="text-muted-foreground">
+              <h2 className="heading is-section mb-4">Your identities deserve celebration, not explanation</h2>
+              <p className="text is-lead">
                 Bring your full self—your joy, exhaustion, righteous anger, culture, spirituality (or lack of it), and
                 boundaries. Blanca honors every part without assigning pathology or pushing assimilation.
               </p>
-              <p className="text-muted-foreground">
+              <p className="text is-muted">
                 Together we untangle systems of harm, rebuild self-trust, and practice rest so you can keep showing up in
                 the world on your terms.
               </p>
@@ -489,9 +484,9 @@ export default function GeneralIndividualTherapyPage() {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 fade-in-up">
               <div>
                 <Badge className="bg-sage-green/15 text-sage-green border-sage-green/30">Client reflections</Badge>
-                <h2 className="section-title mt-4">Short notes from Blanca&apos;s clients</h2>
+                <h2 className="heading is-section mt-4">Short notes from Blanca&apos;s clients</h2>
               </div>
-              <p className="text-muted-foreground md:max-w-md">
+              <p className="text is-lead md:max-w-md">
                 These anonymous reflections share how therapy shifts when you don&apos;t have to translate yourself to be
                 understood.
               </p>
@@ -516,8 +511,8 @@ export default function GeneralIndividualTherapyPage() {
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-12 fade-in-up">
               <Badge className="bg-earth-brown/10 text-earth-brown border-earth-brown/30">Stay supported between sessions</Badge>
-              <h2 className="section-title">Resources Blanca shares often</h2>
-              <p className="text-muted-foreground">
+              <h2 className="heading is-section mb-4">Resources Blanca shares often</h2>
+              <p className="text is-lead">
                 These tools extend the care you receive in session so you can check in with your body, voice, and
                 community between appointments.
               </p>
@@ -529,12 +524,9 @@ export default function GeneralIndividualTherapyPage() {
                   className="inclusive-card h-full flex flex-col"
                   style={{ animationDelay: `${index * 0.08}s` }}
                 >
-                  <h3 className="subsection-title mb-3">{resource.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed flex-1">{resource.description}</p>
-                  <Button
-                    variant="ghost"
-                    className="justify-start px-0 text-soft-purple hover:text-soft-purple hover:bg-transparent"
-                  >
+                  <h3 className="heading is-subsection mb-3">{resource.title}</h3>
+                  <p className="text text-sm text-muted-foreground leading-relaxed flex-1">{resource.description}</p>
+                  <Button variant="ghost" className="btn-ghost-link justify-start px-0">
                     {resource.cta}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
@@ -548,8 +540,8 @@ export default function GeneralIndividualTherapyPage() {
           <div className="container mx-auto px-4 max-w-4xl">
             <div className="text-center mb-12 fade-in-up">
               <Badge className="bg-soft-purple/10 text-soft-purple border-soft-purple/30">FAQs</Badge>
-              <h2 className="section-title">What folks ask before we begin</h2>
-              <p className="text-muted-foreground">
+              <h2 className="heading is-section mb-4">What folks ask before we begin</h2>
+              <p className="text is-lead">
                 Still wondering if therapy with Blanca is the right fit? Explore a few common questions below, or head
                 to the full FAQ for even more detail.
               </p>
@@ -561,7 +553,7 @@ export default function GeneralIndividualTherapyPage() {
                     <span className="text-base font-medium">{faq.question}</span>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+                    <p className="text text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
                   </AccordionContent>
                 </AccordionItem>
               ))}
@@ -577,8 +569,8 @@ export default function GeneralIndividualTherapyPage() {
         <section className="relative py-24">
           <div className="absolute inset-0 bg-gradient-to-br from-soft-purple/15 via-cream to-sage-green/20" aria-hidden="true" />
           <div className="relative container mx-auto px-4 max-w-5xl text-center space-y-6 fade-in-up">
-            <h2 className="section-title">Let&apos;s build a brave, steady space together</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="heading is-section mb-4">Let&apos;s build a brave, steady space together</h2>
+            <p className="text is-lead max-w-2xl mx-auto">
               When you&apos;re ready, we&apos;ll schedule a consultation, talk through what support looks like right now, and set
               a pace that feels doable. You never have to do this alone.
             </p>
@@ -586,7 +578,7 @@ export default function GeneralIndividualTherapyPage() {
               <Button asChild size="lg" className="btn-consultation text-base">
                 <Link href="/#contact">Start with a free consultation</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-soft-purple border-soft-purple/40">
+              <Button asChild size="lg" className="btn-gentle px-8">
                 <Link href="/get-started/appointment-request">See how getting started works</Link>
               </Button>
             </div>

@@ -1,0 +1,43 @@
+name: Deploy progressivewaytherapy-horizon
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'public-sites/sites/progressivewaytherapy-horizon/**'
+      - 'public-sites/scripts/**'
+      - 'public-sites/templates/horizon/**'
+      - '.github/workflows/deploy-progressivewaytherapy-horizon.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SITE_SLUG: progressivewaytherapy-horizon
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: public-sites/sites/progressivewaytherapy-horizon/pnpm-lock.yaml
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Build static site
+        run: ./public-sites/scripts/build-static-site.sh "$SITE_SLUG"
+
+      - name: Trigger Render deploy
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_PROGRESSIVEWAYTHERAPY_HORIZON }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Render deploy hook secret RENDER_DEPLOY_HOOK_PROGRESSIVEWAYTHERAPY_HORIZON is not set" >&2
+            exit 1
+          fi
+          curl -fsSL -X POST "$RENDER_DEPLOY_HOOK_URL"

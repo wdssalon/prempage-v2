@@ -217,7 +217,7 @@ const MobileNavigation = () => {
       setCurrentPanelId(newCurrent);
 
       setTimeout(() => {
-        const backButton = menuRef.current?.querySelector(".back-button") as HTMLElement;
+        const backButton = menuRef.current?.querySelector('[data-role="back-button"]') as HTMLElement;
         backButton?.focus();
       }, 0);
 
@@ -393,7 +393,8 @@ const MobileNavigation = () => {
                       <div className="flex items-center py-4 border-b border-border/20">
                         <button
                           onClick={navigateBack}
-                          className="back-button flex items-center text-earth-brown hover:text-soft-purple transition-colors focus:outline-none rounded-lg p-1"
+                          data-role="back-button"
+                          className="flex items-center text-earth-brown hover:text-soft-purple transition-colors focus:outline-none rounded-lg p-1"
                           aria-label={`Back to ${menuData.find((p) => p.id === panel.parentId)?.title}`}
                         >
                           <ChevronLeft className="w-5 h-5 mr-2" />

@@ -30,7 +30,7 @@ const Navigation = () => {
             <img
               src={logoSrc}
               alt="Progressive Way Therapy Logo"
-              className="w-48 h-36 sm:w-56 sm:h-42 md:w-64 md:h-48 object-contain"
+              className="w-48 h-36 sm:w-56 sm:h-[10.5rem] md:w-64 md:h-48 object-contain"
             />
           </Link>
         </div>

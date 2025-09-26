@@ -58,8 +58,8 @@ const Testimonials = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="section-title">Stories of Healing &amp; Growth</h2>
-            <p className="text-lg text-muted-foreground">
+            <h2 className="heading is-section mb-6">Stories of Healing &amp; Growth</h2>
+            <p className="text is-lead max-w-3xl mx-auto">
               Real experiences from clients who found their path to authentic healing
             </p>
           </div>
@@ -80,7 +80,7 @@ const Testimonials = () => {
 
               <div>
                 <p className="font-semibold text-soft-purple text-lg">{testimonials[currentSlide].name}</p>
-                <p className="text-muted-foreground">{testimonials[currentSlide].identity}</p>
+                <p className="text text-muted-foreground">{testimonials[currentSlide].identity}</p>
               </div>
             </div>
 
@@ -88,7 +88,7 @@ const Testimonials = () => {
               variant="ghost"
               size="icon"
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple"
             >
               <ChevronLeft className="w-6 h-6" />
             </Button>
@@ -97,7 +97,7 @@ const Testimonials = () => {
               variant="ghost"
               size="icon"
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple"
             >
               <ChevronRight className="w-6 h-6" />
             </Button>
@@ -116,7 +116,7 @@ const Testimonials = () => {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-sm text-muted-foreground italic">
+            <p className="text text-sm text-muted-foreground italic">
               Client names have been changed to protect privacy. Testimonials shared with permission.
             </p>
           </div>

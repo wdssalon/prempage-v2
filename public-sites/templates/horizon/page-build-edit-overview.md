@@ -12,9 +12,16 @@ This guide explains how to build or update pages for the Horizon template—the 
 - **Metadata**: Global defaults live in `app/layout.tsx`. Add page-specific metadata by exporting `const metadata` from the page file when needed.
 - **Testing**: Validate builds with `npm run lint` and `npm run build` before handoff.
 
+## Tailwind Style System Guardrails
+- Treat `app/globals.css` and `tailwind.config.ts` as the only place to define design tokens (color, spacing, typography, radii, animation). Do not hard-code raw values in page components—extend the tokens first, then consume them through Tailwind utilities.
+- Reuse the combo helpers declared in `@layer components` (`heading`, `text`, and modifiers like `is-display`, `is-section`, `is-subsection`, `is-lead`, `is-on-dark`, `is-muted`, plus button and surface classes). When introducing a new recurring pattern, add it to `app/globals.css` with `@apply`, document it on `app/style-guide/page.tsx`, and only then use it across pages.
+- Keep typography tokens aligned with the Webflow-style combo system: apply the base class (`heading` or `text`) and stack approved modifiers rather than composing bespoke utility sets per element.
+- Compose page-level layout with Tailwind utilities (`flex`, `grid`, spacing, responsive prefixes) and the shared `cn` helper. Reserve new CSS for globally reusable helpers under `@layer components` so changes cascade from a single source.
+- Update the `/style-guide` route whenever tokens or helpers change. That page is the canonical approval surface—QA updates there first to guarantee downstream pages inherit the same styling.
+
 ## Page Creation Workflow (per page)
 1. **Plan the route**
-   - Confirm the page appears in `client-overview.md > Approved Page Scope`.
+   - Confirm the page appears in `client-overview.md > Approved Website Structure`.
    - Create a new directory under `app/` matching the route (e.g., `app/services/page.tsx`).
 
 2. **Scaffold the page file**

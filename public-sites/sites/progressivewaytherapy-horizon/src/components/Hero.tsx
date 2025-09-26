@@ -23,12 +23,12 @@ const Hero = () => {
             <span className="text-cream font-medium">Telehealth Services Across Texas</span>
           </div>
 
-          <h1 className="hero-title mb-6">
+          <h1 className="heading is-display is-on-dark mb-6 drop-shadow-lg">
             A Safe Space for Your
             <span className="block text-warm-tan">Authentic Self</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-cream/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text is-lead is-on-dark text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
             Progressive, inclusive therapy for LGBTQIA+, BIPOC, and marginalized communities. You deserve compassionate
             care that honors your whole story.
           </p>
@@ -56,7 +56,7 @@ const Hero = () => {
             <Button
               variant="outline"
               size="lg"
-              className="text-cream hover:text-white border-cream/30 hover:bg-cream/10 backdrop-blur-sm px-8 py-4 bg-transparent"
+              className="btn-secondary backdrop-blur-sm px-8 py-4"
             >
               Learn About Our Services
             </Button>

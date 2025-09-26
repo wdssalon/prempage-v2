@@ -1,9 +1,38 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
 import { Heart, Brain, Users, Shield, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-const serviceGroups = [
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type ServiceColor = "sage-green" | "soft-purple" | "warm-tan";
+
+const serviceColorStyles: Record<ServiceColor, { iconBg: string; iconColor: string; bullet: string }> = {
+  "sage-green": {
+    iconBg: "bg-sage-green/20",
+    iconColor: "text-sage-green",
+    bullet: "bg-sage-green",
+  },
+  "soft-purple": {
+    iconBg: "bg-soft-purple/20",
+    iconColor: "text-soft-purple",
+    bullet: "bg-soft-purple",
+  },
+  "warm-tan": {
+    iconBg: "bg-warm-tan/20",
+    iconColor: "text-warm-tan",
+    bullet: "bg-warm-tan",
+  },
+};
+
+const serviceGroups: Array<{
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  services: string[];
+  color: ServiceColor;
+}> = [
   {
     icon: Heart,
     title: "Trauma & Recovery",
@@ -51,8 +80,8 @@ const Services = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="section-title">Specialized Therapy Services</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            <h2 className="heading is-section mb-6">Specialized Therapy Services</h2>
+            <p className="text is-lead max-w-3xl mx-auto">
               Evidence-based, trauma-informed care tailored to your unique journey. All services available via secure
               telehealth across Texas.
             </p>
@@ -61,25 +90,26 @@ const Services = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {serviceGroups.map((group, index) => {
               const IconComponent = group.icon;
+              const colorStyles = serviceColorStyles[group.color];
               return (
                 <div key={group.title} className="service-card animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className={`w-16 h-16 rounded-2xl bg-${group.color}/20 flex items-center justify-center mb-6`}>
-                    <IconComponent className={`w-8 h-8 text-${group.color}`} />
+                  <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-6", colorStyles.iconBg)}>
+                    <IconComponent className={cn("w-8 h-8", colorStyles.iconColor)} />
                   </div>
 
-                  <h3 className="subsection-title">{group.title}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{group.description}</p>
+                  <h3 className="heading is-subsection mb-3">{group.title}</h3>
+                  <p className="text text-muted-foreground mb-6 leading-relaxed">{group.description}</p>
 
                   <ul className="space-y-3 mb-6">
                     {group.services.map((service) => (
                       <li key={service} className="flex items-center space-x-3">
-                        <div className={`w-2 h-2 rounded-full bg-${group.color}`} />
-                        <span className="text-sm text-muted-foreground">{service}</span>
+                        <div className={cn("w-2 h-2 rounded-full", colorStyles.bullet)} />
+                        <span className="text text-sm text-muted-foreground">{service}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <Button variant="ghost" className="group w-full justify-between hover:bg-soft-purple/20 hover:text-soft-purple">
+                  <Button variant="ghost" className="btn-ghost-link group w-full justify-between">
                     Learn More
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
@@ -90,17 +120,17 @@ const Services = () => {
 
           <div className="inclusive-card animate-fade-in-up">
             <div className="text-center mb-8">
-              <h3 className="subsection-title">Specialized Treatments</h3>
-              <p className="text-muted-foreground">Advanced therapeutic modalities for comprehensive healing</p>
+              <h3 className="heading is-subsection mb-3">Specialized Treatments</h3>
+              <p className="text text-muted-foreground">Advanced therapeutic modalities for comprehensive healing</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Shield className="w-6 h-6 text-sage-green mt-1 flex-shrink-0" />
+                  <Shield className="w-6 h-6 text-sage-green mt-1 shrink-0" />
                   <div>
                     <h4 className="font-semibold text-soft-purple mb-2">EMDR Therapy</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text text-sm text-muted-foreground leading-relaxed">
                       Eye Movement Desensitization and Reprocessing for trauma recovery. This evidence-based approach
                       helps process difficult memories and reduce their emotional impact.
                     </p>
@@ -108,10 +138,10 @@ const Services = () => {
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <Heart className="w-6 h-6 text-soft-purple mt-1 flex-shrink-0" />
+                  <Heart className="w-6 h-6 text-soft-purple mt-1 shrink-0" />
                   <div>
                     <h4 className="font-semibold text-soft-purple mb-2">Ketamine-Assisted Psychotherapy</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text text-sm text-muted-foreground leading-relaxed">
                       Collaborative care approach integrating ketamine treatments with therapeutic integration sessions
                       for lasting change.
                     </p>
@@ -121,10 +151,10 @@ const Services = () => {
 
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Users className="w-6 h-6 text-soft-purple mt-1 flex-shrink-0" />
+                  <Users className="w-6 h-6 text-soft-purple mt-1 shrink-0" />
                   <div>
                     <h4 className="font-semibold text-soft-purple mb-2">Liberation-Based Healing</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text text-sm text-muted-foreground leading-relaxed">
                       Therapy that centers social justice, intersectionality, and community resilience for marginalized
                       identities.
                     </p>
@@ -132,10 +162,10 @@ const Services = () => {
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <Brain className="w-6 h-6 text-soft-purple mt-1 flex-shrink-0" />
+                  <Brain className="w-6 h-6 text-soft-purple mt-1 shrink-0" />
                   <div>
                     <h4 className="font-semibold text-soft-purple mb-2">Somatic & Nervous System Work</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text text-sm text-muted-foreground leading-relaxed">
                       Gentle, body-based practices to build resilience, regulation, and a sense of safety within your
                       nervous system.
                     </p>

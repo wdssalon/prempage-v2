@@ -16,12 +16,12 @@ const FinalCTA = () => {
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-serif font-light text-cream mb-6">
+            <h2 className="heading is-section is-on-dark text-cream md:text-5xl mb-6">
               Ready to Start Your
               <span className="block text-warm-tan">Healing Journey?</span>
             </h2>
 
-            <p className="text-xl text-cream/90 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text is-lead is-on-dark text-xl mb-8 max-w-2xl mx-auto">
               Take the first step toward authentic healing. Your free consultation is completely confidential and
               pressure-free.
             </p>
@@ -39,7 +39,7 @@ const FinalCTA = () => {
               <MessageSquare className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Send a Message</h3>
               <p className="text-cream/80 text-sm mb-4">Share your story and questions securely</p>
-              <Button variant="outline" className="w-full text-cream hover:text-white border-cream/30 hover:bg-cream/10 bg-transparent">
+              <Button variant="outline" className="btn-secondary w-full">
                 Contact Form
               </Button>
             </div>
@@ -48,7 +48,7 @@ const FinalCTA = () => {
               <Calendar className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Direct Scheduling</h3>
               <p className="text-cream/80 text-sm mb-4">Book your first session online</p>
-              <Button variant="outline" className="w-full text-cream hover:text-white border-cream/30 hover:bg-cream/10 bg-transparent">
+              <Button variant="outline" className="btn-secondary w-full">
                 View Calendar
               </Button>
             </div>

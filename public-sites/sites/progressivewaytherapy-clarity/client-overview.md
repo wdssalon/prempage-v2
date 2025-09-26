@@ -1,8 +1,5 @@
 # Progressive Way Therapy — Client Overview
 
-## Template
-clarity
-
 ## Brand Snapshot
 - **Practice**: Progressive Way Therapy PLLC, owned by Blanca Kleinfall, M.Ed., LPC.
 - **Modality**: 100% telehealth; serves adult clients located anywhere in Texas.
@@ -41,7 +38,7 @@ clarity
 - Keep telehealth-only disclaimer highly visible; clarify Texas-only service area.
 - Imagery should center calm, modern aesthetics with inclusive representation (to be sourced later per image workflow).
 
-## Proposed Page Scope (awaiting approval)
+## Proposed Website Structure (awaiting approval)
 *Navigation parents that contain child pages default to navigation-only triggers; only create a standalone page when the user explicitly requests it.*
 1. **Home** – Fresh hero, service highlights, newsletter callout, telehealth PSA.
 2. **About** – Blanca’s story, values, approach, inclusive philosophy, credentials/badges.
@@ -73,7 +70,7 @@ clarity
 11. **Contact** – Email/phone, consult CTA, scheduler prompt, service area reminder.
 12. **Client Portal** – Maintain but confirm placement in nav/footer; no standalone page needed beyond link out.
 
-## Approved Page Scope
+## Approved Website Structure
 - Home
 - About
 - Services *(navigation parent only; use to surface specialty pages in the menu)*

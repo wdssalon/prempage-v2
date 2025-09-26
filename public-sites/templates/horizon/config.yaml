@@ -59,6 +59,7 @@ notes:
   - Reference Tailwind tokens in app/globals.css; introduce new tokens via tailwind.config.ts before use.
   - Load Playfair Display and Inter via next/font or head tags if the deployment target requires explicit font imports.
   - Import section components from src/components; avoid duplicating markup manually.
+  - Keep the /style-guide route in sync with any token or helper-class change so QA catches regressions before page updates.
 
 theming:
   color_tokens_file: app/globals.css
