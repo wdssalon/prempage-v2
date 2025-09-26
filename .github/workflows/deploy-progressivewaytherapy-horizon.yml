@@ -25,7 +25,18 @@ jobs:
           node-version: 20
 
       - name: Install pnpm
-        run: npm install -g pnpm@9
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('public-sites/sites/progressivewaytherapy-horizon/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Build static site
         run: ./public-sites/scripts/build-static-site.sh "$SITE_SLUG"
@@ -38,4 +49,10 @@ jobs:
             echo "Render deploy hook secret RENDER_DEPLOY_HOOK_PROGRESSIVEWAYTHERAPY_HORIZON is not set" >&2
             exit 1
           fi
-          curl -fsSL -X POST "$RENDER_DEPLOY_HOOK_URL"
+          response=$(curl -sS -o /tmp/render-response.txt -w "%{http_code}" -X POST "$RENDER_DEPLOY_HOOK_URL")
+          cat /tmp/render-response.txt
+          echo "HTTP status: $response"
+          if [ "$response" -ge 400 ]; then
+            echo "Render deploy hook returned error" >&2
+            exit 1
+          fi

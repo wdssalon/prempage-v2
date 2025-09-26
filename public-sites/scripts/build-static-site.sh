@@ -20,7 +20,7 @@ if [[ ! -d "${SITE_DIR}" ]]; then
 fi
 
 echo "[build-static-site] Installing dependencies for ${SLUG}"
-pnpm --dir "${SITE_DIR}" install --frozen-lockfile
+pnpm --dir "${SITE_DIR}" install --frozen-lockfile --prefer-offline
 
 echo "[build-static-site] Running lint + static export"
 pnpm --dir "${SITE_DIR}" run check
