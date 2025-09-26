@@ -304,36 +304,24 @@ const buttonStyles: ButtonStyle[] = [
     label: "Explore Services",
     previewVariants: [
       {
-        label: "Default",
+        label: ".default",
         className: "btn-secondary",
-        wrapperClassName: "bg-gradient-dusk",
+        wrapperClassName: "bg-deep-forest text-soft-cream",
       },
       {
-        label: "On Light",
+        label: ".is-on-light",
         className: "btn-secondary is-on-light",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-fluid",
+        className: "btn-secondary is-on-light is-fluid",
         wrapperClassName: "bg-background",
       },
     ],
     notes: [
       "Pair with primary CTA for supportive actions.",
       "Add `.is-fluid` for full-width buttons. Tag trailing icons with `data-icon-trail=\"true\"` to align them right and animate subtly.",
-    ],
-    combos: [
-      {
-        label: "default",
-        usage: "Dark gradients, hero overlays, glassmorphism backdrops.",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
-      },
-      {
-        label: ".is-on-light",
-        usage: "Warm cards or soft-cream sections needing Nature Green accents.",
-        swatchClassName: "bg-soft-cream",
-      },
-      {
-        label: ".is-fluid",
-        usage: "Stretch across columns or stacked mobile layouts (adds full-width).",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
-      },
     ],
   },
   {
@@ -347,23 +335,7 @@ const buttonStyles: ButtonStyle[] = [
       "Use for nurturing or secondary funnels inside content blocks.",
       "Use `.is-fluid` when the card should span full width; trailing icons can still use `data-icon-trail=\"true\"` for motion.",
     ],
-    combos: [
-      {
-        label: "default",
-        usage: "Cream sections, inclusive cards, muted canvases.",
-        swatchClassName: "bg-soft-cream",
-      },
-      {
-        label: ".is-on-dark",
-        usage: "Evening gradients where you still want a soft outline.",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
-      },
-      {
-        label: ".is-fluid",
-        usage: "Full-width prompts in mobile layouts or stacked cards.",
-        swatchClassName: "bg-soft-cream",
-      },
-    ],
+    combos: [],
   },
   {
     name: "Contrast CTA",
@@ -376,23 +348,7 @@ const buttonStyles: ButtonStyle[] = [
       "Ideal for newsletter bands, contrast panels, or footer prompts.",
       "`.is-fluid` mirrors the secondary CTA helper when you need full-width coverage. Trailing icons can use `data-icon-trail=\"true\"` for motion.",
     ],
-    combos: [
-      {
-        label: "default",
-        usage: "Dark gradients or photography overlays where white outline pops.",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
-      },
-      {
-        label: ".is-on-light",
-        usage: "Cream or tan sections needing a darker border and copy.",
-        swatchClassName: "bg-soft-cream",
-      },
-      {
-        label: ".is-fluid",
-        usage: "Stretch across contrast panels or newsletter bands.",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
-      },
-    ],
+    combos: [],
   },
   {
     name: "Muted CTA",
@@ -405,23 +361,7 @@ const buttonStyles: ButtonStyle[] = [
       "Save for tertiary prompts so primary/secondary CTAs stay distinct.",
       "Supports `.is-fluid` when you need edge-to-edge coverage; trailing icons respond to `data-icon-trail=\"true\"`.",
     ],
-    combos: [
-      {
-        label: "default",
-        usage: "Warm tan cards, FAQ stacks, muted canvases.",
-        swatchClassName: "bg-warm-tan",
-      },
-      {
-        label: ".is-on-dark",
-        usage: "Photography overlays when you still want a gentle ask.",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
-      },
-      {
-        label: ".is-fluid",
-        usage: "Fill card widths in FAQ or resource lists.",
-        swatchClassName: "bg-warm-tan",
-      },
-    ],
+    combos: [],
   },
   {
     name: "Ghost Link",
@@ -433,18 +373,7 @@ const buttonStyles: ButtonStyle[] = [
       "Use when you need a CTA that reads like a link but keeps button focus states.",
       "Add `data-icon-trail=\"true\"` to trailing icons if you want the subtle hover shift.",
     ],
-    combos: [
-      {
-        label: "default",
-        usage: "Darker panels, dusk gradients, contrast cards.",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
-      },
-      {
-        label: ".is-on-light",
-        usage: "Cream or warm cards where Dark Forest copy would clash.",
-        swatchClassName: "bg-soft-cream",
-      },
-    ],
+    combos: [],
   },
 ];
 
@@ -795,7 +724,7 @@ const StyleGuide = () => {
                       <div className="mt-6 space-y-4">
                         {button.previewVariants.map((preview) => (
                           <div key={`${button.name}-${preview.label}`}>
-                            <p className="text-xs font-mono uppercase tracking-wide text-muted-foreground mb-2">
+                            <p className="font-mono text-xs uppercase tracking-wide text-soft-purple mb-2">
                               {preview.label}
                             </p>
                             <div
@@ -840,29 +769,6 @@ const StyleGuide = () => {
                           </li>
                         ))}
                       </ul>
-                    ) : null}
-                    {button.combos?.length ? (
-                      <div className="mt-6 space-y-3">
-                        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground/80">Combos</p>
-                        <ul className="space-y-3">
-                          {button.combos.map((combo) => (
-                            <li key={`${button.name}-${combo.label}`} className="flex items-start gap-3">
-                              <span
-                                className={cn(
-                                  "mt-1 h-3.5 w-3.5 rounded-full border border-white/40 shadow-sm",
-                                  combo.swatchClassName,
-                                )}
-                                style={combo.swatchStyle}
-                                aria-hidden
-                              />
-                              <div>
-                                <p className="font-mono text-xs uppercase tracking-wide text-soft-purple">{combo.label}</p>
-                                <p className="text-xs text-muted-foreground">{combo.usage}</p>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
                     ) : null}
                   </div>
                 ))}

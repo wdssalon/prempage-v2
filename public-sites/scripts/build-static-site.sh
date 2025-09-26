@@ -37,6 +37,8 @@ fi
 echo "[build-static-site] Installing dependencies for ${SLUG}"
 pnpm --dir "${SITE_DIR}" install --frozen-lockfile --prefer-offline
 
+load_env_file ".env.defaults"
+load_env_file "${SITE_DIR}/.env.defaults"
 load_env_file ".env"
 load_env_file "${SITE_DIR}/.env"
 
