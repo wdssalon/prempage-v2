@@ -124,6 +124,13 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
 - Guardrails: per-site mutexes, audit log of tool calls, secret redaction on reads, automatic halt after repeated failures, and git history for rollback.
 - Status: plan only. Update this section as we finalize tool schemas, disk sizing, or decide to move off Render.
 
+## Git Hooks
+- Git hooks live in `.githooks/`. Point your repo at them once per checkout:
+  ```bash
+  git config core.hooksPath .githooks
+  ```
+- The `pre-push` hook installs + lints Horizon static sites with pnpm before any push. Keep Node ≥ 20 with pnpm available locally.
+
 ## Running with Docker Compose
 
 Each service ships its own Dockerfile (`Dockerfile.frontend`, `backend/Dockerfile`, `services/form-relay/Dockerfile`). The compose stack stitches them together for local development, and Render can consume the same images for deployment.

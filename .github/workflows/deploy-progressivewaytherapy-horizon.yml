@@ -52,7 +52,7 @@ jobs:
             ${{ runner.os }}-next-${{ env.SITE_SLUG }}-
 
       - name: Build static site
-        run: ./public-sites/scripts/build-static-site.sh "$SITE_SLUG"
+        run: SKIP_SITE_LINT=1 ./public-sites/scripts/build-static-site.sh "$SITE_SLUG"
 
       - name: Trigger Render deploy
         env:

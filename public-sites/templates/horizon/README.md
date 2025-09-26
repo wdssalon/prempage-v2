@@ -46,6 +46,7 @@ Publishing = merging to the tracked branch. The Render build runs the same lint 
 - The repository contains per-site workflows under `.github/workflows/` that watch `public-sites/sites/<slug>` and call the matching Render Deploy Hook after a successful lint + static export (`./public-sites/scripts/build-static-site.sh <slug>`).
 - CI caches the pnpm store keyed by `pnpm-lock.yaml`, so subsequent installs run with `pnpm install --frozen-lockfile --prefer-offline` for faster builds.
 - The workflow also caches `.next/cache` keyed by package + source hashes to speed up incremental Next.js builds.
+- A repo-level `pre-push` hook (`.githooks/pre-push`) runs `pnpm lint` for all Horizon sites. Enable hooks with `git config core.hooksPath .githooks` so lint failures stop before they reach CI.
 - Create a secret named `RENDER_DEPLOY_HOOK_<SLUG_IN_SCREAMING_SNAKE>` (for `progressivewaytherapy-horizon`, use `RENDER_DEPLOY_HOOK_PROGRESSIVEWAYTHERAPY_HORIZON`) holding the Deploy Hook URL from Render.
 - Workflows run on pushes to `master` and can also be triggered manually via *Run workflow*.
 

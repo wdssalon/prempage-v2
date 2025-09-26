@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SLUGS=("progressivewaytherapy-horizon")
+
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "[pre-push] pnpm is required to lint static sites. Install pnpm (Node >= 20) first." >&2
+  exit 1
+fi
+
+for slug in "${SLUGS[@]}"; do
+  site_dir="public-sites/sites/${slug}"
+  if [[ ! -d "${site_dir}" ]]; then
+    echo "[pre-push] Skipping unknown site directory ${site_dir}" >&2
+    continue
+  fi
+
+  echo "[pre-push] Installing dependencies for ${slug}"
+  pnpm --dir "${site_dir}" install --frozen-lockfile --prefer-offline >/dev/null
+
+  echo "[pre-push] Linting ${slug}"
+  pnpm --dir "${site_dir}" run lint
+done
+
+echo "[pre-push] Static site lint checks passed"

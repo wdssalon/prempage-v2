@@ -639,7 +639,7 @@ const StyleGuide = () => {
                     </div>
                     <div
                       className={cn(
-                        "mt-6 flex items-center justify-center rounded-xl border border-border/30 bg-background/80 p-6 shadow-inner",
+                        "mt-6 flex items-center justify-center rounded-xl border border-border/30 bg-gradient-dusk p-6 shadow-inner",
                         button.previewClassName,
                       )}
                     >

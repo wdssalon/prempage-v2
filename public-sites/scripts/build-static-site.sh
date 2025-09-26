@@ -22,7 +22,12 @@ fi
 echo "[build-static-site] Installing dependencies for ${SLUG}"
 pnpm --dir "${SITE_DIR}" install --frozen-lockfile --prefer-offline
 
-echo "[build-static-site] Running lint + static export"
-pnpm --dir "${SITE_DIR}" run check
+if [[ "${SKIP_SITE_LINT:-0}" == "1" ]]; then
+  echo "[build-static-site] Running static export (lint skipped via SKIP_SITE_LINT=1)"
+  pnpm --dir "${SITE_DIR}" run build
+else
+  echo "[build-static-site] Running lint + static export"
+  pnpm --dir "${SITE_DIR}" run check
+fi
 
 echo "[build-static-site] Static assets available in ${SITE_DIR}/out"

@@ -473,34 +473,79 @@
   }
 
   .btn-secondary {
-    @apply border border-soft-cream/50 bg-white/10 text-soft-cream backdrop-blur-sm;
-    transition: color 0.26s var(--ease-warm), background-color 0.26s var(--ease-warm), box-shadow 0.26s var(--ease-warm);
+    color: hsl(var(--soft-cream)) !important;
+    border-color: hsla(var(--soft-cream) / 0.55) !important;
+    background-color: hsla(var(--soft-cream) / 0.08) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: color 0.26s var(--ease-warm), background-color 0.26s var(--ease-warm), box-shadow 0.26s var(--ease-warm), border-color 0.26s var(--ease-warm);
   }
 
   .btn-secondary:hover {
-    background-color: hsla(var(--soft-cream) / 0.18);
-    color: hsl(var(--soft-cream));
+    background-color: hsla(var(--soft-cream) / 0.18) !important;
+    color: hsl(var(--soft-cream)) !important;
+    border-color: hsla(var(--soft-cream) / 0.75) !important;
     box-shadow: var(--shadow-soft);
   }
 
   .btn-secondary.is-on-dark {
-    @apply border-soft-cream/70 text-soft-cream;
+    color: hsl(var(--soft-cream)) !important;
+    border-color: hsla(var(--soft-cream) / 0.6) !important;
   }
 
   .btn-secondary.is-on-dark:hover {
-    background-color: hsla(var(--soft-cream) / 0.18);
-    color: hsl(var(--soft-cream));
+    background-color: hsla(var(--soft-cream) / 0.2) !important;
+    color: hsl(var(--soft-cream)) !important;
   }
 
   .btn-ghost-link {
-    @apply px-0 text-sage-green underline-offset-[6px];
-    transition: color 0.24s var(--ease-warm), background-color 0.24s var(--ease-warm), text-decoration-color 0.24s var(--ease-warm);
+    @apply relative px-0 text-soft-cream;
+    color: hsl(var(--soft-cream)) !important;
+    background-color: transparent !important;
+    transition: color 0.24s var(--ease-warm);
   }
 
-  .btn-ghost-link:hover {
-    @apply underline;
-    background-color: hsla(var(--sage-green) / 0.12);
-    color: hsl(var(--deep-forest));
+  .btn-ghost-link::after {
+    content: "";
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-left: 0;
+    background-color: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 12h16' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='m13 5 6 7-6 7' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 12h16' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='m13 5 6 7-6 7' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+    transition: transform 0.3s var(--ease-warm);
+    flex-shrink: 0;
+  }
+
+  .btn-ghost-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.25rem;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1.2s var(--ease-warm);
+    opacity: 0.85;
+  }
+
+  .btn-ghost-link:hover,
+  .btn-ghost-link:focus-visible {
+    color: hsl(var(--soft-cream)) !important;
+    background-color: transparent !important;
+  }
+
+  .btn-ghost-link:hover::before,
+  .btn-ghost-link:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .btn-ghost-link:hover::after,
+  .btn-ghost-link:focus-visible::after {
+    transform: translateX(2px);
   }
 
   .btn-contrast {
