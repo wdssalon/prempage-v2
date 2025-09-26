@@ -296,10 +296,10 @@ export default function GeneralIndividualTherapyPage() {
                 together alone. Every session is a brave space to exhale, feel seen, and build liberation in real time.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="btn-consultation text-base">
+                <Button asChild variant="unstyled" className="btn-consultation is-medium">
                   <Link href="/#contact">Book a free consultation</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="btn-secondary backdrop-blur-sm px-8 py-4">
+                <Button asChild variant="unstyled" className="btn-secondary">
                   <Link href="/services/specialized-support">Explore specialized support</Link>
                 </Button>
               </div>
@@ -311,7 +311,7 @@ export default function GeneralIndividualTherapyPage() {
                 return (
                   <div
                     key={badge.label}
-                    className="flex items-center gap-3 bg-cream/10 border border-cream/20 rounded-2xl px-4 py-3 backdrop-blur"
+                    className="flex items-center gap-3 bg-cream/10 border border-cream/20 rounded-md px-4 py-3 backdrop-blur"
                   >
                     <Icon className="w-5 h-5 text-cream" />
                     <p className="text-sm font-medium text-cream/90">{badge.label}</p>
@@ -346,7 +346,7 @@ export default function GeneralIndividualTherapyPage() {
                     className="inclusive-card gentle-hover h-full"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${highlight.iconBg}`}>
+                    <div className={`w-12 h-12 rounded-md flex items-center justify-center mb-4 ${highlight.iconBg}`}>
                       <Icon className={`w-6 h-6 ${highlight.iconColor}`} />
                     </div>
                     <h3 className="heading is-subsection mb-2">{highlight.title}</h3>
@@ -374,7 +374,7 @@ export default function GeneralIndividualTherapyPage() {
                 return (
                   <div
                     key={item.step}
-                    className="relative bg-card rounded-3xl border border-border/60 p-8 shadow-gentle overflow-hidden"
+                    className="relative bg-card rounded-md border border-border/60 p-8 shadow-gentle overflow-hidden"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <div className="flex items-center gap-3 mb-5">
@@ -405,7 +405,7 @@ export default function GeneralIndividualTherapyPage() {
               </div>
 
               <div className="fade-in-up" style={{ animationDelay: "0.1s" }}>
-                <div className="p-6 rounded-3xl bg-gradient-to-br from-soft-purple/15 via-cream/60 to-warm-tan/40 shadow-gentle border border-border/50">
+                <div className="p-6 rounded-md bg-gradient-to-br from-soft-purple/15 via-cream/60 to-warm-tan/40 shadow-gentle border border-border/50">
                   <p className="text-earth-brown text-sm leading-relaxed">
                     “Progressive Way Therapy is a safe place for progressive-minded individuals seeking therapy in Texas.
                     If you are here, you may feel exhausted from trying to keep it all together. With Blanca&apos;s
@@ -419,7 +419,7 @@ export default function GeneralIndividualTherapyPage() {
               {modalities.map((modality) => {
                 const Icon = modality.icon;
                 const baseClasses =
-                  "rounded-3xl border border-border bg-card p-8 shadow-gentle h-full gentle-hover flex flex-col gap-4";
+                  "rounded-md border border-border bg-card p-8 shadow-gentle h-full gentle-hover flex flex-col gap-4";
 
                 const variantClasses = {
                   highlight:
@@ -431,7 +431,7 @@ export default function GeneralIndividualTherapyPage() {
 
                 return (
                   <div key={modality.title} className={`${baseClasses} ${variantClasses[modality.variant]}`}>
-                    <div className="w-12 h-12 rounded-2xl bg-soft-purple/15 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-md bg-soft-purple/15 flex items-center justify-center">
                       <Icon className="w-6 h-6 text-soft-purple" />
                     </div>
                     <h3 className="heading is-subsection mb-1">{modality.title}</h3>
@@ -496,7 +496,7 @@ export default function GeneralIndividualTherapyPage() {
               {microTestimonials.map((testimonial, index) => (
                 <div
                   key={testimonial.quote}
-                  className="min-w-[260px] md:min-w-[320px] snap-center bg-cream border border-border/60 rounded-3xl p-6 shadow-gentle"
+                  className="min-w-[260px] md:min-w-[320px] snap-center bg-cream border border-border/60 rounded-md p-6 shadow-gentle"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <p className="text-sm text-earth-brown leading-relaxed mb-4">“{testimonial.quote}”</p>
@@ -526,9 +526,9 @@ export default function GeneralIndividualTherapyPage() {
                 >
                   <h3 className="heading is-subsection mb-3">{resource.title}</h3>
                   <p className="text text-sm text-muted-foreground leading-relaxed flex-1">{resource.description}</p>
-                  <Button variant="ghost" className="btn-ghost-link justify-start px-0">
+                  <Button variant="unstyled" className="btn-ghost-link">
                     {resource.cta}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight data-icon-trail="true" />
                   </Button>
                 </div>
               ))}
@@ -575,10 +575,10 @@ export default function GeneralIndividualTherapyPage() {
               a pace that feels doable. You never have to do this alone.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg" className="btn-consultation text-base">
+              <Button asChild variant="unstyled" className="btn-consultation is-medium">
                 <Link href="/#contact">Start with a free consultation</Link>
               </Button>
-              <Button asChild size="lg" className="btn-gentle px-8">
+              <Button asChild variant="unstyled" className="btn-gentle">
                 <Link href="/get-started/appointment-request">See how getting started works</Link>
               </Button>
             </div>

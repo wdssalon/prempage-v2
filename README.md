@@ -117,12 +117,55 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
 ## AI-Assisted Editing Roadmap
 - Goal: ship an internal, behind-auth GPT-5-Codex powered editor that can safely update `public-sites/sites/<slug>` in place while keeping deployments reproducible and auditable.
 - Hosting: start with a single Render Private Service (process-level jail) backed by a persistent disk; every session is confined to `/opt/render/project/src/sites/<slug>` via path normalization and explicit allowlists.
-- Scope: v1 focuses on internal teammates editing existing site bundles; brand-new site scaffolds stay a local Codex workflow until the hosted pipeline proves stable.
+- Scope: v1 focuses on internal teammates editing existing site bundles; brand-new site scaffolds are built locally with Codex for now.
 - Tooling surface: only expose `list_dir`, `read_file`, `search`, `apply_patch`, `write_file`, and a `run_script` wrapper for vetted commands (`fmt`, `lint`, `build`). Budgets cap file size, patch size, call count, and wall time.
-- Workflow: React chat UI → FastAPI orchestrator → GPT-5-Codex tool calls → git worktree per session → format/lint/build gates → commit + diff summary surfaced to the UI. Publish jobs run the static export and call the Render deploy hook.
+- Workflow: React chat UI → FastAPI orchestrator → GPT-5-Codex tool calls → git worktree per session → format/lint/build gates → commit + diff summary surfaced to the UI. Publish jobs build and call the Render deploy hook.
 - Preview: keep a Next.js/Vite dev server running against the same disk for near-instant hot reload during editing; production builds stay in background workers.
 - Guardrails: per-site mutexes, audit log of tool calls, secret redaction on reads, automatic halt after repeated failures, and git history for rollback.
 - Status: plan only. Update this section as we finalize tool schemas, disk sizing, or decide to move off Render.
+
+### New Feature: In-Page Visual Editing (Lovable-style)
+
+**Goal:** Allow non-technical users (e.g., therapists) to click **“Edit”**, hover elements, and update text/images directly on the rendered site preview.
+
+**How it works:**
+1. **Overlay Layer**  
+   - React overlay highlights DOM nodes on hover (`getBoundingClientRect`, `elementFromPoint`).  
+   - Editable candidates limited to `h1-h6`, `p`, `li`, `a`, `button`, or nodes with `data-*` attributes.
+
+2. **Inline Editing**  
+   - Clicking swaps the element into a `contenteditable` region or overlay editor.  
+   - Changes captured as structured patches:
+     ```json
+     {
+       "selector": "[data-loc='hero.headline']",
+       "type": "text",
+       "old": "Therapy for adults",
+       "new": "Therapy that feels like you"
+     }
+     ```
+
+3. **Persistence**  
+   - Patches map back to source of truth (`client-overview.md`, YAML configs, or site bundle).  
+   - Site rebuild + redeploy ensures edits are reproducible and auditable.
+
+4. **Selector Strategy**  
+   - Prefer stable `data-loc` or `data-cms` attributes.  
+   - Fall back to generated CSS paths with checksums/fingerprints for drift detection.
+
+5. **UI Stack (learned from Lovable)**  
+   - **Next.js + Tailwind** with reusable utility classes (`heading is-section`, `text is-lead`, etc.).  
+   - **Radix UI primitives** for dialogs/menus.  
+   - **Sonner** for toasts, **Vaul** for side drawers.  
+   - **Lucide-react icons** for inline controls.  
+   - **AntD components** may also be used for forms and modals.
+
+6. **Workflow Integration**  
+   - Visual edits → patch queue → orchestrator validation → file updates → rebuild (`pnpm check`) → Render deploy hook.  
+   - Audit logs map DOM-level edits back to version-controlled file changes.
+
+**Note about Lovable:**  
+Lovable implements this by overlaying a React editor on top of Next.js static exports, powered by Tailwind, Radix UI, AntD, and Sonner toasts. Their approach demonstrates how in-browser editing can feel live while still preserving reproducibility through static builds and deploy hooks.
 
 ## Git Hooks
 - Git hooks live in `.githooks/`. Point your repo at them once per checkout:

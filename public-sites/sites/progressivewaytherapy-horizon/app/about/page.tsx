@@ -179,7 +179,7 @@ export default function AboutPage() {
                     className="inclusive-card fade-in-up h-full"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 ${item.iconBg}`}>
+                    <div className={`w-12 h-12 rounded-md flex items-center justify-center mb-6 ${item.iconBg}`}>
                       <Icon className={`w-6 h-6 ${item.iconColor}`} />
                     </div>
                     <h3 className="heading is-subsection mb-3">{item.title}</h3>
@@ -241,7 +241,7 @@ export default function AboutPage() {
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
                         <div className="flex items-start space-x-4">
-                          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${pillar.iconBg}`}>
+                          <div className={`w-12 h-12 rounded-md flex items-center justify-center ${pillar.iconBg}`}>
                             <Icon className={`w-6 h-6 ${pillar.iconColor}`} />
                           </div>
                           <div>
@@ -255,7 +255,7 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-cream to-warm-tan/60 rounded-3xl p-10 border border-warm-tan/40 shadow-gentle fade-in-up">
+              <div className="bg-gradient-to-br from-cream to-warm-tan/60 rounded-md p-10 border border-warm-tan/40 shadow-gentle fade-in-up">
                 <h3 className="heading is-subsection text-soft-purple mb-6">Session Rhythm</h3>
                 <div className="space-y-6">
                   {sessionRhythm.map((step, index) => {
@@ -298,10 +298,10 @@ export default function AboutPage() {
                 your story is welcome here.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <Button size="lg" className="btn-consultation">
+                <Button variant="unstyled" className="btn-consultation">
                   Schedule Your Free Consultation
                 </Button>
-                <Button size="lg" className="btn-gentle px-8" onClick={() => router.push("/#contact")}>
+                <Button variant="unstyled" className="btn-gentle" onClick={() => router.push("/#contact")}>
                   Contact Blanca
                 </Button>
               </div>

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { ChevronRight, ChevronLeft, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getAssetUrl } from "@/lib/site-assets";
 
 interface MenuItem {
   id: string;
@@ -27,7 +28,7 @@ interface MenuPanel {
   parentId?: string;
 }
 
-const logoSrc = "/assets/logo.webp";
+const logoSrc = getAssetUrl("logo.webp");
 
 const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -425,8 +426,8 @@ const MobileNavigation = () => {
             </div>
 
             <div className="mobile-cta-bar">
-              <Button onClick={handleCTAClick} className="w-full btn-consultation h-12 text-base font-medium rounded-lg focus:outline-none">
-                <Phone className="w-5 h-5 mr-2" />
+              <Button onClick={handleCTAClick} variant="unstyled" className="btn-consultation is-medium is-fluid">
+                <Phone />
                 Book Free Consultation
               </Button>
             </div>

@@ -13,6 +13,11 @@ fi
 
 SLUG="$1"
 SITE_DIR="public-sites/sites/${SLUG}"
+DIST_ROOT="public-sites/dist"
+DIST_DIR="${DIST_ROOT}/${SLUG}"
+SITE_OUT_DIR="${SITE_DIR}/out"
+MANIFEST_SOURCE="${SITE_DIR}/src/data/asset-manifest.json"
+MANIFEST_DEST="${DIST_DIR}/assets-manifest.json"
 
 if [[ ! -d "${SITE_DIR}" ]]; then
   echo "[build-static-site] Unknown site slug '${SLUG}' (expected ${SITE_DIR})" >&2
@@ -30,4 +35,22 @@ else
   pnpm --dir "${SITE_DIR}" run check
 fi
 
-echo "[build-static-site] Static assets available in ${SITE_DIR}/out"
+if [[ ! -d "${SITE_OUT_DIR}" ]]; then
+  echo "[build-static-site] Expected static export at ${SITE_OUT_DIR} but it was not created" >&2
+  exit 1
+fi
+
+echo "[build-static-site] Preparing dist bundle in ${DIST_DIR}"
+rm -rf "${DIST_DIR}"
+mkdir -p "${DIST_DIR}"
+cp -R "${SITE_OUT_DIR}/." "${DIST_DIR}/"
+
+if [[ -f "${MANIFEST_SOURCE}" ]]; then
+  mkdir -p "${DIST_DIR}"
+  cp "${MANIFEST_SOURCE}" "${MANIFEST_DEST}"
+  echo "[build-static-site] Copied asset manifest to ${MANIFEST_DEST}"
+else
+  echo "[build-static-site] Warning: asset manifest ${MANIFEST_SOURCE} not found"
+fi
+
+echo "[build-static-site] Static assets available in ${DIST_DIR}"

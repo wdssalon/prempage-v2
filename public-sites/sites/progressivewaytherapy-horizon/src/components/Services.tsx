@@ -93,7 +93,7 @@ const Services = () => {
               const colorStyles = serviceColorStyles[group.color];
               return (
                 <div key={group.title} className="service-card animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-6", colorStyles.iconBg)}>
+                  <div className={cn("w-16 h-16 rounded-md flex items-center justify-center mb-6", colorStyles.iconBg)}>
                     <IconComponent className={cn("w-8 h-8", colorStyles.iconColor)} />
                   </div>
 
@@ -109,9 +109,9 @@ const Services = () => {
                     ))}
                   </ul>
 
-                  <Button variant="ghost" className="btn-ghost-link group w-full justify-between">
-                    Learn More
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <Button variant="unstyled" className="btn-secondary is-on-light is-fluid">
+                    <span>Learn More</span>
+                    <ArrowRight data-icon-trail="true" />
                   </Button>
                 </div>
               );

@@ -14,10 +14,22 @@ This guide explains how to build or update pages for the Horizon template—the 
 
 ## Tailwind Style System Guardrails
 - Treat `app/globals.css` and `tailwind.config.ts` as the only place to define design tokens (color, spacing, typography, radii, animation). Do not hard-code raw values in page components—extend the tokens first, then consume them through Tailwind utilities.
+- Default curvature is now 0.75rem. Use `rounded-md` (maps to `var(--radius-md)`) for cards, buttons, and surfaces; reach for pill shapes only when explicitly called for.
 - Reuse the combo helpers declared in `@layer components` (`heading`, `text`, and modifiers like `is-display`, `is-section`, `is-subsection`, `is-lead`, `is-on-dark`, `is-muted`, plus button and surface classes). When introducing a new recurring pattern, add it to `app/globals.css` with `@apply`, document it on `app/style-guide/page.tsx`, and only then use it across pages.
 - Keep typography tokens aligned with the Webflow-style combo system: apply the base class (`heading` or `text`) and stack approved modifiers rather than composing bespoke utility sets per element.
 - Compose page-level layout with Tailwind utilities (`flex`, `grid`, spacing, responsive prefixes) and the shared `cn` helper. Reserve new CSS for globally reusable helpers under `@layer components` so changes cascade from a single source.
 - Update the `/style-guide` route whenever tokens or helpers change. That page is the canonical approval surface—QA updates there first to guarantee downstream pages inherit the same styling.
+
+## CTA & Combo Styling Reference
+- Every style-guide token now ships with a light/dark strategy—use the `.is-on-dark` or `.is-on-light` combos whenever a component moves off its default background.
+- Typography: base `heading`/`text` classes assume light panels; append `.is-on-dark` (and `.text.is-contrast` when needed) on dusk gradients or photography.
+- Primary CTA (`.btn-consultation`): gradient treatment for light surfaces. Add `.is-on-dark` over hero overlays or safe-space sections so the outline and glow stay visible. Use `.is-medium` for stacked cards or mobile nav, `.is-compact` when space is tight in desktop headers.
+- Secondary CTA (`.btn-secondary`): default suited to dark backdrops. Add `.is-on-light` on cream, tan, or card surfaces. `.is-fluid` stretches full width; tag trailing icons with `data-icon-trail="true"` for subtle motion.
+- Gentle CTA (`.btn-gentle`): optimized for light cards. Use `.is-on-dark` on evening gradients. Shares the `.is-fluid` helper; trailing icons can also use `data-icon-trail="true"`.
+- Contrast CTA (`.btn-contrast`): outline for dark sections. Apply `.is-on-light` on pale backgrounds. `.is-fluid` mirrors the secondary CTA coverage, with `data-icon-trail="true"` handling icon motion.
+- Muted CTA (`.btn-muted`): tertiary action for neutral cards. Pair with `.is-on-dark` before dropping onto photography; `.is-fluid` is available for layout tweaks and respects `data-icon-trail="true"`.
+- Ghost Link (`.btn-ghost-link`): baseline assumes dark panels. Use `.is-on-light` for cream or warm cards so the copy shifts to Deep Forest/Sage hover states. Trailing icons use `data-icon-trail="true"` to pick up motion.
+- Keep these combos in sync with `app/style-guide/page.tsx`; update both the CSS and helper copy if you introduce a new variant.
 
 ## Page Creation Workflow (per page)
 1. **Plan the route**

@@ -197,7 +197,7 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 fade-in-up" style={{ animationDelay: "0.4s" }}>
-              <Button size="lg" className="btn-consultation text-base">
+              <Button variant="unstyled" className="btn-consultation is-medium">
                 Book a Free Consultation
               </Button>
               <Button
@@ -358,7 +358,7 @@ export default function AboutPage() {
                 your story is welcome here.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <Button size="lg" className="btn-consultation text-base">
+                <Button variant="unstyled" className="btn-consultation is-medium">
                   Schedule Your Free Consultation
                 </Button>
                 <Button

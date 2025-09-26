@@ -3,7 +3,9 @@
 import { CheckCircle, Heart, Shield, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const therapistPortrait = "/assets/blanca-2.webp";
+import { getAssetUrl } from "@/lib/site-assets";
+
+const therapistPortrait = getAssetUrl("blanca-2.webp");
 
 const About = () => {
   return (
@@ -84,7 +86,7 @@ const About = () => {
                   </div>
                 </div>
 
-                <div className="bg-warm-tan/20 rounded-2xl p-6 border border-warm-tan/30">
+                <div className="bg-warm-tan/20 rounded-md p-6 border border-warm-tan/30">
                   <div className="flex items-start space-x-3">
                     <Users className="w-6 h-6 text-sage-green mt-1 shrink-0" />
                     <div>
@@ -98,7 +100,9 @@ const About = () => {
                   </div>
                 </div>
 
-                <Button className="btn-consultation">Schedule Your Free Consultation</Button>
+                <Button variant="unstyled" className="btn-consultation">
+                  Schedule Your Free Consultation
+                </Button>
               </div>
             </div>
           </div>

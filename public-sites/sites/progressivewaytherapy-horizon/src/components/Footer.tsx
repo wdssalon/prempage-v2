@@ -64,22 +64,15 @@ const Footer = () => {
           <div className="border-t border-cream/30 pt-8 mb-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
-                <Button
-                  variant="outline"
-                  className="text-earth-brown hover:text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center w-full sm:w-auto px-6 transition-all duration-200 ease-warm hover:-translate-y-0.5 hover:shadow-gentle"
-                >
-                  <Lock className="w-4 h-4 mr-2" />
+                <Button variant="unstyled" className="btn-secondary is-on-light is-fluid">
+                  <Lock />
                   Client Portal
-                  <ExternalLink className="w-4 h-4 ml-2" />
+                  <ExternalLink data-icon-trail="true" />
                 </Button>
 
-                <Button
-                  asChild
-                  variant="outline"
-                  className="text-earth-brown hover:text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center w-full sm:w-auto px-6 transition-all duration-200 ease-warm hover:-translate-y-0.5 hover:shadow-gentle"
-                >
+                <Button asChild variant="unstyled" className="btn-secondary is-on-light is-fluid">
                   <a href="#contact">
-                    <Phone className="w-4 h-4 mr-2" />
+                    <Phone />
                     Get Started
                   </a>
                 </Button>

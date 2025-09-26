@@ -95,9 +95,14 @@ export default {
         '250': '250ms',
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xs: "var(--radius-xs)",
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        "2xl": "var(--radius-2xl)",
+        card: "var(--radius-card)",
+        pill: "var(--radius-pill)",
       },
       keyframes: {
         "accordion-down": {

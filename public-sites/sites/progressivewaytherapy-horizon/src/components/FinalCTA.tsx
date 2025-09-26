@@ -3,7 +3,9 @@
 import { Phone, Calendar, MessageSquare, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const communityImage = "/assets/community-support.jpg";
+import { getAssetUrl } from "@/lib/site-assets";
+
+const communityImage = getAssetUrl("community-support.jpg");
 
 const FinalCTA = () => {
   return (
@@ -28,33 +30,35 @@ const FinalCTA = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            <div className="bg-card/20 backdrop-blur-sm rounded-2xl p-6 border border-cream/20">
+            <div className="bg-card/20 backdrop-blur-sm rounded-md p-6 border border-cream/20">
               <Phone className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Free Consultation</h3>
               <p className="text-cream/80 text-sm mb-4">15-minute phone call to see if we're a good fit</p>
-              <Button className="btn-consultation w-full">Book Now</Button>
+              <Button variant="unstyled" className="btn-consultation is-on-dark is-fluid">
+                Book Now
+              </Button>
             </div>
 
-            <div className="bg-card/20 backdrop-blur-sm rounded-2xl p-6 border border-cream/20">
+            <div className="bg-card/20 backdrop-blur-sm rounded-md p-6 border border-cream/20">
               <MessageSquare className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Send a Message</h3>
               <p className="text-cream/80 text-sm mb-4">Share your story and questions securely</p>
-              <Button variant="outline" className="btn-secondary w-full">
+              <Button variant="unstyled" className="btn-secondary is-fluid">
                 Contact Form
               </Button>
             </div>
 
-            <div className="bg-card/20 backdrop-blur-sm rounded-2xl p-6 border border-cream/20">
+            <div className="bg-card/20 backdrop-blur-sm rounded-md p-6 border border-cream/20">
               <Calendar className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Direct Scheduling</h3>
               <p className="text-cream/80 text-sm mb-4">Book your first session online</p>
-              <Button variant="outline" className="btn-secondary w-full">
+              <Button variant="unstyled" className="btn-secondary is-fluid">
                 View Calendar
               </Button>
             </div>
           </div>
 
-          <div className="bg-card/10 backdrop-blur-sm rounded-2xl p-8 border border-cream/20 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
+          <div className="bg-card/10 backdrop-blur-sm rounded-md p-8 border border-cream/20 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center justify-center mb-4">
               <MapPin className="w-5 h-5 text-warm-tan mr-2" />
               <span className="text-cream font-medium">Serving All of Texas via Telehealth</span>

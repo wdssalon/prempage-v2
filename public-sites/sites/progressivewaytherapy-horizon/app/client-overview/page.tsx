@@ -167,7 +167,7 @@ function MarkdownRenderer({ markdown }: { markdown: string }) {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-12 text-earth-brown">
       {heroBlock ? (
-        <section className="rounded-3xl border border-soft-purple/40 bg-gradient-to-br from-soft-purple/15 via-cream/40 to-warm-tan/20 p-10 shadow-gentle">
+        <section className="rounded-md border border-soft-purple/40 bg-gradient-to-br from-soft-purple/15 via-cream/40 to-warm-tan/20 p-10 shadow-gentle">
           <h1 className="font-serif text-3xl md:text-4xl text-soft-purple">
             {renderInline(heroBlock.content)}
           </h1>
@@ -177,7 +177,7 @@ function MarkdownRenderer({ markdown }: { markdown: string }) {
         </section>
       ) : null}
 
-      <article className="rounded-3xl border border-border/60 bg-card/80 p-10 shadow-gentle">
+      <article className="rounded-md border border-border/60 bg-card/80 p-10 shadow-gentle">
         <div className="prose prose-neutral max-w-none text-base leading-relaxed">
           {contentBlocks.map((block, index) => {
             if (block.type === "heading") {

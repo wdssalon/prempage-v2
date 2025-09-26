@@ -65,7 +65,7 @@ const WhyChooseUs = () => {
 
           {/* Trust Indicators */}
           <div className="mt-16 text-center animate-fade-in-up">
-            <div className="inline-flex items-center justify-center space-x-8 px-8 py-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50">
+            <div className="inline-flex items-center justify-center space-x-8 px-8 py-4 bg-card/50 backdrop-blur-sm rounded-md border border-border/50">
               <div className="text-center">
                 <p className="text-2xl font-serif font-bold text-sage-green">10+</p>
                 <p className="text text-sm text-muted-foreground">Years Experience</p>

@@ -214,3 +214,46 @@ This ensures all changes are deliberate and agreed upon.
 - Preview: keep a Next.js/Vite dev server running against the same disk for near-instant hot reload during editing; production builds stay in background workers.
 - Guardrails: per-site mutexes, audit log of tool calls, secret redaction on reads, automatic halt after repeated failures, and git history for rollback.
 - Status: plan only. Update this section as we finalize tool schemas, disk sizing, or decide to move off Render.
+
+### New Feature: In-Page Visual Editing (Lovable-style)
+
+**Goal:** Allow non-technical users (e.g., therapists) to click **“Edit”**, hover elements, and update text/images directly on the rendered site preview.
+
+**How it works:**
+1. **Overlay Layer**  
+   - React overlay highlights DOM nodes on hover (`getBoundingClientRect`, `elementFromPoint`).  
+   - Editable candidates limited to `h1-h6`, `p`, `li`, `a`, `button`, or nodes with `data-*` attributes.
+
+2. **Inline Editing**  
+   - Clicking swaps the element into a `contenteditable` region or overlay editor.  
+   - Changes captured as structured patches:
+     ```json
+     {
+       "selector": "[data-loc='hero.headline']",
+       "type": "text",
+       "old": "Therapy for adults",
+       "new": "Therapy that feels like you"
+     }
+     ```
+
+3. **Persistence**  
+   - Patches map back to source of truth (`client-overview.md`, YAML configs, or site bundle).  
+   - Site rebuild + redeploy ensures edits are reproducible and auditable.
+
+4. **Selector Strategy**  
+   - Prefer stable `data-loc` or `data-cms` attributes.  
+   - Fall back to generated CSS paths with checksums/fingerprints for drift detection.
+
+5. **UI Stack (learned from Lovable)**  
+   - **Next.js + Tailwind** with reusable utility classes (`heading is-section`, `text is-lead`, etc.).  
+   - **Radix UI primitives** for dialogs/menus.  
+   - **Sonner** for toasts, **Vaul** for side drawers.  
+   - **Lucide-react icons** for inline controls.  
+   - **AntD components** may also be used for forms and modals.
+
+6. **Workflow Integration**  
+   - Visual edits → patch queue → orchestrator validation → file updates → rebuild (`pnpm check`) → Render deploy hook.  
+   - Audit logs map DOM-level edits back to version-controlled file changes.
+
+**Note about Lovable:**  
+Lovable implements this by overlaying a React editor on top of Next.js static exports, powered by Tailwind, Radix UI, AntD, and Sonner toasts. Their approach demonstrates how in-browser editing can feel live while still preserving reproducibility through static builds and deploy hooks.

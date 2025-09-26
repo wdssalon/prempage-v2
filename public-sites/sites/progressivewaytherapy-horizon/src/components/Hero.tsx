@@ -3,7 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Heart, MapPin, Phone } from "lucide-react";
 
-const heroImage = "/assets/hero-therapy.jpg";
+import { getAssetUrl } from "@/lib/site-assets";
+
+const heroImage = getAssetUrl("hero-therapy.jpg");
 
 const Hero = () => {
   return (
@@ -49,15 +51,11 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="btn-consultation text-lg px-8 py-4">
-              <Phone className="w-5 h-5 mr-2" />
+            <Button variant="unstyled" className="btn-consultation is-on-dark">
+              <Phone />
               Book Free 15-Minute Consultation
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="btn-secondary backdrop-blur-sm px-8 py-4"
-            >
+            <Button variant="unstyled" className="btn-secondary">
               Learn About Our Services
             </Button>
           </div>

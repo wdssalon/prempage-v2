@@ -110,14 +110,14 @@ const typography: TypographyToken[] = [
     label: "Heading · Hero",
     classes: ["heading", "is-hero"],
     sample: "Grounded Healing Starts Here",
-    guidance: "Hero statements on bold backgrounds. Pair with `.heading.is-on-dark` over gradients or photography.",
+    guidance: "Hero statements on bold backgrounds. Pair with `.heading.is-on-dark` over gradients or photography. Add `.is-condensed` when you need the same treatment at a smaller scale.",
   },
   {
     category: "Headings",
     label: "Heading · Display",
     classes: ["heading", "is-display"],
     sample: "A Safe Space for Your Authentic Self",
-    guidance: "Use once per page for hero moments. Add `motion-fade-soft` for on-load animation.",
+    guidance: "Use once per page for hero moments. Add `motion-fade-soft` for on-load animation. Apply `.is-condensed` to drop the size for denser layouts.",
   },
   {
     category: "Headings",
@@ -235,6 +235,13 @@ const typographyCategoryNotes: Record<TypographyToken["category"], string> = {
   Specialty: "Accent tokens reserved for stats, overlays, or microcopy. Use sparingly so primary typography stays dominant.",
 };
 
+type ButtonCombo = {
+  label: string;
+  usage: string;
+  swatchClassName?: string;
+  swatchStyle?: React.CSSProperties;
+};
+
 type ButtonStyle = {
   name: string;
   description: string;
@@ -243,54 +250,182 @@ type ButtonStyle = {
   variant?: ButtonProps["variant"];
   size?: ButtonProps["size"];
   previewClassName?: string;
-  helper?: string;
+  notes?: string[];
+  combos?: ButtonCombo[];
 };
 
 const buttonStyles: ButtonStyle[] = [
   {
     name: "Primary CTA",
-    description: "Default booking or high-intent actions. Apply `.btn-consultation` on `<Button size=\"lg\">`.",
+    description: "Default booking or high-intent actions. Apply `.btn-consultation` on `<Button variant=\"unstyled\">`.",
     className: "btn-consultation",
     label: "Book Free Consultation",
+    variant: "unstyled",
     previewClassName: "bg-gradient-nature motion-gradient-pan border-none shadow-contrast",
-    helper: "Reserve for the single primary action per viewport.",
+    notes: [
+      "Reserve one per viewport for the main conversion.",
+      "Add `.is-medium` for inline panels or stacked layouts, `.is-compact` for navigation bars.",
+    ],
+    combos: [
+      {
+        label: "default",
+        usage: "Light hero backplates, blur cards, neutral gradients.",
+        swatchClassName: "bg-gradient-nature motion-gradient-pan",
+      },
+      {
+        label: ".is-on-dark",
+        usage: "Contrast panels or photography overlays needing brighter outline.",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+      {
+        label: ".is-medium",
+        usage: "Medium-density cards, mobile navigation bars, full-width stacks.",
+        swatchClassName: "bg-gradient-nature motion-gradient-pan",
+      },
+      {
+        label: ".is-compact",
+        usage: "Desktop navigation or tight toolbars where space is limited.",
+        swatchClassName: "bg-gradient-nature motion-gradient-pan",
+      },
+    ],
   },
   {
     name: "Secondary CTA",
-    description: "Lower-intent actions such as learn-more links. Use outline variant with warm hover state.",
+    description: "Lower-intent actions such as learn-more links. Apply `.btn-secondary` on `<Button variant=\"unstyled\">`.",
     className: "btn-secondary",
-    variant: "outline",
+    variant: "unstyled",
     label: "Explore Services",
-    helper: "Add `.is-on-dark` when placing on gradients or photography for contrast.",
+    notes: [
+      "Pair with primary CTA for supportive actions.",
+      "Add `.is-fluid` for full-width buttons. Tag trailing icons with `data-icon-trail=\"true\"` to align them right and animate subtly.",
+    ],
+    combos: [
+      {
+        label: "default",
+        usage: "Dark gradients, hero overlays, glassmorphism backdrops.",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+      {
+        label: ".is-on-light",
+        usage: "Warm cards or soft-cream sections needing Nature Green accents.",
+        swatchClassName: "bg-soft-cream",
+      },
+      {
+        label: ".is-fluid",
+        usage: "Stretch across columns or stacked mobile layouts (adds full-width).",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+    ],
   },
   {
     name: "Gentle CTA",
     description: "Supportive prompts within cards. Reinforces warmth without competing with the primary CTA.",
     className: "btn-gentle",
     label: "Request Info",
+    variant: "unstyled",
     previewClassName: "bg-soft-cream/70",
+    notes: [
+      "Use for nurturing or secondary funnels inside content blocks.",
+      "Use `.is-fluid` when the card should span full width; trailing icons can still use `data-icon-trail=\"true\"` for motion.",
+    ],
+    combos: [
+      {
+        label: "default",
+        usage: "Cream sections, inclusive cards, muted canvases.",
+        swatchClassName: "bg-soft-cream",
+      },
+      {
+        label: ".is-on-dark",
+        usage: "Evening gradients where you still want a soft outline.",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+      {
+        label: ".is-fluid",
+        usage: "Full-width prompts in mobile layouts or stacked cards.",
+        swatchClassName: "bg-soft-cream",
+      },
+    ],
   },
   {
     name: "Contrast CTA",
     description: "Use `.btn-contrast` on dark sections or imagery overlays while keeping copy legible.",
     className: "btn-contrast",
     label: "See Evening Availability",
+    variant: "unstyled",
     previewClassName: "bg-gradient-dusk text-soft-cream border-none shadow-contrast",
+    notes: [
+      "Ideal for newsletter bands, contrast panels, or footer prompts.",
+      "`.is-fluid` mirrors the secondary CTA helper when you need full-width coverage. Trailing icons can use `data-icon-trail=\"true\"` for motion.",
+    ],
+    combos: [
+      {
+        label: "default",
+        usage: "Dark gradients or photography overlays where white outline pops.",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+      {
+        label: ".is-on-light",
+        usage: "Cream or tan sections needing a darker border and copy.",
+        swatchClassName: "bg-soft-cream",
+      },
+      {
+        label: ".is-fluid",
+        usage: "Stretch across contrast panels or newsletter bands.",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+    ],
   },
   {
     name: "Muted CTA",
     description: "Low-emphasis prompts inside cards or inline forms. Ideal for tertiary actions.",
     className: "btn-muted",
     label: "Download Intake Packet",
+    variant: "unstyled",
     previewClassName: "bg-warm-tan/40",
+    notes: [
+      "Save for tertiary prompts so primary/secondary CTAs stay distinct.",
+      "Supports `.is-fluid` when you need edge-to-edge coverage; trailing icons respond to `data-icon-trail=\"true\"`.",
+    ],
+    combos: [
+      {
+        label: "default",
+        usage: "Warm tan cards, FAQ stacks, muted canvases.",
+        swatchClassName: "bg-warm-tan",
+      },
+      {
+        label: ".is-on-dark",
+        usage: "Photography overlays when you still want a gentle ask.",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+      {
+        label: ".is-fluid",
+        usage: "Fill card widths in FAQ or resource lists.",
+        swatchClassName: "bg-warm-tan",
+      },
+    ],
   },
   {
     name: "Ghost Link",
     description: "Inline navigation inside cards or lists. Keep copy concise so the underline stays crisp.",
     className: "btn-ghost-link",
-    variant: "ghost",
-    size: "default",
+    variant: "unstyled",
     label: "Learn More",
+    notes: [
+      "Use when you need a CTA that reads like a link but keeps button focus states.",
+      "Add `data-icon-trail=\"true\"` to trailing icons if you want the subtle hover shift.",
+    ],
+    combos: [
+      {
+        label: "default",
+        usage: "Darker panels, dusk gradients, contrast cards.",
+        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+      },
+      {
+        label: ".is-on-light",
+        usage: "Cream or warm cards where Dark Forest copy would clash.",
+        swatchClassName: "bg-soft-cream",
+      },
+    ],
   },
 ];
 
@@ -333,7 +468,7 @@ const surfaceTokens: SurfaceToken[] = [
       <div className="space-y-2">
         <p className="heading is-eyebrow text-soft-cream/80">STAY CONNECTED</p>
         <p className="heading is-quote text-soft-cream">“We heal in community.”</p>
-        <p className="text is-contrast">Pair with `.btn-contrast` or outline buttons using `.is-on-dark` modifier.</p>
+        <p className="text is-contrast">Pair with `.btn-contrast` or outline buttons using the `.is-on-light` modifier so accents stay legible.</p>
       </div>
     ),
   },
@@ -386,11 +521,11 @@ const layoutTokens: LayoutToken[] = [
     usage: "Balance hero copy with imagery or staggered service descriptions.",
     content: (
       <div className="layout-split-columns gap-4">
-        <div className="rounded-2xl bg-soft-cream/80 p-4 shadow-soft">
+        <div className="rounded-md bg-soft-cream/80 p-4 shadow-soft">
           <p className="text is-small font-semibold text-deep-forest">Primary column</p>
           <p className="text is-small">Use for copy, forms, or longform storytelling.</p>
         </div>
-        <div className="rounded-2xl bg-warm-tan/70 p-4 shadow-gentle">
+        <div className="rounded-md bg-warm-tan/70 p-4 shadow-gentle">
           <p className="text is-small font-semibold text-earth-brown">Secondary column</p>
           <p className="text is-small">House imagery, lists, or supportive stats.</p>
         </div>
@@ -403,11 +538,11 @@ const layoutTokens: LayoutToken[] = [
     usage: "Horizontal band combining iconography, copy, and CTA without feeling dense.",
     content: (
       <div className="layout-feature-strip">
-        <div className="rounded-2xl bg-soft-cream/80 p-4 shadow-soft">
+        <div className="rounded-md bg-soft-cream/80 p-4 shadow-soft">
           <p className="heading is-eyebrow">APPROACH</p>
           <p className="text is-small">Trauma-informed &amp; liberation-based.</p>
         </div>
-        <div className="rounded-2xl bg-warm-tan/60 p-4 shadow-gentle">
+        <div className="rounded-md bg-warm-tan/60 p-4 shadow-gentle">
           <p className="text is-small">Add a `.btn-gentle` CTA on the right to close the strip.</p>
         </div>
       </div>
@@ -487,7 +622,7 @@ const StyleGuide = () => {
     <main className="min-h-screen bg-background py-20">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-6xl space-y-16">
-          <section className="rounded-3xl border border-border/60 bg-card/70 p-10 shadow-gentle backdrop-blur-sm">
+          <section className="rounded-md border border-border/60 bg-card/70 p-10 shadow-gentle backdrop-blur-sm">
             <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Internal Only</p>
             <h1 className="mt-6 text-4xl md:text-5xl font-serif text-soft-purple">Progressive Way Therapy Style Guide</h1>
             <p className="mt-6 text is-lead">
@@ -496,21 +631,21 @@ const StyleGuide = () => {
               treatments without review.
             </p>
             <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-border/40 bg-background/80 p-6">
+              <div className="rounded-md border border-border/40 bg-background/80 p-6">
                 <h2 className="font-serif text-xl text-soft-purple">Tone</h2>
                 <p className="mt-3 text-sm text-muted-foreground">Warm, affirming, strengths-based.</p>
               </div>
-              <div className="rounded-2xl border border-border/40 bg-background/80 p-6">
+              <div className="rounded-md border border-border/40 bg-background/80 p-6">
                 <h2 className="font-serif text-xl text-soft-purple">Voice</h2>
                 <p className="mt-3 text-sm text-muted-foreground">Direct but compassionate. Avoid clinical jargon.</p>
               </div>
-              <div className="rounded-2xl border border-border/40 bg-background/80 p-6">
+              <div className="rounded-md border border-border/40 bg-background/80 p-6">
                 <h2 className="font-serif text-xl text-soft-purple">Patterns</h2>
                 <p className="mt-3 text-sm text-muted-foreground">Organic shapes, soft gradients, subtle motion.</p>
               </div>
             </div>
 
-            <div className="mt-8 rounded-2xl border border-border/40 bg-background/80 p-6">
+            <div className="mt-8 rounded-md border border-border/40 bg-background/80 p-6">
               <p className="text is-lead">
                 Core approach: apply the base class (`heading` or `text`) first, then stack modifier classes (`is-display`,
                 `is-section`, `is-lead`, `is-on-dark`) the same way Webflow combos work. This keeps typography tokens
@@ -530,7 +665,7 @@ const StyleGuide = () => {
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {palette.map((color) => (
-                <div key={color.token} className="rounded-2xl border border-border/50 bg-card/80 p-6 shadow-gentle">
+                <div key={color.token} className="rounded-md border border-border/50 bg-card/80 p-6 shadow-gentle">
                   <div
                     className="h-24 w-full rounded-xl border border-border/30 shadow-inner"
                     style={{ backgroundColor: `hsl(var(${color.token}))` }}
@@ -553,7 +688,7 @@ const StyleGuide = () => {
               </div>
               <div className="grid gap-6 md:grid-cols-3">
                 {gradientTokens.map((gradient) => (
-                  <div key={gradient.token} className="rounded-2xl border border-border/40 bg-card/70 p-6 shadow-gentle">
+                  <div key={gradient.token} className="rounded-md border border-border/40 bg-card/70 p-6 shadow-gentle">
                     <div className={cn("h-28 w-full rounded-xl border border-border/40", gradient.className)} />
                     <div className="mt-4 space-y-2">
                       <p className="font-serif text-lg text-soft-purple">{gradient.name}</p>
@@ -592,7 +727,7 @@ const StyleGuide = () => {
                     </div>
                     <div className="grid gap-6 md:grid-cols-2">
                       {tokens.map((type) => (
-                        <div key={type.label} className="rounded-2xl border border-border/40 bg-card/70 p-6 shadow-gentle">
+                        <div key={type.label} className="rounded-md border border-border/40 bg-card/70 p-6 shadow-gentle">
                           <div className="flex flex-col gap-3">
                             <div>
                               <p className="font-serif text-soft-purple">{type.label}</p>
@@ -629,7 +764,7 @@ const StyleGuide = () => {
             </div>
               <div className="grid gap-6 md:grid-cols-2">
                 {buttonStyles.map((button) => (
-                  <div key={button.name} className="rounded-2xl border border-border/40 bg-card/70 p-6 shadow-gentle">
+                  <div key={button.name} className="rounded-md border border-border/40 bg-card/70 p-6 shadow-gentle">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <p className="font-serif text-lg text-soft-purple">{button.name}</p>
@@ -645,16 +780,44 @@ const StyleGuide = () => {
                     >
                       <Button
                         variant={button.variant}
-                        size={button.size ?? "lg"}
+                        {...(button.size ? { size: button.size } : {})}
                         className={button.className}
                       >
                         {button.label}
                       </Button>
                     </div>
-                    {button.helper ? (
-                      <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                        {button.helper}
-                      </p>
+                    {button.notes?.length ? (
+                      <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                        {button.notes.map((note) => (
+                          <li key={note} className="flex items-start gap-2">
+                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-soft-purple/70" aria-hidden />
+                            <span>{note}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    {button.combos?.length ? (
+                      <div className="mt-6 space-y-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground/80">Combos</p>
+                        <ul className="space-y-3">
+                          {button.combos.map((combo) => (
+                            <li key={`${button.name}-${combo.label}`} className="flex items-start gap-3">
+                              <span
+                                className={cn(
+                                  "mt-1 h-3.5 w-3.5 rounded-full border border-white/40 shadow-sm",
+                                  combo.swatchClassName,
+                                )}
+                                style={combo.swatchStyle}
+                                aria-hidden
+                              />
+                              <div>
+                                <p className="font-mono text-xs uppercase tracking-wide text-soft-purple">{combo.label}</p>
+                                <p className="text-xs text-muted-foreground">{combo.usage}</p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ) : null}
                   </div>
                 ))}
@@ -671,8 +834,8 @@ const StyleGuide = () => {
             </div>
             <div className="grid gap-6 md:grid-cols-2">
               {surfaceTokens.map((surface) => (
-                <div key={surface.name} className="rounded-2xl border border-border/40 bg-card/70 p-6 shadow-gentle">
-                  <div className={cn("relative overflow-hidden rounded-3xl border border-border/20 p-6", surface.className)}>
+                <div key={surface.name} className="rounded-md border border-border/40 bg-card/70 p-6 shadow-gentle">
+                  <div className={cn("relative overflow-hidden rounded-md border border-border/20 p-6", surface.className)}>
                     {surface.content ?? <p className="text is-small text-muted-foreground">Apply this surface class to preview content.</p>}
                   </div>
                   <div className="mt-4 space-y-2">
@@ -693,8 +856,8 @@ const StyleGuide = () => {
               </div>
               <div className="grid gap-6 md:grid-cols-2">
                 {layoutTokens.map((layout) => (
-                  <div key={layout.name} className="rounded-2xl border border-border/40 bg-card/70 p-6 shadow-gentle">
-                    <div className={cn("rounded-3xl border border-border/20 bg-background/80 p-6", layout.className)}>
+                  <div key={layout.name} className="rounded-md border border-border/40 bg-card/70 p-6 shadow-gentle">
+                    <div className={cn("rounded-md border border-border/20 bg-background/80 p-6", layout.className)}>
                       {layout.content}
                     </div>
                     <div className="mt-4 space-y-2">
@@ -706,7 +869,7 @@ const StyleGuide = () => {
                 ))}
               </div>
             </div>
-            <div className="mt-12 rounded-3xl border border-border/50 bg-gradient-warm p-8 shadow-gentle">
+            <div className="mt-12 rounded-md border border-border/50 bg-gradient-warm p-8 shadow-gentle">
               <h3 className="heading is-subsection mb-2">Spacing Rules</h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>• Section padding: `py-20` on desktop, `py-16` on mobile.</li>
@@ -727,7 +890,7 @@ const StyleGuide = () => {
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
-              <div className="rounded-3xl border border-border/40 bg-card/70 p-6 shadow-gentle">
+              <div className="rounded-md border border-border/40 bg-card/70 p-6 shadow-gentle">
                 <h3 className="heading is-subsection mb-4">Imagery</h3>
                 <ul className="space-y-3 text-muted-foreground">
                   <li>• Use existing assets in `public/assets`. New imagery must share the same warm, inclusive tone.</li>
@@ -736,7 +899,7 @@ const StyleGuide = () => {
                   <li>• Favor organic crops and rounded corners using `.organic-border` utilities where applicable.</li>
                 </ul>
               </div>
-              <div className="rounded-3xl border border-border/40 bg-card/70 p-6 shadow-gentle">
+              <div className="rounded-md border border-border/40 bg-card/70 p-6 shadow-gentle">
                 <h3 className="heading is-subsection mb-4">Motion &amp; Icons</h3>
                 <ul className="space-y-3 text-muted-foreground">
                   <li>• Entry animations: `motion-fade-soft` for headers, `motion-scale-in` for stats.</li>
@@ -770,7 +933,7 @@ const StyleGuide = () => {
                 rules, flag for human review instead of improvising new styling.
               </p>
             </div>
-            <div className="rounded-3xl border border-border/50 bg-card/80 p-8 shadow-gentle space-y-4">
+            <div className="rounded-md border border-border/50 bg-card/80 p-8 shadow-gentle space-y-4">
               <div>
                 <h3 className="heading is-subsection mb-2">Layout &amp; Structure</h3>
                 <ul className="space-y-2 text-muted-foreground">

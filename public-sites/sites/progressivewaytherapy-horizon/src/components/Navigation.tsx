@@ -6,8 +6,9 @@ import { ChevronDown, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import MobileNavigation from "@/components/MobileNavigation";
+import { getAssetUrl } from "@/lib/site-assets";
 
-const logoSrc = "/assets/logo.webp";
+const logoSrc = getAssetUrl("logo.webp");
 
 const Navigation = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -56,7 +57,7 @@ const Navigation = () => {
                   Services <ChevronDown className="ml-1 w-4 h-4" />
                 </button>
                 {activeDropdown === "services" && (
-                  <div className="absolute top-full left-0 mt-2 w-80 bg-card rounded-2xl shadow-warm border border-border p-4">
+                  <div className="absolute top-full left-0 mt-2 w-80 bg-card rounded-md shadow-warm border border-border p-4">
                     <div className="grid gap-4">
                       <div>
                         <h3 className="font-serif font-semibold text-sage-green mb-2">Individual Therapy</h3>
@@ -149,7 +150,7 @@ const Navigation = () => {
                   Get Started <ChevronDown className="ml-1 w-4 h-4" />
                 </button>
                 {activeDropdown === "started" && (
-                  <div className="absolute top-full left-0 mt-2 w-56 bg-card rounded-2xl shadow-warm border border-border p-4">
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-card rounded-md shadow-warm border border-border p-4">
                     <ul className="space-y-2">
                       <li>
                         <a href="/#appointment" className="block text-earth-brown hover:text-soft-purple transition-colors">
@@ -190,8 +191,8 @@ const Navigation = () => {
           </nav>
 
           <div className="hidden xl:flex items-center">
-            <Button className="btn-consultation text-sm px-6 py-2">
-              <Phone className="w-4 h-4 mr-2" />
+            <Button variant="unstyled" className="btn-consultation is-compact">
+              <Phone />
               Book Free Consultation
             </Button>
           </div>
