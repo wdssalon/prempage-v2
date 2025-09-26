@@ -5,7 +5,7 @@ import { ExternalLink, Globe, Lock, Mail, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-b from-cream via-warm-tan/70 to-earth-brown/85 text-earth-brown py-16">
+    <footer className="bg-cream text-earth-brown py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
@@ -66,7 +66,7 @@ const Footer = () => {
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
                 <Button
                   variant="outline"
-                  className="text-cream border-cream/40 hover:bg-cream/10 bg-transparent flex items-center"
+                  className="text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center"
                 >
                   <Lock className="w-4 h-4 mr-2" />
                   Client Portal
@@ -75,21 +75,21 @@ const Footer = () => {
 
                 <Button
                   variant="outline"
-                  className="text-cream border-cream/40 hover:bg-cream/10 bg-transparent flex items-center"
+                  className="text-earth-brown border-earth-brown/40 hover:bg-cream/20 bg-transparent flex items-center"
                 >
                   <Globe className="w-4 h-4 mr-2" />
                   Español
                 </Button>
               </div>
 
-              <div className="text-sm text-cream/85">
+              <div className="text-sm text-earth-brown/85">
                 <p>Licensed in Texas | License #: LPC-12345</p>
               </div>
             </div>
           </div>
 
           <div className="border-t border-cream/30 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-cream/80">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-earth-brown/80">
               <div>
                 <p>&copy; 2024 Progressive Way Therapy. All rights reserved.</p>
               </div>
@@ -102,7 +102,7 @@ const Footer = () => {
             </div>
 
             <div className="mt-6 p-4 bg-soft-purple/20 rounded-lg border">
-              <p className="text-sm text-center text-cream">
+              <p className="text-sm text-center text-earth-brown">
                 <strong>Crisis Support:</strong> If you're experiencing a mental health emergency, call 988 (Suicide &amp;
                 Crisis Lifeline) or go to your nearest emergency room.
               </p>

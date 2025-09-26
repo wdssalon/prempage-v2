@@ -51,8 +51,8 @@ horizon
 - About (`/about`)
   - Purpose: Introduce Blanca's story, values, credentials, and affirming approach so visitors feel an immediate connection.
 - Services *(navigation trigger only; no standalone route)*
-  - Individual Therapy (`/services/individual-therapy`)
-    - Purpose: Overview page affirming one-on-one care, outlining Blanca's progressive therapeutic lens and what to expect.
+  - Individual Therapy *(section only; no standalone route)*
+    - Purpose: Overview section affirming one-on-one care, outlining Blanca's progressive therapeutic lens and what to expect.
     - General Individual Therapy (`/services/individual-therapy/general`)
       - Purpose: Speak to adults carrying everything alone, emphasizing validation, nervous system safety, and sustainable coping tools.
     - Counseling for Anxiety (`/services/individual-therapy/anxiety`)
@@ -61,7 +61,7 @@ horizon
       - Purpose: Support exhausted adults moving through burnout, numbness, and low mood with compassionate structure.
     - Counseling for Trauma (`/services/individual-therapy/trauma`)
       - Purpose: Outline trauma-informed care that centers consent, pacing, and identity-affirming healing.
-  - Specialized Support (`/services/specialized-support`)
+  - Specialized Support *(section only; no standalone route)*
     - Purpose: Frame progressive, identity-affirming specialties tailored to marginalized communities.
     - LGBTQIA+ Individual Therapy (`/services/specialized-support/lgbtq`)
       - Purpose: Celebrate queer and trans identities with affirming, liberation-focused care free from judgment.
@@ -71,7 +71,7 @@ horizon
       - Purpose: Validate complex reproductive journeys with grief-informed, choice-affirming support.
     - Abortion Support (`/services/specialized-support/abortion-support`)
       - Purpose: Provide non-judgmental, values-aligned counseling before and after abortion decisions.
-  - Trauma & Recovery (`/services/trauma-recovery`)
+  - Trauma & Recovery *(section only; no standalone route)*
     - Purpose: Describe Blanca's approach to deep healing after violence, loss, or systemic harm.
     - Sexual Assault / Sexual Abuse (`/services/trauma-recovery/sexual-assault-support`)
       - Purpose: Offer survivor-centered care focused on reclaiming autonomy and safety.
