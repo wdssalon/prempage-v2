@@ -26,8 +26,11 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: public-sites/sites/progressivewaytherapy-horizon/pnpm-lock.yaml
 
-      - name: Enable Corepack
-        run: corepack enable
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
 
       - name: Build static site
         run: ./public-sites/scripts/build-static-site.sh "$SITE_SLUG"
