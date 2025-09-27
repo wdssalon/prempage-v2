@@ -42,8 +42,11 @@ export function VariantHomePage({ slug }: { slug: VariantSlug }) {
         </div>
       </section>
 
-      <section id="services" className="section-wrapper grid gap-6 lg:grid-cols-2">
-        <article className="card space-y-4">
+      <section
+        id="services"
+        className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8"
+      >
+        <article className="space-y-4 rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Palette in practice</p>
           <h2 className="heading text-3xl">Visual anchors</h2>
           <p className="text">
@@ -54,7 +57,7 @@ export function VariantHomePage({ slug }: { slug: VariantSlug }) {
             {variant.palette.map((swatch) => (
               <div key={swatch.token} className="flex items-center gap-3 rounded-lg border border-foreground/10 bg-foreground/5 p-3">
                 <span
-                  className="h-10 w-10 flex-shrink-0 rounded-full border border-foreground/10 shadow-inner"
+                  className="h-10 w-10 shrink-0 rounded-full border border-foreground/10 shadow-inner"
                   style={{ backgroundColor: `hsl(var(${swatch.token}))` }}
                   aria-hidden
                 />
@@ -66,7 +69,9 @@ export function VariantHomePage({ slug }: { slug: VariantSlug }) {
             ))}
           </div>
         </article>
-        <article className={`card space-y-4 text-soft-cream ${secondaryGradient}`}>
+        <article
+          className={`space-y-4 rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur text-soft-cream ${secondaryGradient}`}
+        >
           <p className="text-xs uppercase tracking-[0.3em] text-soft-cream/80">Experience highlights</p>
           <h2 className="heading text-3xl">What clients can expect</h2>
           <ul className="space-y-3 text-left text-soft-cream">
@@ -80,7 +85,10 @@ export function VariantHomePage({ slug }: { slug: VariantSlug }) {
         </article>
       </section>
 
-      <section id="approach" className={`section-wrapper rounded-3xl ${accentGradient} text-soft-cream`}>
+      <section
+        id="approach"
+        className={`mx-auto w-full max-w-6xl rounded-3xl px-4 py-16 sm:px-6 lg:px-8 ${accentGradient} text-soft-cream`}
+      >
         <div className="grid gap-6 lg:grid-cols-[2fr,3fr] lg:items-center">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.3em] text-soft-cream/80">Voice & tone</p>
@@ -100,7 +108,7 @@ export function VariantHomePage({ slug }: { slug: VariantSlug }) {
         </div>
       </section>
 
-      <section className="section-wrapper text-center">
+      <section className="mx-auto w-full max-w-6xl px-4 py-16 text-center sm:px-6 lg:px-8">
         <h2 className="heading text-3xl">Next steps</h2>
         <p className="text mx-auto max-w-2xl">
           Use this sample homepage as a blueprint when tailoring copy and imagery for the live site. Need to iterate?

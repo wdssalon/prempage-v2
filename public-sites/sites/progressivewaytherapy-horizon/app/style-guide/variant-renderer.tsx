@@ -33,7 +33,7 @@ export function VariantPageContent({ slug }: { slug: VariantSlug }) {
         </header>
 
         <section data-section-id="style-guide-variant--palette-and-gradients" className="grid gap-8 lg:grid-cols-[2fr,3fr]">
-          <article className="card space-y-4">
+          <article className="space-y-4 rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Palette</p>
             <div className="space-y-3">
               {variant.palette.map((swatch) => (
@@ -54,7 +54,7 @@ export function VariantPageContent({ slug }: { slug: VariantSlug }) {
               ))}
             </div>
           </article>
-          <article className="card space-y-4">
+          <article className="space-y-4 rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Gradients</p>
             <div className="space-y-3">
               {variant.gradients.map((gradient) => (
@@ -73,7 +73,10 @@ export function VariantPageContent({ slug }: { slug: VariantSlug }) {
 
         <section data-section-id="style-guide-variant--typography" className="grid gap-6 md:grid-cols-3">
           {variant.typography.map((entry) => (
-            <article key={entry.label} className="card space-y-3">
+            <article
+              key={entry.label}
+              className="space-y-3 rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur"
+            >
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Typography</p>
               <h2 className="heading text-lg">{entry.label}</h2>
               <p className="text text-sm text-muted-foreground">Class list: {entry.classes.join(" ")}</p>
@@ -84,7 +87,7 @@ export function VariantPageContent({ slug }: { slug: VariantSlug }) {
         </section>
 
         <section data-section-id="style-guide-variant--voice" className="grid gap-6 md:grid-cols-2">
-          <article className="card space-y-3">
+          <article className="space-y-3 rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Hero copy sample</p>
             <p className="text text-xs uppercase tracking-wide text-muted-foreground">{variant.hero.eyebrow}</p>
             <h2 className="heading is-display">{variant.hero.heading}</h2>
@@ -94,7 +97,7 @@ export function VariantPageContent({ slug }: { slug: VariantSlug }) {
               <span className="btn-secondary">{variant.hero.ctaSecondary}</span>
             </div>
           </article>
-          <article className="card space-y-3">
+          <article className="space-y-3 rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Voice & tone</p>
             <div className="space-y-3">
               {variant.voice.map((item) => (
@@ -116,7 +119,7 @@ export function VariantPageContent({ slug }: { slug: VariantSlug }) {
           </article>
         </section>
 
-        <section className="section-wrapper text-center space-y-4">
+        <section className="mx-auto w-full max-w-6xl space-y-4 px-4 py-16 text-center sm:px-6 lg:px-8">
           <h2 className="heading text-3xl">Want to see it in action?</h2>
           <p className="text mx-auto max-w-2xl">
             Open the sample homepage crafted for this exploration to preview how the palette, typography, and voice come

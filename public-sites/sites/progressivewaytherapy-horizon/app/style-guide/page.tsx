@@ -28,7 +28,10 @@ export default function StyleGuideIndexPage() {
 
         <section data-section-id="style-guide-index--variants" className="grid gap-6 md:grid-cols-3">
           {STYLE_VARIANTS.map((variant) => (
-            <article key={variant.slug} className="card h-full">
+            <article
+              key={variant.slug}
+              className="h-full rounded-lg border border-foreground/10 bg-white/80 p-6 shadow-sm backdrop-blur"
+            >
               <div className="space-y-4">
                 <div className="space-y-1">
                   <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Variant</p>
@@ -63,7 +66,7 @@ export default function StyleGuideIndexPage() {
                 </div>
                 <span className="block text-xs uppercase tracking-wide text-muted-foreground">Slug: {variant.slug}</span>
               </div>
-          </article>
+            </article>
           ))}
         </section>
       </div>
