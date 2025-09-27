@@ -31,7 +31,8 @@ stages:
     description: Produce client overview draft and proposed page list.
     required_documents:
       - public-sites/templates/${template_slug}/client-overview.md
-      - public-sites/generate-website.md
+      - public-sites/agents/guardrails.md
+      - public-sites/agents/coordinator.md
     outputs:
       - client_overview_path
       - page_list_summary
@@ -90,7 +91,8 @@ stages:
     role: copy_drafter
     description: Draft copy within existing skeletons; update hero/rotation counters.
     required_documents:
-      - public-sites/generate-website.md
+      - public-sites/agents/guardrails.md
+      - public-sites/agents/roles/copy_drafter.md
       - public-sites/templates/${template_slug}/page-build-edit-overview.md
     outputs:
       - page_path

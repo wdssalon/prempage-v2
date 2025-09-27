@@ -1,104 +1,39 @@
-# Page Build & Edit Overview (Horizon)
+# Horizon Template Supplement
 
-This guide explains how to build or update pages for the Horizon template—the Next.js App Router implementation of Progressive Way Therapy. Use it alongside `templates/horizon/config.yaml` (canonical metadata + selectors), the section components under `src/components/`, and the site-specific `sites/<slug>/client-overview.md`.
+Use this document alongside `public-sites/agents/guardrails.md`, the coordinator brief, and the role guides. It captures Horizon-specific nuances for the Next.js App Router workspace.
 
-## Global Rules
-- **Canonical guardrails**: Follow the rules in `AGENTS.md` and values in `config.yaml` before making any edits.
-- **Client components required**: All page-level files and interactive sections must start with `'use client'` to stay within the App Router boundary.
-- **Use existing components**: Import sections from `src/components/` and UI primitives from `src/components/ui/`. Avoid re-creating HTML by hand—compose pages from the existing React components.
-- **Tailwind tokens**: Reference the design tokens defined in `app/globals.css`. Add new tokens by extending `tailwind.config.ts` before using them in components.
-- **Assets**: Reference imagery from `public/assets` using absolute paths (e.g., `/assets/hero-therapy.jpg`). Leave existing `src` attributes untouched while drafting copy; run `images/images-overview.md` workflow only after copy approval or explicit request.
-- **Navigation & footer**: Use the shared components declared in `config.yaml > page_generation` (`Navigation.tsx`, `Footer.tsx`). Update them once per site, then reuse across pages.
-- **Metadata**: Global defaults live in `app/layout.tsx`. Add page-specific metadata by exporting `const metadata` from the page file when needed.
-- **Testing**: Validate builds with `npm run lint` and `npm run build` before handoff.
+## Coordinator Hooks
+- Horizon projects rely on the bundled Next.js workspace. During repo prep, run `python public-sites/scripts/bootstrap_horizon_site.py <site_slug>` if the site directory does not already contain the project scaffold.
+- The horizon plugin requires the visual-system stage. Expect to generate three `/style-guide/<variant>` explorations and record the outcomes in `client-overview.md > ## Visual System` and `automation-state.json` before allowing skeleton work to begin.
+- Style-guide tokens live in `app/style-guide/data.ts`; each exploration must include palette, typography, layout notes, and hero copy with CTA labels that map cleanly to draft pages.
 
-## Tailwind Style System Guardrails
-- Treat `app/globals.css` and `tailwind.config.ts` as the only place to define design tokens (color, spacing, typography, radii, animation). Do not hard-code raw values in page components—extend the tokens first, then consume them through Tailwind utilities.
-- Default curvature is now 0.75rem. Use `rounded-md` (maps to `var(--radius-md)`) for cards, buttons, and surfaces; reach for pill shapes only when explicitly called for.
-- Reuse the combo helpers declared in `@layer components` (`heading`, `text`, and modifiers like `is-display`, `is-section`, `is-subsection`, `is-lead`, `is-on-dark`, `is-muted`, plus button and surface classes). When introducing a new recurring pattern, add it to `app/globals.css` with `@apply`, document it on `app/style-guide/page.tsx`, and only then use it across pages.
-- Keep typography tokens aligned with the Webflow-style combo system: apply the base class (`heading` or `text`) and stack approved modifiers rather than composing bespoke utility sets per element.
-- Compose page-level layout with Tailwind utilities (`flex`, `grid`, spacing, responsive prefixes) and the shared `cn` helper. Reserve new CSS for globally reusable helpers under `@layer components` so changes cascade from a single source.
-- Update the `/style-guide` route whenever tokens or helpers change. That page is the canonical approval surface—QA updates there first to guarantee downstream pages inherit the same styling.
+## Skeleton Builder Guidance
+- Every page-level component must start with `'use client'` to stay inside the App Router boundary.
+- Compose pages from the shared library: import sections from `src/components/` and primitives from `src/components/ui/`. Avoid hand-written HTML—copy existing components verbatim or create new reusable components under the same directories when fresh layouts are required.
+- Stick to the Tailwind token system defined in `app/globals.css` and `tailwind.config.ts`. Introduce new tokens in the config before referencing them, and reuse combo helpers such as `heading`, `text`, `is-display`, `is-section`, and button/surface classes.
+- Variety is mandatory. Track recent layouts and alternate rhythms (staggered columns, split layouts, textured surfaces) so the site never repeats the same hero + three-card combo consecutively. Log new layout patterns in `client-overview.md > ## Visual System` so future passes know what already shipped.
+- For navigation, wrap page content with the shared `<Navigation />` and `<Footer />` components and keep everything inside `<main>` aligned with the approved outline. Ensure new custom components render inside a `div` that applies the correct page-level background classes (for example `bg-background`).
 
 ## Visual System Workflow
-- Generate three full explorations by populating `STYLE_VARIANTS` in `app/style-guide/data.ts`. Each entry must define:
-  - A unique slug prefixed with `style-guide-` (kebab-case, e.g., `style-guide-sunrise-haven`).
-  - Palette + gradient tokens grounded in the template variables.
-  - Typography guidance, voice notes, and layout recommendations.
-  - A hero copy sample with CTA labels that will map cleanly to a draft home page.
-- The dynamic route at `/style-guide/[variant]` uses the data file to render each exploration automatically. Confirm the root index (`/style-guide`) lists all three variants with descriptive summaries.
-- For each exploration, create a companion sample homepage under `/style-guide/<slug>/home` so reviewers can see the palette and voice applied to a full layout.
-- Do **not** maintain the old `/style-guide/options` deck. Instead, ask the human reviewer to browse each variant URL and provide feedback directly on the fully rendered exploration.
-- Once the explorations are saved, run `python agents/runner.py --site <slug> --template horizon style-guide --summary "<variant-notes>" --options "See /style-guide for variant list"` so `automation-state.json` captures the work and the `client-overview.md > ## Visual System` section links back to the generated pages.
-- After the coordinator records the three variants and updates the client overview, skeleton building can begin without waiting for human gating (humans can react asynchronously to the rendered variants).
+- Populate three `STYLE_VARIANTS` entries in `app/style-guide/data.ts`. Each variant needs a slug prefixed with `style-guide-`, palette + gradient tokens, typography guidance, voice notes, and hero copy with CTA labels.
+- The dynamic route at `/style-guide/[variant]` renders explorations automatically. Confirm `/style-guide` lists every variant with a descriptive summary and create a companion sample homepage under `/style-guide/<slug>/home` for each option.
+- Skip the deprecated `/style-guide/options` deck. Direct reviewers to the generated variant URLs for feedback.
+- After saving explorations, run `python agents/runner.py --site <slug> --template horizon style-guide --summary "<variant-notes>" --options "See /style-guide for variant list"` so the workflow state and client overview remain in sync.
 
-## CTA & Combo Styling Reference
-- Every style-guide token now ships with a light/dark strategy—use the `.is-on-dark` or `.is-on-light` combos whenever a component moves off its default background.
-- Typography: base `heading`/`text` classes assume light panels; append `.is-on-dark` (and `.text.is-contrast` when needed) on dusk gradients or photography.
-- Primary CTA (`.btn-primary`): gradient treatment for light surfaces. Add `.is-on-dark` over hero overlays or safe-space sections so the outline and glow stay visible. Use `.is-medium` for stacked cards or mobile nav, `.is-compact` when space is tight in desktop headers.
-- Secondary CTA (`.btn-secondary`): default suited to dark backdrops. Add `.is-on-light` on cream, tan, or card surfaces. `.is-fluid` stretches full width; tag trailing icons with `data-icon-trail="true"` for subtle motion.
-- Gentle CTA (`.btn-gentle`): optimized for light cards. Use `.is-on-dark` on evening gradients. Shares the `.is-fluid` helper; trailing icons can also use `data-icon-trail="true"`.
-- Contrast CTA (`.btn-contrast`): outline for dark sections. Apply `.is-on-light` on pale backgrounds. `.is-fluid` mirrors the secondary CTA coverage, with `data-icon-trail="true"` handling icon motion.
-- Muted CTA (`.btn-muted`): tertiary action for neutral cards. Pair with `.is-on-dark` before dropping onto photography; `.is-fluid` is available for layout tweaks and respects `data-icon-trail="true"`.
-- Ghost Link (`.btn-ghost-link`): baseline assumes dark panels. Use `.is-on-light` for cream or warm cards so the copy shifts to Deep Forest/Sage hover states. Trailing icons use `data-icon-trail="true"` to pick up motion.
-- Keep these combos in sync with `app/style-guide/page.tsx`; update both the CSS and helper copy if you introduce a new variant.
+## Design Tokens & Styling
+- Default curvature is 0.75rem (`rounded-md`). Reserve pill shapes for explicit requests and apply `.is-on-dark` / `.is-on-light` modifiers when components leave their default backgrounds.
+- Organic image frames live in `app/globals.css` (`organic-border`, `organic-border-soft`, `organic-border-wave`, `organic-border-tilt`). Pair them with `overflow-hidden` and `shadow-*` classes for varied silhouettes.
+- Horizon ships with `lucide-react` icons. When swapping icons, stick to that package and log decisions in the client overview so later pages reuse the set.
 
-## Creative Composition Expectations
-- Horizon prioritises bespoke layouts over duplicating canned sections. Use the component primitives (`heading`, `text`, surface helpers, cards, grids, motion classes) to compose unique arrangements per page rather than cloning an existing block verbatim.
-- Variety is mandatory: avoid shipping the same hero + three-card + testimonial formula twice in a row. When outlining, note how the previous two pages were structured and deliberately introduce a different rhythm (e.g., staggered columns, split layouts, feature strips, textured surfaces).
-- It is acceptable to build new React components under `src/components/` when a page calls for a fresh presentation—just keep the implementation aligned with the tokens and patterns documented in the style guide and log new utilities in `app/style-guide/page.tsx` for QA.
-- Leverage the approved style-guide options as your north star for typography, color, and tone, but feel free to remix those tokens into new combinations. The LLM should treat the style system as a palette, not as a fixed set of premade sections.
-- Document any newly composed layout patterns in `client-overview.md > ## Visual System` or the project TODO list so future passes understand the variety already in play.
+## Copy & Assembly Notes
+- Keep imagery placeholders intact until the imagery workflow in `images/images-overview.md` is requested. Do not touch `src` attributes during skeleton or copy passes.
+- When navigation changes, update both `Navigation.tsx` and `MobileNavigation.tsx` so menus stay aligned across breakpoints.
+- Register additional fonts or providers through `app/layout.tsx` or `app/providers.tsx` rather than modifying compiled output.
+- Metadata defaults live in `app/layout.tsx`. Export `const metadata` from individual pages when custom titles or descriptions are required.
 
-## Page Creation Workflow (per page)
-1. **Plan the route**
-   - Confirm the page appears in `client-overview.md > Approved Website Structure`.
-   - Create a new directory under `app/` matching the route (e.g., `app/services/page.tsx`).
+## QA Highlights
+- Before handoff, run `pnpm lint` and `pnpm build` inside the site workspace. Address any static export issues uncovered by the checks.
+- Review the `Section Usage Tracker` for hero rotation compliance and confirm navigation + footer components render identically on every route.
+- During QA, click through pages locally (`pnpm dev`) to verify metadata, navigation links, and tracker notes match the shipped layouts.
 
-2. **Scaffold the page file**
-   - Start the file with `'use client'`.
-   - Import the required sections from `src/components/` (see `config.yaml > page_generation.section_components`).
-   - If the page needs additional hooks or UI primitives, import them from `src/hooks/` or `src/components/ui/` as appropriate.
-
-3. **Compose the layout**
-   - Wrap the page content in the shared `<Navigation />` and `<Footer />` components, mirroring the structure in existing example pages.
-   - Inside `<main>`, use the approved outline as a scaffold but feel free to compose bespoke arrangements instead of reusing the same section snippet. Combine existing primitives (cards, grids, surfaces) to create fresh compositions while keeping the voice and tokens consistent. Use the Section Usage Tracker to balance layout variety.
-   - When adding new components, ensure they render inside a `div` with page-level background classes consistent with our design tokens (e.g., `bg-background`).
-
-4. **Populate copy & props**
-   - Update section copy, CTA labels, and props to match the site brief in `client-overview.md`. Keep voice and length aligned with existing sections.
-   - Rotate hero/CTA choices according to the `Sections Remaining To Use` tracker and any notes in `config.yaml`.
-   - Do not modify `src` attributes for images at this stage.
-
-5. **Optional metadata**
-   - If the page requires unique metadata, export `const metadata: Metadata = { ... }` at the top of the file.
-   - Reuse the voice and keywords from `client-overview.md` and confirm canonical URLs point to the correct route.
-
-## Global Assembly
-1. **Navigation updates**
-   - Modify `src/components/Navigation.tsx` (and `MobileNavigation.tsx` if needed) to include new routes. Keep menu items synced between desktop and mobile variants.
-   - Ensure nav links point to the Next.js routes (`/<slug>`), not `.html` paths.
-
-2. **Footer adjustments**
-   - Update `src/components/Footer.tsx` once, then verify the changes appear across all pages.
-
-3. **Providers & layout**
-   - If a page introduces new context providers or fonts, register them in `app/providers.tsx` or `app/layout.tsx` respectively.
-
-4. **Imagery workflow**
-   - When assets are ready, follow `images/images-overview.md` to replace placeholders. Keep filenames in `public/assets` consistent.
-
-## Overrides & Theming
-- Update shared colors and spacing tokens through the Tailwind layers in `app/globals.css`. When a new token is needed, extend `tailwind.config.ts` first so utility classes stay type-safe and consistent.
-- Manage typography with `next/font` inside `app/layout.tsx`, mirroring the brand-approved pairings logged in `client-overview.md`. Register additional weights before referencing them in components.
-- Horizon ships with the `lucide-react` icon library. When a section requires icon swaps, select from that package only after the brand voice and theming direction are approved. Treat icon choices as a visual token distinct from imagery—log decisions in `client-overview.md` so subsequent pages reuse the same set.
-- For bespoke interactions or analytics, add lightweight scripts to `app/providers.tsx` or component-level effects rather than mutating the compiled output under `.next/` or `out/`.
-- Organic image frames live in `app/globals.css` as `organic-border`, `organic-border-soft`, `organic-border-wave`, and `organic-border-tilt`. Apply these classes (with `overflow-hidden` + `shadow-*`) to image wrappers when you need varied blob silhouettes. Introduce new variants in the same file if future projects request additional shapes.
-
-## Final QA
-- Run `npm run lint` and `npm run build` to catch type or static-export errors.
-- Review the `## Section Usage Tracker` in `client-overview.md` to ensure layout rotation is satisfied.
-- Click through all routes locally (`npm run dev`) and confirm navigation, footers, and metadata render as expected.
-- Summarize QA findings, outstanding TODOs, and tracker status before handoff.
-
-Following this process keeps Horizon pages consistent, accessible, and aligned with the Next.js static export constraints.
+Following these Horizon-specific notes in tandem with the global guardrails keeps the Next.js workspace consistent, accessible, and ready for release.

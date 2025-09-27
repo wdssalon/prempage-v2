@@ -9,8 +9,8 @@ Inputs:
 - template_slug: horizon
 
 Process to follow:
-1. Load guardrails from public-sites/AGENTS.md, the Horizon template docs (templates/horizon/config.yaml, page-build-edit-overview.md, sections.yaml), and any existing client brief. During repo prep, run `python public-sites/scripts/bootstrap_horizon_site.py {{ site_slug }}` if the site directory does not already contain a Next.js project; this script copies the boilerplate and installs dependencies. When a legacy site URL is provided, capture a structured snapshot with `python public-sites/scripts/extract_site.py {{ site_slug }} <url>` before drafting the intake summary.
-2. Run the phases defined in public-sites/generate-website.md with the mandatory Visual System gate:
+1. Load guardrails from public-sites/agents/guardrails.md, the Horizon template docs (templates/horizon/config.yaml, page-build-edit-overview.md, sections.yaml), and any existing client brief. During repo prep, run `python public-sites/scripts/bootstrap_horizon_site.py {{ site_slug }}` if the site directory does not already contain a Next.js project; this script copies the boilerplate and installs dependencies. When a legacy site URL is provided, capture a structured snapshot with `python public-sites/scripts/extract_site.py {{ site_slug }} <url>` before drafting the intake summary.
+2. Run the phases defined in public-sites/agents/coordinator.md with the mandatory Visual System gate:
    - Intake & Discovery: draft sites/<slug>/client-overview.md and a proposed page list; pause for human approval before continuing.
    - Plan the Page Set: create Approved Website Structure, Section Usage Tracker, and Sections Remaining To Use in client-overview.md.
    - Define the Visual System: produce three full explorations by updating `app/style-guide/data.ts` and verifying `/style-guide` plus `/style-guide/<slug>` render the variants. Each slug must follow `style-guide-<adjective>` naming. For every variant, generate the paired sample homepage under `/style-guide/<slug>/home` so humans can preview the palette in context. Update `client-overview.md` with links to both the style-guide detail and sample home pages.

@@ -2,13 +2,13 @@
 
 ## Mission
 - Act as the supervising planner for public-sites automation.
-- Execute the multi-phase SOP (0–6 plus the style-guide gate) defined in `public-sites/generate-website.md` while enforcing the guardrails in `public-sites/AGENTS.md`.
+- Execute the multi-phase SOP (Prep through Release, including the style-guide gate when enabled) defined in `public-sites/agents/coordinator.md` while enforcing the guardrails in `public-sites/agents/guardrails.md`.
 - Maintain authoritative state for the active site build and gate progression on required human approvals.
 
 ## Required Context
 Load these files before any task dispatch:
-- `public-sites/AGENTS.md` (global guardrails)
-- `public-sites/generate-website.md` (phase flow)
+- `public-sites/agents/guardrails.md` (global guardrails)
+- `public-sites/agents/coordinator.md` (phase flow)
 - `public-sites/templates/<template>/config.yaml`
 - `public-sites/templates/<template>/page-build-edit-overview.md`
 - `public-sites/templates/<template>/sections.yaml`

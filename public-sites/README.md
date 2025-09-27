@@ -1,30 +1,24 @@
-# Progressive Way Therapy Static Site
+# Public Sites Toolkit
 
-This repo is contains instructions to create and build websites from templates found in `templates/` across a variety of technologies (next.js, custom static sites, etc.). Projects live under `sites/<slug>/`; the root folder holds shared templates and documentation.
+## Start Here
+- `agents/guardrails.md` – canonical rules for editing, trackers, assets, and collaboration.
+- `agents/coordinator.md` – phase sequencing, approval gates, and coordinator responsibilities.
+- `agents/roles/` – per-role mission briefs and deliverables. Load the relevant file before executing a stage.
+- `templates/<template>/page-build-edit-overview.md` – template supplement with Horizon/Clarity-specific overrides layered on top of the guardrails.
 
-## Where to Start
+## Directory Map
+- `sites/<slug>/` – production site bundles. Each slug owns its Next.js or static export.
+- `templates/<template>/` – reusable assets: config, sections catalog, client overview starter, template supplement, agent plugins.
+- `scripts/` – vetted automation helpers (bootstrap, extract, build, asset sync/upload). Run only the commands referenced in the guardrails or template supplements.
+- `images/` – shared imagery workflow documentation (`images-overview.md`).
 
-- `generate-website.md`: high-level website creation playbook.
-- `AGENTS.md`: detailed guardrails for LLM automation (editing conventions, overrides, theming).
-- `templates/<template-slug>/page-build-edit-overview.md`: step-by-step instructions for assembling or refreshing individual pages in the selected template family.
-- `templates/<template-slug>/page-examples/`: frozen copies of the baseline HTML layouts—use them as references before generating new pages.
-- `images/images-overview.md`: image sourcing, optimization, and social-share asset requirements.
+## Common Commands
+```bash
+python public-sites/scripts/bootstrap_horizon_site.py <site-slug>   # Horizon scaffold when missing
+python public-sites/scripts/extract_site.py <site-slug> <url>       # Legacy site scrape during intake
+pnpm run assets:sync                                                # Refresh hashed assets for Horizon
+public-sites/scripts/build-static-site.sh <site-slug>               # Export static bundle
+pnpm run assets:upload                                              # Upload assets to Bunny when enabled
+```
 
-## Need More Detail?
-
-- `templates/<template-slug>/template.html`: canonical markup reference for every section in that template family.
-- Deployment or operational changes should follow the conventions documented in the files above; avoid duplicating instructions across docs so each source stays authoritative.
-
-## Asset Pipeline Quickstart
-- Store raw imagery in `sites/<slug>/images/`; files keep their readable names and optional subfolders. The directory stays gitignored, so treat it as working storage rather than a committed artifact.
-- Run `pnpm run assets:sync` from the site directory (automatically triggered before `pnpm dev`, `pnpm build`, and `pnpm check`). It hashes content into `public/assets/` and regenerates `src/data/asset-manifest.json` so React components reference `getAssetUrl("filename.ext")`.
-- `public-sites/scripts/build-static-site.sh <slug>` now exports the Next.js `out/` folder into `public-sites/dist/<slug>/` and copies the manifest as `assets-manifest.json` for downstream CDN uploads.
-- `public-sites/scripts/build-static-site.sh <slug>` now exports the Next.js `out/` folder into `public-sites/dist/<slug>/`, copies the manifest as `assets-manifest.json`, and automatically sets `NEXT_PUBLIC_ASSET_BASE` to `${BUNNY_PULL_ZONE_BASE_URL}/${slug}` when a Bunny base URL is present in `.env` or `.env.defaults`.
-- To push assets to Bunny, set the environment described below and run `pnpm run assets:upload` after building; the helper uploads hashed files to storage and emits `public-sites/dist/<slug>/assets-manifest.cdn.json` with CDN URLs.
-
-### Bunny Upload Environment
-- `BUNNY_STORAGE_ZONE`: storage zone name (e.g. `prempage-assets`).
-- `BUNNY_STORAGE_HOST`: region host (e.g. `la.storage.bunnycdn.com` for the LA region).
-- `BUNNY_STORAGE_PASSWORD`: storage access key (treat as secret).
-- `BUNNY_PULL_ZONE_BASE_URL`: public base URL, such as `https://assets.prempage.com`.
-- Optional: `BUNNY_API_KEY` to purge CDN cache once uploads finish.
+Keep the guardrails as the single source of truth. When new rules surface, update `agents/guardrails.md` and link to the change here when helpful.

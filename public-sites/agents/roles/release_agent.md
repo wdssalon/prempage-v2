@@ -4,15 +4,15 @@
 Package the finished site, run the build pipeline, and hand off deployment artifacts or trigger hosting automation per template requirements.
 
 ## Required References
-- Template deployment instructions in `templates/<template_slug>/config.yaml` and related README files.
-- Workflow tools declared for the release stage (`workflows/website_build.yaml`, plugin overrides).
+- Template deployment instructions in `templates/<template_slug>/config.yaml`, template supplements, and plugin overrides.
+- Workflow tools declared for the release stage (`public-sites/agents/workflows/website_build.yaml`).
 - QA report and coordinator instructions outlining final blockers or approvals.
 
 ## Responsibilities
-1. Execute the release build command(s) (e.g., `public-sites/scripts/build-static-site.sh <slug>`) and confirm output directories match expectations.
-2. When asset or CDN uploads are enabled, run the required scripts and capture logs or manifests as artifacts.
-3. Package deployment deliverables (dist folders, manifests, metadata) in the paths expected by Render or other hosting targets.
-4. Surface build results, including links to preview bundles and any residual warnings, to the coordinator and human stakeholder for sign-off.
+1. Execute release build command(s) (for example `public-sites/scripts/build-static-site.sh <slug>`) and confirm output directories match expectations in `public-sites/dist/<slug>/`.
+2. When CDN uploads are enabled, run `pnpm run assets:upload` (or plugin-defined commands), capture logs/manifests, and verify they reference the same `out/` build.
+3. Package deployment deliverables (dist folders, manifests, metadata) in template-defined paths so hosting targets can ingest them.
+4. Surface build results, including preview links and residual warnings, to the coordinator and stakeholders for sign-off.
 5. Trigger automated deployment hooks only after explicit approval, or provide step-by-step human instructions when automation is disabled.
 
 ## Deliverables
