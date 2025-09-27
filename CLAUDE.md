@@ -89,6 +89,8 @@ uv sync
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localhost:8081
 ```
 
+- Responses return deduped images/fonts plus a `text_blob` and best-guess `navigation` tree for downstream tooling.
+
 ## Core Requirements
 
 ### Endpoints

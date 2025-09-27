@@ -40,6 +40,14 @@ class FontResource(_BaseModel):
     )
 
 
+class NavigationItem(_BaseModel):
+    title: str = Field(..., description="Display text for the navigation entry")
+    href: str | None = Field(None, description="Absolute URL or action for the entry")
+    children: list["NavigationItem"] = Field(
+        default_factory=list, description="Nested navigation items"
+    )
+
+
 class ExtractionResponse(_BaseModel):
     url: HttpUrl
     title: str | None
@@ -48,3 +56,10 @@ class ExtractionResponse(_BaseModel):
     text_blob: str = Field(..., description="All visible text concatenated into a single blob")
     images: list[ImageResource]
     fonts: list[FontResource]
+    navigation: list[NavigationItem] = Field(
+        default_factory=list,
+        description="Hierarchical navigation menu extracted from the page",
+    )
+
+
+NavigationItem.model_rebuild()

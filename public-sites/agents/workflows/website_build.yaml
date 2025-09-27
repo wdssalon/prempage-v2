@@ -31,7 +31,7 @@ stages:
     prompt: roles/brief_synthesizer.md
     requires: [workspace_ready]
     outputs: [client_overview_path, page_list]
-    gates: []
+    gates: [human_approval]
 
   - id: plan
     label: planning
@@ -99,7 +99,7 @@ stages:
     tools:
       - public-sites/scripts/build-static-site.sh {{ site_slug }} --dry-run
     outputs: [assembly_report]
-    gates: [human_approval]
+    gates: []
 
   - id: qa
     label: qa

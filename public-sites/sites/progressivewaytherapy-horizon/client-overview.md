@@ -102,8 +102,7 @@
 | Counseling for Anxiety | Gradient hero (Counseling focus) |  |  |  |  | 1 | Live page – 5 sections (hero, lived-experience cards, support pillars, session practices, FinalCTA). |
 | Therapy for Depression | Gradient hero (rest-focused) |  |  |  |  |  | Live page – hero mosaic, daily rhythm timeline, restorative anchors, session rhythm, gentle CTA (no shared FinalCTA). |
 | Counseling for Trauma | Gradient hero (grounded) |  |  |  |  |  | Live page – hero, grounding commitments, safety lattice, repair pathways, invitation CTA. |
-| Specialized Support | Planned horizon mosaic hero |  |  |  |  |  | Planned: 5 unique sections (identity mosaic hero, affirmation bands, specialty spotlights, care pathways, nurturing CTA). |
-| LGBTQIA+ Individual Therapy |  |  |  |  |  |  | Pending outline |
+| Specialized Support | Gradient hero (identity mosaic) |  |  |  |  |  | Live page – hero mosaic, affirmation bands, specialty spotlights, care pathways, nurturing CTA. |
 | Women's Issues |  |  |  |  |  |  | Pending outline |
 | Pregnancy Complications / Miscarriage |  |  |  |  |  |  | Pending outline |
 | Abortion Support |  |  |  |  |  |  | Pending outline |
@@ -163,6 +162,16 @@
 | individual-trauma--safety-lattice | Counseling for Trauma | Four-part safety lattice framework. |
 | individual-trauma--repair-pathways | Counseling for Trauma | Repair pathway step cards. |
 | individual-trauma--invitation | Counseling for Trauma | Closing invitation CTA for trauma support. |
+| specialized-support--hero | Specialized Support | Identity mosaic hero with overlapping gradients and tile stack. |
+| specialized-support--affirmations | Specialized Support | Gradient affirmation bands highlighting justice commitments. |
+| specialized-support--spotlights | Specialized Support | Specialty spotlight grid covering core community focuses. |
+| specialized-support--care-pathways | Specialized Support | Three-step care pathway stack (Align, Design, Sustain). |
+| specialized-support--cta | Specialized Support | Nurturing closing CTA with highlights column. |
+
+
+
+
+
 
 ## TODOs
 - [x] Move structure details from "Approved Website Structure" into the Horizon template starter so future projects inherit the expanded hierarchy.

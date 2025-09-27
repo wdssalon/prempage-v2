@@ -70,3 +70,88 @@ def test_compose_text_blob_concatenates_nodes() -> None:
     blob = extractor._compose_text_blob(nodes)
 
     assert blob == "First\n\nSecond"
+
+
+def test_extract_navigation_prefers_primary_menu() -> None:
+    html = """
+    <header>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li>
+            <a href="/services">Services</a>
+            <ul>
+              <li><a href="/services/therapy">Therapy</a></li>
+              <li><a href="/services/coaching">Coaching</a></li>
+            </ul>
+          </li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <footer>
+      <nav class="footer-nav">
+        <a href="/privacy">Privacy</a>
+      </nav>
+    </footer>
+    """
+    soup = BeautifulSoup(html, "html.parser")
+
+    items = extractor._extract_navigation(soup, base_url=httpx.URL("https://example.com"))
+
+    assert [item.title for item in items] == ["Home", "Services", "Contact"]
+    services = items[1]
+    assert [child.title for child in services.children] == ["Therapy", "Coaching"]
+    assert services.href == "https://example.com/services"
+
+
+def test_extract_navigation_handles_flat_containers() -> None:
+    html = """
+    <div class="navbar">
+      <a href="/home">Home</a>
+      <a href="/about">About</a>
+      <a href="tel:+15551234567">Call</a>
+    </div>
+    """
+    soup = BeautifulSoup(html, "html.parser")
+
+    items = extractor._extract_navigation(soup, base_url=httpx.URL("https://example.com"))
+
+    assert [item.title for item in items] == ["Home", "About", "Call"]
+    assert items[2].href == "tel:+15551234567"
+
+
+def test_dedupe_image_nodes_preserves_order() -> None:
+    nodes = [
+        extractor._ImageNode(src="https://example.com/logo.png", alt=None),
+        extractor._ImageNode(src="https://example.com/logo.png", alt="Logo"),
+        extractor._ImageNode(src="https://example.com/hero.jpg", alt=None),
+    ]
+
+    unique = extractor._dedupe_image_nodes(nodes)
+
+    assert [node.src for node in unique] == [
+        "https://example.com/logo.png",
+        "https://example.com/hero.jpg",
+    ]
+
+
+def test_dedupe_fonts_by_url() -> None:
+    fonts = [
+        extractor.FontCandidate(
+            url="https://cdn.com/font.woff", source="inline", stylesheet_url=None
+        ),
+        extractor.FontCandidate(
+            url="https://cdn.com/font.woff", source="stylesheet", stylesheet_url="https://cdn.com/styles.css"
+        ),
+        extractor.FontCandidate(
+            url="https://cdn.com/font2.woff", source="inline", stylesheet_url=None
+        ),
+    ]
+
+    deduped = extractor._dedupe_fonts(fonts)
+
+    assert [font.url for font in deduped] == [
+        "https://cdn.com/font.woff",
+        "https://cdn.com/font2.woff",
+    ]

@@ -166,7 +166,7 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
 
 ## Static Site Extractor
 
-Static Site Extractor (`services/static-site-extractor/`) exposes a FastAPI endpoint that fetches static pages and returns normalized text, image, and font metadata for downstream tooling. To run it locally:
+Static Site Extractor (`services/static-site-extractor/`) exposes a FastAPI endpoint that fetches static pages and returns normalized text, image, font metadata, and an inferred navigation tree for downstream tooling. To run it locally:
 
 1. Change into the service directory:
    ```bash
@@ -182,6 +182,8 @@ Static Site Extractor (`services/static-site-extractor/`) exposes a FastAPI endp
    ```
 
    The service listens on http://localhost:8081/ and responds to `/health`.
+
+- Responses include a `text_blob` for quick review, deduplicated image/font lists, and a `navigation` array that captures menu items and nesting when detected.
 
 ## Next Steps
 - Flesh out the Next.js Studio experience in `client/`, starting with the onboarding flow and layering real data.

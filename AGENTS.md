@@ -89,6 +89,8 @@ uv sync
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localhost:8081
 ```
 
+- Response payloads include deduplicated image/font lists, a flattened `text_blob`, and an inferred `navigation` hierarchy when menus are detected.
+
 ## Core Requirements
 
 ### Endpoints

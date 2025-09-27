@@ -26,6 +26,7 @@ only want the files copied.
 
 ### Visual system explorations
 - Populate `app/style-guide/data.ts` with three variants. The dynamic route at `/style-guide/[variant]` renders each exploration, and the root `/style-guide` page provides an overview.
+- Each variant also ships with a sample homepage at `/style-guide/<slug>/home` so you can preview the palette and tone in a full layout.
 - Variants must use unique slugs with the `style-guide-` prefix (e.g., `style-guide-sunrise-haven`, `style-guide-evergreen-balance`, `style-guide-nocturne-focus`). Update palette, typography, and hero samples to reflect the direction.
 - After saving variants, run `python agents/runner.py --site <slug> --template horizon style-guide --summary "<variant-overview>" --options "See /style-guide"` so automation state and `client-overview.md` stay in sync.
 

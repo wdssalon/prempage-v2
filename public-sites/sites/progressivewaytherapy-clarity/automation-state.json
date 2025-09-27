@@ -51,7 +51,9 @@
         "enabled": true,
         "extensions": {},
         "foreach": null,
-        "gates": [],
+        "gates": [
+          "human_approval"
+        ],
         "id": "intake",
         "label": "intake",
         "optional_requires": [],
@@ -168,9 +170,7 @@
         "enabled": true,
         "extensions": {},
         "foreach": null,
-        "gates": [
-          "human_approval"
-        ],
+        "gates": [],
         "id": "assembly",
         "label": "assembly",
         "optional_requires": [

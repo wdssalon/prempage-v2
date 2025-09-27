@@ -52,11 +52,16 @@ export default function StyleGuideIndexPage() {
                   ))}
                 </div>
               </div>
-              <div className="mt-6 flex items-center justify-between">
-                <Link href={`/style-guide/${variant.slug}`} className="btn-secondary text-sm">
-                  View variant
-                </Link>
-                <span className="text-xs uppercase tracking-wide text-muted-foreground">Slug: {variant.slug}</span>
+              <div className="mt-6 space-y-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Link href={`/style-guide/${variant.slug}`} className="btn-primary">
+                    View {variant.title}
+                  </Link>
+                  <Link href={`/style-guide/${variant.slug}/home`} className="btn-secondary">
+                    Preview sample home
+                  </Link>
+                </div>
+                <span className="block text-xs uppercase tracking-wide text-muted-foreground">Slug: {variant.slug}</span>
               </div>
           </article>
           ))}

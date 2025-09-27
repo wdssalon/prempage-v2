@@ -27,6 +27,7 @@ This guide explains how to build or update pages for the Horizon template—the 
   - Typography guidance, voice notes, and layout recommendations.
   - A hero copy sample with CTA labels that will map cleanly to a draft home page.
 - The dynamic route at `/style-guide/[variant]` uses the data file to render each exploration automatically. Confirm the root index (`/style-guide`) lists all three variants with descriptive summaries.
+- For each exploration, create a companion sample homepage under `/style-guide/<slug>/home` so reviewers can see the palette and voice applied to a full layout.
 - Do **not** maintain the old `/style-guide/options` deck. Instead, ask the human reviewer to browse each variant URL and provide feedback directly on the fully rendered exploration.
 - Once the explorations are saved, run `python agents/runner.py --site <slug> --template horizon style-guide --summary "<variant-notes>" --options "See /style-guide for variant list"` so `automation-state.json` captures the work and the `client-overview.md > ## Visual System` section links back to the generated pages.
 - After the coordinator records the three variants and updates the client overview, skeleton building can begin without waiting for human gating (humans can react asynchronously to the rendered variants).

@@ -80,26 +80,26 @@ const MobileNavigation = ({ sectionId }: MobileNavigationProps) => {
       title: "Services",
       parentId: "main",
       items: [
-        {
-          id: "individual",
-          label: "Individual Therapy",
-          children: [
-            { id: "general", label: "General Individual Therapy", href: "/services/individual-therapy/general" },
-            { id: "anxiety", label: "Counseling for Anxiety", href: "#" },
-            { id: "depression", label: "Therapy for Depression", href: "#" },
-            { id: "trauma-counseling", label: "Counseling for Trauma", href: "#" },
-          ],
-        },
-        {
-          id: "specialized",
-          label: "Specialized Support",
-          children: [
-            { id: "lgbtq", label: "LGBTQIA+ Individual Therapy", href: "#" },
-            { id: "womens", label: "Women's Issues", href: "#" },
-            { id: "pregnancy", label: "Pregnancy Complications / Miscarriage", href: "#" },
-            { id: "abortion", label: "Abortion", href: "#" },
-          ],
-        },
+            {
+              id: "individual",
+              label: "Individual Therapy",
+              children: [
+                { id: "general", label: "General Individual Therapy", href: "/services/individual-therapy/general" },
+                { id: "anxiety", label: "Counseling for Anxiety", href: "/services/individual-therapy/anxiety" },
+                { id: "depression", label: "Therapy for Depression", href: "/services/individual-therapy/depression" },
+                { id: "trauma-counseling", label: "Counseling for Trauma", href: "/services/individual-therapy/trauma" },
+              ],
+            },
+            {
+              id: "specialized",
+              label: "Specialized Support",
+              children: [
+                { id: "lgbtq", label: "LGBTQIA+ Individual Therapy", href: "#" },
+                { id: "womens", label: "Women's Issues", href: "#" },
+                { id: "pregnancy", label: "Pregnancy Complications / Miscarriage", href: "#" },
+                { id: "abortion", label: "Abortion", href: "#" },
+              ],
+            },
         {
           id: "trauma",
           label: "Trauma & Recovery",
@@ -129,9 +129,9 @@ const MobileNavigation = ({ sectionId }: MobileNavigationProps) => {
       parentId: "services",
       items: [
         { id: "general", label: "General Individual Therapy", href: "/services/individual-therapy/general" },
-        { id: "anxiety", label: "Counseling for Anxiety", href: "#" },
-        { id: "depression", label: "Therapy for Depression", href: "#" },
-        { id: "trauma-counseling", label: "Counseling for Trauma", href: "#" },
+        { id: "anxiety", label: "Counseling for Anxiety", href: "/services/individual-therapy/anxiety" },
+        { id: "depression", label: "Therapy for Depression", href: "/services/individual-therapy/depression" },
+        { id: "trauma-counseling", label: "Counseling for Trauma", href: "/services/individual-therapy/trauma" },
       ],
     },
     {

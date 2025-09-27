@@ -1,15 +1,11 @@
-import { Metadata } from "next";
 import Link from "next/link";
-import { getVariantBySlug, STYLE_VARIANTS } from "../data";
+import type { Metadata } from "next";
+import { getVariantBySlug } from "./data";
 
-export const dynamicParams = false;
+type VariantSlug = string;
 
-export function generateStaticParams() {
-  return STYLE_VARIANTS.map((variant) => ({ variant: variant.slug }));
-}
-
-export function generateMetadata({ params }: { params: { variant: string } }): Metadata {
-  const variant = getVariantBySlug(params.variant);
+export function createVariantMetadata(slug: VariantSlug): Metadata {
+  const variant = getVariantBySlug(slug);
   return {
     title: `${variant.title} · Horizon Style Guide`,
     description: variant.summary,
@@ -21,8 +17,8 @@ export function generateMetadata({ params }: { params: { variant: string } }): M
   };
 }
 
-export default function StyleGuideVariantPage({ params }: { params: { variant: string } }) {
-  const variant = getVariantBySlug(params.variant);
+export function VariantPageContent({ slug }: { slug: VariantSlug }) {
+  const variant = getVariantBySlug(slug);
 
   return (
     <main className="min-h-screen bg-background py-12">
@@ -118,6 +114,22 @@ export default function StyleGuideVariantPage({ params }: { params: { variant: s
               ))}
             </ul>
           </article>
+        </section>
+
+        <section className="section-wrapper text-center space-y-4">
+          <h2 className="heading text-3xl">Want to see it in action?</h2>
+          <p className="text mx-auto max-w-2xl">
+            Open the sample homepage crafted for this exploration to preview how the palette, typography, and voice come
+            together in a full page layout.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link href={`/style-guide/${slug}/home`} className="btn-primary">
+              View sample homepage
+            </Link>
+            <Link href="/style-guide" className="btn-ghost-link">
+              Back to all variants
+            </Link>
+          </div>
         </section>
       </div>
     </main>
