@@ -61,7 +61,7 @@ Run these from `client/`:
 - When adding dependencies, run `uv add <package>` from the `backend/` directory to keep the lockfile in sync.
 
 ## Render Automation
-- Use `scripts/render_apply.py` to sync static-site services with their `render.yaml` blueprints.
+- Use `scripts/render_apply.py` to sync static-site services with their `render.yaml` blueprints (format mirrors Render's current "type: web" + "runtime: static" schema).
 - Export `RENDER_API_KEY` (and optionally override `RENDER_API_URL`).
 - The helper depends on `requests` and `PyYAML`; install them with `pip install -r requirements.txt` (if a shared file exists) or `pip install requests pyyaml`.
 - Example:

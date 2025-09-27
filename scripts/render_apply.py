@@ -1,34 +1,49 @@
 #!/usr/bin/env python3
-"""
-Sync Render static-site settings from a Blueprint-like YAML (subset).
-- Reads services of type: web with runtime: static
-- Applies buildCommand, staticPublishPath, rootDir, branch (if present)
-- Replaces env vars (careful: destructive)
-- Can trigger a deploy
-"""
+"""Sync Render static-site settings from a blueprint-style YAML file."""
+
 from __future__ import annotations
-import argparse, json, os, sys
+
+import argparse
+import json
+import os
+import sys
 from typing import Any, Dict, List, Optional
 
 try:
-    import yaml  # pip install pyyaml
-    import requests  # pip install requests
-except ImportError as e:
-    sys.exit("Install deps first: pip install pyyaml requests")
+    import requests
+    import yaml
+except ImportError as error:  # pragma: no cover - handled at runtime
+    sys.exit("Install dependencies first: pip install pyyaml requests")
 
 API_ROOT = os.environ.get("RENDER_API_URL", "https://api.render.com/v1")
-API_KEY = os.environ.get("RENDER_API_KEY")
-HDRS = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
 
-def die(msg: str) -> None:
-    sys.exit(msg)
 
-def api(method: str, path: str, **kw) -> requests.Response:
-    r = requests.request(method, f"{API_ROOT}{path}", headers=HDRS, timeout=30, **kw)
-    if r.status_code == 401:
+def die(message: str) -> None:
+    sys.exit(message)
+
+
+def auth_headers() -> Dict[str, str]:
+    api_key = os.environ.get("RENDER_API_KEY")
+    if not api_key:
+        die("RENDER_API_KEY is required")
+    return {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+
+def api(method: str, path: str, **kwargs: Any) -> requests.Response:
+    response = requests.request(
+        method,
+        f"{API_ROOT}{path}",
+        headers=auth_headers(),
+        timeout=30,
+        **kwargs,
+    )
+    if response.status_code == 401:
         die("Unauthorized (401). Check RENDER_API_KEY.")
-    r.raise_for_status()
-    return r
+    response.raise_for_status()
+    return response
 
 def list_services(service_type: Optional[str] = None, name: Optional[str] = None) -> List[Dict[str, Any]]:
     params: Dict[str, Any] = {}
@@ -36,37 +51,33 @@ def list_services(service_type: Optional[str] = None, name: Optional[str] = None
         params["type"] = service_type
     if name:
         params["name"] = name
-    r = api("GET", "/services", params=params)
-    payload = r.json()
-    # Extract the actual service objects from the nested structure
+
+    payload = api("GET", "/services", params=params).json()
+    items: List[Dict[str, Any]] = []
+
     if isinstance(payload, list):
-        services = []
-        for item in payload:
-            if "service" in item:
-                services.append(item["service"])
-            else:
-                services.append(item)
-        return services
+        source = payload
     else:
-        data = payload.get("data", [])
-        services = []
-        for item in data:
-            if "service" in item:
-                services.append(item["service"])
-            else:
-                services.append(item)
-        return services
+        source = payload.get("data", [])
+
+    for entry in source:
+        if isinstance(entry, dict) and "service" in entry:
+            items.append(entry["service"])
+        else:
+            items.append(entry)
+
+    return items
 
 def get_service_by_name(name: str, service_type: Optional[str] = None) -> Dict[str, Any]:
-    svcs = list_services(service_type=service_type, name=name)
-    matches = [s for s in svcs if s.get("name") == name]
+    services = list_services(service_type=service_type, name=name)
+    matches = [service for service in services if service.get("name") == name]
     if not matches:
         die(f"Service '{name}' not found.")
     if len(matches) > 1:
         die(f"Multiple services named '{name}' found; use unique names.")
     return matches[0]
 
-def patch_service(service_id: str, payload: Dict[str, Any], dry_run=False) -> None:
+def patch_service(service_id: str, payload: Dict[str, Any], *, dry_run: bool = False) -> None:
     if not payload:
         return
     if dry_run:
@@ -74,17 +85,22 @@ def patch_service(service_id: str, payload: Dict[str, Any], dry_run=False) -> No
         return
     api("PATCH", f"/services/{service_id}", json=payload)
 
-def replace_env_vars(service_id: str, env_vars: List[Dict[str, str]], dry_run=False) -> None:
+def replace_env_vars(
+    service_id: str,
+    env_vars: List[Dict[str, str]],
+    *,
+    dry_run: bool = False,
+) -> None:
     if env_vars is None:
         return
     # The API expects just an array, not wrapped in envVars
-    body = [{"key": v["key"], "value": str(v.get("value", ""))} for v in env_vars]
+    body = [{"key": var["key"], "value": str(var.get("value", ""))} for var in env_vars]
     if dry_run:
         print(json.dumps({"PUT": f"/services/{service_id}/env-vars", "payload": body}, indent=2))
         return
     api("PUT", f"/services/{service_id}/env-vars", json=body)
 
-def trigger_deploy(service_id: str, dry_run=False) -> None:
+def trigger_deploy(service_id: str, *, dry_run: bool = False) -> None:
     if dry_run:
         print(json.dumps({"POST": f"/services/{service_id}/deploys", "payload": {}}, indent=2))
         return
@@ -117,28 +133,39 @@ def build_update_payload(svc: Dict[str, Any]) -> Dict[str, Any]:
     return payload
 
 def apply(path: str, deploy: bool, dry_run: bool) -> None:
-    if not API_KEY:
-        die("RENDER_API_KEY is required")
-    blue = load_yaml_blueprint(path)
-    for svc in blue:
+    services = load_yaml_blueprint(path)
+    for svc in services:
         name = svc["name"]
         print(f"Applying to service: {name}")
         remote = get_service_by_name(name, service_type=None)  # API uses generic /services
         payload = build_update_payload(svc)
         patch_service(remote["id"], payload, dry_run=dry_run)
         # Env vars in Blueprint live under envVars
-        envs = svc.get("envVars") or []
-        if envs:
-            replace_env_vars(remote["id"], envs, dry_run=dry_run)
+        env_vars = svc.get("envVars") or []
+        if env_vars:
+            replace_env_vars(remote["id"], env_vars, dry_run=dry_run)
         if deploy:
             trigger_deploy(remote["id"], dry_run=dry_run)
 
 def main(argv: Optional[List[str]] = None) -> None:
     ap = argparse.ArgumentParser(description="Sync static-site settings to Render")
-    ap.add_argument("yaml_path", help="Path to render.yaml-like file")
+    ap.add_argument("yaml_path", nargs="?", help="Path to render.yaml-like file")
     ap.add_argument("--deploy", action="store_true", help="Trigger a deploy after updates")
     ap.add_argument("--dry-run", action="store_true", help="Print requests without sending")
+    ap.add_argument("--list", action="store_true", help="List available services and exit")
     args = ap.parse_args(argv)
+    if args.list:
+        services = list_services()
+        if not services:
+            print("No services found")
+            return
+        for service in services:
+            print(f"{service.get('name')} (id={service.get('id')})")
+        return
+
+    if not args.yaml_path:
+        die("YAML path is required unless --list is supplied")
+
     apply(args.yaml_path, deploy=args.deploy, dry_run=args.dry_run)
 
 if __name__ == "__main__":
