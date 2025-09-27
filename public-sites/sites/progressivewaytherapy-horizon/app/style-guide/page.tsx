@@ -223,7 +223,7 @@ const typography: TypographyToken[] = [
     classes: ["text", "is-contrast"],
     sample: "Optimized for low-light overlays",
     guidance: "Use when copy sits on dark gradients or photography. Combine with `.heading.is-on-dark` or `.btn-contrast`.",
-    previewClassName: "bg-background",
+    previewClassName: "bg-deep-forest",
   },
 ];
 
@@ -454,9 +454,9 @@ const surfaceTokens: SurfaceToken[] = [
     usage: "Seasonal launches, workshop promos, or content needing extra attention.",
     content: (
       <div className="space-y-2">
-        <p className="heading is-eyebrow">IN FOCUS</p>
+        <p className="heading is-eyebrow text-sage-green">IN FOCUS</p>
         <p className="heading is-feature">Community Workshops</p>
-        <p className="text is-small">Layer over darker sections for a sunlit break in pacing.</p>
+        <p className="text is-small text-sage-green/90">Layer over darker sections for a sunlit break in pacing.</p>
       </div>
     ),
   },

@@ -27,7 +27,7 @@ Short answer: same repo, separate deployables. Make a single Studio front-end fo
 - Prefer a preview domain such as `preview--{slug}.prempagepro.com` (live site stays read-only).
 - Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
 
-**Migration plan:** Boot the Next.js Studio in `client/` after parking the existing React app in `client-old/`. Keep the React + Vite workspace available until the Studio reaches feature parity, then retire it. App A is the immediate focus; App B follows once the Studio shell is stable.
+**Status:** The Next.js Studio lives in `client/`; the legacy Vite app has been retired so all frontend work now happens inside the Studio workspace. App B (overlay bundle) is the next focus once the Studio shell solidifies.
 
 ## Studio Frontend (Next.js)
 1. Change into the Studio workspace:
@@ -60,36 +60,6 @@ Run these from `client/`:
 - `pnpm lint` – run ESLint against the project source.
 - `pnpm typecheck` – run the TypeScript compiler in no-emit mode.
 - `pnpm openapi:types` – regenerate typed API bindings from the FastAPI OpenAPI schema.
-
-## Legacy Frontend (React + Vite)
-The previous React workspace now lives in `client-old/` for reference while the Studio catches up.
-
-1. Change into the legacy workspace:
-   ```bash
-   cd client-old
-   ```
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-3. Start the development server:
-   ```bash
-   pnpm dev
-   ```
-   The app runs at http://localhost:5173.
-4. Build for production:
-   ```bash
-   pnpm build
-   ```
-
-### Legacy Scripts
-Run these from `client-old/`:
-- `pnpm dev` – start the Vite dev server with React Fast Refresh.
-- `pnpm build` – create a production build in the `dist/` directory.
-- `pnpm preview` – preview the production build locally.
-- `pnpm lint` – run ESLint against the project source.
-- `pnpm typecheck` – run the TypeScript compiler in no-emit mode.
-- `pnpm openapi:types` – regenerate typed API bindings while the legacy views remain.
 
 ## Backend (FastAPI + uv)
 1. Change into the backend project:
@@ -135,7 +105,6 @@ Run these from `client-old/`:
 
 ## Project Structure
 - `client/` – Next.js Studio workspace (App Router, Tailwind, TypeScript).
-- `client-old/` – Legacy React + Vite app kept for reference during the migration.
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
 - `services/` – Standalone microservices. Currently contains `form-relay/` (FastAPI service for static-site form submissions).
 - `public-sites/` – Static site toolkit and exports. Contains process docs (`generate-website.md`, `client-overview.md`, `AGENTS.md`), reusable templates under `template/`, and production-ready HTML/CSS/JS in `public-sites/sites/<site-slug>/` when a brand is ready to ship.
@@ -158,7 +127,7 @@ Run these from `client-old/`:
   cd backend
   uv run python export_openapi.py
   ```
-- Generate TypeScript bindings by running from the active frontend workspace (`client/` for the Next.js Studio; `client-old/` while the legacy React app remains):
+- Generate TypeScript bindings from the Studio workspace (`client/`):
   ```bash
   pnpm openapi:types
   ```
@@ -185,8 +154,7 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
    A health check is available at http://localhost:8080/health.
 
 ## Next Steps
-- Flesh out the Next.js Studio experience in `client/`, starting with the onboarding flow and porting useful UI from `client-old/`.
-- Keep `client-old/` in sync only for critical fixes while the Studio reaches parity, then retire it.
+- Flesh out the Next.js Studio experience in `client/`, starting with the onboarding flow and layering real data.
 - Integrate assets or templates from `prempage-webflow/` into the Studio UI.
 - Flesh out API routes in `backend/main.py` and introduce routers/modules as features grow.
 - Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
@@ -307,7 +275,7 @@ For day-to-day development when only source code changes:
 docker compose up -d
 ```
 
-The Studio frontend lives at http://localhost:3001, the main FastAPI backend responds at http://localhost:8000, and the form relay service listens at http://localhost:8080 (the legacy Vite app remains at http://localhost:5173 when started separately).
+The Studio frontend lives at http://localhost:3001, the main FastAPI backend responds at http://localhost:8000, and the form relay service listens at http://localhost:8080.
 
 Code changes on the host trigger hot reloads inside the containers (`pnpm dev` and `uvicorn --reload`).
 
