@@ -13,6 +13,7 @@ This document is the control center for LLM-driven work in the `public-sites` wo
 - `templates/<template-slug>/page-examples/`: snapshot copies of the starter HTML pages—review them for layout inspiration before generating fresh output.
 - `sites/<slug>/client-overview.md`: the active project brief and build tracker for each live site. Derive the template kit from the site slug suffix (e.g., `*-clarity`, `*-horizon`) or the co-located configuration files when you need to pull assets from `templates/<template-slug>/`.
 - `public-sites/scripts/bootstrap_horizon_site.py`: utility that copies the Horizon Next.js boilerplate into a site directory and runs `pnpm install`. Use it during repo prep whenever the Horizon workspace is missing.
+- `public-sites/scripts/extract_site.py`: helper that posts to the `static-site-extractor` service and stores the structured JSON response under `sites/<slug>/artifacts/`. Run it during Intake when a legacy site URL is provided.
 
 Keep these sources authoritative—do not duplicate instructions elsewhere.
 

@@ -103,9 +103,12 @@ const Navigation = () => {
                         <h3 className="font-serif font-semibold text-sage-green mb-2">Specialized Support</h3>
                         <ul className="space-y-1 text-sm">
                           <li>
-                            <a href="/#services" className="text-muted-foreground hover:text-soft-purple transition-colors">
-                              LGBTQIA+ Individual Therapy
-                            </a>
+                            <Link
+                              href="/services/specialized-support/lgbtq"
+                              className="text-muted-foreground hover:text-soft-purple transition-colors"
+                            >
+                              LGBTQIA+
+                            </Link>
                           </li>
                           <li>
                             <a href="/#services" className="text-muted-foreground hover:text-soft-purple transition-colors">

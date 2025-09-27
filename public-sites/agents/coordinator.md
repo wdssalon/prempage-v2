@@ -16,7 +16,7 @@ Guide the website build workflow end-to-end, enforce repository guardrails from 
 
 ## Stage Responsibilities
 - **Repo Prep:** confirm workspace integrity (no untracked template files, correct template slug, assets fetched) before authorizing downstream work. Load the resolved stage sequence from `automation-state.json` and note which stages are enabled.
-- **Intake:** review incoming brief, instruct the `brief_synthesizer` to produce `client-overview.md` and a candidate page hierarchy, and secure human approval before moving to planning.
+- **Intake:** review incoming brief, instruct the `brief_synthesizer` to produce `client-overview.md` and a candidate page hierarchy, and secure human approval before moving to planning. When the client supplies a legacy URL, call `python public-sites/scripts/extract_site.py <site_slug> <url>` so the artifacts folder contains a structured JSON snapshot the brief synthesizer can reference.
 - **Planning:** validate the approved scope, create or update the section usage tracker, and distribute template catalogs or trackers to builders.
 - **Visual System (optional):** when enabled by the workflow plugins, generate three style-guide variants (unique slugs under `/style-guide/<variant>`), log notes in `client-overview.md`, and clear the stage without waiting for human approval.
 - **Skeletons & Copy:** coordinate `skeleton_builder` and `copy_drafter` agents page-by-page, ensuring trackers remain synchronized with the build sequence.

@@ -60,6 +60,7 @@ Phase: QA Check-in
    - Log the brand’s visual tokens: note the approved palette, typography stack, and any icon style guidance supplied by the user. This becomes the reference for later theming decisions.
    - Unless stated otherwise by the user, use the content provided to asertain the writing voice, tonal guardrails, and key phrases as the foundation for the copy/content/style which the LLM will use across the new website. 
    - Normalize the document to ASCII characters only—replace smart quotes, em dashes, or other Unicode glyphs with ASCII equivalents so automated tooling can parse the file consistently.
+   - When you receive a legacy site URL, call the extractor service before writing the overview: `python public-sites/scripts/extract_site.py <site-slug> <url>`. The JSON saved under `sites/<slug>/artifacts/` provides navigation hints, copy tone, imagery, and font references for downstream phases.
 3. **Create the page list**
    - Identify every page the site requires (home, about, services, blog landing, detail pages, etc.), referencing the brief and any legacy URLs.
    - When outlining navigation, default to treating any parent item with child pages as a navigation-only trigger. Do not plan a standalone HTML page for that parent unless the user explicitly requests one.

@@ -103,6 +103,7 @@
 | Therapy for Depression | Gradient hero (rest-focused) |  |  |  |  |  | Live page – hero mosaic, daily rhythm timeline, restorative anchors, session rhythm, gentle CTA (no shared FinalCTA). |
 | Counseling for Trauma | Gradient hero (grounded) |  |  |  |  |  | Live page – hero, grounding commitments, safety lattice, repair pathways, invitation CTA. |
 | Specialized Support | Gradient hero (identity mosaic) |  |  |  |  |  | Live page – hero mosaic, affirmation bands, specialty spotlights, care pathways, nurturing CTA. |
+| LGBTQIA+ Individual Therapy | Gradient hero (identity mosaic) |  |  |  |  |  | Live page – hero, affirmation pledge, spectrum spotlights, liberation loops, nurturing CTA. |
 | Women's Issues |  |  |  |  |  |  | Pending outline |
 | Pregnancy Complications / Miscarriage |  |  |  |  |  |  | Pending outline |
 | Abortion Support |  |  |  |  |  |  | Pending outline |
@@ -167,6 +168,11 @@
 | specialized-support--spotlights | Specialized Support | Specialty spotlight grid covering core community focuses. |
 | specialized-support--care-pathways | Specialized Support | Three-step care pathway stack (Align, Design, Sustain). |
 | specialized-support--cta | Specialized Support | Nurturing closing CTA with highlights column. |
+| individual-lgbtq--hero | LGBTQIA+ Individual Therapy | Identity mosaic hero with pronoun chips and gradients. |
+| individual-lgbtq--affirmation-pledge | LGBTQIA+ Individual Therapy | Liberation affirmation pledge split layout. |
+| individual-lgbtq--spectrum-spotlights | LGBTQIA+ Individual Therapy | Specialty spotlights grid covering core community focuses. |
+| individual-lgbtq--liberation-loops | LGBTQIA+ Individual Therapy | Three-phase liberation loop cards. |
+| individual-lgbtq--cta | LGBTQIA+ Individual Therapy | Closing CTA with resource highlights column. |
 
 
 

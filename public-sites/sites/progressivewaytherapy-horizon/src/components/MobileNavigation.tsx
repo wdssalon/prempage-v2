@@ -94,7 +94,7 @@ const MobileNavigation = ({ sectionId }: MobileNavigationProps) => {
               id: "specialized",
               label: "Specialized Support",
               children: [
-                { id: "lgbtq", label: "LGBTQIA+ Individual Therapy", href: "#" },
+                { id: "lgbtq", label: "LGBTQIA+", href: "/services/specialized-support/lgbtq" },
                 { id: "womens", label: "Women's Issues", href: "#" },
                 { id: "pregnancy", label: "Pregnancy Complications / Miscarriage", href: "#" },
                 { id: "abortion", label: "Abortion", href: "#" },
@@ -139,7 +139,7 @@ const MobileNavigation = ({ sectionId }: MobileNavigationProps) => {
       title: "Specialized Support",
       parentId: "services",
       items: [
-        { id: "lgbtq", label: "LGBTQIA+ Individual Therapy", href: "#" },
+        { id: "lgbtq", label: "LGBTQIA+", href: "/services/specialized-support/lgbtq" },
         { id: "womens", label: "Women's Issues", href: "#" },
         { id: "pregnancy", label: "Pregnancy Complications / Miscarriage", href: "#" },
         { id: "abortion", label: "Abortion", href: "#" },
