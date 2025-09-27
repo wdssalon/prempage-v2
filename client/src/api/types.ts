@@ -3,85 +3,102 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/health": {
-    /**
-     * Health check
-     * @description Return operational metadata used by availability probes.
-     */
-    get: operations["health_health_get"];
-  };
-}
-
-export type webhooks = Record<string, never>;
-
-export interface components {
-  schemas: {
-    /**
-     * HealthCheckResponse
-     * @description Standard payload returned by the health check endpoint.
-     */
-    HealthCheckResponse: {
-      /**
-       * Status
-       * @enum {string}
-       */
-      status: "ok" | "degraded" | "error";
-      service: components["schemas"]["ServiceMetadata"];
-      /**
-       * Message
-       * @default Service is healthy
-       */
-      message?: string;
-      /**
-       * Timestamp
-       * Format: date-time
-       */
-      timestamp?: string;
-      /**
-       * Uptime Seconds
-       * @description Number of seconds the service has been running
-       * @default 0
-       */
-      uptime_seconds?: number;
-    };
-    /**
-     * ServiceMetadata
-     * @description Metadata describing the running backend service.
-     */
-    ServiceMetadata: {
-      /** Name */
-      name: string;
-      /** Version */
-      version: string;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
-}
-
-export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
-export interface operations {
-
-  /**
-   * Health check
-   * @description Return operational metadata used by availability probes.
-   */
-  health_health_get: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HealthCheckResponse"];
+    "/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-      };
+        /**
+         * Health check
+         * @description Return operational metadata used by availability probes.
+         */
+        get: operations["health_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-  };
+}
+export type webhooks = Record<string, never>;
+export interface components {
+    schemas: {
+        /**
+         * HealthCheckResponse
+         * @description Standard payload returned by the health check endpoint.
+         */
+        HealthCheckResponse: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "degraded" | "error";
+            service: components["schemas"]["ServiceMetadata"];
+            /**
+             * Environment
+             * @default dev
+             * @enum {string}
+             */
+            environment: "dev" | "staging" | "prod";
+            /**
+             * Message
+             * @default Service is healthy
+             */
+            message: string;
+            /**
+             * Timestamp
+             * Format: date-time
+             */
+            timestamp?: string;
+            /**
+             * Uptime Seconds
+             * @description Number of seconds the service has been running
+             * @default 0
+             */
+            uptime_seconds: number;
+        };
+        /**
+         * ServiceMetadata
+         * @description Metadata describing the running backend service.
+         */
+        ServiceMetadata: {
+            /** Name */
+            name: string;
+            /** Version */
+            version: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
+}
+export type $defs = Record<string, never>;
+export interface operations {
+    health_health_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthCheckResponse"];
+                };
+            };
+        };
+    };
 }

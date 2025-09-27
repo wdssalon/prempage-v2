@@ -19,6 +19,7 @@ class HealthCheckResponse(BaseModel):
 
     status: Literal["ok", "degraded", "error"]
     service: ServiceMetadata
+    environment: Literal["dev", "staging", "prod"] = "dev"
     message: str = "Service is healthy"
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     uptime_seconds: float = Field(

@@ -1,6 +1,6 @@
 # Prempage V2
 
-This repository hosts the Prempage V2 front end (React + Vite), a companion FastAPI backend, and the static-site workspace used to build and deploy the static sites. All three live side-by-side so the whole project lifecycle—from app development to static marketing exports—travels in a single repo.
+This repository hosts the Prempage V2 workspaces: the current React + Vite client, the FastAPI backend, and the static-site tooling used to build and deploy static sites. We're transitioning to a two-deployable front-end model built around a Next.js Studio app and a standalone editor overlay bundle so the whole project lifecycle—from app development to static exports—remains in a single repo.
 
 ## Prerequisites
 - Node.js 24 or newer (Corepack with pnpm ≥ 8)
@@ -9,8 +9,28 @@ This repository hosts the Prempage V2 front end (React + Vite), a companion Fast
 - Prefer Python for internal automation scripts. If another language is required, document the reasoning in the PR or commit description.
 - [direnv](https://direnv.net/) (optional but recommended for loading environment variables)
 
-## Frontend (React + Vite)
-1. Change into the frontend workspace:
+## Frontend Roadmap
+
+Short answer: same repo, separate deployables. Make a single Studio front-end for onboarding and operations, and ship the Lovable-style editor as a separate overlay bundle that the Studio loads into a preview iframe (or that a browser extension injects). This keeps the UX cohesive while isolating responsibilities.
+
+### App A — Studio (Next.js web app)
+- Auth, org/projects, onboarding (enter URL -> pick/select photos -> upload), asset library, build/publish, history, roles.
+- Hosts the editor shell UI (left sidebar: pages/sections/assets; right: properties; top: Edit toggle).
+- Routes like `studio.prempage.com/{org}/{project}`.
+
+### App B — Editor Overlay (standalone JS bundle)
+- Pure overlay SDK: hover highlights, selection, inline editors, selector/fingerprint logic, patch queue.
+- No routing or stateful pages; exports `initEditor({ container, tools, auth })`.
+- Loaded by Studio into the preview iframe via `<script src=".../overlay.js">` with `postMessage` RPC, and can ship as a browser extension later using the same core.
+
+### Preview Target — site under edit
+- Prefer a preview domain such as `preview--{slug}.prempagepro.com` (live site stays read-only).
+- Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
+
+**Migration plan:** Boot the Next.js Studio in `client/` after parking the existing React app in `client-old/`. Keep the React + Vite workspace available until the Studio reaches feature parity, then retire it. App A is the immediate focus; App B follows once the Studio shell is stable.
+
+## Studio Frontend (Next.js)
+1. Change into the Studio workspace:
    ```bash
    cd client
    ```
@@ -22,19 +42,54 @@ This repository hosts the Prempage V2 front end (React + Vite), a companion Fast
    ```bash
    pnpm dev
    ```
-   The app will be available at the URL printed in the terminal (defaults to http://localhost:5173).
+   The app listens on http://localhost:3001 by default. Set `NEXT_PUBLIC_API_BASE_URL` if your backend runs elsewhere.
+4. Build for production:
+   ```bash
+   pnpm build
+   ```
+5. Preview the production build locally:
+   ```bash
+   pnpm start
+   ```
+
+### Studio Scripts
+Run these from `client/`:
+- `pnpm dev` – start the Next.js dev server.
+- `pnpm build` – create an optimized production build.
+- `pnpm start` – serve the production build locally.
+- `pnpm lint` – run ESLint against the project source.
+- `pnpm typecheck` – run the TypeScript compiler in no-emit mode.
+- `pnpm openapi:types` – regenerate typed API bindings from the FastAPI OpenAPI schema.
+
+## Legacy Frontend (React + Vite)
+The previous React workspace now lives in `client-old/` for reference while the Studio catches up.
+
+1. Change into the legacy workspace:
+   ```bash
+   cd client-old
+   ```
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+3. Start the development server:
+   ```bash
+   pnpm dev
+   ```
+   The app runs at http://localhost:5173.
 4. Build for production:
    ```bash
    pnpm build
    ```
 
-### Frontend Scripts
-Run these from `client/`:
+### Legacy Scripts
+Run these from `client-old/`:
 - `pnpm dev` – start the Vite dev server with React Fast Refresh.
 - `pnpm build` – create a production build in the `dist/` directory.
 - `pnpm preview` – preview the production build locally.
 - `pnpm lint` – run ESLint against the project source.
 - `pnpm typecheck` – run the TypeScript compiler in no-emit mode.
+- `pnpm openapi:types` – regenerate typed API bindings while the legacy views remain.
 
 ## Backend (FastAPI + uv)
 1. Change into the backend project:
@@ -79,7 +134,8 @@ Run these from `client/`:
 - Adjust or extend `.envrc` locally as needed; the file is ignored by git.
 
 ## Project Structure
-- `client/` – React frontend root with entry files (`index.html`, `src/main.tsx`, `src/App.tsx`), global styles, static assets under `client/public/`, and all frontend tooling (`package.json`, `tsconfig.json`, `vite.config.ts`, `eslint.config.js`).
+- `client/` – Next.js Studio workspace (App Router, Tailwind, TypeScript).
+- `client-old/` – Legacy React + Vite app kept for reference during the migration.
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
 - `services/` – Standalone microservices. Currently contains `form-relay/` (FastAPI service for static-site form submissions).
 - `public-sites/` – Static site toolkit and exports. Contains process docs (`generate-website.md`, `client-overview.md`, `AGENTS.md`), reusable templates under `template/`, and production-ready HTML/CSS/JS in `public-sites/sites/<site-slug>/` when a brand is ready to ship.
@@ -102,11 +158,11 @@ Run these from `client/`:
   cd backend
   uv run python export_openapi.py
   ```
-- Generate TypeScript bindings by running from `client/`:
+- Generate TypeScript bindings by running from the active frontend workspace (`client/` for the Next.js Studio; `client-old/` while the legacy React app remains):
   ```bash
   pnpm openapi:types
   ```
-  This writes `client/src/api/types.ts` via `openapi-typescript`.
+  The command writes `src/api/types.ts` via `openapi-typescript` so the UI always reflects the backend schema.
 - Use the generated types to keep fetch helpers and UI in sync. See `client/src/api/health.ts` for a typed fetch wrapper and `client/src/App.tsx` for how the React view consumes that data.
 
 Docker builds run the same pipeline, so containerized runs will always ship matching backend and frontend contracts.
@@ -129,8 +185,9 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
    A health check is available at http://localhost:8080/health.
 
 ## Next Steps
-- Replace the placeholder React component in `client/src/App.tsx` with real UI tied to your data model.
-- Integrate assets or templates from `prempage-webflow/` into your React components.
+- Flesh out the Next.js Studio experience in `client/`, starting with the onboarding flow and porting useful UI from `client-old/`.
+- Keep `client-old/` in sync only for critical fixes while the Studio reaches parity, then retire it.
+- Integrate assets or templates from `prempage-webflow/` into the Studio UI.
 - Flesh out API routes in `backend/main.py` and introduce routers/modules as features grow.
 - Add environment-specific configuration (e.g., `.env` files, secrets management) as required.
 
@@ -250,7 +307,7 @@ For day-to-day development when only source code changes:
 docker compose up -d
 ```
 
-The frontend lives at http://localhost:5173, the main FastAPI backend responds at http://localhost:8000, and the form relay service listens at http://localhost:8080.
+The Studio frontend lives at http://localhost:3001, the main FastAPI backend responds at http://localhost:8000, and the form relay service listens at http://localhost:8080 (the legacy Vite app remains at http://localhost:5173 when started separately).
 
 Code changes on the host trigger hot reloads inside the containers (`pnpm dev` and `uvicorn --reload`).
 

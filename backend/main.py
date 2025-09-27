@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import sys
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from schemas import HealthCheckResponse, ServiceMetadata
@@ -28,6 +29,16 @@ def configure_logging() -> None:
 configure_logging()
 
 
+
+ALLOWED_ORIGINS = [
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # noqa: D401
     """Manage application startup and shutdown events."""
@@ -45,7 +56,17 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 SERVICE_METADATA = ServiceMetadata(name="prempage-backend", version=app.version)
+SERVICE_ENVIRONMENT = "dev"
 SERVICE_START_TIME = datetime.now(timezone.utc)
 
 
@@ -61,6 +82,7 @@ async def health() -> HealthCheckResponse:
     return HealthCheckResponse(
         status="ok",
         service=SERVICE_METADATA,
+        environment=SERVICE_ENVIRONMENT,
         uptime_seconds=(datetime.now(timezone.utc) - SERVICE_START_TIME).total_seconds(),
     )
 

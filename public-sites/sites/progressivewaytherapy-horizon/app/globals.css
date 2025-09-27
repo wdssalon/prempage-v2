@@ -611,17 +611,28 @@
   }
 
   .btn-primary.is-on-dark {
-    box-shadow: 0 0 0 1px hsla(var(--soft-cream) / 0.2), var(--shadow-soft);
-    background-image: linear-gradient(145deg, hsla(var(--nature-green) / 0.92), hsl(var(--sage-green)) 85%);
+    /* Dark-surface variant: stronger ring + subtle glow, slightly brighter mix */
+    color: hsl(var(--soft-cream));
+    background-image: linear-gradient(150deg, hsl(var(--sage-green)) 12%, hsl(var(--nature-green)) 88%);
+    box-shadow: 0 0 0 1px hsla(var(--soft-cream) / 0.28), 0 10px 28px -10px hsla(var(--soft-cream) / 0.28);
+    filter: brightness(1.02);
   }
 
   .btn-primary.is-on-light {
-    background-image: var(--gradient-nature);
+    /* Light-surface variant: add soft outline and cooler tint; reduce intensity */
     color: hsl(var(--soft-cream));
+    background-image: linear-gradient(145deg, hsl(var(--sage-green)) 8%, hsla(var(--nature-green) / 0.92) 92%);
+    box-shadow: 0 0 0 1px hsla(var(--deep-forest) / 0.12), 0 8px 20px -10px hsla(var(--river-stone) / 0.28);
   }
 
   .btn-primary.is-on-dark:hover {
-    box-shadow: 0 0 0 1px hsla(var(--soft-cream) / 0.32), var(--shadow-contrast);
+    box-shadow: 0 0 0 1px hsla(var(--soft-cream) / 0.38), 0 16px 36px -14px hsla(var(--soft-cream) / 0.35);
+    filter: brightness(1.06);
+  }
+
+  .btn-primary.is-on-light:hover {
+    box-shadow: 0 0 0 1px hsla(var(--deep-forest) / 0.18), 0 14px 32px -14px hsla(var(--river-stone) / 0.35);
+    filter: brightness(1.03);
   }
 
   .btn-gentle {
@@ -772,7 +783,7 @@
   }
 
   .btn-contrast.is-on-light:hover {
-    color: hsl(var(--deep-forest));
+    color: hsl(var(--river-stone));
     border-color: hsla(var(--river-stone) / 0.8);
     background-color: hsla(var(--river-stone) / 0.14);
     transform: translate3d(0, -5px, 0);

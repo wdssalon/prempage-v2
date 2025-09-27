@@ -3,11 +3,31 @@
 ## Project Overview
 
 Prempage V2 is a modern full-stack application featuring:
-- **Frontend**: React 19.1.1 + Vite 7.1.6 with TypeScript support
+- **Frontend**: Next.js Studio + overlay architecture (Next app in `client/`, legacy React + Vite in `client-old/` until the Studio reaches parity)
 - **Backend**: FastAPI with Python 3.13 and uv package management
 - **Microservices**: Additional FastAPI services under `services/` (e.g., `form-relay` for static form submissions)
 - **Development**: Docker Compose setup with hot reloading across frontend, backend, and services
 - **Architecture**: Lightweight, fast iteration focused design
+
+## Frontend Roadmap
+
+Short answer: same repo, separate deployables. Make a single Studio front-end for onboarding and operations, and ship the Lovable-style editor as a separate overlay bundle that the Studio loads into a preview iframe (or that a browser extension injects). This keeps the UX cohesive while isolating responsibilities.
+
+### App A — Studio (Next.js web app)
+- Auth, org/projects, onboarding (enter URL -> pick/select photos -> upload), asset library, build/publish, history, roles.
+- Hosts the editor shell UI (left sidebar: pages/sections/assets; right: properties; top: Edit toggle).
+- Routes like `studio.prempage.com/{org}/{project}`.
+
+### App B — Editor Overlay (standalone JS bundle)
+- Pure overlay SDK: hover highlights, selection, inline editors, selector/fingerprint logic, patch queue.
+- No routing or stateful pages; exports `initEditor({ container, tools, auth })`.
+- Loaded by Studio into the preview iframe via `<script src=".../overlay.js">` with `postMessage` RPC, and can ship as a browser extension later using the same core.
+
+### Preview Target — site under edit
+- Prefer a preview domain such as `preview--{slug}.prempagepro.com` (live site stays read-only).
+- Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
+
+**Migration plan:** Move the existing React app to `client-old/`, stand up the Next.js Studio in `client/`, keep the React workspace running until the Studio meets current capabilities, then retire it. App A is the immediate focus; App B follows once the Studio shell is stable.
 
 ## Running the Application
 
@@ -37,19 +57,26 @@ docker compose up backend form-relay
 
 **Option 2: Native Development**
 ```bash
-# Frontend
+# Studio frontend
+cd client
+pnpm install
+pnpm dev  # http://localhost:3001
+
+# Legacy frontend (optional)
+cd ../client-old
 pnpm install
 pnpm dev  # http://localhost:5173
 
 # Backend
-cd backend
+cd ../backend
 uv sync
 uv run uvicorn main:app --reload  # http://localhost:8000
 
 # Form Relay microservice
-cp services/form-relay/.env.example services/form-relay/.env  # first time only
-uv sync --directory services/form-relay
-uv run --directory services/form-relay uvicorn app.main:app --reload --port 8080 --env-file .env  # http://localhost:8080
+cd ../services/form-relay
+cp .env.example .env  # first time only
+uv sync
+uv run uvicorn app.main:app --reload --port 8080 --env-file .env  # http://localhost:8080
 ```
 
 ## Core Requirements
@@ -64,9 +91,9 @@ uv run --directory services/form-relay uvicorn app.main:app --reload --port 8080
 ### Technical Stack
 
 **Frontend:**
-- React 19.1.1 with React DOM
-- Vite 7.1.6 (build tool)
-- TypeScript-first scaffold (source in `client/src`)
+- Next.js 15 + React 19 in `client/` (Studio app with App Router and Tailwind)
+- React 19.1.1 + Vite 7.1.6 preserved in `client-old/` until the Studio reaches parity
+- TypeScript-first scaffold across both workspaces
 - ESLint 9.35.0 for code quality
 
 **Backend:**
@@ -100,7 +127,7 @@ Currently lightweight setup with:
 **Development:**
 - Docker Compose for local development
 - Hot reloading enabled
-- Ports: Frontend :5173, Backend :8000, Form Relay :8080
+- Ports: Studio frontend :3001, Backend :8000, Form Relay :8080 (legacy Vite dev server remains on :5173 when used).
 
 **Production Ready:**
 - Containerized applications
@@ -111,8 +138,8 @@ Currently lightweight setup with:
 
 End-to-end types are generated from the FastAPI OpenAPI schema. When you update Pydantic models in the backend:
 - Run `uv run python export_openapi.py` from `backend/` to refresh `openapi.json`.
-- Run `pnpm openapi:types` from `client/` to regenerate `client/src/api/types.ts` via `openapi-typescript`.
-- Consume the resulting types in client helpers (example: `client/src/api/health.ts`) to keep fetch logic aligned with the API.
+- Run `pnpm openapi:types` from the active frontend workspace (`client/` for the Next.js Studio, `client-old/` while the legacy app remains) to regenerate `src/api/types.ts` via `openapi-typescript`.
+- Consume the resulting types in client helpers (examples: `client/src/api/health.ts` for the Studio, `client-old/src/api/health.ts` for the legacy app) to keep fetch logic aligned with the API.
 
 The sample `/health` route returns a `HealthCheckResponse` payload that exercises the full pipeline—Pydantic model → OpenAPI schema → generated TypeScript type → React component display.
 

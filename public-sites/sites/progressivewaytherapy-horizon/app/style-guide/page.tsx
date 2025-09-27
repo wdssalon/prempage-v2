@@ -269,26 +269,8 @@ const buttonStyles: ButtonStyle[] = [
     label: "Book Free Consultation",
     variant: "unstyled",
     previewVariants: [
-      {
-        label: ".default",
-        className: "btn-primary",
-        wrapperClassName: "bg-background",
-      },
-      {
-        label: ".is-on-light",
-        className: "btn-primary is-on-light",
-        wrapperClassName: "bg-background",
-      },
-      {
-        label: ".is-on-dark",
-        className: "btn-primary is-on-dark",
-        wrapperClassName: "bg-deep-forest text-soft-cream",
-      },
-      {
-        label: ".is-fluid",
-        className: "btn-primary is-on-light is-fluid",
-        wrapperClassName: "bg-background",
-      },
+      { label: ".default", className: "btn-primary", wrapperClassName: "bg-background" },
+      { label: ".is-fluid", className: "btn-primary is-fluid", wrapperClassName: "bg-background" },
     ],
     notes: [
       "Reserve one per viewport for the main conversion.",
@@ -297,23 +279,23 @@ const buttonStyles: ButtonStyle[] = [
     combos: [
       {
         label: "default",
-        usage: "Light hero backplates, blur cards, neutral gradients.",
-        swatchClassName: "bg-gradient-nature motion-gradient-pan",
+        usage: "Light hero backplates with gentle depth. Base brand treatment.",
+        swatchClassName: "bg-gradient-hero motion-gradient-pan",
       },
       {
         label: ".is-on-dark",
-        usage: "Contrast panels or photography overlays needing brighter outline.",
-        swatchClassName: "bg-gradient-dusk motion-gradient-pan",
+        usage: "High-contrast over deep sections; stronger ring/glow for legibility.",
+        swatchClassName: "bg-deep-forest",
       },
       {
-        label: ".is-medium",
-        usage: "Medium-density cards, mobile navigation bars, full-width stacks.",
-        swatchClassName: "bg-gradient-nature motion-gradient-pan",
+        label: ".is-on-light",
+        usage: "On warm light surfaces with subtle outline and softer drop shadow.",
+        swatchClassName: "bg-soft-cream",
       },
       {
         label: ".is-compact",
-        usage: "Desktop navigation or tight toolbars where space is limited.",
-        swatchClassName: "bg-gradient-nature motion-gradient-pan",
+        usage: "Dense toolbars; minimizes padding while retaining accent ring.",
+        swatchClassName: "bg-river-stone/30",
       },
     ],
   },
@@ -355,11 +337,6 @@ const buttonStyles: ButtonStyle[] = [
       {
         label: ".default",
         className: "btn-gentle",
-        wrapperClassName: "bg-background",
-      },
-      {
-        label: ".is-on-light",
-        className: "btn-gentle is-on-light",
         wrapperClassName: "bg-background",
       },
       {
@@ -416,11 +393,6 @@ const buttonStyles: ButtonStyle[] = [
         wrapperClassName: "bg-background",
       },
       {
-        label: ".is-on-light",
-        className: "btn-muted is-on-light",
-        wrapperClassName: "bg-background",
-      },
-      {
         label: ".is-fluid",
         className: "btn-muted is-on-light is-fluid",
         wrapperClassName: "bg-background",
@@ -447,11 +419,6 @@ const buttonStyles: ButtonStyle[] = [
       {
         label: ".is-on-light",
         className: "btn-ghost-link is-on-light",
-        wrapperClassName: "bg-background",
-      },
-      {
-        label: ".is-fluid",
-        className: "btn-ghost-link is-on-light is-fluid",
         wrapperClassName: "bg-background",
       },
     ],
@@ -812,7 +779,7 @@ const StyleGuide = () => {
                             <p className="font-mono text-xs uppercase tracking-wide text-soft-purple mb-2">
                               {preview.label}
                             </p>
-                            <div
+                          <div
                               className={cn(
                                 "flex items-center justify-center rounded-xl border border-border/30 p-6 shadow-inner",
                                 preview.wrapperClassName,

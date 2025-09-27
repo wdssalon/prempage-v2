@@ -45,6 +45,16 @@
           "service": {
             "$ref": "#/components/schemas/ServiceMetadata"
           },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "dev",
+              "staging",
+              "prod"
+            ],
+            "title": "Environment",
+            "default": "dev"
+          },
           "message": {
             "type": "string",
             "title": "Message",
