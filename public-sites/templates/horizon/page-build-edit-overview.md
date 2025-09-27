@@ -40,6 +40,13 @@ This guide explains how to build or update pages for the Horizon template—the 
 - Ghost Link (`.btn-ghost-link`): baseline assumes dark panels. Use `.is-on-light` for cream or warm cards so the copy shifts to Deep Forest/Sage hover states. Trailing icons use `data-icon-trail="true"` to pick up motion.
 - Keep these combos in sync with `app/style-guide/page.tsx`; update both the CSS and helper copy if you introduce a new variant.
 
+## Creative Composition Expectations
+- Horizon prioritises bespoke layouts over duplicating canned sections. Use the component primitives (`heading`, `text`, surface helpers, cards, grids, motion classes) to compose unique arrangements per page rather than cloning an existing block verbatim.
+- Variety is mandatory: avoid shipping the same hero + three-card + testimonial formula twice in a row. When outlining, note how the previous two pages were structured and deliberately introduce a different rhythm (e.g., staggered columns, split layouts, feature strips, textured surfaces).
+- It is acceptable to build new React components under `src/components/` when a page calls for a fresh presentation—just keep the implementation aligned with the tokens and patterns documented in the style guide and log new utilities in `app/style-guide/page.tsx` for QA.
+- Leverage the approved style-guide options as your north star for typography, color, and tone, but feel free to remix those tokens into new combinations. The LLM should treat the style system as a palette, not as a fixed set of premade sections.
+- Document any newly composed layout patterns in `client-overview.md > ## Visual System` or the project TODO list so future passes understand the variety already in play.
+
 ## Page Creation Workflow (per page)
 1. **Plan the route**
    - Confirm the page appears in `client-overview.md > Approved Website Structure`.
@@ -52,7 +59,7 @@ This guide explains how to build or update pages for the Horizon template—the 
 
 3. **Compose the layout**
    - Wrap the page content in the shared `<Navigation />` and `<Footer />` components, mirroring the structure in existing example pages.
-   - Inside `<main>`, order the imported sections to match the approved outline. Use the Section Usage Tracker to balance layout variety.
+   - Inside `<main>`, use the approved outline as a scaffold but feel free to compose bespoke arrangements instead of reusing the same section snippet. Combine existing primitives (cards, grids, surfaces) to create fresh compositions while keeping the voice and tokens consistent. Use the Section Usage Tracker to balance layout variety.
    - When adding new components, ensure they render inside a `div` with page-level background classes consistent with our design tokens (e.g., `bg-background`).
 
 4. **Populate copy & props**
