@@ -1,0 +1,8 @@
+repo_prep:
+  after:
+    - id: bootstrap_horizon_app
+      role: coordinator
+      summary: >-
+        If the site workspace is missing or lacks a Next.js project, copy the Horizon boilerplate and install dependencies.
+      commands:
+        - python public-sites/scripts/bootstrap_horizon_site.py {{ site_slug }}

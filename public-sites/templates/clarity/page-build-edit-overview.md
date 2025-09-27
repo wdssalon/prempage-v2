@@ -4,7 +4,7 @@ This guide covers the end-to-end workflow for building net-new pages or editing 
 
 ## Global Rules
 - **Follow the canonical guardrails**: `AGENTS.md` and `config.yaml` capture the authoritative rules for structure, rotation, and required duplicates. The notes below call out Clarity-specific nuances.
-- **Confirm approvals first**: do not begin page work until both `client-overview.md` and the page list have been approved per `generate-website.md` Phase 1.
+- **Confirm approvals first**: do not begin page work until both `client-overview.md` and the page list have been approved per `generate-website.md` Intake & Discovery.
 - **Follow the structure log**: use the `## Approved Website Structure` section inside `client-overview.md` as the authoritative source for page order, priorities, and any sequencing instructions.
 - **Start from the shell**: copy the file referenced at `config.yaml > scaffolding.page_shell` (currently `page-shell.html`) before you begin. It carries the full `<head>` setup, navigation/footer placeholders, and global scripts so each page stays consistent. Update the `<title>` and all SEO meta tags (description, canonical URL, OG/Twitter data, social image) as you go.
 - **Shared blocks**: every page must include the navigation and footer components listed under `config.yaml > page_generation` (navigation block selector + footer block selectors). Place the navigation immediately after `<body>` and the footer wrappers before `</body>`.

@@ -1,0 +1,9 @@
+plan:
+  after:
+    - id: section_catalog_refresh
+      role: coordinator
+      summary: Ensure section inventory reflects Clarity catalog limits before skeleton work.
+      uses:
+        - templates/clarity/sections.yaml
+        - templates/clarity/page-build-edit-overview.md
+      outputs: [clarity_section_inventory]

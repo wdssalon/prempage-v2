@@ -1,0 +1,8 @@
+visual_system:
+  enabled: true
+asset_pipeline:
+  enabled: false
+release:
+  tools:
+    - pnpm --dir sites/{{ site_slug }} lint
+    - pnpm --dir sites/{{ site_slug }} build

@@ -71,14 +71,20 @@ const Navigation = () => {
                             </Link>
                           </li>
                           <li>
-                            <a href="/#services" className="text-muted-foreground hover:text-soft-purple transition-colors">
+                            <Link
+                              href="/services/individual-therapy/anxiety"
+                              className="text-muted-foreground hover:text-soft-purple transition-colors"
+                            >
                               Counseling for Anxiety
-                            </a>
+                            </Link>
                           </li>
                           <li>
-                            <a href="/#services" className="text-muted-foreground hover:text-soft-purple transition-colors">
+                            <Link
+                              href="/services/individual-therapy/depression"
+                              className="text-muted-foreground hover:text-soft-purple transition-colors"
+                            >
                               Therapy for Depression
-                            </a>
+                            </Link>
                           </li>
                           <li>
                             <a href="/#services" className="text-muted-foreground hover:text-soft-purple transition-colors">

@@ -9,6 +9,15 @@ This repository hosts the Prempage V2 workspaces: the current React + Vite clien
 - Prefer Python for internal automation scripts. If another language is required, document the reasoning in the PR or commit description.
 - [direnv](https://direnv.net/) (optional but recommended for loading environment variables)
 
+## Service Port Map
+- `client` (Next.js Studio) — http://localhost:3001
+- `backend` (FastAPI core API) — http://localhost:8000
+- `services/form-relay` (form submission relay) — http://localhost:8080
+- `services/static-site-extractor` — http://localhost:8081
+- `public-sites/sites/*` (site bundles) — share http://localhost:3000 when running `pnpm dev` inside a site directory; static exports otherwise serve from disk
+
+Every service in this repository must use a unique local port. The only exception is the static site workspaces under `public-sites/sites`, which can reuse the same development port. Update the table above whenever you add a new service or change a port assignment so local development stays collision-free.
+
 ## Frontend Roadmap
 
 Short answer: same repo, separate deployables. Make a single Studio front-end for onboarding and operations, and ship the Lovable-style editor as a separate overlay bundle that the Studio loads into a preview iframe (or that a browser extension injects). This keeps the UX cohesive while isolating responsibilities.
@@ -84,6 +93,7 @@ Run these from `client/`:
 - FastAPI app lives in `backend/main.py` and is pre-configured with Loguru logging.
 - Adjust logging behavior in `configure_logging()` as your deployment targets evolve.
 - When adding dependencies, run `uv add <package>` from the `backend/` directory to keep the lockfile in sync.
+- Docker Compose injects `STATIC_SITE_EXTRACTOR_URL=http://static-site-extractor:8081`; use that host when wiring the backend to the microservice.
 
 ## Render Automation
 - Use `scripts/render_apply.py` to sync static-site services with their `render.yaml` blueprints (format mirrors Render's current "type: web" + "runtime: static" schema).
@@ -96,6 +106,7 @@ Run these from `client/`:
   ```
   The `--dry-run` flag prints the API payloads without executing the changes.
 - Run `python scripts/render_apply.py --list` to print all static-site services when you need to confirm the exact name Render expects.
+- Plan to host the Static Site Extractor as a Render Private Service named `static-site-extractor`, built from `services/static-site-extractor/` and exposing port `8081`. Downstream apps should read its URL from `STATIC_SITE_EXTRACTOR_URL` (e.g., `https://static-site-extractor.onrender.com` in production).
 
 ## Direnv Usage
 - Install direnv for your shell and add the hook as described in the [direnv docs](https://direnv.net/docs/installation.html).
@@ -106,7 +117,7 @@ Run these from `client/`:
 ## Project Structure
 - `client/` – Next.js Studio workspace (App Router, Tailwind, TypeScript).
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
-- `services/` – Standalone microservices. Currently contains `form-relay/` (FastAPI service for static-site form submissions).
+- `services/` – Standalone microservices: `form-relay/` (FastAPI service for static-site form submissions) and `static-site-extractor/` (Static Site Extractor FastAPI service for parsing static pages).
 - `public-sites/` – Static site toolkit and exports. Contains process docs (`generate-website.md`, `client-overview.md`, `AGENTS.md`), reusable templates under `template/`, and production-ready HTML/CSS/JS in `public-sites/sites/<site-slug>/` when a brand is ready to ship.
 - `prempage-webflow/` – Imported Webflow export available for reference/integration (ignored by git).
 
@@ -152,6 +163,25 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
 
    See `services/form-relay/README.md` for curl examples and Sentry configuration notes.
    A health check is available at http://localhost:8080/health.
+
+## Static Site Extractor
+
+Static Site Extractor (`services/static-site-extractor/`) exposes a FastAPI endpoint that fetches static pages and returns normalized text, image, and font metadata for downstream tooling. To run it locally:
+
+1. Change into the service directory:
+   ```bash
+   cd services/static-site-extractor
+   ```
+2. Install dependencies:
+   ```bash
+   uv sync
+   ```
+3. Start the API with autoreload:
+   ```bash
+   uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081
+   ```
+
+   The service listens on http://localhost:8081/ and responds to `/health`.
 
 ## Next Steps
 - Flesh out the Next.js Studio experience in `client/`, starting with the onboarding flow and layering real data.
@@ -275,14 +305,14 @@ For day-to-day development when only source code changes:
 docker compose up -d
 ```
 
-The Studio frontend lives at http://localhost:3001, the main FastAPI backend responds at http://localhost:8000, and the form relay service listens at http://localhost:8080.
+The Studio frontend lives at http://localhost:3001, the main FastAPI backend responds at http://localhost:8000, the form relay service listens at http://localhost:8080, and the Static Site Extractor is available at http://localhost:8081.
 
 Code changes on the host trigger hot reloads inside the containers (`pnpm dev` and `uvicorn --reload`).
 
-To start specific services, list them explicitly. For example, to bring up the backend and form relay only:
+To start specific services, list them explicitly. For example, to bring up only the backend, form relay, and Static Site Extractor:
 
 ```bash
-docker compose up backend form-relay
+docker compose up backend form-relay static-site-extractor
 ```
 
 ### Stopping Services

@@ -1,8 +1,8 @@
 """Automation runner scaffold for public-sites workflows.
 
-This module focuses on state management around template metadata and the new
-style-guide gate (Phase 2.5). It is intentionally light on LLM orchestration—the
-LLM calls will be layered on later once the command surface is stable.
+This module focuses on state management around template metadata and the visual
+system gate. It is intentionally light on LLM orchestration—the LLM calls will
+be layered on later once the command surface is stable.
 """
 
 from __future__ import annotations
@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -62,6 +63,188 @@ class AutomationRunner:
             config_data = yaml.safe_load(fh) or {}
         self.style_guide_config = StyleGuideConfig.from_mapping(config_data.get("style_guide", {}))
 
+        self.workflow_path = PUBLIC_SITES_ROOT / "agents" / "workflows" / "website_build.yaml"
+        if not self.workflow_path.exists():
+            raise SystemExit(f"Workflow definition missing: {self.workflow_path}")
+        self.workflow_definition = self._load_yaml(self.workflow_path)
+        self.plugins_config = self._resolve_plugins(self.workflow_definition.get("plugins", {}))
+        self.hooks_config = self._resolve_hooks(self.workflow_definition.get("hooks", {}))
+        self.resolved_stages = self._resolve_stages(self.workflow_definition.get("stages", []))
+
+    # ------------------------------------------------------------------
+    # Workflow + plugin helpers
+    def _load_yaml(self, path: Path) -> dict[str, Any]:
+        with path.open("r", encoding="utf-8") as fh:
+            data = yaml.safe_load(fh)
+        if data is None:
+            return {}
+        if not isinstance(data, dict):
+            raise SystemExit(f"YAML root must be a mapping: {path}")
+        return data
+
+    def _render_template_string(self, value: str) -> str:
+        rendered = value.replace("{{ site_slug }}", self.site_slug)
+        rendered = rendered.replace("{{ template_slug }}", self.template_slug)
+        return rendered
+
+    def _render_structure(self, value: Any) -> Any:
+        if isinstance(value, str):
+            return self._render_template_string(value)
+        if isinstance(value, list):
+            return [self._render_structure(item) for item in value]
+        if isinstance(value, dict):
+            return {key: self._render_structure(val) for key, val in value.items()}
+        return value
+
+    def _deep_merge(self, base: Any, override: Any) -> Any:
+        if override is None:
+            return deepcopy(base)
+        if base is None:
+            return deepcopy(override)
+        if isinstance(base, dict) and isinstance(override, dict):
+            merged: dict[str, Any] = deepcopy(base)
+            for key, value in override.items():
+                merged[key] = self._deep_merge(base.get(key), value)
+            return merged
+        return deepcopy(override)
+
+    def _resolve_plugins(self, plugin_section: dict[str, Any]) -> dict[str, Any]:
+        defaults = self._render_structure(plugin_section.get("defaults", {}))
+        manifest_template = plugin_section.get("manifest")
+        self.plugin_manifest_path: Path | None = None
+        manifest_data: dict[str, Any] = {}
+        if isinstance(manifest_template, str):
+            manifest_rel = self._render_template_string(manifest_template)
+            manifest_path = PUBLIC_SITES_ROOT / manifest_rel
+            if manifest_path.exists():
+                manifest_data = self._render_structure(self._load_yaml(manifest_path))
+                self.plugin_manifest_path = manifest_path
+            else:
+                # Manifest is optional—fall back to defaults when the template has not defined overrides yet.
+                self.plugin_manifest_path = manifest_path
+        merged = self._deep_merge(defaults, manifest_data)
+        # Ensure nested values that remain None become sensible defaults.
+        for key, value in merged.items():
+            if isinstance(value, dict):
+                merged[key] = {k: v for k, v in value.items()}
+        return merged
+
+    def _resolve_hooks(self, hooks_section: dict[str, Any]) -> dict[str, Any]:
+        manifest_template = hooks_section.get("manifest")
+        optional = bool(hooks_section.get("optional", False))
+        self.hooks_manifest_path: Path | None = None
+        if not manifest_template:
+            return {}
+        hooks_rel = self._render_template_string(str(manifest_template))
+        hooks_path = PUBLIC_SITES_ROOT / hooks_rel
+        if not hooks_path.exists():
+            if optional:
+                self.hooks_manifest_path = hooks_path
+                return {}
+            raise SystemExit(f"Workflow hooks file not found: {hooks_path}")
+        self.hooks_manifest_path = hooks_path
+        hooks_data = self._render_structure(self._load_yaml(hooks_path))
+        return hooks_data
+
+    def _resolve_reference(self, token: str) -> Any | None:
+        if not isinstance(token, str):
+            return None
+        if not token.startswith("plugins."):
+            return None
+        parts = token.split(".")[1:]
+        value: Any = self.plugins_config
+        for part in parts:
+            if isinstance(value, dict) and part in value:
+                value = value[part]
+            else:
+                return None
+        return value
+
+    def _evaluate_condition(self, condition: Any) -> bool:
+        if condition is None:
+            return True
+        if isinstance(condition, bool):
+            return condition
+        if isinstance(condition, str):
+            referenced = self._resolve_reference(condition)
+            if referenced is not None:
+                return bool(referenced)
+            lowered = condition.strip().lower()
+            if lowered in {"true", "false"}:
+                return lowered == "true"
+        return bool(condition)
+
+    def _normalize_tool_item(self, item: Any) -> list[str]:
+        if item is None:
+            return []
+        if isinstance(item, list):
+            return [self._render_template_string(str(entry)) for entry in item]
+        if isinstance(item, str):
+            return [self._render_template_string(item)]
+        return [self._render_template_string(str(item))]
+
+    def _resolve_tools(self, tools_field: Any) -> list[str]:
+        if tools_field is None:
+            return []
+        resolved: list[str] = []
+        if isinstance(tools_field, str):
+            reference = self._resolve_reference(tools_field)
+            if reference is None:
+                resolved.extend(self._normalize_tool_item(tools_field))
+            else:
+                resolved.extend(self._normalize_tool_item(reference))
+            return resolved
+        if isinstance(tools_field, list):
+            for entry in tools_field:
+                if isinstance(entry, str):
+                    reference = self._resolve_reference(entry)
+                    if reference is None:
+                        resolved.extend(self._normalize_tool_item(entry))
+                    else:
+                        resolved.extend(self._normalize_tool_item(reference))
+                else:
+                    resolved.extend(self._normalize_tool_item(entry))
+            return resolved
+        return self._normalize_tool_item(tools_field)
+
+    def _resolve_extensions(self, hook_spec: Any) -> dict[str, Any]:
+        if not hook_spec or not isinstance(hook_spec, dict):
+            return {}
+        key = hook_spec.get("extend")
+        if not key:
+            return {}
+        extension = self.hooks_config.get(str(key))
+        if not extension:
+            return {}
+        return self._render_structure(extension)
+
+    def _resolve_stages(self, stages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        resolved: list[dict[str, Any]] = []
+        for entry in stages:
+            if not isinstance(entry, dict):
+                raise SystemExit("Each workflow stage must be a mapping")
+            stage = dict(entry)
+            stage_condition = stage.get("condition")
+            stage["condition"] = stage_condition
+            stage["enabled"] = self._evaluate_condition(stage_condition)
+            stage["tools"] = self._resolve_tools(stage.get("tools"))
+            for key in ("uses", "requires", "optional_requires", "outputs"):
+                if key in stage:
+                    stage[key] = self._render_structure(stage[key])
+            extensions = self._resolve_extensions(stage.get("hooks"))
+            if extensions:
+                stage["extensions"] = extensions
+            resolved.append(stage)
+        return resolved
+
+    def _relative_to_repo(self, path: Path | None) -> str | None:
+        if path is None:
+            return None
+        try:
+            return str(path.relative_to(REPO_ROOT))
+        except ValueError:
+            return str(path)
+
     # ------------------------------------------------------------------
     # State helpers
     def _default_state(self) -> dict[str, Any]:
@@ -74,6 +257,13 @@ class AutomationRunner:
             "style_guide_summary": "",
             "style_guide_options": "",
             "outstanding_todos": [],
+            "workflow": {
+                "definition_path": "",
+                "plugin_manifest_path": "",
+                "hooks_manifest_path": "",
+                "plugins": {},
+                "stages": [],
+            },
         }
 
     def _load_state(self) -> dict[str, Any]:
@@ -96,10 +286,45 @@ class AutomationRunner:
                 state["style_guide_path"] = default_path
         state.setdefault("style_guide_summary", "")
         state.setdefault("style_guide_options", "")
+
+        workflow_state = state.get("workflow", {})
+        workflow_state["definition_path"] = self._relative_to_repo(self.workflow_path) or ""
+        workflow_state["plugin_manifest_path"] = self._relative_to_repo(self.plugin_manifest_path) or ""
+        workflow_state["hooks_manifest_path"] = self._relative_to_repo(self.hooks_manifest_path) or ""
+        workflow_state["plugins"] = deepcopy(self.plugins_config)
+        workflow_state["stages"] = [
+            {
+                "id": stage.get("id"),
+                "label": stage.get("label"),
+                "role": stage.get("role"),
+                "enabled": bool(stage.get("enabled", True)),
+                "condition": stage.get("condition"),
+                "gates": stage.get("gates", []),
+                "tools": stage.get("tools", []),
+                "requires": stage.get("requires", []),
+                "optional_requires": stage.get("optional_requires", []),
+                "foreach": stage.get("foreach"),
+                "extensions": stage.get("extensions", {}),
+            }
+            for stage in self.resolved_stages
+        ]
+        state["workflow"] = workflow_state
+
         self._write_state(state)
+
+        active_stages = sum(1 for stage in workflow_state["stages"] if stage["enabled"])
+        total_stages = len(workflow_state["stages"])
         print(
             "Initialized automation state",
-            json.dumps({"style_guide_required": state["style_guide_required"], "style_guide_path": state["style_guide_path"]}),
+            json.dumps(
+                {
+                    "style_guide_required": state["style_guide_required"],
+                    "style_guide_path": state["style_guide_path"],
+                    "workflow_definition": workflow_state["definition_path"],
+                    "active_stages": active_stages,
+                    "total_stages": total_stages,
+                }
+            ),
         )
 
     # ------------------------------------------------------------------

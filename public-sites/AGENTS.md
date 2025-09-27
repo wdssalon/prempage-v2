@@ -12,6 +12,7 @@ This document is the control center for LLM-driven work in the `public-sites` wo
 - `images/images-overview.md`: imagery sourcing, optimization, and social-share requirements.
 - `templates/<template-slug>/page-examples/`: snapshot copies of the starter HTML pages—review them for layout inspiration before generating fresh output.
 - `sites/<slug>/client-overview.md`: the active project brief and build tracker for each live site. Derive the template kit from the site slug suffix (e.g., `*-clarity`, `*-horizon`) or the co-located configuration files when you need to pull assets from `templates/<template-slug>/`.
+- `public-sites/scripts/bootstrap_horizon_site.py`: utility that copies the Horizon Next.js boilerplate into a site directory and runs `pnpm install`. Use it during repo prep whenever the Horizon workspace is missing.
 
 Keep these sources authoritative—do not duplicate instructions elsewhere.
 
@@ -30,6 +31,7 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 - During the first end-to-end site build, ensure each distinct section style from the catalog is used at least once to deliver a varied launch experience. Use the `## Section Usage Tracker` table in `client-overview.md` to log the sections added to every page as you build.
 - Before outlining any new page, scan the tracker to avoid duplicating the same five-section skeleton on consecutive specialty pages. Apply hero/CTA rotation rules from `config.yaml` + the template build guide so closing layouts stay varied once they ship.
 - Maintain the `## Sections Remaining To Use` list in `client-overview.md`, removing section IDs once they have appeared on a page. This list only tracks content sections—navigation and footer components are handled separately during the global assembly pass.
+- Keep `client-overview.md` strictly ASCII so automation tools and downstream scripts avoid encoding drift. Replace smart quotes, en/em dashes, or other Unicode characters with ASCII equivalents before saving updates.
 - Use the frozen layouts in `templates/<template-slug>/page-examples/` as reference material only. If `config.yaml > page_generation.duplicate_examples` lists canonical pages (e.g., contact/blog for Clarity), duplicate only those examples when instructed.
 - Treat navigation and footer updates as global operations: once finalized, propagate changes to every page via the appropriate shared component or static block.
 - Populate page-level SEO metadata using the hooks defined by the selected template scaffold (`page-shell.html`, layout component, etc.).
@@ -37,13 +39,14 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 
 ## Automation Workflow
 Use the primary docs as the source of truth and walk through them in order:
-- `generate-website.md` Phase 1 → intake, `client-overview.md`, and page list approval before any builds.
-- `generate-website.md` Phase 2 → prep trackers and section inventory.
-- `generate-website.md` Phase 2.5 → run the style-guide option review (three font/color/writing samples), capture the human-approved combination, update the style-guide data files, and persist the decision via the runner before moving on.
-- `generate-website.md` Phases 3-4 with `templates/<template-slug>/page-build-edit-overview.md` → build skeletons and draft copy page-by-page. For Horizon specifically, push for creative composition (no repeated layouts) while staying inside the approved style system.
+- `generate-website.md` Intake & Discovery → intake, `client-overview.md`, and page list approval before any builds.
+- `generate-website.md` Plan the Page Set → prep trackers and section inventory.
+- `generate-website.md` Define the Visual System → run the style-guide option review (three font/color/writing samples), capture the human-approved combination, update the style-guide data files, and persist the decision via the runner before moving on.
+- `generate-website.md` Build Page Skeletons and Draft Page Copy with `templates/<template-slug>/page-build-edit-overview.md` → build skeletons and draft copy page-by-page. For Horizon specifically, push for creative composition (no repeated layouts) while staying inside the approved style system.
   - Maintain the `## Approved Website Structure` section in `client-overview.md` as the canonical build sequence while working through those pages.
-- `generate-website.md` Phase 5 with `templates/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
-- `generate-website.md` Phase 6 with `templates/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
+- `generate-website.md` Site-Wide Assembly with `templates/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
+- `generate-website.md` QA Check-in with `templates/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
+- Run `python agents/runner.py --site <slug> --template <template> init` whenever a new site slug is created or the workflow definition changes; the resulting `automation-state.json > workflow` block is the coordinator’s canonical execution map (stage toggles, plugin tools, hook extensions).
 
 ## Overrides & Theming
 - Use the override entry points defined by the active template’s build guide (`templates/<template-slug>/page-build-edit-overview.md`). Static exports (Clarity) rely on the `overrides/` directory documented there, while app-based templates (Horizon) push changes through Tailwind tokens, shared components, or Next.js configuration.
@@ -61,4 +64,4 @@ Always cross-check instructions here with `generate-website.md` and the linked d
 
 ## Collaboration Guidelines
 - Keep the conversation proactive and transparent. Summaries of key deliverables and open questions should be surfaced without waiting for a prompt.
-- For the walk-through on how to present Phase 1 artifacts (client overview, page hierarchy, scope assumptions), follow the detailed checklist in `generate-website.md`.
+- For the walk-through on how to present Intake & Discovery artifacts (client overview, page hierarchy, scope assumptions), follow the detailed checklist in `generate-website.md`.

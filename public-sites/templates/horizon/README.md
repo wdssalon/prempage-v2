@@ -15,6 +15,15 @@ pnpm dev
 
 The dev server runs at `http://localhost:3000` with hot reload.
 
+### Bootstrapping a new site
+```bash
+python public-sites/scripts/bootstrap_horizon_site.py <site-slug>-horizon
+```
+
+This copies the Horizon boilerplate into `public-sites/sites/<site-slug>-horizon` and runs `pnpm install` so the project
+is ready for local work or automation. Pass `--force` to overwrite an existing workspace and `--skip-install` when you
+only want the files copied.
+
 ## Static Export & Checks
 ```bash
 pnpm check

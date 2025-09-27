@@ -95,13 +95,13 @@
 ## Section Usage Tracker
 | Page | Hero Used | About | Services | WhyChooseUs | Testimonials | FinalCTA | Notes |
 |------|-----------|-------|----------|-------------|--------------|----------|-------|
-| Home |  |  |  |  |  |  | Pending outline |
-| About |  |  |  |  |  |  | Pending outline |
-| Individual Therapy |  |  |  |  |  |  | Pending outline |
-| General Individual Therapy |  |  |  |  |  |  | Pending outline |
-| Counseling for Anxiety |  |  |  |  |  |  | Pending outline |
-| Therapy for Depression |  |  |  |  |  |  | Pending outline |
-| Counseling for Trauma |  |  |  |  |  |  | Pending outline |
+| Home | Hero component |  | 1 | 1 | 1 | 1 | Live page – core marketing stack finalized (Hero → Services → WhyChooseUs → Testimonials → FinalCTA). |
+| About | Gradient editorial hero | 1 |  |  |  |  | Live page – AboutSection plus philosophy, journey timeline, collaborative care CTA. |
+| Individual Therapy | — |  |  |  |  |  | Not started – needs succinct overview route before specialty details. |
+| General Individual Therapy | Gradient hero (custom) |  |  |  |  |  | Live page – extended experience overview, identity badges, FAQs, closing CTA. |
+| Counseling for Anxiety | Gradient hero (Counseling focus) |  |  |  |  | 1 | Live page – 5 sections (hero, lived-experience cards, support pillars, session practices, FinalCTA). |
+| Therapy for Depression | Gradient hero (rest-focused) |  |  |  |  |  | Live page – hero mosaic, daily rhythm timeline, restorative anchors, session rhythm, gentle CTA (no shared FinalCTA). |
+| Counseling for Trauma | Planned dusk overlay hero |  |  |  |  |  | Planned: 5 unique sections (trauma-informed hero, grounding commitments, safety lattice, repair pathways, invitation CTA). |
 | Specialized Support |  |  |  |  |  |  | Pending outline |
 | LGBTQIA+ Individual Therapy |  |  |  |  |  |  | Pending outline |
 | Women's Issues |  |  |  |  |  |  | Pending outline |
@@ -120,12 +120,7 @@
 | Contact |  |  |  |  |  |  | Pending outline |
 
 ## Sections Remaining To Use
-- Hero
-- About
-- Services
-- WhyChooseUs
-- Testimonials
-- FinalCTA
+- Testimonials (needs second use)
 
 ## TODOs
 - [x] Move structure details from "Approved Website Structure" into the Horizon template starter so future projects inherit the expanded hierarchy.

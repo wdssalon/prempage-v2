@@ -20,14 +20,14 @@ This guide explains how to build or update pages for the Horizon template—the 
 - Compose page-level layout with Tailwind utilities (`flex`, `grid`, spacing, responsive prefixes) and the shared `cn` helper. Reserve new CSS for globally reusable helpers under `@layer components` so changes cascade from a single source.
 - Update the `/style-guide` route whenever tokens or helpers change. That page is the canonical approval surface—QA updates there first to guarantee downstream pages inherit the same styling.
 
-## Phase 2.5 Visual System Workflow
+## Visual System Workflow
 - Generate the three-option exploration for fonts, colors, and writing style under `app/style-guide/options/page.tsx`. The `fontOptions`, `colorOptions`, and `writingStyleOptions` arrays in `app/style-guide/data.ts` power both the options view and the canonical style guide.
 - Share screenshots or links to `/style-guide/options` in chat so the human reviewer can choose one option per category. Record their selections in the same arrays by toggling the `isSelected` flag.
 - Once selections are confirmed, ensure the summary helpers (`selectedFontOption`, `selectedColorOption`, `selectedWritingStyleOption`) reflect the chosen set and appear in `app/style-guide/page.tsx` under the “Approved Visual System” block.
 - After the human confirms the choices, run the automation runner to persist the decision history:
   `python agents/runner.py --site <slug> --template horizon style-guide --summary "..." --options "..."`
   This updates `automation-state.json` and appends the `## Visual System` section to `client-overview.md`.
-- Only move to Phase 3 (skeletons) once the runner has been executed and the coordinator has recorded approval.
+- Only move to the Build Page Skeletons phase once the runner has been executed and the coordinator has recorded approval.
 
 ## CTA & Combo Styling Reference
 - Every style-guide token now ships with a light/dark strategy—use the `.is-on-dark` or `.is-on-light` combos whenever a component moves off its default background.

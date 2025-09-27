@@ -38,6 +38,15 @@ Short answer: same repo, separate deployables. Make a single Studio front-end fo
 - Python 3.13 or newer
 - Docker and Docker Compose
 
+### Service Port Map
+- `client` (Next.js Studio) — http://localhost:3001
+- `backend` (FastAPI core API) — http://localhost:8000
+- `services/form-relay` (form submission relay) — http://localhost:8080
+- Static Site Extractor (`services/static-site-extractor`) — http://localhost:8081
+- `public-sites/sites/*` (site bundles) — share http://localhost:3000 when developing inside a site directory; live exports serve from disk
+
+Keep this table current whenever you add a new service or change a port. Every service must claim a unique local port so concurrent runs never collide—the lone exception is the static site workspaces under `public-sites/sites`, which may reuse port 3000.
+
 ### Local Development
 
 **Option 1: Docker Compose (Recommended)**
@@ -51,8 +60,8 @@ docker compose up -d
 # Stop services
 docker compose down
 
-# Start specific services (example: backend + form relay)
-docker compose up backend form-relay
+# Start specific services (example: backend + form relay + extractor)
+docker compose up backend form-relay static-site-extractor
 ```
 
 **Option 2: Native Development**
@@ -73,6 +82,11 @@ cd ../services/form-relay
 cp .env.example .env  # first time only
 uv sync
 uv run uvicorn app.main:app --reload --port 8080 --env-file .env  # http://localhost:8080
+
+# Static Site Extractor microservice
+cd ../static-site-extractor
+uv sync
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localhost:8081
 ```
 
 ## Core Requirements
@@ -99,7 +113,7 @@ uv run uvicorn app.main:app --reload --port 8080 --env-file .env  # http://local
 - Loguru for logging
 
 **Development:**
-- Docker Compose multi-container setup (frontend, backend, form-relay)
+- Docker Compose multi-container setup (frontend, backend, form-relay, static site extractor)
 - Hot reloading for all containers
 - Volume mounting for live code updates
 
@@ -122,7 +136,7 @@ Currently lightweight setup with:
 **Development:**
 - Docker Compose for local development
 - Hot reloading enabled
-- Ports: Studio frontend :3001, Backend :8000, Form Relay :8080.
+- Ports: Studio frontend :3001, Backend :8000, Form Relay :8080, Static Site Extractor :8081 (all services must keep unique ports; update the Service Port Map when new ones appear).
 
 **Production Ready:**
 - Containerized applications

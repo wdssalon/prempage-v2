@@ -25,6 +25,7 @@ services:
     working_dir: /app
     environment:
       - PYTHONUNBUFFERED=1
+      - STATIC_SITE_EXTRACTOR_URL=http://static-site-extractor:8081
     volumes:
       - ./backend:/app
       - backend-uv-cache:/root/.cache/uv
@@ -44,7 +45,22 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
 
+  static-site-extractor:
+    build:
+      context: ./services/static-site-extractor
+    command: sh -c "uv sync --frozen --no-dev && uv run uvicorn app.main:app --host 0.0.0.0 --port 8081 --reload"
+    ports:
+      - "8081:8081"
+    working_dir: /app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - REQUEST_TIMEOUT_SECONDS=10
+    volumes:
+      - ./services/static-site-extractor:/app
+      - static-site-extractor-uv-cache:/root/.cache/uv
+
 volumes:
   frontend-node-modules:
   backend-uv-cache:
   form-relay-uv-cache:
+  static-site-extractor-uv-cache:
