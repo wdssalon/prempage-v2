@@ -6,10 +6,10 @@
   },
   "outstanding_todos": [],
   "phase": "0",
-  "style_guide_options": "style-guide-sunrise-haven: warm sunrise palette and affirming tone\nstyle-guide-evergreen-balance: forest neutrals with editorial polish\nstyle-guide-nocturne-focus: high-contrast night mode with energetic CTAs",
+  "style_guide_options": "variant options",
   "style_guide_path": "app/style-guide/page.tsx",
   "style_guide_required": true,
-  "style_guide_summary": "Variants generated: style-guide-sunrise-haven, style-guide-evergreen-balance, style-guide-nocturne-focus. Each page under /style-guide/<slug> includes palette, typography, voice, and hero samples for downstream work.",
+  "style_guide_summary": "variant summary",
   "trackers": {
     "section_usage": "",
     "sections_remaining": ""

@@ -202,8 +202,6 @@
 ## Visual System
 - Style guide route: `app/style-guide/page.tsx`
 - Selected System Summary:
-  Variants generated: style-guide-sunrise-haven, style-guide-evergreen-balance, style-guide-nocturne-focus. Each page under /style-guide/<slug> includes palette, typography, voice, and hero samples for downstream work.
+  variant summary
 - Presented Options:
-  style-guide-sunrise-haven: warm sunrise palette and affirming tone
-  style-guide-evergreen-balance: forest neutrals with editorial polish
-  style-guide-nocturne-focus: high-contrast night mode with energetic CTAs
+  variant options
