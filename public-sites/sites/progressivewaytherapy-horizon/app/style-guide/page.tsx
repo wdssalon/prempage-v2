@@ -10,14 +10,13 @@ import {
   fontOptions,
   gradientTokens,
   palette,
+  selectedColorOption,
+  selectedFontOption,
+  selectedWritingStyleOption,
   toneVoice,
   typography as typographyTokens,
   writingStyleOptions,
 } from "./data";
-
-type FontOption = (typeof fontOptions)[number];
-type ColorOption = (typeof colorOptions)[number];
-type WritingStyleOption = (typeof writingStyleOptions)[number];
 
 type TypographyToken = {
   category: "Headings" | "Body & Support" | "Specialty";
@@ -30,13 +29,9 @@ type TypographyToken = {
 
 const typography = typographyTokens as TypographyToken[];
 
-const typographyCategories: TypographyToken["category"][] = ["Headings", "Body & Support", "Specialty"];
-
-const typographyCategoryNotes: Record<TypographyToken["category"], string> = {
-  Headings: "Establish hierarchy with one hero treatment and consistent section/subsection pairings per screen.",
-  "Body & Support": "Blend one lead paragraph with supporting body copy. Mix in small or emphasis tokens to create rhythm.",
-  Specialty: "Accent tokens reserved for stats, overlays, or microcopy. Use sparingly so primary typography stays dominant.",
-};
+type FontOption = (typeof fontOptions)[number];
+type ColorOption = (typeof colorOptions)[number];
+type WritingStyleOption = (typeof writingStyleOptions)[number];
 
 const optionCardClass = (selected: boolean) =>
   cn(
@@ -54,6 +49,15 @@ const OptionBadge = ({ selected }: { selected: boolean }) => (
     {selected ? "Selected" : "Option"}
   </span>
 );
+
+const typographyCategories: TypographyToken["category"][] = ["Headings", "Body & Support", "Specialty"];
+
+const typographyCategoryNotes: Record<TypographyToken["category"], string> = {
+  Headings: "Establish hierarchy with one hero treatment and consistent section/subsection pairings per screen.",
+  "Body & Support": "Blend one lead paragraph with supporting body copy. Mix in small or emphasis tokens to create rhythm.",
+  Specialty: "Accent tokens reserved for stats, overlays, or microcopy. Use sparingly so primary typography stays dominant.",
+};
+
 
 type ButtonCombo = {
   label: string;
@@ -476,101 +480,26 @@ const StyleGuide = () => {
             </div>
           </section>
 
-          <section>
-            <div className="mb-8">
-              <h2 className="heading is-section mb-2">Review Options</h2>
-              <p className="text-muted-foreground max-w-3xl">
-                These explorations were generated during Phase 2.5. Selected treatments carry a badge so future updates
-                stay aligned with the approved system.
-              </p>
-            </div>
-            <div className="space-y-12">
+          <div className="mt-8 rounded-md border border-border/40 bg-background/80 p-6">
+            <h2 className="heading is-subsection mb-4">Approved Visual System</h2>
+            <dl className="grid gap-6 md:grid-cols-3">
               <div>
-                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                  <h3 className="heading is-subsection text-soft-purple">Font Pairings</h3>
-                  <p className="text is-small text-muted-foreground md:max-w-2xl">
-                    Each option previews hero and supporting copy. The selected pairing drives the typography tokens
-                    listed below.
-                  </p>
-                </div>
-                <div className="mt-6 grid gap-6 md:grid-cols-3">
-                  {fontOptions.map((option: FontOption) => (
-                    <div key={option.name} className={optionCardClass(Boolean(option.isSelected))}>
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="font-serif text-lg text-soft-purple">{option.name}</p>
-                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{option.usage}</p>
-                        </div>
-                        <OptionBadge selected={Boolean(option.isSelected)} />
-                      </div>
-                      <div className="mt-6 space-y-3">
-                        <p className={cn("heading is-section", option.headingClassName)}>{option.sampleHeading}</p>
-                        <p className={cn("text", option.bodyClassName)}>{option.sampleBody}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <dt className="text-xs uppercase tracking-wide text-muted-foreground">Font pairing</dt>
+                <dd className="mt-1 font-serif text-lg text-soft-purple">{selectedFontOption.name}</dd>
+                <dd className="mt-2 text-sm text-muted-foreground">{selectedFontOption.usage}</dd>
               </div>
-
               <div>
-                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                  <h3 className="heading is-subsection text-soft-purple">Color Systems</h3>
-                  <p className="text is-small text-muted-foreground md:max-w-2xl">
-                    Swatches represent primary tokens that roll into gradients and surfaces. Selected palette informs the
-                    scoped Tailwind variables.
-                  </p>
-                </div>
-                <div className="mt-6 grid gap-6 md:grid-cols-3">
-                  {colorOptions.map((option: ColorOption) => (
-                    <div key={option.name} className={optionCardClass(Boolean(option.isSelected))}>
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="font-serif text-lg text-soft-purple">{option.name}</p>
-                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{option.usage}</p>
-                        </div>
-                        <OptionBadge selected={Boolean(option.isSelected)} />
-                      </div>
-                      <div className="mt-6 flex gap-3">
-                        {option.swatches.map((token) => (
-                          <div
-                            key={token}
-                            className="h-12 w-12 rounded-full border border-border/40 shadow-inner"
-                            style={{ backgroundColor: `hsl(var(${token}))` }}
-                            aria-label={`token ${token}`}
-                          />
-                        ))}
-                      </div>
-                      <p className="mt-4 text-sm text-muted-foreground">{option.description}</p>
-                    </div>
-                  ))}
-                </div>
+                <dt className="text-xs uppercase tracking-wide text-muted-foreground">Color system</dt>
+                <dd className="mt-1 font-serif text-lg text-soft-purple">{selectedColorOption.name}</dd>
+                <dd className="mt-2 text-sm text-muted-foreground">{selectedColorOption.description}</dd>
               </div>
-
               <div>
-                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                  <h3 className="heading is-subsection text-soft-purple">Writing Style Samples</h3>
-                  <p className="text is-small text-muted-foreground md:max-w-2xl">
-                    Paragraph-length explorations capture tone, sentence structure, and CTA posture. Copy drafting should
-                    adhere to the approved sample.
-                  </p>
-                </div>
-                <div className="mt-6 grid gap-6 md:grid-cols-3">
-                  {writingStyleOptions.map((option: WritingStyleOption) => (
-                    <div key={option.name} className={optionCardClass(Boolean(option.isSelected))}>
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="font-serif text-lg text-soft-purple">{option.name}</p>
-                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{option.description}</p>
-                        </div>
-                        <OptionBadge selected={Boolean(option.isSelected)} />
-                      </div>
-                      <p className="mt-4 text-sm text-muted-foreground">{option.sample}</p>
-                    </div>
-                  ))}
-                </div>
+                <dt className="text-xs uppercase tracking-wide text-muted-foreground">Writing style</dt>
+                <dd className="mt-1 font-serif text-lg text-soft-purple">{selectedWritingStyleOption.name}</dd>
+                <dd className="mt-2 text-sm text-muted-foreground">{selectedWritingStyleOption.description}</dd>
               </div>
-            </div>
-          </section>
+            </dl>
+          </div>
 
           <section>
             <div className="mb-8">

@@ -307,3 +307,11 @@ export const typography = [
     previewClassName: "bg-deep-forest",
   },
 ];
+
+const bySelection = <T extends { isSelected?: boolean }>(items: T[]): T | undefined =>
+  items.find((item) => item.isSelected);
+
+export const selectedFontOption = bySelection(fontOptions) ?? fontOptions[0];
+export const selectedColorOption = bySelection(colorOptions) ?? colorOptions[0];
+export const selectedWritingStyleOption =
+  bySelection(writingStyleOptions) ?? writingStyleOptions[0];

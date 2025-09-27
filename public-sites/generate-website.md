@@ -96,9 +96,9 @@ Phase 6: QA Check-in
    - If imagery direction is provided, include sourcing rules (subjects, framing, color temperature) and list any required assets to locate during imagery workflow.
 4. **Present options for approval**
    - Generate three candidate font pairings, three color palette treatments, and three writing style samples. Each option must render a visual preview (fonts/colors) or a paragraph-length copy sample (writing style).
-   - Share the options with the human reviewer and record feedback. Do not finalize the style guide until a selection is confirmed.
+   - Share the options with the human reviewer (link `/style-guide/options` for the full deck) and record feedback. Do not finalize the style guide until a selection is confirmed.
 5. **Persist the style guide**
-   - Update the template style guide route (e.g., `app/style-guide/page.tsx`) with client-specific tokens, annotating the selected option.
+   - Update `app/style-guide/data.ts` to mark the selected options and ensure `app/style-guide/page.tsx` reflects the approved system.
    - Record the artifact path and decision summary in `automation-state.json` and link it from `client-overview.md > ## Visual System`.
 6. **Approval gate**
    - Pause until the human reviewer approves the selected font, color, and writing style options before moving to page skeletons.

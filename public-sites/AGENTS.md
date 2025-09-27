@@ -38,7 +38,9 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 ## Automation Workflow
 Use the primary docs as the source of truth and walk through them in order:
 - `generate-website.md` Phase 1 → intake, `client-overview.md`, and page list approval before any builds.
-- `generate-website.md` Phases 2-4 with `templates/<template-slug>/page-build-edit-overview.md` → prep trackers, build skeletons, and draft copy page-by-page.
+- `generate-website.md` Phase 2 → prep trackers and section inventory.
+- `generate-website.md` Phase 2.5 → run the style-guide option review (three font/color/writing samples), capture the human-approved combination, update the style-guide data files, and persist the decision via the runner before moving on.
+- `generate-website.md` Phases 3-4 with `templates/<template-slug>/page-build-edit-overview.md` → build skeletons and draft copy page-by-page.
   - Maintain the `## Approved Website Structure` section in `client-overview.md` as the canonical build sequence while working through those pages.
 - `generate-website.md` Phase 5 with `templates/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.
 - `generate-website.md` Phase 6 with `templates/<template-slug>/page-build-edit-overview.md` step 7 → complete the QA checklist and report results.
