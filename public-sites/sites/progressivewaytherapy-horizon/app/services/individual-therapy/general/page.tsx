@@ -274,7 +274,7 @@ export default function GeneralIndividualTherapyPage() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="pt-28 md:pt-40 space-y-24 pb-24">
-        <section className="relative overflow-hidden">
+        <section data-section-id="individual-general--arrival-hero" className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-hero" aria-hidden="true" />
           <div
             className="absolute -top-32 -right-40 w-[420px] h-[420px] bg-soft-purple/30 blur-3xl rounded-full animate-gentle-float"
@@ -322,7 +322,7 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="safe-space">
+        <section data-section-id="individual-general--belonging" className="safe-space">
           <div className="container mx-auto px-4 py-20 max-w-6xl grid gap-12 md:grid-cols-2 items-start">
             <div className="space-y-6 fade-in-up">
               <Badge className="bg-sage-green/10 text-sage-green border-sage-green/40">Belonging comes first</Badge>
@@ -358,7 +358,7 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="relative py-20 bg-cream/60">
+        <section data-section-id="individual-general--session-rhythm" className="relative py-20 bg-cream/60">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-14 fade-in-up">
               <Badge className="bg-soft-purple/10 text-soft-purple border-soft-purple/30">Session rhythm</Badge>
@@ -392,7 +392,7 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="py-24">
+        <section data-section-id="individual-general--modalities" className="py-24">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="grid gap-10 md:grid-cols-[1.25fr_1fr] items-start">
               <div className="space-y-6 fade-in-up">
@@ -443,7 +443,7 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="py-24 safe-space">
+        <section data-section-id="individual-general--identity" className="py-24 safe-space">
           <div className="container mx-auto px-4 max-w-6xl grid gap-12 md:grid-cols-[1.2fr_1fr] items-center">
             <div className="space-y-6 fade-in-up">
               <Badge className="bg-soft-purple/20 text-soft-purple border-soft-purple/30">Identity-centered care</Badge>
@@ -479,7 +479,7 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="py-20">
+        <section data-section-id="individual-general--micro-testimonials" className="py-20">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 fade-in-up">
               <div>
@@ -507,7 +507,10 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="py-24 bg-gradient-to-br from-cream via-warm-tan/60 to-soft-purple/10">
+        <section
+          data-section-id="individual-general--resources"
+          className="py-24 bg-gradient-to-br from-cream via-warm-tan/60 to-soft-purple/10"
+        >
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-12 fade-in-up">
               <Badge className="bg-earth-brown/10 text-earth-brown border-earth-brown/30">Stay supported between sessions</Badge>
@@ -536,7 +539,7 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="py-24 bg-cream/70">
+        <section data-section-id="individual-general--faqs" className="py-24 bg-cream/70">
           <div className="container mx-auto px-4 max-w-4xl">
             <div className="text-center mb-12 fade-in-up">
               <Badge className="bg-soft-purple/10 text-soft-purple border-soft-purple/30">FAQs</Badge>
@@ -566,7 +569,7 @@ export default function GeneralIndividualTherapyPage() {
           </div>
         </section>
 
-        <section className="relative py-24">
+        <section data-section-id="individual-general--closing-cta" className="relative py-24">
           <div className="absolute inset-0 bg-gradient-to-br from-soft-purple/15 via-cream to-sage-green/20" aria-hidden="true" />
           <div className="relative container mx-auto px-4 max-w-5xl text-center space-y-6 fade-in-up">
             <h2 className="heading is-section mb-4">Let&apos;s build a brave, steady space together</h2>

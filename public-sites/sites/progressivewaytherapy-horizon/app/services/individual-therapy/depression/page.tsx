@@ -112,7 +112,7 @@ export default function TherapyForDepressionPage() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="pt-28 md:pt-40 pb-24 space-y-24">
-        <section className="relative overflow-hidden">
+        <section data-section-id="individual-depression--hero" className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-soft-purple/25 via-cream to-warm-tan/30" aria-hidden="true" />
           <div className="absolute -right-24 top-14 w-[320px] h-[320px] rounded-full bg-sage-green/25 blur-3xl animate-gentle-float" aria-hidden="true" />
           <div className="relative container mx-auto px-4 py-24 md:py-32 max-w-6xl grid gap-10 md:grid-cols-[1.1fr_1fr] items-start">
@@ -159,7 +159,7 @@ export default function TherapyForDepressionPage() {
           </div>
         </section>
 
-        <section className="py-20 bg-cream/70">
+        <section data-section-id="individual-depression--daily-rhythm" className="py-20 bg-cream/70">
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="text-center max-w-3xl mx-auto space-y-4 fade-in-up">
               <Badge className="bg-sage-green/20 text-sage-green border-sage-green/40">How heaviness shows up</Badge>
@@ -186,7 +186,7 @@ export default function TherapyForDepressionPage() {
           </div>
         </section>
 
-        <section className="safe-space">
+        <section data-section-id="individual-depression--restorative-anchors" className="safe-space">
           <div className="container mx-auto px-4 py-20 max-w-6xl grid gap-8 md:grid-cols-3">
             {restorativeAnchors.map((anchor, index) => {
               const Icon = anchor.icon;
@@ -207,7 +207,7 @@ export default function TherapyForDepressionPage() {
           </div>
         </section>
 
-        <section className="py-20">
+        <section data-section-id="individual-depression--session-plan" className="py-20">
           <div className="container mx-auto px-4 max-w-5xl grid gap-12 md:grid-cols-[1fr_1.1fr] items-start">
             <div className="space-y-6 fade-in-up">
               <Badge className="bg-soft-purple/15 text-soft-purple border-soft-purple/30">Restoration plan</Badge>
@@ -241,7 +241,7 @@ export default function TherapyForDepressionPage() {
           </div>
         </section>
 
-        <section className="relative py-24 overflow-hidden">
+        <section data-section-id="individual-depression--invitation" className="relative py-24 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-soft-purple/20 via-cream to-sage-green/15" aria-hidden="true" />
           <div className="relative container mx-auto px-4 max-w-4xl text-center space-y-6 fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-cream/70 border border-soft-purple/30 rounded-full text-soft-purple">

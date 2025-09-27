@@ -1,7 +1,11 @@
-import React from 'react';
-import { Shield, Heart, Video, Calendar } from 'lucide-react';
+import React from "react";
+import { Shield, Heart, Video, Calendar } from "lucide-react";
 
-const WhyChooseUs = () => {
+type WhyChooseUsProps = {
+  sectionId: string;
+};
+
+const WhyChooseUs = ({ sectionId }: WhyChooseUsProps) => {
   const reasons = [
     {
       icon: Heart,
@@ -26,7 +30,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-warm">
+    <section data-section-id={sectionId} className="py-20 bg-gradient-warm">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}

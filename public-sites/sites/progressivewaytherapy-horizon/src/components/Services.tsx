@@ -74,9 +74,13 @@ const serviceGroups: Array<{
   },
 ];
 
-const Services = () => {
+type ServicesProps = {
+  sectionId: string;
+};
+
+const Services = ({ sectionId }: ServicesProps) => {
   return (
-    <section id="services" className="py-20 bg-background">
+    <section id="services" data-section-id={sectionId} className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">

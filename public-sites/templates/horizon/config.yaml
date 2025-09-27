@@ -42,8 +42,8 @@ style_guide:
   route: app/style-guide/page.tsx
   template_path: app/style-guide/template.tsx
   voice_notes_section: "### Voice & Tone"
-  requires_approval: true
-  notes: "Generate or update the style guide before building skeletons when template provides an example. Present three font, color, and writing-style options with previews before approval."
+  requires_approval: false
+  notes: "Generate three fully rendered variants under /style-guide/<slug> before skeletons. Each variant must include palette, typography, voice, and hero samples."
 
 rotation_rules:
   hero:

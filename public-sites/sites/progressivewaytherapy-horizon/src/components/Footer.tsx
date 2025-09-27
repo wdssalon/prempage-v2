@@ -5,7 +5,7 @@ import { ExternalLink, Globe, Lock, Mail, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-cream text-earth-brown py-16">
+    <footer data-section-id="global--footer" className="bg-cream text-earth-brown py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-12">

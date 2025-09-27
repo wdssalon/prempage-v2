@@ -30,7 +30,11 @@ interface MenuPanel {
 
 const logoSrc = getAssetUrl("logo.webp");
 
-const MobileNavigation = () => {
+type MobileNavigationProps = {
+  sectionId: string;
+};
+
+const MobileNavigation = ({ sectionId }: MobileNavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPanelId, setCurrentPanelId] = useState("main");
   const [panelStack, setPanelStack] = useState<string[]>(["main"]);
@@ -337,7 +341,7 @@ const MobileNavigation = () => {
 
   return (
     <>
-      <header className="mobile-toolbar">
+      <header data-section-id={sectionId} className="mobile-toolbar">
         <div className="flex items-center">
           <Link
             href="/"
@@ -375,6 +379,7 @@ const MobileNavigation = () => {
           ref={overlayRef}
           className="mobile-menu-overlay"
           onClick={handleBackdropClick}
+          data-section-id={`${sectionId}-overlay`}
         >
           <div
             ref={menuRef}

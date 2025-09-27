@@ -131,7 +131,7 @@ export default function CounselingForAnxietyPage() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="pt-28 md:pt-40 pb-24 space-y-24">
-        <section className="relative overflow-hidden">
+        <section data-section-id="individual-anxiety--hero" className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-hero" aria-hidden="true" />
           <div className="absolute -right-32 top-12 w-[360px] h-[360px] bg-soft-purple/30 blur-3xl rounded-full animate-gentle-float" aria-hidden="true" />
           <div className="absolute -left-24 bottom-0 w-[300px] h-[300px] bg-sage-green/25 blur-3xl rounded-full animate-gentle-float" aria-hidden="true" />
@@ -156,7 +156,7 @@ export default function CounselingForAnxietyPage() {
           </div>
         </section>
 
-        <section className="safe-space">
+        <section data-section-id="individual-anxiety--how-it-feels" className="safe-space">
           <div className="container mx-auto px-4 py-20 max-w-6xl space-y-14">
             <div className="max-w-3xl space-y-4 fade-in-up">
               <Badge className="bg-warm-tan/40 text-earth-brown border-earth-brown/30">How anxiety can feel</Badge>
@@ -188,7 +188,7 @@ export default function CounselingForAnxietyPage() {
           </div>
         </section>
 
-        <section className="py-20 bg-cream/70">
+        <section data-section-id="individual-anxiety--support-pillars" className="py-20 bg-cream/70">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto space-y-4 fade-in-up">
               <Badge className="bg-soft-purple/15 text-soft-purple border-soft-purple/30">How Blanca supports you</Badge>
@@ -220,7 +220,7 @@ export default function CounselingForAnxietyPage() {
           </div>
         </section>
 
-        <section className="py-20">
+        <section data-section-id="individual-anxiety--session-practices" className="py-20">
           <div className="container mx-auto px-4 max-w-6xl grid gap-12 md:grid-cols-[1.1fr_1fr] items-start">
             <div className="space-y-6 fade-in-up">
               <Badge className="bg-sage-green/20 text-sage-green border-sage-green/40">Inside each session</Badge>
@@ -257,7 +257,7 @@ export default function CounselingForAnxietyPage() {
           </div>
         </section>
 
-        <FinalCTA />
+        <FinalCTA sectionId="individual-anxiety--closing-cta" />
       </main>
       <Footer />
     </div>

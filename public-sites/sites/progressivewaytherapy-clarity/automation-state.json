@@ -51,9 +51,7 @@
         "enabled": true,
         "extensions": {},
         "foreach": null,
-        "gates": [
-          "human_approval"
-        ],
+        "gates": [],
         "id": "intake",
         "label": "intake",
         "optional_requires": [],

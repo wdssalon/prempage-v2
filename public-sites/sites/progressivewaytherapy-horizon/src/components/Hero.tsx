@@ -7,9 +7,16 @@ import { getAssetUrl } from "@/lib/site-assets";
 
 const heroImage = getAssetUrl("hero-therapy.jpg");
 
-const Hero = () => {
+type HeroProps = {
+  sectionId: string;
+};
+
+const Hero = ({ sectionId }: HeroProps) => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero pt-40">
+    <section
+      data-section-id={sectionId}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero pt-40"
+    >
       <div className="absolute inset-0">
         <video autoPlay loop muted playsInline className="w-full h-full object-cover">
           <source src="https://wds-prod-public.s3.us-west-1.amazonaws.com/videos/ocean.mp4" type="video/mp4" />

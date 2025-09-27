@@ -7,9 +7,13 @@ import { getAssetUrl } from "@/lib/site-assets";
 
 const communityImage = getAssetUrl("community-support.jpg");
 
-const FinalCTA = () => {
+type FinalCTAProps = {
+  sectionId: string;
+};
+
+const FinalCTA = ({ sectionId }: FinalCTAProps) => {
   return (
-    <section className="py-20 bg-gradient-hero relative overflow-hidden">
+    <section data-section-id={sectionId} className="py-20 bg-gradient-hero relative overflow-hidden">
       <div className="absolute inset-0">
         <img src={communityImage} alt="Diverse community supporting each other" className="w-full h-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-hero opacity-50" />

@@ -41,7 +41,7 @@ Keep these sources authoritative—do not duplicate instructions elsewhere.
 Use the primary docs as the source of truth and walk through them in order:
 - `generate-website.md` Intake & Discovery → intake, `client-overview.md`, and page list approval before any builds.
 - `generate-website.md` Plan the Page Set → prep trackers and section inventory.
-- `generate-website.md` Define the Visual System → run the style-guide option review (three font/color/writing samples), capture the human-approved combination, update the style-guide data files, and persist the decision via the runner before moving on.
+- `generate-website.md` Define the Visual System → generate three fully rendered style-guide variants (`/style-guide/<slug>`), log them in `client-overview.md`, and persist the decision via the runner before moving on.
 - `generate-website.md` Build Page Skeletons and Draft Page Copy with `templates/<template-slug>/page-build-edit-overview.md` → build skeletons and draft copy page-by-page. For Horizon specifically, push for creative composition (no repeated layouts) while staying inside the approved style system.
   - Maintain the `## Approved Website Structure` section in `client-overview.md` as the canonical build sequence while working through those pages.
 - `generate-website.md` Site-Wide Assembly with `templates/<template-slug>/page-build-edit-overview.md` steps 5-6 → roll in navigation, both footers, and finalize SEO metadata across the site.

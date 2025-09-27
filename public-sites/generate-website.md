@@ -96,14 +96,12 @@ Phase: QA Check-in
 3. **Define visual tokens**
    - Select palette tokens, typography stacks, spacing, button treatments, surfaces, and motion helpers using the template examples as references.
    - If imagery direction is provided, include sourcing rules (subjects, framing, color temperature) and list any required assets to locate during imagery workflow.
-4. **Present options for approval**
-   - Generate three candidate font pairings, three color palette treatments, and three writing style samples. Each option must render a visual preview (fonts/colors) or a paragraph-length copy sample (writing style).
-   - Share the options with the human reviewer (link `/style-guide/options` for the full deck) and record feedback. Do not finalize the style guide until a selection is confirmed.
+4. **Generate three explorations**
+   - Populate `STYLE_VARIANTS` in `app/style-guide/data.ts` with three unique slugs prefixed by `style-guide-`. Each entry must capture palette/gradient tokens, typography guidance, voice notes, layout recommendations, and a hero copy sample.
+   - Confirm the root index (`/style-guide`) and each variant route (`/style-guide/<slug>`) render without errors. These pages replace the former `/style-guide/options` deck.
 5. **Persist the style guide**
-   - Update `app/style-guide/data.ts` to mark the selected options and ensure `app/style-guide/page.tsx` reflects the approved system.
-   - Record the artifact path and decision summary in `automation-state.json` and link it from `client-overview.md > ## Visual System`.
-6. **Approval gate**
-   - Pause until the human reviewer approves the selected font, color, and writing style options before moving to page skeletons.
+   - Run `python agents/runner.py --site <slug> --template <template> style-guide --summary "<variant-overview>" --options "See /style-guide"` so `automation-state.json` and `client-overview.md > ## Visual System` reference the generated variants.
+   - Humans can review the rendered variants asynchronously; there is no blocking approval gate before skeleton work begins.
 
 
 ## Phase: Build Page Skeletons

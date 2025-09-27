@@ -101,8 +101,8 @@
 | General Individual Therapy | Gradient hero (custom) |  |  |  |  |  | Live page – extended experience overview, identity badges, FAQs, closing CTA. |
 | Counseling for Anxiety | Gradient hero (Counseling focus) |  |  |  |  | 1 | Live page – 5 sections (hero, lived-experience cards, support pillars, session practices, FinalCTA). |
 | Therapy for Depression | Gradient hero (rest-focused) |  |  |  |  |  | Live page – hero mosaic, daily rhythm timeline, restorative anchors, session rhythm, gentle CTA (no shared FinalCTA). |
-| Counseling for Trauma | Planned dusk overlay hero |  |  |  |  |  | Planned: 5 unique sections (trauma-informed hero, grounding commitments, safety lattice, repair pathways, invitation CTA). |
-| Specialized Support |  |  |  |  |  |  | Pending outline |
+| Counseling for Trauma | Gradient hero (grounded) |  |  |  |  |  | Live page – hero, grounding commitments, safety lattice, repair pathways, invitation CTA. |
+| Specialized Support | Planned horizon mosaic hero |  |  |  |  |  | Planned: 5 unique sections (identity mosaic hero, affirmation bands, specialty spotlights, care pathways, nurturing CTA). |
 | LGBTQIA+ Individual Therapy |  |  |  |  |  |  | Pending outline |
 | Women's Issues |  |  |  |  |  |  | Pending outline |
 | Pregnancy Complications / Miscarriage |  |  |  |  |  |  | Pending outline |
@@ -121,6 +121,48 @@
 
 ## Sections Remaining To Use
 - Testimonials (needs second use)
+
+## Section Catalog
+| Section ID | Page / Scope | Description |
+|------------|--------------|-------------|
+| global--navigation | Global | Desktop navigation bar with dropdown menus. |
+| global--navigation-mobile | Global (mobile) | Mobile toolbar navigation trigger. |
+| global--navigation-mobile-overlay | Global (mobile) | Full-screen mobile navigation overlay and panels. |
+| global--footer | Global | Shared footer with contact details, links, and crisis note. |
+| home--liberation-hero | Home | Landing hero highlighting liberation-focused care. |
+| home--services-overview | Home | Services grid outlining core practice areas. |
+| home--why-choose | Home | Reasons-to-choose carousel with trust metrics. |
+| home--stories | Home | Rotating testimonial slider. |
+| home--closing-invite | Home | Final consultation invitation with multi-step CTA cards. |
+| about--core-bio | About | Primary bio block introducing Blanca. |
+| about--philosophy | About | Therapeutic philosophy cards. |
+| about--journey | About | Professional journey timeline. |
+| about--collaboration | About | Collaborative care + session rhythm section. |
+| about--cta | About | Contact CTA inviting consultations. |
+| individual-general--arrival-hero | General Individual Therapy | Gradient hero with trust badges. |
+| individual-general--belonging | General Individual Therapy | Belonging-focused intro and safety highlights. |
+| individual-general--session-rhythm | General Individual Therapy | Co-authored session rhythm steps. |
+| individual-general--modalities | General Individual Therapy | Modalities grid with supportive quote. |
+| individual-general--identity | General Individual Therapy | Identity-centered care badges. |
+| individual-general--micro-testimonials | General Individual Therapy | Micro-testimonial carousel strip. |
+| individual-general--resources | General Individual Therapy | Between-session resource cards. |
+| individual-general--faqs | General Individual Therapy | FAQ accordion with link to full list. |
+| individual-general--closing-cta | General Individual Therapy | Closing CTA encouraging consultations. |
+| individual-anxiety--hero | Counseling for Anxiety | Consent-focused anxiety hero. |
+| individual-anxiety--how-it-feels | Counseling for Anxiety | Cards reframing lived anxiety signals. |
+| individual-anxiety--support-pillars | Counseling for Anxiety | Support pillars trio. |
+| individual-anxiety--session-practices | Counseling for Anxiety | Session practice cards and CTA. |
+| individual-anxiety--closing-cta | Counseling for Anxiety | Shared final CTA component tailored for anxiety. |
+| individual-depression--hero | Therapy for Depression | Rest-focused hero and highlights. |
+| individual-depression--daily-rhythm | Therapy for Depression | Day-in-the-life burnout timeline. |
+| individual-depression--restorative-anchors | Therapy for Depression | Restorative anchors trio. |
+| individual-depression--session-plan | Therapy for Depression | Session rhythm with numbered steps. |
+| individual-depression--invitation | Therapy for Depression | Gentle invitation CTA. |
+| individual-trauma--hero | Counseling for Trauma | Trauma-believing hero with highlights. |
+| individual-trauma--grounding-commitments | Counseling for Trauma | Grounding commitments stack. |
+| individual-trauma--safety-lattice | Counseling for Trauma | Four-part safety lattice framework. |
+| individual-trauma--repair-pathways | Counseling for Trauma | Repair pathway step cards. |
+| individual-trauma--invitation | Counseling for Trauma | Closing invitation CTA for trauma support. |
 
 ## TODOs
 - [x] Move structure details from "Approved Website Structure" into the Horizon template starter so future projects inherit the expanded hierarchy.
@@ -145,41 +187,8 @@
 ## Visual System
 - Style guide route: `app/style-guide/page.tsx`
 - Selected System Summary:
-  Selected on 2025-09-27 after Phase 2.5 review:
-  - Font pairing: Playfair Display (headings) + Inter (body) for a warm editorial tone with approachable supporting copy.
-  - Color system: Sage & Sunrise palette (Sage Green, Warm Tan, Sunrise Peach) to balance trust, warmth, and conversion accents.
-  - Writing style: Affirming & Direct voice emphasising inclusive language, clear next steps, and compassionate reassurance.
+  Variants generated: style-guide-sunrise-haven, style-guide-evergreen-balance, style-guide-nocturne-focus. Each page under /style-guide/<slug> includes palette, typography, voice, and hero samples for downstream work.
 - Presented Options:
-  Font Pairings
-  1. Playfair Display + Inter (Selected)
-     - Usage: Warm editorial hero statements with modern supporting paragraphs.
-     - Heading sample: "Grounded Healing Starts Here"
-     - Body sample: "We pair poetic serif headlines with approachable sans-serif paragraphs."
-  2. Cormorant + Source Sans
-     - Usage: Softer serif with neutral sans body for an academic, reflective tone.
-     - Heading sample: "Stories Worth Sharing"
-     - Body sample: "This pairing leans into calm authority with generous letter spacing."
-  3. Fraunces + Work Sans
-     - Usage: Rounded contrast suited for playful elegance and coaching content.
-     - Heading sample: "Care That Adapts"
-     - Body sample: "Rounded serif strokes keep warmth while Work Sans maintains clarity."
-  Color Palettes
-  1. Sage & Sunrise (Selected)
-     - Swatches: --sage-green / --warm-tan / --sunrise-peach
-     - Usage: High-trust primary treatment balancing warmth and calm; ideal for CTAs and hero gradients.
-  2. Forest & Cream
-     - Swatches: --deep-forest / --soft-cream / --river-stone
-     - Usage: Contrast-rich system for accessibility-first layouts and longform content.
-  3. Plum & Dawn
-     - Swatches: --soft-purple / --plum-mauve / --gradient-dawn
-     - Usage: Expressive palette for workshops, testimonials, and seasonal highlights.
-  Writing Style Samples
-  1. Affirming & Direct (Selected)
-     - Description: Warm, strengths-based messaging with clear next steps.
-     - Sample: "You deserve support that sees every part of you. Together we name what hurts, practice what heals, and move forward at your pace."
-  2. Reflective & Narrative
-     - Description: Story-driven copy inviting the reader into shared experiences.
-     - Sample: "Every session becomes a space to unpack the stories you’ve carried alone and craft new chapters with care and witness."
-  3. Research-informed & Encouraging
-     - Description: Light clinical framing paired with uplifting reassurance.
-     - Sample: "Rooted in evidenced approaches like EMDR and somatic grounding, our work keeps you anchored in the possibility of change."
+  style-guide-sunrise-haven: warm sunrise palette and affirming tone
+  style-guide-evergreen-balance: forest neutrals with editorial polish
+  style-guide-nocturne-focus: high-contrast night mode with energetic CTAs

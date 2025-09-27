@@ -7,9 +7,13 @@ import { getAssetUrl } from "@/lib/site-assets";
 
 const therapistPortrait = getAssetUrl("blanca-2.webp");
 
-const About = () => {
+type AboutProps = {
+  sectionId: string;
+};
+
+const About = ({ sectionId }: AboutProps) => {
   return (
-    <section id="about" className="py-20 safe-space">
+    <section id="about" data-section-id={sectionId} className="py-20 safe-space">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">

@@ -19,11 +19,14 @@ const Navigation = () => {
   };
 
   if (isMobile) {
-    return <MobileNavigation />;
+    return <MobileNavigation sectionId="global--navigation-mobile" />;
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 nav-warm border-b border-border/50">
+    <header
+      data-section-id="global--navigation"
+      className="fixed top-0 left-0 right-0 z-50 nav-warm border-b border-border/50"
+    >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-40">
         <div className="flex items-center">
@@ -87,9 +90,12 @@ const Navigation = () => {
                             </Link>
                           </li>
                           <li>
-                            <a href="/#services" className="text-muted-foreground hover:text-soft-purple transition-colors">
+                            <Link
+                              href="/services/individual-therapy/trauma"
+                              className="text-muted-foreground hover:text-soft-purple transition-colors"
+                            >
                               Counseling for Trauma
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>

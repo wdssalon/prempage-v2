@@ -37,6 +37,7 @@ def test_extract_text_nodes_ignores_script_and_empty_nodes() -> None:
     assert ("[document].html[1].body[1].p[1]", "Hello") in rendered
     assert ("[document].html[1].body[1].p[1].strong[1]", "world") in rendered
     assert all("script" not in path for path, _ in rendered)
+    assert all(path != "[document]" for path, _ in rendered)
 
 
 def test_extract_images_enforces_absolute_http_urls() -> None:
@@ -45,7 +46,7 @@ def test_extract_images_enforces_absolute_http_urls() -> None:
       <body>
         <img src="/images/a.png" alt="A" />
         <img src="data:image/png;base64,AAAA" alt="inline" />
-        <img src="https://cdn.example.com/b.jpg" alt="B" />
+        <img src="https://cdn.example.com/b.jpg" alt="" />
       </body>
     </html>
     """
@@ -57,3 +58,15 @@ def test_extract_images_enforces_absolute_http_urls() -> None:
     assert "https://example.com/images/a.png" in sources
     assert "https://cdn.example.com/b.jpg" in sources
     assert all(not src.startswith("data:") for src in sources)
+    assert any(img.alt is None for img in images)
+
+
+def test_compose_text_blob_concatenates_nodes() -> None:
+    nodes = [
+        extractor._TextNode(path="a", content="First"),
+        extractor._TextNode(path="b", content="Second"),
+    ]
+
+    blob = extractor._compose_text_blob(nodes)
+
+    assert blob == "First\n\nSecond"

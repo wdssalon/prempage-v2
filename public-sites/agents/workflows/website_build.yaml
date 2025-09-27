@@ -31,7 +31,7 @@ stages:
     prompt: roles/brief_synthesizer.md
     requires: [workspace_ready]
     outputs: [client_overview_path, page_list]
-    gates: [human_approval]
+    gates: []
 
   - id: plan
     label: planning

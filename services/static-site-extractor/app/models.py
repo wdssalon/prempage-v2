@@ -3,24 +3,34 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_serializer
 
 
-class ExtractionRequest(BaseModel):
+class _BaseModel(BaseModel):
+    model_config = ConfigDict(ser_json_exclude_none=True)
+
+
+class ExtractionRequest(_BaseModel):
     url: HttpUrl = Field(..., description="URL of the webpage to extract content from")
 
 
-class TextNode(BaseModel):
-    path: str = Field(..., description="CSS-like path to the element containing the text")
+class TextNode(_BaseModel):
     content: str = Field(..., description="Trimmed text content")
 
 
-class ImageResource(BaseModel):
+class ImageResource(_BaseModel):
     src: HttpUrl = Field(..., description="Absolute URL for the image")
     alt: str | None = Field(None, description="Alt text associated with the image")
 
+    @model_serializer(mode="wrap")
+    def serialize(self, handler):  # type: ignore[override]
+        data = handler(self)
+        if data.get("alt") is None:
+            data.pop("alt", None)
+        return data
 
-class FontResource(BaseModel):
+
+class FontResource(_BaseModel):
     url: HttpUrl = Field(..., description="Absolute URL pointing to the font file")
     source: Literal["stylesheet", "inline"] = Field(
         ..., description="Origin of the font reference"
@@ -30,10 +40,11 @@ class FontResource(BaseModel):
     )
 
 
-class ExtractionResponse(BaseModel):
+class ExtractionResponse(_BaseModel):
     url: HttpUrl
     title: str | None
     fetched_at: datetime
     text: list[TextNode]
+    text_blob: str = Field(..., description="All visible text concatenated into a single blob")
     images: list[ImageResource]
     fonts: list[FontResource]

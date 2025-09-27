@@ -12,8 +12,8 @@ Convert the incoming client materials into a structured `client-overview.md` and
 1. Summarize client background, goals, target audience, differentiators, and tone using the template starter as a scaffold.
 2. Capture visual tokens (palette, typography, iconography) from the intake materials or articulate open questions when assets are missing.
 3. Propose a page list and navigation hierarchy, explaining the purpose of each page and flagging potential groupings when nav density is high.
-4. Present both artifacts for human approval and pause until the coordinator confirms sign-off.
-5. Once approved, append an `Approved Website Structure` section to the site’s `client-overview.md` mirroring the confirmed navigation, sequencing notes, and any hero/CTA guardrails communicated by the template.
+4. Present both artifacts to the coordinator for verification against guardrails; incorporate feedback before moving ahead.
+5. Once verified, append an `Approved Website Structure` section to the site’s `client-overview.md` mirroring the confirmed navigation, sequencing notes, and any hero/CTA guardrails communicated by the template.
 
 ## Deliverables
 - Updated `sites/<slug>/client-overview.md` based on the template starter.

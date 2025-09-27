@@ -158,10 +158,10 @@ export default function AboutPage() {
 
       <main className="pt-32 md:pt-40 pb-24 space-y-24">
         {/* Core Bio Section */}
-        <AboutSection />
+        <AboutSection sectionId="about--core-bio" />
 
         {/* Therapeutic Philosophy */}
-        <section className="py-12">
+        <section data-section-id="about--philosophy" className="py-12">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center mb-12 fade-in-up">
               <h2 className="heading is-section mb-6">Therapeutic Philosophy</h2>
@@ -192,7 +192,7 @@ export default function AboutPage() {
         </section>
 
         {/* Professional Journey */}
-        <section className="py-20 safe-space">
+        <section data-section-id="about--journey" className="py-20 safe-space">
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="text-center mb-16 fade-in-up">
               <h2 className="heading is-section mb-6">Professional Journey</h2>
@@ -222,7 +222,7 @@ export default function AboutPage() {
         </section>
 
         {/* How We'll Work Together */}
-        <section className="py-12">
+        <section data-section-id="about--collaboration" className="py-12">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="grid lg:grid-cols-2 gap-12">
               <div className="fade-in-up">
@@ -289,7 +289,7 @@ export default function AboutPage() {
         </section>
 
         {/* Closing CTA */}
-        <section className="px-4">
+        <section data-section-id="about--cta" className="px-4">
           <div className="container mx-auto max-w-5xl">
             <div className="inclusive-card safe-space text-center fade-in-up p-12 md:p-14">
               <h2 className="heading is-section text-soft-purple mb-4">Ready to create space for your healing?</h2>

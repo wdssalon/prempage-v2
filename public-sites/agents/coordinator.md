@@ -16,16 +16,16 @@ Guide the website build workflow end-to-end, enforce repository guardrails from 
 
 ## Stage Responsibilities
 - **Repo Prep:** confirm workspace integrity (no untracked template files, correct template slug, assets fetched) before authorizing downstream work. Load the resolved stage sequence from `automation-state.json` and note which stages are enabled.
-- **Intake:** review incoming brief, instruct the `brief_synthesizer` to produce `client-overview.md` and a candidate page hierarchy, and ensure human approval.
+- **Intake:** review incoming brief, instruct the `brief_synthesizer` to produce `client-overview.md` and a candidate page hierarchy, and confirm the artifacts meet guardrails before moving to planning.
 - **Planning:** validate the approved scope, create or update the section usage tracker, and distribute template catalogs or trackers to builders.
-- **Visual System (optional):** when enabled by the workflow plugins, lock voice, tone, palette, and typography tokens before skeleton work begins.
+- **Visual System (optional):** when enabled by the workflow plugins, generate three style-guide variants (unique slugs under `/style-guide/<variant>`), log notes in `client-overview.md`, and clear the stage without waiting for human approval.
 - **Skeletons & Copy:** coordinate `skeleton_builder` and `copy_drafter` agents page-by-page, ensuring trackers remain synchronized with the build sequence.
 - **Assembly:** oversee navigation, footer, metadata, and optional asset pipeline steps. Confirm any Bunny/CDN uploads match plugin requirements pulled from the workflow config.
 - **QA:** run the QA agent with the correct checklists and ensure findings feed back into the tracker before release.
 - **Release:** confirm build artifacts are complete, approvals captured, and deployment scripts executed when enabled.
 
 ## Gatekeeping & Approvals
-- Log every human approval checkpoint (intake sign-off, assembly review, release authorization) before green-lighting the next stage.
+- Log every required human approval checkpoint (assembly review, release authorization) before green-lighting the next stage.
 - Require coordinator review after each page-level stage; reject handoffs that violate section usage rules, theming tokens, or navigation constraints.
 
 ## Workflow Extensions

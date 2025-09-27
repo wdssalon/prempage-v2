@@ -1,317 +1,241 @@
-export const palette = [
-  {
-    name: "Sage Green",
-    token: "--sage-green",
-    usage: "Primary calls-to-action, high-trust highlights, hero gradients",
-  },
-  {
-    name: "Nature Green",
-    token: "--nature-green",
-    usage: "Gradient depth, on-scroll accents, supportive CTAs",
-  },
-  {
-    name: "Deep Forest",
-    token: "--deep-forest",
-    usage: "High-contrast headings, overlays on photography, dark sections",
-  },
-  {
-    name: "Warm Tan",
-    token: "--warm-tan",
-    usage: "Section backgrounds, gentle cards, hover states",
-  },
-  {
-    name: "Sunrise Peach",
-    token: "--sunrise-peach",
-    usage: "Accent ribbons, stats backgrounds, easing dense layouts",
-  },
-  {
-    name: "Soft Cream",
-    token: "--soft-cream",
-    usage: "Copy on gradients, contrast text when backgrounds darken",
-  },
-  {
-    name: "Soft Purple",
-    token: "--soft-purple",
-    usage: "Headlines, highlights, supportive accents",
-  },
-  {
-    name: "Plum Mauve",
-    token: "--plum-mauve",
-    usage: "Contrast hover states, gradient anchors, callout borders",
-  },
-  {
-    name: "Earth Brown",
-    token: "--earth-brown",
-    usage: "Body copy, muted icons, subtle borders",
-  },
-  {
-    name: "River Stone",
-    token: "--river-stone",
-    usage: "Neutral type on warm surfaces, icon strokes, divider lines",
-  },
-  {
-    name: "Cream",
-    token: "--cream",
-    usage: "Hero overlays, light gradients, typography contrast",
-  },
-];
-
-export const gradientTokens = [
-  {
-    name: "Hero Mist",
-    token: "--gradient-hero",
-    usage: "Full-bleed hero backgrounds or over photography for legibility",
-    className: "bg-gradient-hero motion-gradient-pan",
-  },
-  {
-    name: "Warm Glow",
-    token: "--gradient-warm",
-    usage: "Section transitions, testimonials, gentle background panels",
-    className: "bg-gradient-warm",
-  },
-  {
-    name: "Forest Arc",
-    token: "--gradient-nature",
-    usage: "Primary CTA backplates, stats bands, navigation highlights",
-    className: "bg-gradient-nature motion-gradient-pan",
-  },
-  {
-    name: "Sunrise Wash",
-    token: "--gradient-dawn",
-    usage: "Warm overlays on portraits, onboarding strips, hero ribbons",
-    className: "bg-gradient-dawn",
-  },
-  {
-    name: "Evening Dusk",
-    token: "--gradient-dusk",
-    usage: "Contrast panels, footers, newsletter sign-ups with white copy",
-    className: "bg-gradient-dusk motion-gradient-pan",
-  },
-];
-
-export const fontOptions = [
-  {
-    name: "Playfair Display + Inter",
-    headingClassName: "font-serif",
-    bodyClassName: "font-sans",
-    usage: "Warm editorial voice with modern support copy.",
-    sampleHeading: "Grounded Healing Starts Here",
-    sampleBody: "We pair poetic serif headlines with approachable sans-serif paragraphs.",
-    isSelected: true,
-  },
-  {
-    name: "Cormorant + Source Sans",
-    headingClassName: "font-serif",
-    bodyClassName: "font-sans",
-    usage: "Softer serif with neutral sans body for academic tone.",
-    sampleHeading: "Stories Worth Sharing",
-    sampleBody: "This pairing leans into calm authority with generous letter spacing.",
-  },
-  {
-    name: "Fraunces + Work Sans",
-    headingClassName: "font-serif",
-    bodyClassName: "font-sans",
-    usage: "Rounded contrast for brands wanting playful elegance.",
-    sampleHeading: "Care That Adapts",
-    sampleBody: "Rounded serif strokes keep warmth while Work Sans maintains clarity.",
-  },
-];
-
-export const colorOptions = [
-  {
-    name: "Sage & Sunrise",
-    swatches: ["--sage-green", "--warm-tan", "--sunrise-peach"],
-    usage: "High-trust primary treatment balancing warmth and calm.",
-    description: "Blend sage gradients with sunrise accents for CTAs.",
-    isSelected: true,
-  },
-  {
-    name: "Forest & Cream",
-    swatches: ["--deep-forest", "--soft-cream", "--river-stone"],
-    usage: "Contrast-rich option for accessibility-first layouts.",
-    description: "Lean on deep forest backgrounds with cream typography.",
-  },
-  {
-    name: "Plum & Dawn",
-    swatches: ["--soft-purple", "--plum-mauve", "--gradient-dawn"],
-    usage: "Expressive palette for coaching or workshop highlights.",
-    description: "Use plum gradients for features and dawn hues for testimonials.",
-  },
-];
-
-export const writingStyleOptions = [
-  {
-    name: "Affirming & Direct",
-    description: "Warm, strengths-based messaging with clear next steps.",
-    sample:
-      "You deserve support that sees every part of you. Together we name what hurts, practice what heals, and move forward at your pace.",
-    isSelected: true,
-  },
-  {
-    name: "Reflective & Narrative",
-    description: "Story-driven copy inviting the reader into shared experiences.",
-    sample:
-      "Every session becomes a space to unpack the stories you’ve carried alone and craft new chapters with care and witness.",
-  },
-  {
-    name: "Research-informed & Encouraging",
-    description: "Light clinical framing paired with uplifting reassurance.",
-    sample:
-      "Rooted in evidenced approaches like EMDR and somatic grounding, our work keeps you anchored in the possibility of change.",
-  },
-];
-
-export const toneVoice = {
-  adjectives: ["Warm", "Affirming", "Grounded", "Direct"],
-  sentenceLength: "2–3 clauses max; prefer active voice.",
-  pov: "Second person with community-inclusive framing",
-  tense: "Present-oriented with occasional future-facing support statements",
-  vocabulary: ["liberation-based", "affirming care", "community", "healing", "grounded"],
-  phrasesToAvoid: ["patients", "clinical intervention", "disorder"],
+export type PaletteSwatch = {
+  name: string;
+  token: string;
+  usage: string;
 };
 
-export const designPatterns = ["Organic shapes", "Soft gradients", "Subtle motion"];
+export type GradientToken = {
+  name: string;
+  token: string;
+  className: string;
+  usage: string;
+};
 
-export const typography = [
+export type TypographicToken = {
+  label: string;
+  classes: string[];
+  sample: string;
+  guidance: string;
+};
+
+export type VoiceCallout = {
+  title: string;
+  description: string;
+};
+
+export type HeroSample = {
+  eyebrow: string;
+  heading: string;
+  body: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+};
+
+export type StyleVariant = {
+  slug: string;
+  title: string;
+  subtitle: string;
+  summary: string;
+  palette: PaletteSwatch[];
+  gradients: GradientToken[];
+  typography: TypographicToken[];
+  voice: VoiceCallout[];
+  layoutNotes: string[];
+  hero: HeroSample;
+};
+
+export const STYLE_VARIANTS: StyleVariant[] = [
   {
-    category: "Headings",
-    label: "Heading · Hero",
-    classes: ["heading", "is-hero"],
-    sample: "Grounded Healing Starts Here",
-    guidance:
-      "Hero statements on bold backgrounds. Pair with `.heading.is-on-dark` over gradients or photography. Add `.is-condensed` when you need the same treatment at a smaller scale.",
+    slug: "style-guide-sunrise-haven",
+    title: "Sunrise Haven",
+    subtitle: "Warm, affirming gradients with grounded serif storytelling",
+    summary:
+      "Balances sage greens with sunrise peach accents for a compassionate, high-trust feel. Ideal for inclusive therapy practices seeking a soft glow without losing clarity.",
+    palette: [
+      { name: "Sage Green", token: "--sage-green", usage: "Primary buttons, hero gradients, trust badges" },
+      { name: "Warm Tan", token: "--warm-tan", usage: "Section backdrops, card surfaces, feature highlights" },
+      { name: "Sunrise Peach", token: "--sunrise-peach", usage: "Accent pills, stats ribbons, gentle overlays" },
+      { name: "Soft Cream", token: "--soft-cream", usage: "Body copy on gradients, muted icons, subtle borders" },
+    ],
+    gradients: [
+      { name: "Hero Mist", token: "--gradient-hero", className: "bg-gradient-hero motion-gradient-pan", usage: "Primary hero canvas and large CTA strips" },
+      { name: "Warm Glow", token: "--gradient-warm", className: "bg-gradient-warm", usage: "Testimonials, pull quotes, calming callouts" },
+      { name: "Dawn Horizon", token: "--gradient-dawn", className: "bg-gradient-dawn", usage: "Navigation hover states and subtle dividers" },
+    ],
+    typography: [
+      {
+        label: "Heading · Display",
+        classes: ["heading", "is-display"],
+        sample: "Grounded healing starts here",
+        guidance: "Use for hero headlines on gradients. Pair with `.is-on-dark` when overlaying photography.",
+      },
+      {
+        label: "Heading · Section",
+        classes: ["heading", "is-section"],
+        sample: "Therapy tailored to every story",
+        guidance: "Default section intro. Keep max width at 32rem for comfortable scan.",
+      },
+      {
+        label: "Text · Lead",
+        classes: ["text", "is-lead"],
+        sample: "We create a soft landing space with compassionate structure and practical tools.",
+        guidance: "Use for intros and hero supporting copy. Limit to two sentences for rhythm.",
+      },
+      {
+        label: "Button · Primary",
+        classes: ["btn-primary", "is-on-dark"],
+        sample: "Book a free consultation",
+        guidance: "Lives on gradients or photography. Add `.w-full` on mobile for edge-to-edge presence.",
+      },
+    ],
+    voice: [
+      { title: "Tone", description: "Warm, affirming, and direct. Lead with encouragement before outlining next steps." },
+      { title: "Vocabulary", description: "Use words like community, grounded, liberation-based, healing." },
+      { title: "Avoid", description: "Clinical distance (patient, disorder) or jargon-heavy phrasing." },
+    ],
+    layoutNotes: [
+      "Introduce organic blob shapes behind photography for depth.",
+      "Balance warm sections with cream breathing room to prevent color fatigue.",
+      "Pair gradients with subtle grain or noise for texture when needed.",
+    ],
+    hero: {
+      eyebrow: "Telehealth therapy across Texas",
+      heading: "A safe space for your authentic self",
+      body: "We combine evidence-based care with inclusive community support so every session feels like a grounded exhale.",
+      ctaPrimary: "Book a free consultation",
+      ctaSecondary: "Explore services",
+    },
   },
   {
-    category: "Headings",
-    label: "Heading · Display",
-    classes: ["heading", "is-display"],
-    sample: "A Safe Space for Your Authentic Self",
-    guidance:
-      "Use once per page for hero moments. Add `motion-fade-soft` for on-load animation. Apply `.is-condensed` to drop the size for denser layouts.",
+    slug: "style-guide-evergreen-balance",
+    title: "Evergreen Balance",
+    subtitle: "Calming neutrals with forest depth and editorial refinement",
+    summary:
+      "Pairs deep forest greens with soft cream typography for a confident, contemporary feel suited to premium practices or boutique wellness brands.",
+    palette: [
+      { name: "Deep Forest", token: "--deep-forest", usage: "Hero backgrounds, navigation, footer anchors" },
+      { name: "River Stone", token: "--river-stone", usage: "Secondary buttons, icon strokes, subtle dividers" },
+      { name: "Soft Cream", token: "--soft-cream", usage: "Body copy, cards, backgrounds for longform content" },
+      { name: "Plum Mauve", token: "--plum-mauve", usage: "Accent lines, form focus states, on-scroll indicators" },
+    ],
+    gradients: [
+      { name: "Forest Arc", token: "--gradient-nature", className: "bg-gradient-nature motion-gradient-pan", usage: "CTA bands, plan comparison, pricing overlays" },
+      { name: "Evening Dusk", token: "--gradient-dusk", className: "bg-gradient-dusk motion-gradient-pan", usage: "Event highlights, footer and newsletter opt-ins" },
+      { name: "Warm Glow", token: "--gradient-warm", className: "bg-gradient-warm", usage: "Testimonials and success stories" },
+    ],
+    typography: [
+      {
+        label: "Heading · Display Condensed",
+        classes: ["heading", "is-display", "is-condensed"],
+        sample: "Care that grows with you",
+        guidance: "Use on deep backgrounds with `.text-soft-cream` for high contrast.",
+      },
+      {
+        label: "Heading · Subsection",
+        classes: ["heading", "is-subsection"],
+        sample: "Signature programs",
+        guidance: "Great for program cards and collapsible details. Pair with `.tracking-tight`.",
+      },
+      {
+        label: "Text · Body",
+        classes: ["text"],
+        sample: "Our collaborative approach blends somatic, narrative, and CBT tools for lasting change.",
+        guidance: "Default body style. Increase `leading-relaxed` for dense paragraphs.",
+      },
+      {
+        label: "Pill · Navigation",
+        classes: ["rounded-full", "border", "border-soft-cream/20", "px-4", "py-1", "text-xs", "uppercase", "tracking-wide"],
+        sample: "Featured",
+        guidance: "Use for badges and filter chips. Transition to `.bg-soft-cream/10` on hover.",
+      },
+    ],
+    voice: [
+      { title: "Tone", description: "Steady, confident, and knowledgeable without feeling clinical." },
+      { title: "Pacing", description: "Blend short invitations with supporting sentences for authority." },
+      { title: "Signature phrases", description: "Evergreen support, grounded partnership, evidence-backed growth." },
+    ],
+    layoutNotes: [
+      "Alternate forest and cream bands to maintain contrast and energy.",
+      "Introduce split layouts with photography to showcase depth.",
+      "Use thin border lines to echo the editorial aesthetic in cards and quotes.",
+    ],
+    hero: {
+      eyebrow: "Premium telehealth practice",
+      heading: "Strategic therapy for sustainable growth",
+      body: "Pair long-term goals with weekly breakthroughs inside a collaborative, judgment-free container.",
+      ctaPrimary: "Schedule a discovery call",
+      ctaSecondary: "Download welcome kit",
+    },
   },
   {
-    category: "Headings",
-    label: "Heading · Section",
-    classes: ["heading", "is-section"],
-    sample: "Specialized Therapy Services",
-    guidance: "Default for section intros. Combine with layout helpers such as `mb-6` or `max-w-3xl mx-auto`.",
-  },
-  {
-    category: "Headings",
-    label: "Heading · Subsection",
-    classes: ["heading", "is-subsection"],
-    sample: "Liberation-Based Healing",
-    guidance:
-      "Use inside cards or secondary columns. Override color with Tailwind utilities when the context demands it.",
-  },
-  {
-    category: "Headings",
-    label: "Heading · Feature",
-    classes: ["heading", "is-feature"],
-    sample: "Stories of Affirmation",
-    guidance:
-      "Anchor key sections or testimonial highlights. Works well inside `surface-highlight` or `surface-textured`.",
-  },
-  {
-    category: "Specialty",
-    label: "Heading · Eyebrow",
-    classes: ["heading", "is-eyebrow"],
-    sample: "TRAUMA-INFORMED",
-    guidance: "Pre-head accent for stats, hero strips, or landing page sections. Use once per block before a larger heading.",
-  },
-  {
-    category: "Specialty",
-    label: "Heading · Quote",
-    classes: ["heading", "is-quote"],
-    sample: "“We heal in community.”",
-    guidance: "Use within testimonials or pull quotes. Pair with `.text.is-caption` for attribution lines.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Lead",
-    classes: ["text", "is-lead"],
-    sample: "Evidence-based, trauma-informed care tailored to your lived experience.",
-    guidance:
-      "Intro paragraphs that sit right under a heading. Combine with width utilities like `max-w-3xl`.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Body",
-    classes: ["text"],
-    sample: "Inclusive, trauma-informed care for LGBTQIA+ and BIPOC communities.",
-    guidance: "Default body copy. Add `text-muted-foreground` when you need gentle emphasis.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Small",
-    classes: ["text", "is-small"],
-    sample: "Liberation-centered counseling rooted in justice.",
-    guidance:
-      "Use for supporting paragraphs inside cards or columns where body copy would feel heavy.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Caption",
-    classes: ["text", "is-caption"],
-    sample: "Serving all of Texas via telehealth",
-    guidance:
-      "Supportive details, disclaimers, and labels. Pair with uppercase utilities only when necessary.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Emphasis",
-    classes: ["text", "is-emphasis"],
-    sample: "Liberation-based therapy for every identity you hold.",
-    guidance:
-      "Drop-in emphasis line within bulleted lists or key statements. Use sparingly to keep hierarchy clear.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Highlight",
-    classes: ["text", "is-highlight"],
-    sample: "Reflective, compassionate storytelling that invites trust.",
-    guidance:
-      "Use when body copy needs to pick up accent color within surfaces or testimonials.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Serif",
-    classes: ["text", "is-serif"],
-    sample: "Grounded wisdom passed along with care and clarity.",
-    guidance:
-      "Bridge body copy with hero statements for narrative moments. Ideal for quotes within copy blocks.",
-  },
-  {
-    category: "Specialty",
-    label: "Text · Micro",
-    classes: ["text", "is-micro"],
-    sample: "Updated weekly",
-    guidance:
-      "Label content such as newsletter cadence, office hours, or supporting metadata.",
-  },
-  {
-    category: "Specialty",
-    label: "Text · Numeric",
-    classes: ["text", "is-numeric"],
-    sample: "12+ years facilitating community healing",
-    guidance:
-      "Use inside stats clusters or timelines. Pair with `heading.is-eyebrow` for compact data callouts.",
-  },
-  {
-    category: "Specialty",
-    label: "Text · Contrast",
-    classes: ["text", "is-contrast"],
-    sample: "Optimized for low-light overlays",
-    guidance:
-      "Use when copy sits on dark gradients or photography. Combine with `.heading.is-on-dark` or `.btn-contrast`.",
-    previewClassName: "bg-deep-forest",
+    slug: "style-guide-nocturne-focus",
+    title: "Nocturne Focus",
+    subtitle: "High-contrast night mode with focused CTA energy",
+    summary:
+      "Built for bold practices that thrive on late-night inspiration. Electric accents energize a charcoal base without sacrificing readability.",
+    palette: [
+      { name: "Ink Charcoal", token: "--deep-forest", usage: "Primary backgrounds, navigation, hero canvas" },
+      { name: "Luminous Teal", token: "--sage-green", usage: "Primary CTAs, icon strokes, interactive states" },
+      { name: "Neon Ember", token: "--sunrise-peach", usage: "Progress bars, accent dividers, stat highlights" },
+      { name: "Mist Slate", token: "--river-stone", usage: "Body copy and supporting text on dark surfaces" },
+    ],
+    gradients: [
+      { name: "Orbit Glow", token: "--gradient-hero", className: "bg-gradient-hero motion-gradient-pan", usage: "Hero and key CTA sections with animated backdrop" },
+      { name: "Pulse Wave", token: "--gradient-dawn", className: "bg-gradient-dawn", usage: "Feature comparisons, timeline highlights" },
+      { name: "Nightfall", token: "--gradient-dusk", className: "bg-gradient-dusk", usage: "Footer and newsletter prompts to keep depth" },
+    ],
+    typography: [
+      {
+        label: "Heading · Display Upper",
+        classes: ["heading", "is-display", "uppercase"],
+        sample: "Unlock night-time breakthroughs",
+        guidance: "All-caps hero moment. Tighten letter spacing by -0.02em for compact energy.",
+      },
+      {
+        label: "Text · Lead On Dark",
+        classes: ["text", "is-lead", "is-on-dark"],
+        sample: "A boldly-lit path for creatives and founders tackling complex challenges after hours.",
+        guidance: "Pair with neon accent lines or icons for rhythm.",
+      },
+      {
+        label: "Stat · Highlight",
+        classes: ["text", "text-4xl", "font-semibold", "text-sunrise-peach"],
+        sample: "94%",
+        guidance: "Use for hero stats or proof points. Add `.drop-shadow` for glow.",
+      },
+      {
+        label: "Button · Ghost",
+        classes: ["btn-secondary", "bg-transparent", "border-sage-green/40", "text-soft-cream"],
+        sample: "View success stories",
+        guidance: "Place beside bright primary CTA to provide contrast with refined tone.",
+      },
+    ],
+    voice: [
+      { title: "Tone", description: "Motivational, precise, and future-focused." },
+      { title: "Cadence", description: "Short, punchy sentences mixed with energizing imperatives." },
+      { title: "CTA posture", description: "Lean into verbs like unlock, ignite, build, launch." },
+    ],
+    layoutNotes: [
+      "Use generous padding and drop shadows to keep depth on dark backgrounds.",
+      "Add animated underline or border accents on hover for CTA emphasis.",
+      "Introduce blurred gradient orbs behind cards to create motion.",
+    ],
+    hero: {
+      eyebrow: "Elite night-schedule coaching",
+      heading: "Ignite breakthroughs after dark",
+      body: "We partner with founders and creatives who do their best thinking when the world slows down.",
+      ctaPrimary: "Book an evening session",
+      ctaSecondary: "See founder stories",
+    },
   },
 ];
 
-const bySelection = <T extends { isSelected?: boolean }>(items: T[]): T | undefined =>
-  items.find((item) => item.isSelected);
+export const DEFAULT_VARIANT_SLUG = STYLE_VARIANTS[0].slug;
 
-export const selectedFontOption = bySelection(fontOptions) ?? fontOptions[0];
-export const selectedColorOption = bySelection(colorOptions) ?? colorOptions[0];
-export const selectedWritingStyleOption =
-  bySelection(writingStyleOptions) ?? writingStyleOptions[0];
+export function getVariantBySlug(slug: string): StyleVariant {
+  const variant = STYLE_VARIANTS.find((entry) => entry.slug === slug);
+  if (!variant) {
+    throw new Error(`Style guide variant not found for slug: ${slug}`);
+  }
+  return variant;
+}

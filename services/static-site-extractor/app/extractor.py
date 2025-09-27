@@ -33,6 +33,7 @@ SKIP_TEXT_PARENTS = {
     "link",
     "head",
     "title",
+    "[document]",
 }
 
 
@@ -71,13 +72,16 @@ async def extract_page(url: str) -> models.ExtractionResponse:
         font_candidates = await _collect_font_candidates(client, soup, base_url=response.url)
 
     fonts = _dedupe_fonts(font_candidates)
+    text_models = [models.TextNode(content=node.content) for node in text_nodes]
+    text_blob = _compose_text_blob(text_nodes)
 
     return models.ExtractionResponse(
         url=str(response.url),
         title=_extract_title(soup),
         fetched_at=datetime.now(timezone.utc),
-        text=[models.TextNode(**node._asdict()) for node in text_nodes],
-        images=[models.ImageResource(**image._asdict()) for image in images],
+        text=text_models,
+        text_blob=text_blob,
+        images=[models.ImageResource(**_image_dict(image)) for image in images],
         fonts=[
             models.FontResource(url=font.url, source=font.source, stylesheet_url=font.stylesheet_url)
             for font in fonts
@@ -130,7 +134,13 @@ def _extract_text_nodes(soup: BeautifulSoup) -> Iterable[_TextNode]:
         if parent.name in SKIP_TEXT_PARENTS:
             continue
         path = _build_dom_path(parent)
+        if path == "[document]":
+            continue
         yield _TextNode(path=path, content=stripped)
+
+
+def _compose_text_blob(nodes: Iterable[_TextNode]) -> str:
+    return "\n\n".join(node.content for node in nodes)
 
 
 def _build_dom_path(element: Tag) -> str:
@@ -164,7 +174,18 @@ def _extract_images(soup: BeautifulSoup, *, base_url: httpx.URL) -> Iterable[_Im
         if not absolute.startswith(("http://", "https://")):
             continue
         alt = img.get("alt")
-        yield _ImageNode(src=absolute, alt=alt.strip() if isinstance(alt, str) else None)
+        if isinstance(alt, str):
+            alt = alt.strip() or None
+        else:
+            alt = None
+        yield _ImageNode(src=absolute, alt=alt)
+
+
+def _image_dict(image: _ImageNode) -> dict[str, str | None]:
+    data = image._asdict()
+    if not data.get("alt"):
+        data.pop("alt", None)
+    return data
 
 
 async def _collect_font_candidates(

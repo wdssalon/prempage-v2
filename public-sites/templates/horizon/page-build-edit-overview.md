@@ -21,13 +21,15 @@ This guide explains how to build or update pages for the Horizon template—the 
 - Update the `/style-guide` route whenever tokens or helpers change. That page is the canonical approval surface—QA updates there first to guarantee downstream pages inherit the same styling.
 
 ## Visual System Workflow
-- Generate the three-option exploration for fonts, colors, and writing style under `app/style-guide/options/page.tsx`. The `fontOptions`, `colorOptions`, and `writingStyleOptions` arrays in `app/style-guide/data.ts` power both the options view and the canonical style guide.
-- Share screenshots or links to `/style-guide/options` in chat so the human reviewer can choose one option per category. Record their selections in the same arrays by toggling the `isSelected` flag.
-- Once selections are confirmed, ensure the summary helpers (`selectedFontOption`, `selectedColorOption`, `selectedWritingStyleOption`) reflect the chosen set and appear in `app/style-guide/page.tsx` under the “Approved Visual System” block.
-- After the human confirms the choices, run the automation runner to persist the decision history:
-  `python agents/runner.py --site <slug> --template horizon style-guide --summary "..." --options "..."`
-  This updates `automation-state.json` and appends the `## Visual System` section to `client-overview.md`.
-- Only move to the Build Page Skeletons phase once the runner has been executed and the coordinator has recorded approval.
+- Generate three full explorations by populating `STYLE_VARIANTS` in `app/style-guide/data.ts`. Each entry must define:
+  - A unique slug prefixed with `style-guide-` (kebab-case, e.g., `style-guide-sunrise-haven`).
+  - Palette + gradient tokens grounded in the template variables.
+  - Typography guidance, voice notes, and layout recommendations.
+  - A hero copy sample with CTA labels that will map cleanly to a draft home page.
+- The dynamic route at `/style-guide/[variant]` uses the data file to render each exploration automatically. Confirm the root index (`/style-guide`) lists all three variants with descriptive summaries.
+- Do **not** maintain the old `/style-guide/options` deck. Instead, ask the human reviewer to browse each variant URL and provide feedback directly on the fully rendered exploration.
+- Once the explorations are saved, run `python agents/runner.py --site <slug> --template horizon style-guide --summary "<variant-notes>" --options "See /style-guide for variant list"` so `automation-state.json` captures the work and the `client-overview.md > ## Visual System` section links back to the generated pages.
+- After the coordinator records the three variants and updates the client overview, skeleton building can begin without waiting for human gating (humans can react asynchronously to the rendered variants).
 
 ## CTA & Combo Styling Reference
 - Every style-guide token now ships with a light/dark strategy—use the `.is-on-dark` or `.is-on-light` combos whenever a component moves off its default background.

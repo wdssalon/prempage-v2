@@ -1,38 +1,67 @@
-import { fontOptions, colorOptions, writingStyleOptions } from "./data";
+import Link from "next/link";
+import { Metadata } from "next";
+import { STYLE_VARIANTS } from "./data";
 
-function OptionList({ title, options }: { title: string; options: typeof fontOptions }) {
+export const metadata: Metadata = {
+  title: "Style Guide Explorations",
+  description: "Browse the Horizon visual system variants generated for this project.",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+};
+
+export default function StyleGuideIndexPage() {
   return (
-    <section className="section-wrapper">
-      <h2 className="heading text-2xl mb-6">{title}</h2>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {options.map((option) => (
-          <article
-            key={option.id}
-            className={`card ${option.isSelected ? "ring-2 ring-primary" : ""}`}
-          >
-            <h3 className="heading text-xl mb-2">{option.name}</h3>
-            <p className="text">{option.description}</p>
-            {option.isSelected && <p className="mt-4 text-sm text-primary">Selected</p>}
+    <main className="min-h-screen bg-background py-16">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4">
+        <section className="space-y-4 text-center">
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Visual Explorations</p>
+          <h1 className="heading is-display">Preview style guide variants</h1>
+          <p className="text is-lead mx-auto max-w-2xl">
+            Each variant below ships with a fully themed exploration. Open a variant to review the palette, typography,
+            copy tone, and layout guidance applied to that direction. Slugs are prefixed with `style-guide-` so they remain
+            easy to locate in git history and automation logs.
+          </p>
+        </section>
+
+        <section className="grid gap-6 md:grid-cols-3">
+          {STYLE_VARIANTS.map((variant) => (
+            <article key={variant.slug} className="card h-full">
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Variant</p>
+                  <h2 className="heading text-2xl">{variant.title}</h2>
+                  <p className="text text-sm text-muted-foreground">{variant.subtitle}</p>
+                </div>
+                <p className="text text-sm">{variant.summary}</p>
+                <div className="flex flex-wrap gap-2">
+                  {variant.palette.map((swatch) => (
+                    <span
+                      key={swatch.token}
+                      className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 text-xs uppercase tracking-wide"
+                    >
+                      <span
+                        className="h-4 w-4 rounded-full border border-foreground/10"
+                        style={{ backgroundColor: `hsl(var(${swatch.token}))` }}
+                        aria-hidden
+                      />
+                      {swatch.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-6 flex items-center justify-between">
+                <Link href={`/style-guide/${variant.slug}`} className="btn-secondary text-sm">
+                  View variant
+                </Link>
+                <span className="text-xs uppercase tracking-wide text-muted-foreground">Slug: {variant.slug}</span>
+              </div>
           </article>
-        ))}
+          ))}
+        </section>
       </div>
-    </section>
-  );
-}
-
-export default function StyleGuidePage() {
-  return (
-    <main className="space-y-12 pb-16">
-      <section className="section-wrapper text-center">
-        <h1 className="heading is-display mb-4">Visual System Overview</h1>
-        <p className="text max-w-3xl mx-auto">
-          This page captures the approved visual system for your Horizon build. Update the selections after human
-          approval so downstream agents can reference the source of truth.
-        </p>
-      </section>
-      <OptionList title="Typography" options={fontOptions} />
-      <OptionList title="Color Palettes" options={colorOptions} />
-      <OptionList title="Writing Style" options={writingStyleOptions} />
     </main>
   );
 }

@@ -32,11 +32,11 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main>
-        <Hero />
-        <Services />
-        <WhyChooseUs />
-        <Testimonials />
-        <FinalCTA />
+        <Hero sectionId="home--liberation-hero" />
+        <Services sectionId="home--services-overview" />
+        <WhyChooseUs sectionId="home--why-choose" />
+        <Testimonials sectionId="home--stories" />
+        <FinalCTA sectionId="home--closing-invite" />
       </main>
       <Footer />
     </div>
