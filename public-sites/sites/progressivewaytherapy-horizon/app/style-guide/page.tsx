@@ -268,7 +268,28 @@ const buttonStyles: ButtonStyle[] = [
     className: "btn-primary",
     label: "Book Free Consultation",
     variant: "unstyled",
-    previewClassName: "bg-background",
+    previewVariants: [
+      {
+        label: ".default",
+        className: "btn-primary",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-on-light",
+        className: "btn-primary is-on-light",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-on-dark",
+        className: "btn-primary is-on-dark",
+        wrapperClassName: "bg-deep-forest text-soft-cream",
+      },
+      {
+        label: ".is-fluid",
+        className: "btn-primary is-on-light is-fluid",
+        wrapperClassName: "bg-background",
+      },
+    ],
     notes: [
       "Reserve one per viewport for the main conversion.",
       "Add `.is-medium` for inline panels or stacked layouts, `.is-compact` for navigation bars.",
@@ -330,7 +351,23 @@ const buttonStyles: ButtonStyle[] = [
     className: "btn-gentle",
     label: "Request Info",
     variant: "unstyled",
-    previewClassName: "bg-background",
+    previewVariants: [
+      {
+        label: ".default",
+        className: "btn-gentle",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-on-light",
+        className: "btn-gentle is-on-light",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-fluid",
+        className: "btn-gentle is-on-light is-fluid",
+        wrapperClassName: "bg-background",
+      },
+    ],
     notes: [
       "Use for nurturing or secondary funnels inside content blocks.",
       "Use `.is-fluid` when the card should span full width; trailing icons can still use `data-icon-trail=\"true\"` for motion.",
@@ -340,10 +377,26 @@ const buttonStyles: ButtonStyle[] = [
   {
     name: "Contrast CTA",
     description: "Use `.btn-contrast` on dark sections or imagery overlays while keeping copy legible.",
-    className: "btn-contrast is-on-light",
+    className: "btn-contrast",
     label: "See Evening Availability",
     variant: "unstyled",
-    previewClassName: "bg-background",
+    previewVariants: [
+      {
+        label: ".default",
+        className: "btn-contrast",
+        wrapperClassName: "bg-deep-forest text-soft-cream",
+      },
+      {
+        label: ".is-on-light",
+        className: "btn-contrast is-on-light",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-fluid",
+        className: "btn-contrast is-on-light is-fluid",
+        wrapperClassName: "bg-background",
+      },
+    ],
     notes: [
       "Ideal for newsletter bands, contrast panels, or footer prompts.",
       "`.is-fluid` mirrors the secondary CTA helper when you need full-width coverage. Trailing icons can use `data-icon-trail=\"true\"` for motion.",
@@ -356,7 +409,23 @@ const buttonStyles: ButtonStyle[] = [
     className: "btn-muted",
     label: "Download Intake Packet",
     variant: "unstyled",
-    previewClassName: "bg-background",
+    previewVariants: [
+      {
+        label: ".default",
+        className: "btn-muted",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-on-light",
+        className: "btn-muted is-on-light",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-fluid",
+        className: "btn-muted is-on-light is-fluid",
+        wrapperClassName: "bg-background",
+      },
+    ],
     notes: [
       "Save for tertiary prompts so primary/secondary CTAs stay distinct.",
       "Supports `.is-fluid` when you need edge-to-edge coverage; trailing icons respond to `data-icon-trail=\"true\"`.",
@@ -366,14 +435,30 @@ const buttonStyles: ButtonStyle[] = [
   {
     name: "Ghost Link",
     description: "Inline navigation inside cards or lists. Keep copy concise so the underline stays crisp.",
-    className: "btn-ghost-link is-on-light",
+    className: "btn-ghost-link",
     variant: "unstyled",
     label: "Learn More",
+    previewVariants: [
+      {
+        label: ".default",
+        className: "btn-ghost-link",
+        wrapperClassName: "bg-deep-forest text-soft-cream",
+      },
+      {
+        label: ".is-on-light",
+        className: "btn-ghost-link is-on-light",
+        wrapperClassName: "bg-background",
+      },
+      {
+        label: ".is-fluid",
+        className: "btn-ghost-link is-on-light is-fluid",
+        wrapperClassName: "bg-background",
+      },
+    ],
     notes: [
       "Use when you need a CTA that reads like a link but keeps button focus states.",
       "Add `data-icon-trail=\"true\"` to trailing icons if you want the subtle hover shift.",
     ],
-    combos: [],
   },
 ];
 

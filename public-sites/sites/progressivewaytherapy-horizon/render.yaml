@@ -1,11 +1,12 @@
 services:
-  - type: static_site
-    name: progressivewaytherapy-horizon
+  - type: web
+    runtime: static
+    name: prempage-v2
     repo: https://github.com/wdssalon/prempage-v2.git
     branch: master
-    root: .
+    rootDir: .
     buildCommand: ./public-sites/scripts/build-static-site.sh progressivewaytherapy-horizon
-    publishPath: public-sites/dist/progressivewaytherapy-horizon
+    staticPublishPath: public-sites/dist/progressivewaytherapy-horizon
     envVars:
       - key: NODE_VERSION
         value: 20

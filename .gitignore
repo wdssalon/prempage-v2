@@ -43,3 +43,5 @@ public-sites/sites/*/out/
 public-sites/sites/*/node_modules/
 public-sites/sites/*/public/assets/
 public-sites/sites/*/package-lock.json
+.envrc
+.envrc.local

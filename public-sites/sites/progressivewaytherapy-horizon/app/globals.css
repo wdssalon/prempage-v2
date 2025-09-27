@@ -613,6 +613,11 @@
     background-image: linear-gradient(145deg, hsla(var(--nature-green) / 0.92), hsl(var(--sage-green)) 85%);
   }
 
+  .btn-primary.is-on-light {
+    background-image: var(--gradient-nature);
+    color: hsl(var(--soft-cream));
+  }
+
   .btn-primary.is-on-dark:hover {
     box-shadow: 0 0 0 1px hsla(var(--soft-cream) / 0.32), var(--shadow-contrast);
   }
@@ -621,6 +626,11 @@
     color: hsl(var(--earth-brown));
     background-color: hsla(var(--warm-tan) / 0.9);
     box-shadow: var(--shadow-gentle);
+  }
+
+  .btn-gentle.is-on-light {
+    color: hsl(var(--earth-brown));
+    background-color: hsla(var(--warm-tan) / 0.9);
   }
 
   .btn-gentle:hover {
@@ -760,6 +770,11 @@
     color: hsl(var(--earth-brown));
     background-color: hsl(var(--card));
     box-shadow: var(--shadow-gentle);
+  }
+
+  .btn-muted.is-on-light {
+    color: hsl(var(--earth-brown));
+    background-color: hsl(var(--card));
   }
 
   .btn-muted:hover {

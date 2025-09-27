@@ -11,6 +11,8 @@ Prempage V2 is a modern full-stack application featuring:
 
 ## Running the Application
 
+> **Automation standard**: default to Python for new scripts. If you must use another language, note the rationale alongside the change for reviewer visibility.
+
 **Prerequisites:**
 - Node.js 24 or newer (Corepack with pnpm ≥ 8)
 - Python 3.13 or newer
@@ -259,3 +261,37 @@ This ensures all changes are deliberate and agreed upon.
 
 **Note about Lovable:**  
 Lovable implements this by overlaying a React editor on top of Next.js static exports, powered by Tailwind, Radix UI, AntD, and Sonner toasts. Their approach demonstrates how in-browser editing can feel live while still preserving reproducibility through static builds and deploy hooks.
+
+### Additional Notes from Market Research
+
+**Learnings from Base44**
+- Their editor is a **React SPA** built with **Tailwind CSS** and **Ant Design** components.
+- They lean heavily on **Radix UI primitives** for accessibility and interactive elements.
+- **Lucide-react** icons are used consistently across the UI.
+- The architecture is a single-page app with clear overlay/editor panels, which makes state management simpler but can bloat the main bundle.
+- **Takeaway for PremPage:** Favor keeping our editor lightweight. Split the **Studio app** (onboarding, content, assets) from the **Overlay SDK** (DOM highlighting + inline editing), to avoid bundle creep and keep the overlay re-usable in different contexts.
+
+**Learnings from Bolt.new**
+- Bolt uses **Remix + React** with a **Vite + TypeScript** toolchain.
+- Styling: **Tailwind CSS** with custom DS tokens, **Radix UI**, **React Toastify**, and icon libraries like **Lucide/Heroicons/Phosphor**.
+- Embedded editors: **CodeMirror 6** for code and **xterm.js** for terminal simulation.
+- Heavy instrumentation: **Sentry**, **HubSpot**, **Chameleon** tours, and multiple ad/analytics SDKs.
+- **Takeaway for PremPage:** 
+  - Adopt **TypeScript-first** for type safety across the editor and Studio.
+  - Consider **CodeMirror** for structured content blocks (blog editing, schema-driven forms) if we expand beyond simple text replacement.
+  - Keep instrumentation minimal (Sentry + one analytics) to avoid Bolt’s SDK overhead.
+
+**Shared Patterns (Lovable / Base44 / Bolt)**
+- All rely on **React + Tailwind + Radix** as the foundation.
+- Toast notifications (Sonner, Toastify) and drawer/panel systems (Vaul, Radix Drawer) are common.
+- In-page editors always build around a **selector + patch model** for reproducible changes.
+- Preview domains are essential (`preview--slug.domain.com`) to separate draft vs. production safely.
+
+**PremPage Direction**
+- Stick with **Next.js (App Router + Static Export)** for Studio and client sites.
+- Keep the **editor overlay as a separate bundle** (`/packages/editor-overlay`) injected into preview iframes.
+- **Tech stack commitment:** 
+  - **Next.js + Tailwind + Radix** as the base.
+  - **Sonner** for toasts, **Vaul** for drawers, **Lucide-react** icons.
+  - **TypeScript** across all apps/packages.
+- Future exploration: evaluate **CodeMirror** for schema-aware editing, but don’t overcomplicate v1.

@@ -6,6 +6,8 @@ This repository hosts the Prempage V2 front end (React + Vite), a companion Fast
 - Node.js 24 or newer (Corepack with pnpm ≥ 8)
 - Python 3.13 or newer
 - [uv](https://github.com/astral-sh/uv) Python package manager (already bundled in this repo's tooling)
+- Prefer Python for internal automation scripts. If another language is required, document the reasoning in the PR or commit description.
+- [direnv](https://direnv.net/) (optional but recommended for loading environment variables)
 
 ## Frontend (React + Vite)
 1. Change into the frontend workspace:
@@ -57,6 +59,24 @@ Run these from `client/`:
 - FastAPI app lives in `backend/main.py` and is pre-configured with Loguru logging.
 - Adjust logging behavior in `configure_logging()` as your deployment targets evolve.
 - When adding dependencies, run `uv add <package>` from the `backend/` directory to keep the lockfile in sync.
+
+## Render Automation
+- Use `scripts/render_apply.py` to sync static-site services with their `render.yaml` blueprints.
+- Export `RENDER_API_KEY` (and optionally override `RENDER_API_URL`).
+- The helper depends on `requests` and `PyYAML`; install them with `pip install -r requirements.txt` (if a shared file exists) or `pip install requests pyyaml`.
+- Example:
+  ```bash
+  export RENDER_API_KEY=xxxxxxxx
+  python scripts/render_apply.py public-sites/sites/progressivewaytherapy-horizon/render.yaml --deploy
+  ```
+  The `--dry-run` flag prints the API payloads without executing the changes.
+- Run `python scripts/render_apply.py --list` to print all static-site services when you need to confirm the exact name Render expects.
+
+## Direnv Usage
+- Install direnv for your shell and add the hook as described in the [direnv docs](https://direnv.net/docs/installation.html).
+- Run `direnv allow` once in the repo root to trust the generated `.envrc`.
+- `.envrc` sources `.env.defaults`, `.env`, and any site-level env files if present, then adds `.venv/bin` to your `PATH` so the uv-managed virtualenv is active automatically.
+- Adjust or extend `.envrc` locally as needed; the file is ignored by git.
 
 ## Project Structure
 - `client/` – React frontend root with entry files (`index.html`, `src/main.tsx`, `src/App.tsx`), global styles, static assets under `client/public/`, and all frontend tooling (`package.json`, `tsconfig.json`, `vite.config.ts`, `eslint.config.js`).
@@ -166,6 +186,41 @@ Docker builds run the same pipeline, so containerized runs will always ship matc
 
 **Note about Lovable:**  
 Lovable implements this by overlaying a React editor on top of Next.js static exports, powered by Tailwind, Radix UI, AntD, and Sonner toasts. Their approach demonstrates how in-browser editing can feel live while still preserving reproducibility through static builds and deploy hooks.
+
+### Additional Notes from Market Research
+
+**Learnings from Base44**
+- Their editor is a **React SPA** built with **Tailwind CSS** and **Ant Design** components.
+- They lean heavily on **Radix UI primitives** for accessibility and interactive elements.
+- **Lucide-react** icons are used consistently across the UI.
+- The architecture is a single-page app with clear overlay/editor panels, which makes state management simpler but can bloat the main bundle.
+- **Takeaway for PremPage:** Favor keeping our editor lightweight. Split the **Studio app** (onboarding, content, assets) from the **Overlay SDK** (DOM highlighting + inline editing), to avoid bundle creep and keep the overlay re-usable in different contexts.
+
+**Learnings from Bolt.new**
+- Bolt uses **Remix + React** with a **Vite + TypeScript** toolchain.
+- Styling: **Tailwind CSS** with custom DS tokens, **Radix UI**, **React Toastify**, and icon libraries like **Lucide/Heroicons/Phosphor**.
+- Embedded editors: **CodeMirror 6** for code and **xterm.js** for terminal simulation.
+- Heavy instrumentation: **Sentry**, **HubSpot**, **Chameleon** tours, and multiple ad/analytics SDKs.
+- **Takeaway for PremPage:** 
+  - Adopt **TypeScript-first** for type safety across the editor and Studio.
+  - Consider **CodeMirror** for structured content blocks (blog editing, schema-driven forms) if we expand beyond simple text replacement.
+  - Keep instrumentation minimal (Sentry + one analytics) to avoid Bolt’s SDK overhead.
+
+**Shared Patterns (Lovable / Base44 / Bolt)**
+- All rely on **React + Tailwind + Radix** as the foundation.
+- Toast notifications (Sonner, Toastify) and drawer/panel systems (Vaul, Radix Drawer) are common.
+- In-page editors always build around a **selector + patch model** for reproducible changes.
+- Preview domains are essential (`preview--slug.domain.com`) to separate draft vs. production safely.
+
+**PremPage Direction**
+- Stick with **Next.js (App Router + Static Export)** for Studio and client sites.
+- Keep the **editor overlay as a separate bundle** (`/packages/editor-overlay`) injected into preview iframes.
+
+- **Tech stack commitment:** 
+  - **Next.js + Tailwind + Radix** as the base.
+  - **Sonner** for toasts, **Vaul** for drawers, **Lucide-react** icons.
+  - **TypeScript** across all apps/packages.
+- Future exploration: evaluate **CodeMirror** for schema-aware editing, but don’t overcomplicate v1.
 
 ## Git Hooks
 - Git hooks live in `.githooks/`. Point your repo at them once per checkout:
