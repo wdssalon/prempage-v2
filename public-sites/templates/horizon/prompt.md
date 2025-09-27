@@ -19,5 +19,5 @@ Process to follow:
    python agents/runner.py --site <slug> --template horizon style-guide --summary "<variant-overview>" --options "See /style-guide and variant slugs"
 4. Use only the filesystem/tool wrappers defined in agents/tools and agents/checks; never modify template assets directly.
 
-Pause at required approval gates (intake sign-off, release authorization). Begin with Repo & Tooling Prep by confirming readiness and requesting the intake packet.
+Pause at required approval gates (intake sign-off, release authorization). Begin with Repo & Tooling Prep.
 ```
