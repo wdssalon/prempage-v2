@@ -287,7 +287,12 @@ export default function GeneralIndividualTherapyPage() {
 
           <div className="relative container mx-auto px-4 py-28 md:py-32 max-w-6xl text-cream">
             <div className="max-w-3xl space-y-6 fade-in-up">
-              <Badge className="bg-soft-purple/30 text-cream border border-cream/30">General Individual Therapy</Badge>
+              <Badge className="group bg-transparent text-cream border border-cream/30 backdrop-blur px-3 py-1 rounded-full transition-colors transition-transform duration-200 ease-out hover:-translate-y-0.5 focus:-translate-y-0.5">
+                <span className="inline-flex items-center gap-2">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-soft-purple/70 transition-transform duration-200 ease-out group-hover:-translate-y-0.5" aria-hidden="true" />
+                  Individual Counseling
+                </span>
+              </Badge>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light drop-shadow-xl text-white">
                 Therapy that meets you where you are—and moves with the life you deserve.
               </h1>
@@ -311,9 +316,9 @@ export default function GeneralIndividualTherapyPage() {
                 return (
                   <div
                     key={badge.label}
-                    className="flex items-center gap-3 bg-cream/10 border border-cream/20 rounded-md px-4 py-3 backdrop-blur"
+                    className="group flex items-center gap-3 bg-cream/10 border border-cream/20 rounded-md px-4 py-3 backdrop-blur transition-transform duration-200 ease-out hover:-translate-y-0.5 focus-within:-translate-y-0.5"
                   >
-                    <Icon className="w-5 h-5 text-cream" />
+                    <Icon className="w-5 h-5 text-cream transition-transform duration-200 ease-out group-hover:-translate-y-0.5" />
                     <p className="text-sm font-medium text-cream/90">{badge.label}</p>
                   </div>
                 );
@@ -374,12 +379,12 @@ export default function GeneralIndividualTherapyPage() {
                 return (
                   <div
                     key={item.step}
-                    className="relative bg-card rounded-md border border-border/60 p-8 shadow-gentle overflow-hidden"
+                    className="group relative bg-card rounded-md border border-border/60 p-8 shadow-gentle overflow-hidden transition-transform duration-200 ease-out hover:-translate-y-0.5 focus-within:-translate-y-0.5"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <div className="flex items-center gap-3 mb-5">
-                      <div className="w-12 h-12 rounded-full bg-soft-purple/15 flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-soft-purple" />
+                      <div className="w-12 h-12 rounded-full bg-soft-purple/15 flex items-center justify-center transition-transform duration-200 ease-out group-hover:-translate-y-0.5">
+                        <Icon className="w-6 h-6 text-soft-purple transition-transform duration-200 ease-out group-hover:-translate-y-0.5" />
                       </div>
                       <span className="text-sm uppercase tracking-wide text-earth-brown/80">{item.step}</span>
                     </div>
@@ -404,15 +409,7 @@ export default function GeneralIndividualTherapyPage() {
                 </p>
               </div>
 
-              <div className="fade-in-up" style={{ animationDelay: "0.1s" }}>
-                <div className="p-6 rounded-md bg-gradient-to-br from-soft-purple/15 via-cream/60 to-warm-tan/40 shadow-gentle border border-border/50">
-                  <p className="text-earth-brown text-sm leading-relaxed">
-                    “Progressive Way Therapy is a safe place for progressive-minded individuals seeking therapy in Texas.
-                    If you are here, you may feel exhausted from trying to keep it all together. With Blanca&apos;s
-                    understanding, you&apos;ll feel seen, heard, and empowered.”
-                  </p>
-                </div>
-              </div>
+              {/* removed testimonial block per design cleanup */}
             </div>
 
             <div className="mt-14 grid gap-6 md:grid-cols-12 fade-in-up" style={{ animationDelay: "0.15s" }}>
@@ -465,10 +462,10 @@ export default function GeneralIndividualTherapyPage() {
                     <Badge
                       key={identity.label}
                       variant="outline"
-                      className="px-4 py-2 rounded-full border-earth-brown/40 text-earth-brown bg-cream/80 backdrop-blur"
+                      className="group px-4 py-2 rounded-full border-earth-brown/40 text-earth-brown bg-cream/80 backdrop-blur transition-transform duration-200 ease-out hover:-translate-y-0.5 focus:-translate-y-0.5"
                     >
                       <span className="flex items-center gap-2 text-sm">
-                        <Icon className="w-4 h-4" />
+                        <Icon className="w-4 h-4 transition-transform duration-200 ease-out group-hover:-translate-y-0.5" />
                         {identity.label}
                       </span>
                     </Badge>

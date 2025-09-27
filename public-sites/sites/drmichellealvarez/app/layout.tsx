@@ -2,6 +2,19 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Playfair_Display, Inter } from "next/font/google";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Prempage Horizon Boilerplate",
@@ -10,12 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      {/*
-        To customize typography, import fonts via `next/font` (or another loader)
-        and append their `.variable` values to this `<html>` element so they map to
-        `--font-serif` and `--font-body` before shipping a site.
-      */}
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
       <body className="bg-background text-foreground font-body">
         <Providers>{children}</Providers>
       </body>

@@ -4,7 +4,7 @@
 Apply global elements (navigation, footers, metadata) and run optional asset workflows so the site is cohesive and ready for QA.
 
 ## Required References
-- Template supplement (`templates/<template_slug>/page-build-edit-overview.md` or equivalent) for horizon- or clarity-specific nuances.
+- Template supplement (`templates/<template_slug>/template-supplement.md`) for horizon- or clarity-specific nuances.
 - Template theming instructions in `templates/<template_slug>/config.yaml`.
 - Plugin settings from `templates/<template_slug>/agents/plugins.yaml` (asset pipeline, deployment toggles, optional commands).
 - Current `client-overview.md` trackers, TODOs, and approved navigation.

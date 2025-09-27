@@ -67,10 +67,10 @@ const Navigation = () => {
                         <ul className="space-y-1 text-sm">
                           <li>
                             <Link
-                              href="/services/individual-therapy/general"
+                              href="/services/individual-therapy"
                               className="text-muted-foreground hover:text-soft-purple transition-colors"
                             >
-                              General Individual Therapy
+                              Individual Counseling
                             </Link>
                           </li>
                           <li>

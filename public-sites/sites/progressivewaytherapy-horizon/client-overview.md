@@ -50,7 +50,7 @@
 - Services *(navigation trigger only; no standalone route)*
   - Individual Therapy *(section only; no standalone route)*
     - Purpose: Overview section affirming one-on-one care, outlining Blanca's progressive therapeutic lens and what to expect.
-    - General Individual Therapy (`/services/individual-therapy/general`)
+    - Individual Counseling (`/services/individual-therapy`)
       - Purpose: Speak to adults carrying everything alone, emphasizing validation, nervous system safety, and sustainable coping tools.
     - Counseling for Anxiety (`/services/individual-therapy/anxiety`)
       - Purpose: Address relentless anxiety and overthinking with grounding, boundary-setting, and progressive coping strategies.
@@ -98,7 +98,7 @@
 | Home | Hero component |  | 1 | 1 | 1 | 1 | Live page – core marketing stack finalized (Hero → Services → WhyChooseUs → Testimonials → FinalCTA). |
 | About | Gradient editorial hero | 1 |  |  |  |  | Live page – AboutSection plus philosophy, journey timeline, collaborative care CTA. |
 | Individual Therapy | — |  |  |  |  |  | Not started – needs succinct overview route before specialty details. |
-| General Individual Therapy | Gradient hero (custom) |  |  |  |  |  | Live page – extended experience overview, identity badges, FAQs, closing CTA. |
+| Individual Counseling | Gradient hero (custom) |  |  |  |  |  | Live page – extended experience overview, identity badges, FAQs, closing CTA. |
 | Counseling for Anxiety | Gradient hero (Counseling focus) |  |  |  |  | 1 | Live page – 5 sections (hero, lived-experience cards, support pillars, session practices, FinalCTA). |
 | Therapy for Depression | Gradient hero (rest-focused) |  |  |  |  |  | Live page – hero mosaic, daily rhythm timeline, restorative anchors, session rhythm, gentle CTA (no shared FinalCTA). |
 | Counseling for Trauma | Gradient hero (grounded) |  |  |  |  |  | Live page – hero, grounding commitments, safety lattice, repair pathways, invitation CTA. |
@@ -139,15 +139,15 @@
 | about--journey | About | Professional journey timeline. |
 | about--collaboration | About | Collaborative care + session rhythm section. |
 | about--cta | About | Contact CTA inviting consultations. |
-| individual-general--arrival-hero | General Individual Therapy | Gradient hero with trust badges. |
-| individual-general--belonging | General Individual Therapy | Belonging-focused intro and safety highlights. |
-| individual-general--session-rhythm | General Individual Therapy | Co-authored session rhythm steps. |
-| individual-general--modalities | General Individual Therapy | Modalities grid with supportive quote. |
-| individual-general--identity | General Individual Therapy | Identity-centered care badges. |
-| individual-general--micro-testimonials | General Individual Therapy | Micro-testimonial carousel strip. |
-| individual-general--resources | General Individual Therapy | Between-session resource cards. |
-| individual-general--faqs | General Individual Therapy | FAQ accordion with link to full list. |
-| individual-general--closing-cta | General Individual Therapy | Closing CTA encouraging consultations. |
+| individual-general--arrival-hero | Individual Counseling | Gradient hero with trust badges. |
+| individual-general--belonging | Individual Counseling | Belonging-focused intro and safety highlights. |
+| individual-general--session-rhythm | Individual Counseling | Co-authored session rhythm steps. |
+| individual-general--modalities | Individual Counseling | Modalities grid with supportive quote. |
+| individual-general--identity | Individual Counseling | Identity-centered care badges. |
+| individual-general--micro-testimonials | Individual Counseling | Micro-testimonial carousel strip. |
+| individual-general--resources | Individual Counseling | Between-session resource cards. |
+| individual-general--faqs | Individual Counseling | FAQ accordion with link to full list. |
+| individual-general--closing-cta | Individual Counseling | Closing CTA encouraging consultations. |
 | individual-anxiety--hero | Counseling for Anxiety | Consent-focused anxiety hero. |
 | individual-anxiety--how-it-feels | Counseling for Anxiety | Cards reframing lived anxiety signals. |
 | individual-anxiety--support-pillars | Counseling for Anxiety | Support pillars trio. |

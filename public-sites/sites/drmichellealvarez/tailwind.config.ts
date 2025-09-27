@@ -20,8 +20,8 @@ const config: Config = {
         accent: "var(--color-accent)",
       },
       fontFamily: {
-        serif: ["var(--font-serif)", "serif"],
-        body: ["var(--font-body)", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)"],
+        body: ["var(--font-body)"],
       },
       borderRadius: {
         lg: "var(--radius-lg)",

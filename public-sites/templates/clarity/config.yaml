@@ -12,7 +12,7 @@ scaffolding:
   component_catalog: template.html
   examples_dir: page-examples
   client_overview_template: client-overview.md
-  build_guide: page-build-edit-overview.md
+  build_guide: template-supplement.md
 
 page_generation:
   scaffold_method: copy_static_html

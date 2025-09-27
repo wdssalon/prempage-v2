@@ -4,7 +4,7 @@ template:
   slug: horizon
   version: 1.0.0
   technology: nextjs-app-router
-  description: "Next.js 14 static-export site using Tailwind CSS, shadcn/ui, and warm earth-tone design tokens."
+  description: "Next.js 14 static-export site using Tailwind CSS, shadcn/ui, and template-driven design tokens."
 
 scaffolding:
   layout_file: app/layout.tsx
@@ -17,13 +17,14 @@ scaffolding:
   assets_dir: public/assets
   examples_dir: page-examples
   client_overview_template: client-overview.md
-  build_guide: page-build-edit-overview.md
+  build_guide: template-supplement.md
 
 page_generation:
   scaffold_method: create_route_directory
   client_component_required: true
   navigation_component: src/components/Navigation.tsx
   footer_component: src/components/Footer.tsx
+  # Base section components bundled with the template; add new ones under src/components/
   section_components:
     - Hero
     - Services
@@ -65,7 +66,7 @@ testing:
 notes:
   - Always mark page-level files and new interactive sections with 'use client'.
   - Reference Tailwind tokens in app/globals.css; introduce new tokens via tailwind.config.ts before use.
-  - Load Playfair Display and Inter via next/font or head tags if the deployment target requires explicit font imports.
+  - Register project-specific heading/body fonts via `next/font` (or equivalent) and map them to the `--font-serif` and `--font-body` variables before shipping.
   - Import section components from src/components; avoid duplicating markup manually.
   - Keep the /style-guide route in sync with any token or helper-class change so QA catches regressions before page updates.
 

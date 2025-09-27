@@ -7,5 +7,5 @@ plan:
         - public-sites/agents/guardrails.md
         - public-sites/agents/coordinator.md
         - templates/clarity/sections.yaml
-        - templates/clarity/page-build-edit-overview.md
+        - templates/clarity/template-supplement.md
       outputs: [clarity_section_inventory]

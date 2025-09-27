@@ -84,7 +84,7 @@ const MobileNavigation = ({ sectionId }: MobileNavigationProps) => {
               id: "individual",
               label: "Individual Therapy",
               children: [
-                { id: "general", label: "General Individual Therapy", href: "/services/individual-therapy/general" },
+                { id: "general", label: "Individual Counseling", href: "/services/individual-therapy" },
                 { id: "anxiety", label: "Counseling for Anxiety", href: "/services/individual-therapy/anxiety" },
                 { id: "depression", label: "Therapy for Depression", href: "/services/individual-therapy/depression" },
                 { id: "trauma-counseling", label: "Counseling for Trauma", href: "/services/individual-therapy/trauma" },
@@ -128,7 +128,7 @@ const MobileNavigation = ({ sectionId }: MobileNavigationProps) => {
       title: "Individual Therapy",
       parentId: "services",
       items: [
-        { id: "general", label: "General Individual Therapy", href: "/services/individual-therapy/general" },
+        { id: "general", label: "Individual Counseling", href: "/services/individual-therapy" },
         { id: "anxiety", label: "Counseling for Anxiety", href: "/services/individual-therapy/anxiety" },
         { id: "depression", label: "Therapy for Depression", href: "/services/individual-therapy/depression" },
         { id: "trauma-counseling", label: "Counseling for Trauma", href: "/services/individual-therapy/trauma" },

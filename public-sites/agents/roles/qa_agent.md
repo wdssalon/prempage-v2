@@ -4,7 +4,7 @@
 Validate that the assembled site complies with template checklists, tracker requirements, and accessibility/SEO basics before release.
 
 ## Required References
-- Template supplement QA section (`templates/<template_slug>/page-build-edit-overview.md` or equivalent).
+- Template supplement QA section (`templates/<template_slug>/template-supplement.md`).
 - `client-overview.md` trackers for hero rotation, section usage, approvals, and TODOs.
 - QA tools listed in `public-sites/agents/workflows/website_build.yaml` or template plugins (link checkers, lint scripts, accessibility probes).
 
