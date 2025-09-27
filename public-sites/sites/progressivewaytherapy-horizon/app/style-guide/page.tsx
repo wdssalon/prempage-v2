@@ -443,7 +443,7 @@ const surfaceTokens: SurfaceToken[] = [
     usage: "Default card shell for service highlights, testimonials, and feature lists.",
     content: (
       <div className="space-y-1">
-        <p className="heading is-subsection text-sage-green">Affirming Care</p>
+        <p className="heading is-subsection">Affirming Care</p>
         <p className="text is-small">Use within 2–3 column grids to keep rhythm consistent.</p>
       </div>
     ),
@@ -454,9 +454,9 @@ const surfaceTokens: SurfaceToken[] = [
     usage: "Seasonal launches, workshop promos, or content needing extra attention.",
     content: (
       <div className="space-y-2">
-        <p className="heading is-eyebrow text-sage-green">IN FOCUS</p>
+        <p className="heading is-eyebrow tone-heading-eyebrow-sage">IN FOCUS</p>
         <p className="heading is-feature">Community Workshops</p>
-        <p className="text is-small text-sage-green/90">Layer over darker sections for a sunlit break in pacing.</p>
+        <p className="text is-small tone-text-sage-soft">Layer over darker sections for a sunlit break in pacing.</p>
       </div>
     ),
   },

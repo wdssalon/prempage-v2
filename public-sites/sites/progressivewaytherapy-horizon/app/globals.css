@@ -240,36 +240,38 @@
   }
 
   .surface-highlight {
-    @apply rounded-md p-8 text-earth-brown shadow-gentle;
+    @apply rounded-md p-8 shadow-gentle;
     background-image: var(--gradient-dawn);
-  }
-
-  .surface-highlight .heading,
-  .surface-highlight .text {
-    color: hsl(var(--earth-brown));
+    --heading-color: hsl(var(--earth-brown));
+    --heading-eyebrow-color: hsl(var(--earth-brown) / 0.7);
+    --text-color: hsl(var(--earth-brown));
+    color: var(--text-color);
   }
 
   .surface-contrast {
-    @apply rounded-md p-8 text-cream;
+    @apply rounded-md p-8;
     background-image: var(--gradient-dusk);
     box-shadow: var(--shadow-contrast);
-  }
-
-  .surface-contrast .heading,
-  .surface-contrast .text {
-    color: hsl(var(--soft-cream)) !important;
-  }
-
-  .surface-contrast .heading.is-eyebrow {
-    color: hsla(var(--soft-cream) / 0.8) !important;
+    --heading-color: hsl(var(--soft-cream));
+    --heading-eyebrow-color: hsl(var(--soft-cream) / 0.8);
+    --text-color: hsl(var(--soft-cream));
+    color: var(--text-color);
   }
 
   .surface-muted {
-    @apply rounded-md border border-border/40 bg-soft-cream/85 p-8 text-earth-brown shadow-soft;
+    @apply rounded-md border border-border/40 bg-soft-cream/85 p-8 shadow-soft;
+    --heading-color: hsl(var(--earth-brown));
+    --heading-eyebrow-color: hsl(var(--earth-brown) / 0.75);
+    --text-color: hsl(var(--earth-brown));
+    color: var(--text-color);
   }
 
   .surface-textured {
     @apply relative overflow-hidden rounded-md border border-border/50 bg-card/85 p-8 shadow-gentle;
+    --heading-color: hsl(var(--earth-brown));
+    --heading-eyebrow-color: hsl(var(--earth-brown) / 0.75);
+    --text-color: hsl(var(--earth-brown));
+    color: var(--text-color);
   }
 
   .surface-textured::after {
@@ -356,7 +358,8 @@
 
 @layer components {
   .heading {
-    @apply font-serif leading-tight text-soft-purple;
+    @apply font-serif leading-tight;
+    color: var(--heading-color, hsl(var(--soft-purple)));
   }
 
   .heading.is-display {
@@ -372,7 +375,8 @@
   }
 
   .heading.is-subsection {
-    @apply text-xl md:text-2xl text-sage-green;
+    @apply text-xl md:text-2xl;
+    --heading-color: hsl(var(--sage-green));
   }
 
   .heading.is-compact {
@@ -380,15 +384,16 @@
   }
 
   .heading.is-on-dark {
-    @apply text-cream;
+    --heading-color: hsl(var(--cream));
   }
 
   .heading.is-muted {
-    @apply text-soft-purple/80;
+    --heading-color: hsl(var(--soft-purple) / 0.8);
   }
 
   .heading.is-hero {
-    @apply text-5xl md:text-6xl lg:text-7xl font-semibold text-deep-forest;
+    @apply text-5xl md:text-6xl lg:text-7xl font-semibold;
+    --heading-color: hsl(var(--deep-forest));
   }
 
   .heading.is-hero.is-condensed {
@@ -396,67 +401,81 @@
   }
 
   .heading.is-eyebrow {
-    @apply text-xs uppercase tracking-[0.35em] text-earth-brown/70 font-semibold;
+    @apply text-xs uppercase tracking-[0.35em] font-semibold;
+    color: var(--heading-eyebrow-color, hsl(var(--earth-brown) / 0.7));
   }
 
   .heading.is-feature {
-    @apply text-4xl font-medium text-sage-green;
+    @apply text-4xl font-medium;
+    --heading-color: hsl(var(--sage-green));
   }
 
   .heading.is-quote {
-    @apply text-2xl md:text-3xl italic text-earth-brown;
+    @apply text-2xl md:text-3xl italic;
+    --heading-color: hsl(var(--earth-brown));
   }
 
   .text {
-    @apply text-base text-foreground/90 leading-relaxed;
+    @apply text-base leading-relaxed;
+    color: var(--text-color, hsl(var(--foreground) / 0.9));
   }
 
   .text.is-lead {
-    @apply text-lg text-muted-foreground;
+    @apply text-lg;
+    --text-color: hsl(var(--muted-foreground));
   }
 
   .text.is-caption {
-    @apply text-sm text-muted-foreground;
+    @apply text-sm;
+    --text-color: hsl(var(--muted-foreground));
   }
 
   .text.is-small {
-    @apply text-sm text-earth-brown/80;
+    @apply text-sm;
+    --text-color: hsl(var(--earth-brown) / 0.8);
   }
 
   .text.is-micro {
-    @apply text-xs uppercase tracking-[0.28em] text-muted-foreground;
+    @apply text-xs uppercase tracking-[0.28em];
+    --text-color: hsl(var(--muted-foreground));
   }
 
   .text.is-emphasis {
-    @apply text-base font-semibold text-deep-forest;
+    @apply text-base font-semibold;
+    --text-color: hsl(var(--deep-forest));
   }
 
   .text.is-highlight {
-    @apply text-lg text-soft-purple;
+    @apply text-lg;
+    --text-color: hsl(var(--soft-purple));
   }
 
   .text.is-serif {
-    @apply font-serif text-lg text-earth-brown;
+    @apply font-serif text-lg;
+    --text-color: hsl(var(--earth-brown));
   }
 
   .text.is-contrast {
-    @apply text-base font-medium text-soft-cream;
+    @apply text-base font-medium;
+    --text-color: hsl(var(--soft-cream));
   }
 
   .text.is-muted-strong {
-    @apply text-sm text-earth-brown/70;
+    @apply text-sm;
+    --text-color: hsl(var(--earth-brown) / 0.7);
   }
 
   .text.is-numeric {
-    @apply font-mono text-sm tracking-[0.08em] text-muted-foreground;
+    @apply font-mono text-sm tracking-[0.08em];
+    --text-color: hsl(var(--muted-foreground));
   }
 
   .text.is-on-dark {
-    @apply text-cream/85;
+    --text-color: hsl(var(--cream) / 0.85);
   }
 
   .text.is-muted {
-    @apply text-muted-foreground;
+    --text-color: hsl(var(--muted-foreground));
   }
 
   /* Custom button variants for therapy context */
@@ -956,6 +975,20 @@
     100% {
       background-position: 0% 50%;
     }
+  }
+}
+
+@layer utilities {
+  .tone-heading-eyebrow-sage {
+    --heading-eyebrow-color: hsl(var(--sage-green));
+  }
+
+  .tone-text-sage {
+    --text-color: hsl(var(--sage-green));
+  }
+
+  .tone-text-sage-soft {
+    --text-color: hsl(var(--sage-green) / 0.9);
   }
 }
 
