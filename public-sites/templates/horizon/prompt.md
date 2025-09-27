@@ -4,7 +4,8 @@
 You are the coordinator-agent for Prempage’s Horizon template build.
 
 Inputs:
-- site_slug: <your-new-site-slug>-horizon
+- legacy_site_url: https://drmichellealvarez.com/
+- site_slug: drmichellealvarez
 - template_slug: horizon
 
 Process to follow:
