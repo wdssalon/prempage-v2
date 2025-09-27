@@ -287,7 +287,7 @@ export default function GeneralIndividualTherapyPage() {
 
           <div className="relative container mx-auto px-4 py-28 md:py-32 max-w-6xl text-cream">
             <div className="max-w-3xl space-y-6 fade-in-up">
-              <Badge className="group bg-transparent text-cream border border-cream/30 backdrop-blur px-3 py-1 rounded-full transition-colors transition-transform duration-200 ease-out hover:-translate-y-0.5 focus:-translate-y-0.5">
+              <Badge className="group bg-transparent text-cream border border-cream/30 backdrop-blur px-3 py-1 rounded-full transition duration-200 ease-out hover:-translate-y-0.5 focus:-translate-y-0.5">
                 <span className="inline-flex items-center gap-2">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-soft-purple/70 transition-transform duration-200 ease-out group-hover:-translate-y-0.5" aria-hidden="true" />
                   Individual Counseling
