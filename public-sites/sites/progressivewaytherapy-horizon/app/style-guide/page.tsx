@@ -4,96 +4,20 @@ import type { ReactNode } from "react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const palette = [
-  {
-    name: "Sage Green",
-    token: "--sage-green",
-    usage: "Primary calls-to-action, high-trust highlights, hero gradients",
-  },
-  {
-    name: "Nature Green",
-    token: "--nature-green",
-    usage: "Gradient depth, on-scroll accents, supportive CTAs",
-  },
-  {
-    name: "Deep Forest",
-    token: "--deep-forest",
-    usage: "High-contrast headings, overlays on photography, dark sections",
-  },
-  {
-    name: "Warm Tan",
-    token: "--warm-tan",
-    usage: "Section backgrounds, gentle cards, hover states",
-  },
-  {
-    name: "Sunrise Peach",
-    token: "--sunrise-peach",
-    usage: "Accent ribbons, stats backgrounds, easing dense layouts",
-  },
-  {
-    name: "Soft Cream",
-    token: "--soft-cream",
-    usage: "Copy on gradients, contrast text when backgrounds darken",
-  },
-  {
-    name: "Soft Purple",
-    token: "--soft-purple",
-    usage: "Headlines, highlights, supportive accents",
-  },
-  {
-    name: "Plum Mauve",
-    token: "--plum-mauve",
-    usage: "Contrast hover states, gradient anchors, callout borders",
-  },
-  {
-    name: "Earth Brown",
-    token: "--earth-brown",
-    usage: "Body copy, muted icons, subtle borders",
-  },
-  {
-    name: "River Stone",
-    token: "--river-stone",
-    usage: "Neutral type on warm surfaces, icon strokes, divider lines",
-  },
-  {
-    name: "Cream",
-    token: "--cream",
-    usage: "Hero overlays, light gradients, typography contrast",
-  },
-];
+import {
+  colorOptions,
+  designPatterns,
+  fontOptions,
+  gradientTokens,
+  palette,
+  toneVoice,
+  typography as typographyTokens,
+  writingStyleOptions,
+} from "./data";
 
-const gradientTokens = [
-  {
-    name: "Hero Mist",
-    token: "--gradient-hero",
-    usage: "Full-bleed hero backgrounds or over photography for legibility",
-    className: "bg-gradient-hero motion-gradient-pan",
-  },
-  {
-    name: "Warm Glow",
-    token: "--gradient-warm",
-    usage: "Section transitions, testimonials, gentle background panels",
-    className: "bg-gradient-warm",
-  },
-  {
-    name: "Forest Arc",
-    token: "--gradient-nature",
-    usage: "Primary CTA backplates, stats bands, navigation highlights",
-    className: "bg-gradient-nature motion-gradient-pan",
-  },
-  {
-    name: "Sunrise Wash",
-    token: "--gradient-dawn",
-    usage: "Warm overlays on portraits, onboarding strips, hero ribbons",
-    className: "bg-gradient-dawn",
-  },
-  {
-    name: "Evening Dusk",
-    token: "--gradient-dusk",
-    usage: "Contrast panels, footers, newsletter sign-ups with white copy",
-    className: "bg-gradient-dusk motion-gradient-pan",
-  },
-];
+type FontOption = (typeof fontOptions)[number];
+type ColorOption = (typeof colorOptions)[number];
+type WritingStyleOption = (typeof writingStyleOptions)[number];
 
 type TypographyToken = {
   category: "Headings" | "Body & Support" | "Specialty";
@@ -104,128 +28,7 @@ type TypographyToken = {
   previewClassName?: string;
 };
 
-const typography: TypographyToken[] = [
-  {
-    category: "Headings",
-    label: "Heading · Hero",
-    classes: ["heading", "is-hero"],
-    sample: "Grounded Healing Starts Here",
-    guidance: "Hero statements on bold backgrounds. Pair with `.heading.is-on-dark` over gradients or photography. Add `.is-condensed` when you need the same treatment at a smaller scale.",
-  },
-  {
-    category: "Headings",
-    label: "Heading · Display",
-    classes: ["heading", "is-display"],
-    sample: "A Safe Space for Your Authentic Self",
-    guidance: "Use once per page for hero moments. Add `motion-fade-soft` for on-load animation. Apply `.is-condensed` to drop the size for denser layouts.",
-  },
-  {
-    category: "Headings",
-    label: "Heading · Section",
-    classes: ["heading", "is-section"],
-    sample: "Specialized Therapy Services",
-    guidance: "Default for section intros. Combine with layout helpers such as `mb-6` or `max-w-3xl mx-auto`.",
-  },
-  {
-    category: "Headings",
-    label: "Heading · Subsection",
-    classes: ["heading", "is-subsection"],
-    sample: "Liberation-Based Healing",
-    guidance: "Use inside cards or secondary columns. Override color with Tailwind utilities when the context demands it.",
-  },
-  {
-    category: "Headings",
-    label: "Heading · Feature",
-    classes: ["heading", "is-feature"],
-    sample: "Stories of Affirmation",
-    guidance: "Anchor key sections or testimonial highlights. Works well inside `surface-highlight` or `surface-textured`.",
-  },
-  {
-    category: "Specialty",
-    label: "Heading · Eyebrow",
-    classes: ["heading", "is-eyebrow"],
-    sample: "TRAUMA-INFORMED",
-    guidance: "Pre-head accent for stats, hero strips, or landing page sections. Use once per block before a larger heading.",
-  },
-  {
-    category: "Specialty",
-    label: "Heading · Quote",
-    classes: ["heading", "is-quote"],
-    sample: "“We heal in community.”",
-    guidance: "Use within testimonials or pull quotes. Pair with `.text.is-caption` for attribution lines.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Lead",
-    classes: ["text", "is-lead"],
-    sample: "Evidence-based, trauma-informed care tailored to your lived experience.",
-    guidance: "Intro paragraphs that sit right under a heading. Combine with width utilities like `max-w-3xl`.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Body",
-    classes: ["text"],
-    sample: "Inclusive, trauma-informed care for LGBTQIA+ and BIPOC communities.",
-    guidance: "Default body copy. Add `text-muted-foreground` when you need gentle emphasis.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Small",
-    classes: ["text", "is-small"],
-    sample: "Liberation-centered counseling rooted in justice.",
-    guidance: "Use for supporting paragraphs inside cards or columns where body copy would feel heavy.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Caption",
-    classes: ["text", "is-caption"],
-    sample: "Serving all of Texas via telehealth",
-    guidance: "Supportive details, disclaimers, and labels. Pair with uppercase utilities only when necessary.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Emphasis",
-    classes: ["text", "is-emphasis"],
-    sample: "Liberation-based therapy for every identity you hold.",
-    guidance: "Drop-in emphasis line within bulleted lists or key statements. Use sparingly to keep hierarchy clear.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Highlight",
-    classes: ["text", "is-highlight"],
-    sample: "Reflective, compassionate storytelling that invites trust.",
-    guidance: "Use when body copy needs to pick up accent color within surfaces or testimonials.",
-  },
-  {
-    category: "Body & Support",
-    label: "Text · Serif",
-    classes: ["text", "is-serif"],
-    sample: "Grounded wisdom passed along with care and clarity.",
-    guidance: "Bridge body copy with hero statements for narrative moments. Ideal for quotes within copy blocks.",
-  },
-  {
-    category: "Specialty",
-    label: "Text · Micro",
-    classes: ["text", "is-micro"],
-    sample: "Updated weekly",
-    guidance: "Label content such as newsletter cadence, office hours, or supporting metadata.",
-  },
-  {
-    category: "Specialty",
-    label: "Text · Numeric",
-    classes: ["text", "is-numeric"],
-    sample: "12+ years facilitating community healing",
-    guidance: "Use inside stats clusters or timelines. Pair with `heading.is-eyebrow` for compact data callouts.",
-  },
-  {
-    category: "Specialty",
-    label: "Text · Contrast",
-    classes: ["text", "is-contrast"],
-    sample: "Optimized for low-light overlays",
-    guidance: "Use when copy sits on dark gradients or photography. Combine with `.heading.is-on-dark` or `.btn-contrast`.",
-    previewClassName: "bg-deep-forest",
-  },
-];
+const typography = typographyTokens as TypographyToken[];
 
 const typographyCategories: TypographyToken["category"][] = ["Headings", "Body & Support", "Specialty"];
 
@@ -234,6 +37,23 @@ const typographyCategoryNotes: Record<TypographyToken["category"], string> = {
   "Body & Support": "Blend one lead paragraph with supporting body copy. Mix in small or emphasis tokens to create rhythm.",
   Specialty: "Accent tokens reserved for stats, overlays, or microcopy. Use sparingly so primary typography stays dominant.",
 };
+
+const optionCardClass = (selected: boolean) =>
+  cn(
+    "rounded-md border bg-card/80 p-6 shadow-gentle transition-colors",
+    selected ? "border-soft-purple ring-2 ring-soft-purple/70" : "border-border/50",
+  );
+
+const OptionBadge = ({ selected }: { selected: boolean }) => (
+  <span
+    className={cn(
+      "inline-flex items-center gap-1 rounded-full px-3 py-0.5 text-xs font-medium",
+      selected ? "bg-soft-purple/10 text-soft-purple" : "bg-border/60 text-muted-foreground",
+    )}
+  >
+    {selected ? "Selected" : "Option"}
+  </span>
+);
 
 type ButtonCombo = {
   label: string;
@@ -633,15 +453,17 @@ const StyleGuide = () => {
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <div className="rounded-md border border-border/40 bg-background/80 p-6">
                 <h2 className="font-serif text-xl text-soft-purple">Tone</h2>
-                <p className="mt-3 text-sm text-muted-foreground">Warm, affirming, strengths-based.</p>
+                <p className="mt-3 text-sm text-muted-foreground">{toneVoice.adjectives.join(", ")}</p>
               </div>
               <div className="rounded-md border border-border/40 bg-background/80 p-6">
                 <h2 className="font-serif text-xl text-soft-purple">Voice</h2>
-                <p className="mt-3 text-sm text-muted-foreground">Direct but compassionate. Avoid clinical jargon.</p>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {toneVoice.sentenceLength} {toneVoice.pov}. Avoid: {toneVoice.phrasesToAvoid.join(", ")}.
+                </p>
               </div>
               <div className="rounded-md border border-border/40 bg-background/80 p-6">
                 <h2 className="font-serif text-xl text-soft-purple">Patterns</h2>
-                <p className="mt-3 text-sm text-muted-foreground">Organic shapes, soft gradients, subtle motion.</p>
+                <p className="mt-3 text-sm text-muted-foreground">{designPatterns.join(", ")}</p>
               </div>
             </div>
 
@@ -651,6 +473,102 @@ const StyleGuide = () => {
                 `is-section`, `is-lead`, `is-on-dark`) the same way Webflow combos work. This keeps typography tokens
                 centralized so a single update cascades everywhere.
               </p>
+            </div>
+          </section>
+
+          <section>
+            <div className="mb-8">
+              <h2 className="heading is-section mb-2">Review Options</h2>
+              <p className="text-muted-foreground max-w-3xl">
+                These explorations were generated during Phase 2.5. Selected treatments carry a badge so future updates
+                stay aligned with the approved system.
+              </p>
+            </div>
+            <div className="space-y-12">
+              <div>
+                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+                  <h3 className="heading is-subsection text-soft-purple">Font Pairings</h3>
+                  <p className="text is-small text-muted-foreground md:max-w-2xl">
+                    Each option previews hero and supporting copy. The selected pairing drives the typography tokens
+                    listed below.
+                  </p>
+                </div>
+                <div className="mt-6 grid gap-6 md:grid-cols-3">
+                  {fontOptions.map((option: FontOption) => (
+                    <div key={option.name} className={optionCardClass(Boolean(option.isSelected))}>
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-serif text-lg text-soft-purple">{option.name}</p>
+                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{option.usage}</p>
+                        </div>
+                        <OptionBadge selected={Boolean(option.isSelected)} />
+                      </div>
+                      <div className="mt-6 space-y-3">
+                        <p className={cn("heading is-section", option.headingClassName)}>{option.sampleHeading}</p>
+                        <p className={cn("text", option.bodyClassName)}>{option.sampleBody}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+                  <h3 className="heading is-subsection text-soft-purple">Color Systems</h3>
+                  <p className="text is-small text-muted-foreground md:max-w-2xl">
+                    Swatches represent primary tokens that roll into gradients and surfaces. Selected palette informs the
+                    scoped Tailwind variables.
+                  </p>
+                </div>
+                <div className="mt-6 grid gap-6 md:grid-cols-3">
+                  {colorOptions.map((option: ColorOption) => (
+                    <div key={option.name} className={optionCardClass(Boolean(option.isSelected))}>
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-serif text-lg text-soft-purple">{option.name}</p>
+                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{option.usage}</p>
+                        </div>
+                        <OptionBadge selected={Boolean(option.isSelected)} />
+                      </div>
+                      <div className="mt-6 flex gap-3">
+                        {option.swatches.map((token) => (
+                          <div
+                            key={token}
+                            className="h-12 w-12 rounded-full border border-border/40 shadow-inner"
+                            style={{ backgroundColor: `hsl(var(${token}))` }}
+                            aria-label={`token ${token}`}
+                          />
+                        ))}
+                      </div>
+                      <p className="mt-4 text-sm text-muted-foreground">{option.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+                  <h3 className="heading is-subsection text-soft-purple">Writing Style Samples</h3>
+                  <p className="text is-small text-muted-foreground md:max-w-2xl">
+                    Paragraph-length explorations capture tone, sentence structure, and CTA posture. Copy drafting should
+                    adhere to the approved sample.
+                  </p>
+                </div>
+                <div className="mt-6 grid gap-6 md:grid-cols-3">
+                  {writingStyleOptions.map((option: WritingStyleOption) => (
+                    <div key={option.name} className={optionCardClass(Boolean(option.isSelected))}>
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-serif text-lg text-soft-purple">{option.name}</p>
+                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{option.description}</p>
+                        </div>
+                        <OptionBadge selected={Boolean(option.isSelected)} />
+                      </div>
+                      <p className="mt-4 text-sm text-muted-foreground">{option.sample}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
