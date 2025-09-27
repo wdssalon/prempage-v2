@@ -43,54 +43,31 @@
 - **Contact**: Invitation to reach out, Texas telehealth availability, preferred contact methods, hours, and alternative access accommodations.
 
 ## Approved Website Structure
-- Home (`/`)
-  - Purpose: Welcome progressive-minded adults with a calming hero, highlight core audiences, and surface the consultation CTA.
-- About (`/about`)
-  - Purpose: Introduce Blanca's story, values, credentials, and affirming approach so visitors feel an immediate connection.
+- Home
+- About
 - Services *(navigation trigger only; no standalone route)*
-  - Individual Therapy (`/services/individual-therapy`)
-    - Purpose: Overview page affirming one-on-one care, outlining Blanca's progressive therapeutic lens and what to expect.
-    - General Individual Therapy (`/services/individual-therapy/general`)
-      - Purpose: Speak to adults carrying everything alone, emphasizing validation, nervous system safety, and sustainable coping tools.
-    - Counseling for Anxiety (`/services/individual-therapy/anxiety`)
-      - Purpose: Address relentless anxiety and overthinking with grounding, boundary-setting, and progressive coping strategies.
-    - Therapy for Depression (`/services/individual-therapy/depression`)
-      - Purpose: Support exhausted adults moving through burnout, numbness, and low mood with compassionate structure.
-    - Counseling for Trauma (`/services/individual-therapy/trauma`)
-      - Purpose: Outline trauma-informed care that centers consent, pacing, and identity-affirming healing.
-  - Specialized Support (`/services/specialized-support`)
-    - Purpose: Frame progressive, identity-affirming specialties tailored to marginalized communities.
-    - LGBTQIA+ Individual Therapy (`/services/specialized-support/lgbtq`)
-      - Purpose: Celebrate queer and trans identities with affirming, liberation-focused care free from judgment.
-    - Women's Issues (`/services/specialized-support/womens-issues`)
-      - Purpose: Hold space for progressive women navigating identity shifts, caregiving pressure, and boundary repair.
-    - Pregnancy Complications / Miscarriage (`/services/specialized-support/pregnancy-complications`)
-      - Purpose: Validate complex reproductive journeys with grief-informed, choice-affirming support.
-    - Abortion Support (`/services/specialized-support/abortion-support`)
-      - Purpose: Provide non-judgmental, values-aligned counseling before and after abortion decisions.
-  - Trauma & Recovery (`/services/trauma-recovery`)
-    - Purpose: Describe Blanca's approach to deep healing after violence, loss, or systemic harm.
-    - Sexual Assault / Sexual Abuse (`/services/trauma-recovery/sexual-assault-support`)
-      - Purpose: Offer survivor-centered care focused on reclaiming autonomy and safety.
-    - Domestic Violence & Toxic Relationships (`/services/trauma-recovery/domestic-violence-recovery`)
-      - Purpose: Support clients disentangling from coercive dynamics while rebuilding self-trust.
-    - Grief & Bereavement Counseling (`/services/trauma-recovery/grief-bereavement`)
-      - Purpose: Companion clients through layered grief with ritual, remembrance, and progressive meaning-making.
-    - Immigrant / Refugee Counseling (`/services/trauma-recovery/immigrant-refugee-support`)
-      - Purpose: Center multicultural resilience and the realities of navigating life between cultures.
+  - Individual Therapy
+    - General Individual Therapy
+    - Counseling for Anxiety
+    - Therapy for Depression
+    - Counseling for Trauma
+  - Specialized Support
+    - LGBTQIA+ Individual Therapy
+    - Women's Issues
+    - Pregnancy Complications / Miscarriage
+    - Abortion Support
+  - Trauma & Recovery
+    - Sexual Assault / Sexual Abuse
+    - Domestic Violence & Toxic Relationships
+    - Grief & Bereavement Counseling
+    - Immigrant / Refugee Counseling
 - Get Started *(navigation trigger only; no standalone route)*
-  - Appointment Request (`/get-started/appointment-request`)
-    - Purpose: Guide visitors through inquiry submission, scheduling expectations, and next steps.
-  - Privacy Practices (`/get-started/privacy-practices`)
-    - Purpose: Explain confidentiality, telehealth boundaries, and records handling in accessible language.
-  - FAQs (`/get-started/faqs`)
-    - Purpose: Answer common questions around therapy fit, session flow, and progressive values alignment.
-  - Rates & Insurance (`/get-started/rates-insurance`)
-    - Purpose: Outline investment, superbill guidance, sliding scale availability, and payment logistics.
-- Client Portal (`/client-portal`)
-  - Purpose: Give current clients quick access to scheduling tools, forms, and secure messaging reminders.
-- Contact (`/contact`)
-  - Purpose: Offer multiple ways to reach Blanca, clarify Texas telehealth availability, and note accessibility accommodations and response expectations.
+  - Appointment Request
+  - Privacy Practices
+  - FAQs
+  - Rates & Insurance
+- Client Portal *(external link only; no standalone route)*
+- Contact
 
 ## Section Usage Tracker
 | Page | Hero Used | About | Services | WhyChooseUs | Testimonials | FinalCTA | Notes |
