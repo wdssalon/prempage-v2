@@ -20,6 +20,11 @@ Phase 2: Plan the Page Set
   - Prep section inventory
       |
       v
+Phase 2.5: Define Visual System
+  - Generate or update style guide tokens
+  - Lock voice, tone, and asset decisions
+      |
+      v
 Phase 3: Build Page Skeletons
   - Create page scaffolds with the template
   - Outline pages & slot sections
@@ -78,6 +83,26 @@ Phase 6: QA Check-in
    - Review `templates/<template-slug>/config.yaml > theming` to locate the override files for colors, fonts, and optional scripts.
    - Translate the approved palette and typography from `client-overview.md` into those override hooks (for example, seed CSS variables in `overrides/custom.css` or extend Tailwind tokens). Do not commit changes yet—record the plan in `client-overview.md > TODOs` so it guides implementation during skeleton builds.
    - If `theming.icon_library.type` is not `none`, select the icon family and primary glyphs that match the brand direction. Document the choice alongside the palette/typography notes. Skip icon selection entirely when the template reports `type: none` (Clarity behaves this way); treat in-section icons as imagery instead.
+
+## Phase 2.5: Define the Visual System
+1. **Confirm template support**
+   - Check `templates/<template-slug>/config.yaml > style_guide`. If `enabled: true`, the coordinator must schedule a style-guide build before skeletons.
+   - Locate the canonical style guide example (for Horizon: `app/style-guide/page.tsx`).
+2. **Synthesize brand voice & tone**
+   - Extract voice, tone, and writing patterns from `client-overview.md`. Document them under a `## Voice & Tone` block inside the style guide or the brief as instructed.
+   - Capture approved vocabulary, tense preferences, and CTA guardrails so copy drafters mirror the same language.
+3. **Define visual tokens**
+   - Select palette tokens, typography stacks, spacing, button treatments, surfaces, and motion helpers using the template examples as references.
+   - If imagery direction is provided, include sourcing rules (subjects, framing, color temperature) and list any required assets to locate during imagery workflow.
+4. **Present options for approval**
+   - Generate three candidate font pairings, three color palette treatments, and three writing style samples. Each option must render a visual preview (fonts/colors) or a paragraph-length copy sample (writing style).
+   - Share the options with the human reviewer and record feedback. Do not finalize the style guide until a selection is confirmed.
+5. **Persist the style guide**
+   - Update the template style guide route (e.g., `app/style-guide/page.tsx`) with client-specific tokens, annotating the selected option.
+   - Record the artifact path and decision summary in `automation-state.json` and link it from `client-overview.md > ## Visual System`.
+6. **Approval gate**
+   - Pause until the human reviewer approves the selected font, color, and writing style options before moving to page skeletons.
+
 
 ## Phase 3: Build Page Skeletons
 For every approved page, repeat the following sequence. Follow any template-specific exceptions (for example, duplicating canonical pages) documented in the relevant `templates/<template-slug>/page-build-edit-overview.md`, and honor the canonical editing guardrails in `AGENTS.md` (copy sections/components exactly, no structural rewrites).

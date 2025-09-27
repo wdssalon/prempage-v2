@@ -37,6 +37,14 @@ page_generation:
   duplicate_examples: []
   assets_path_hint: "/assets/..."
 
+style_guide:
+  enabled: true
+  route: app/style-guide/page.tsx
+  template_path: app/style-guide/template.tsx
+  voice_notes_section: "### Voice & Tone"
+  requires_approval: true
+  notes: "Generate or update the style guide before building skeletons when template provides an example. Present three font, color, and writing-style options with previews before approval."
+
 rotation_rules:
   hero:
     variants: []

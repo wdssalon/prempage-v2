@@ -1,0 +1,130 @@
+name: website_build
+inputs:
+  site_slug: string
+  template_slug: string
+state:
+  file: public-sites/sites/${site_slug}/automation-state.json
+  schema:
+    phase: string
+    approvals:
+      phase1: bool
+      assembly: bool
+      release: bool
+    trackers:
+      section_usage: string
+      sections_remaining: string
+    style_guide_required: bool
+    style_guide_path: string
+    style_guide_summary: string
+    style_guide_options: string
+    outstanding_todos: string[]
+stages:
+  - id: prep
+    phase: 0
+    role: coordinator
+    description: Verify template resources, ensure initial state snapshot, confirm workspace cleanliness.
+    outputs:
+      - automation_state
+  - id: intake
+    phase: 1
+    role: brief_synthesizer
+    description: Produce client overview draft and proposed page list.
+    required_documents:
+      - public-sites/templates/${template_slug}/client-overview.md
+      - public-sites/generate-website.md
+    outputs:
+      - client_overview_path
+      - page_list_summary
+    gates:
+      - human_approval
+  - id: plan
+    phase: 2
+    role: planner
+    description: Update trackers (Approved Website Structure, Section Usage Tracker, Sections Remaining To Use).
+    required_documents:
+      - public-sites/templates/${template_slug}/config.yaml
+      - public-sites/templates/${template_slug}/sections.yaml
+      - public-sites/templates/${template_slug}/page-build-edit-overview.md
+    outputs:
+      - tracker_paths
+      - planning_summary
+    post_actions:
+      - update_state: style_guide_required
+
+  - id: style_guide
+    phase: 2.5
+    role: style_guide_designer
+    description: Generate or refresh the visual system, present three options per category, and track the approved selection when the template enables the style guide.
+    condition: state.style_guide_required
+    required_documents:
+      - public-sites/templates/${template_slug}/config.yaml
+      - public-sites/templates/${template_slug}/page-build-edit-overview.md
+      - public-sites/sites/${site_slug}/client-overview.md
+      - public-sites/sites/${site_slug}/app/style-guide/template.tsx
+    outputs:
+      - style_guide_path
+      - style_guide_summary
+      - style_guide_options
+    post_actions:
+      - update_state: style_guide_path
+      - update_state: style_guide_summary
+      - update_state: style_guide_options
+    gates:
+      - human_approval
+  - id: skeletons
+    phase: 3
+    foreach: page in state.approved_pages
+    role: skeleton_builder
+    description: Assemble legal section skeletons for each approved page.
+    required_documents:
+      - public-sites/templates/${template_slug}/sections.yaml
+      - public-sites/templates/${template_slug}/page-build-edit-overview.md
+    outputs:
+      - page_path
+      - section_usage_update
+    gates:
+      - coordinator_check
+  - id: copy
+    phase: 4
+    foreach: page in state.approved_pages
+    role: copy_drafter
+    description: Draft copy within existing skeletons; update hero/rotation counters.
+    required_documents:
+      - public-sites/generate-website.md
+      - public-sites/templates/${template_slug}/page-build-edit-overview.md
+    outputs:
+      - page_path
+      - copy_diff
+    gates:
+      - coordinator_check
+  - id: assemble
+    phase: 5
+    role: assembler
+    description: Apply navigation, footers, shared metadata; ensure consistency across pages.
+    outputs:
+      - nav_updates
+      - metadata_updates
+    gates:
+      - human_approval
+  - id: qa
+    phase: 6
+    role: qa_agent
+    description: Run automated checks and produce QA report + TODO list.
+    tools:
+      - checks/allowed_sections_check
+      - checks/seo_meta_check
+      - checks/link_checker
+    outputs:
+      - qa_report_path
+      - todo_updates
+    gates:
+      - coordinator_check
+  - id: release
+    phase: release
+    role: release_agent
+    description: Execute build script and, if approved, trigger deployment.
+    tools:
+      - tools/build
+      - tools/render
+    gates:
+      - human_approval

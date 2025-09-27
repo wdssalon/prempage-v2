@@ -1,0 +1,17 @@
+{
+  "approvals": {
+    "assembly": false,
+    "phase1": false,
+    "release": false
+  },
+  "outstanding_todos": [],
+  "phase": "0",
+  "style_guide_options": "Font Pairings\n1. Playfair Display + Inter (Selected)\n   - Usage: Warm editorial hero statements with modern supporting paragraphs.\n   - Heading sample: \"Grounded Healing Starts Here\"\n   - Body sample: \"We pair poetic serif headlines with approachable sans-serif paragraphs.\"\n2. Cormorant + Source Sans\n   - Usage: Softer serif with neutral sans body for an academic, reflective tone.\n   - Heading sample: \"Stories Worth Sharing\"\n   - Body sample: \"This pairing leans into calm authority with generous letter spacing.\"\n3. Fraunces + Work Sans\n   - Usage: Rounded contrast suited for playful elegance and coaching content.\n   - Heading sample: \"Care That Adapts\"\n   - Body sample: \"Rounded serif strokes keep warmth while Work Sans maintains clarity.\"\n\nColor Palettes\n1. Sage & Sunrise (Selected)\n   - Swatches: --sage-green / --warm-tan / --sunrise-peach\n   - Usage: High-trust primary treatment balancing warmth and calm; ideal for CTAs and hero gradients.\n2. Forest & Cream\n   - Swatches: --deep-forest / --soft-cream / --river-stone\n   - Usage: Contrast-rich system for accessibility-first layouts and longform content.\n3. Plum & Dawn\n   - Swatches: --soft-purple / --plum-mauve / --gradient-dawn\n   - Usage: Expressive palette for workshops, testimonials, and seasonal highlights.\n\nWriting Style Samples\n1. Affirming & Direct (Selected)\n   - Description: Warm, strengths-based messaging with clear next steps.\n   - Sample: \"You deserve support that sees every part of you. Together we name what hurts, practice what heals, and move forward at your pace.\"\n2. Reflective & Narrative\n   - Description: Story-driven copy inviting the reader into shared experiences.\n   - Sample: \"Every session becomes a space to unpack the stories you\u2019ve carried alone and craft new chapters with care and witness.\"\n3. Research-informed & Encouraging\n   - Description: Light clinical framing paired with uplifting reassurance.\n   - Sample: \"Rooted in evidenced approaches like EMDR and somatic grounding, our work keeps you anchored in the possibility of change.\"",
+  "style_guide_path": "app/style-guide/page.tsx",
+  "style_guide_required": true,
+  "style_guide_summary": "Selected on 2025-09-27 after Phase 2.5 review:\n- Font pairing: Playfair Display (headings) + Inter (body) for a warm editorial tone with approachable supporting copy.\n- Color system: Sage & Sunrise palette (Sage Green, Warm Tan, Sunrise Peach) to balance trust, warmth, and conversion accents.\n- Writing style: Affirming & Direct voice emphasising inclusive language, clear next steps, and compassionate reassurance.",
+  "trackers": {
+    "section_usage": "",
+    "sections_remaining": ""
+  }
+}
