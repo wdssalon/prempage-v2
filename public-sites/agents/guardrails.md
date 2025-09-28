@@ -38,7 +38,7 @@ Centralize the non-negotiable rules for the `public-sites` workspace. Every coor
 
 ## Assets & Deployment
 - Store raw imagery in `sites/<slug>/images/` (gitignored). Run `pnpm run assets:sync` before local previews or builds when the template enables the asset pipeline.
-- Use `public-sites/scripts/build-static-site.sh <slug>` for exportable bundles. When Bunny/CDN uploads are enabled, run `pnpm run assets:upload` from the site directory and retain resulting manifests under `public-sites/dist/<slug>/`.
+- Use `public-sites/scripts/horizon/build-static-site.sh <slug>` for exportable bundles. When Bunny/CDN uploads are enabled, run `pnpm run assets:upload` from the site directory and retain resulting manifests under `public-sites/dist/<slug>/`.
 - Never remove or rename generated manifests (`asset-manifest.json`, `assets-manifest.cdn.json`) without coordinating with the release agent. Deployment jobs depend on their format and location.
 
 ## Collaboration

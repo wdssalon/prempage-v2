@@ -5,4 +5,4 @@ repo_prep:
       summary: >-
         If the site workspace is missing or lacks a Next.js project, copy the Horizon boilerplate and install dependencies.
       commands:
-        - python public-sites/scripts/bootstrap_horizon_site.py {{ site_slug }}
+        - python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug {{ site_slug }} --template-slug {{ template_slug }}

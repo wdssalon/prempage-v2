@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 from typing import Mapping
 
-SCRIPT_PATH = Path("public-sites/scripts/build-static-site.sh")
+SCRIPT_PATH = Path("public-sites/scripts/horizon/build-static-site.sh")
 
 
 def run_build(site_slug: str, *, env: Mapping[str, str] | None = None) -> subprocess.CompletedProcess[str]:

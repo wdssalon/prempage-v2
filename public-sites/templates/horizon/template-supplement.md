@@ -3,7 +3,7 @@
 Use this document alongside `public-sites/agents/guardrails.md`, the coordinator brief, and the role guides. It captures Horizon-specific nuances for the Next.js App Router workspace.
 
 ## Coordinator Hooks
-- Horizon projects rely on the bundled Next.js workspace. During repo prep, run `python public-sites/scripts/bootstrap_horizon_site.py <site_slug>` if the site directory does not already contain the project scaffold.
+- Horizon projects rely on the bundled Next.js workspace. During repo prep, run `python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug <site_slug> --template-slug horizon` if the site directory does not already contain the project scaffold.
 - The horizon plugin requires the visual-system stage. Expect to generate three `/style-guide/<variant>` explorations and record the outcomes in `client-overview.md > ## Visual System` and `automation-state.json` before allowing skeleton work to begin.
 - Style-guide tokens live in `app/style-guide/data.ts`; each exploration must include palette, typography, layout notes, and hero copy with CTA labels that map cleanly to draft pages.
 

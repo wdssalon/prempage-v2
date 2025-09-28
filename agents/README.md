@@ -30,4 +30,5 @@ This directory houses the coordinator policy, role prompts, workflow definition,
 
 ### CLI snippets
 - Initialize state: `python agents/runner.py --site <slug> --template <template> init`
+- Execute a workflow extension: `python agents/runner.py --site <slug> --template <template> run-extension --stage repo_prep --extension-id bootstrap_horizon_app`
 - Record style guide decisions: `python agents/runner.py --site <slug> --template <template> style-guide --summary-file visual-summary.md --options-file visual-options.md`

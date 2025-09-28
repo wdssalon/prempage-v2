@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
+import time
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
@@ -245,6 +247,41 @@ class AutomationRunner:
         except ValueError:
             return str(path)
 
+    @staticmethod
+    def _trim_output(text: str, *, max_chars: int = 2000) -> str:
+        stripped = text.strip()
+        if len(stripped) <= max_chars:
+            return stripped
+        return stripped[-max_chars:]
+
+    @staticmethod
+    def _parse_json_output(stdout: str) -> Any | None:
+        lines = [line for line in stdout.strip().splitlines() if line.strip()]
+        for line in reversed(lines):
+            try:
+                return json.loads(line)
+            except json.JSONDecodeError:
+                continue
+        return None
+
+    def _get_stage(self, stage_id: str) -> dict[str, Any]:
+        for stage in self.resolved_stages:
+            if stage.get("id") == stage_id:
+                return stage
+        raise SystemExit(f"Workflow stage not found: {stage_id}")
+
+    def _get_extension(self, stage: dict[str, Any], when: str, extension_id: str) -> dict[str, Any]:
+        extensions = stage.get("extensions") or {}
+        bucket = extensions.get(when)
+        if not bucket:
+            raise SystemExit(f"No extensions defined for stage '{stage.get('id')}' at '{when}'")
+        for entry in bucket:
+            if entry.get("id") == extension_id:
+                if not entry.get("commands"):
+                    raise SystemExit(f"Extension '{extension_id}' for stage '{stage.get('id')}' has no commands")
+                return entry
+        raise SystemExit(f"Extension '{extension_id}' not found for stage '{stage.get('id')}'")
+
     # ------------------------------------------------------------------
     # State helpers
     def _default_state(self) -> dict[str, Any]:
@@ -263,6 +300,7 @@ class AutomationRunner:
                 "hooks_manifest_path": "",
                 "plugins": {},
                 "stages": [],
+                "extension_runs": {},
             },
         }
 
@@ -308,6 +346,7 @@ class AutomationRunner:
             }
             for stage in self.resolved_stages
         ]
+        workflow_state.setdefault("extension_runs", {})
         state["workflow"] = workflow_state
 
         self._write_state(state)
@@ -380,6 +419,74 @@ class AutomationRunner:
         )
         return section
 
+    # ------------------------------------------------------------------
+    def run_extension(self, *, stage_id: str, extension_id: str, when: str) -> None:
+        stage = self._get_stage(stage_id)
+        extension = self._get_extension(stage, when, extension_id)
+
+        commands = extension.get("commands", [])
+        if not isinstance(commands, list):
+            raise SystemExit(f"Extension '{extension_id}' commands must be a list")
+
+        command_results: list[dict[str, Any]] = []
+        status = "success"
+        for command in commands:
+            if not isinstance(command, str):
+                raise SystemExit(f"Extension command must be a string: {command}")
+            start = time.perf_counter()
+            result = subprocess.run(
+                ["bash", "-lc", command],
+                cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
+            )
+            duration_ms = int((time.perf_counter() - start) * 1000)
+            stdout = result.stdout or ""
+            stderr = result.stderr or ""
+            parsed_json = self._parse_json_output(stdout)
+            command_results.append(
+                {
+                    "command": command,
+                    "exit_code": result.returncode,
+                    "duration_ms": duration_ms,
+                    "stdout_tail": self._trim_output(stdout),
+                    "stderr_tail": self._trim_output(stderr),
+                    "parsed_json": parsed_json,
+                }
+            )
+            if result.returncode != 0:
+                status = "failed"
+                break
+
+        run_record = {
+            "stage_id": stage_id,
+            "extension_id": extension_id,
+            "when": when,
+            "summary": extension.get("summary"),
+            "ran_at": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime()),
+            "status": status,
+            "commands": command_results,
+        }
+
+        state = self._load_state()
+        workflow_state = state.setdefault("workflow", {})
+        extension_runs = workflow_state.setdefault("extension_runs", {})
+        stage_runs = extension_runs.setdefault(stage_id, {})
+        ext_state = stage_runs.setdefault(extension_id, {"runs": []})
+        runs = ext_state.setdefault("runs", [])
+        runs.append(run_record)
+        ext_state["last_status"] = status
+        ext_state["last_ran_at"] = run_record["ran_at"]
+        self._write_state(state)
+
+        payload = {"status": status, "run": run_record}
+        print("Extension execution", json.dumps(payload))
+
+        if status != "success":
+            failing_command = command_results[-1] if command_results else {}
+            message = failing_command.get("stderr_tail") or failing_command.get("stdout_tail") or "Extension command failed"
+            raise SystemExit(message)
+
 
 # ----------------------------------------------------------------------
 
@@ -391,6 +498,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     subparsers.add_parser("init", help="Initialize automation-state.json for the site")
+
+    extension_parser = subparsers.add_parser("run-extension", help="Execute a workflow extension command")
+    extension_parser.add_argument("--stage", required=True, help="Workflow stage id (e.g., repo_prep)")
+    extension_parser.add_argument("--extension-id", required=True, help="Extension id declared in the workflow hooks")
+    extension_parser.add_argument("--when", default="after", help="Extension timing bucket (default: after)")
 
     style_parser = subparsers.add_parser("style-guide", help="Record style-guide output and update client overview")
     style_parser.add_argument("--path", help="Relative path to the generated style-guide page", default=None)
@@ -420,6 +532,10 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.command == "init":
         runner.initialize()
+        return
+
+    if args.command == "run-extension":
+        runner.run_extension(stage_id=args.stage, extension_id=args.extension_id, when=args.when)
         return
 
     if args.command == "style-guide":

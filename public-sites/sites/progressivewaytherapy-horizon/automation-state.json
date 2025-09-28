@@ -16,6 +16,43 @@
   },
   "workflow": {
     "definition_path": "public-sites/agents/workflows/website_build.yaml",
+    "extension_runs": {
+      "repo_prep": {
+        "bootstrap_horizon_app": {
+          "last_ran_at": "2025-09-28T15:13:09",
+          "last_status": "failed",
+          "runs": [
+            {
+              "commands": [
+                {
+          "command": "python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug progressivewaytherapy-horizon --template-slug horizon",
+                  "duration_ms": 684,
+                  "exit_code": 1,
+                  "parsed_json": {
+                    "error": {
+                      "code": "destination_exists",
+                      "details": {
+                        "destination": "/Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon"
+                      },
+                      "message": "Destination already exists: /Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon"
+                    },
+                    "status": "error"
+                  },
+                  "stderr_tail": "",
+                  "stdout_tail": "{\"error\": {\"code\": \"destination_exists\", \"details\": {\"destination\": \"/Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon\"}, \"message\": \"Destination already exists: /Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon\"}, \"status\": \"error\"}"
+                }
+              ],
+              "extension_id": "bootstrap_horizon_app",
+              "ran_at": "2025-09-28T15:13:09",
+              "stage_id": "repo_prep",
+              "status": "failed",
+              "summary": "If the site workspace is missing or lacks a Next.js project, copy the Horizon boilerplate and install dependencies.",
+              "when": "after"
+            }
+          ]
+        }
+      }
+    },
     "hooks_manifest_path": "public-sites/templates/horizon/agents/hooks.yaml",
     "plugin_manifest_path": "public-sites/templates/horizon/agents/plugins.yaml",
     "plugins": {
@@ -40,7 +77,7 @@
           "after": [
             {
               "commands": [
-                "python public-sites/scripts/bootstrap_horizon_site.py progressivewaytherapy-horizon"
+                "python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug progressivewaytherapy-horizon --template-slug horizon"
               ],
               "id": "bootstrap_horizon_app",
               "role": "coordinator",

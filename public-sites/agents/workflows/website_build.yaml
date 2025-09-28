@@ -97,7 +97,7 @@ stages:
     optional_requires:
       - asset_pipeline_log
     tools:
-      - public-sites/scripts/build-static-site.sh {{ site_slug }} --dry-run
+      - public-sites/scripts/horizon/build-static-site.sh {{ site_slug }} --dry-run
     outputs: [assembly_report]
     gates: []
 

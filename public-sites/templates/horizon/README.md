@@ -17,7 +17,7 @@ The dev server runs at `http://localhost:3000` with hot reload.
 
 ### Bootstrapping a new site
 ```bash
-python public-sites/scripts/bootstrap_horizon_site.py <site-slug>-horizon
+python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug <site-slug>-horizon --template-slug horizon
 ```
 
 This copies the Horizon boilerplate into `public-sites/sites/<site-slug>-horizon` and runs `pnpm install` so the project
@@ -39,7 +39,7 @@ pnpm check
 
 To build outside the project root, use the helper script from the repo root:
 ```bash
-./public-sites/scripts/build-static-site.sh <site-slug>
+./public-sites/scripts/horizon/build-static-site.sh <site-slug>
 ```
 
 ## Render Static Site Deployment
@@ -58,7 +58,7 @@ You can also generate the service via blueprint. Copy `render-static-site.exampl
 Publishing = merging to the tracked branch. The Render build runs the same lint + export pipeline as local development.
 
 ## GitHub Actions Auto-Deploy
-- The repository contains per-site workflows under `.github/workflows/` that watch `public-sites/sites/<slug>` and call the matching Render Deploy Hook after a successful lint + static export (`./public-sites/scripts/build-static-site.sh <slug>`).
+- The repository contains per-site workflows under `.github/workflows/` that watch `public-sites/sites/<slug>` and call the matching Render Deploy Hook after a successful lint + static export (`./public-sites/scripts/horizon/build-static-site.sh <slug>`).
 - CI caches the pnpm store keyed by `pnpm-lock.yaml`, so subsequent installs run with `pnpm install --frozen-lockfile --prefer-offline` for faster builds.
 - The workflow also caches `.next/cache` keyed by package + source hashes to speed up incremental Next.js builds.
 - A repo-level `pre-push` hook (`.githooks/pre-push`) runs `pnpm lint` for all Horizon sites. Enable hooks with `git config core.hooksPath .githooks` so lint failures stop before they reach CI.
@@ -69,4 +69,4 @@ Publishing = merging to the tracked branch. The Render build runs the same lint 
 - Keep per-site overrides scoped within the site directory so the template stays zero-config.
 - Update this document if the build command, tooling, or Render configuration changes.
 - For now, new site scaffolds are produced locally with Codex; the hosted editor will focus on safe iterative edits once it launches.
-- Automation backlog: add CI checks to run `public-sites/scripts/build-static-site.sh <slug>` on pull requests, and script `render blueprint apply` once the static site service name and branch strategy are finalized.
+- Automation backlog: add CI checks to run `public-sites/scripts/horizon/build-static-site.sh <slug>` on pull requests, and script `render blueprint apply` once the static site service name and branch strategy are finalized.

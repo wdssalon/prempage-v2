@@ -19,11 +19,11 @@ Follow the ordered stages below. Record progress and approvals in `automation-st
 
 1. **Prep**
    - Verify the correct site slug exists, check for stray template files, and snapshot repo status.
-   - When the template provides a bootstrap script (for example Horizon’s `python public-sites/scripts/bootstrap_horizon_site.py <site_slug>`), run it if the site workspace is missing.
+  - When the template provides a bootstrap script (for example Horizon’s `python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug <site_slug> --template-slug horizon`), run it if the site workspace is missing.
    - Load plugin-defined extensions; execute only the prerequisites that are unmet.
 2. **Intake**
    - Dispatch the `brief_synthesizer` with intake materials, the template starter `client-overview.md`, and guardrails.
-   - Instruct the agent to call `python public-sites/scripts/extract_site.py <site_slug> <url>` when a legacy URL is provided so artifacts exist for downstream work.
+  - Instruct the agent to call `python public-sites/scripts/automation/extract_site.py <site_slug> <url>` when a legacy URL is provided so artifacts exist for downstream work.
    - Hold until the user approves both the synthesized `client-overview.md` and the proposed page hierarchy.
 3. **Planning**
    - Ensure the coordinator (or brief agent) appends `## Approved Website Structure` to `client-overview.md`.
