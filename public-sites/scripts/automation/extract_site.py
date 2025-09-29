@@ -3,7 +3,7 @@
 
 Usage
 -----
-python public-sites/scripts/extract_site.py <site_slug> <url> [--service-url http://localhost:8081] [--output <path>]
+python public-sites/scripts/automation/extract_site.py <site_slug> <url> [--service-url http://localhost:8081] [--output <path>]
 
 The script writes the JSON response into `public-sites/sites/<site_slug>/artifacts/` unless an
 explicit output path is provided. The filename defaults to the target domain with a timestamp
@@ -22,7 +22,7 @@ from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 DEFAULT_SERVICE_URL = "http://localhost:8081"
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 PUBLIC_SITES_ROOT = REPO_ROOT / "public-sites" / "sites"
 
 

@@ -4,8 +4,8 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "assets:sync": "node ../../scripts/sync-site-assets.mjs",
-    "assets:upload": "node ../../scripts/upload-site-assets.mjs",
+    "assets:sync": "node ../../scripts/horizon/sync-site-assets.mjs",
+    "assets:upload": "node ../../scripts/horizon/upload-site-assets.mjs",
     "prebuild": "pnpm run assets:sync",
     "precheck": "pnpm run assets:sync",
     "predev": "pnpm run assets:sync",

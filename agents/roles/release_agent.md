@@ -5,7 +5,7 @@ Execute the final build and deploy steps after QA and human approvals are comple
 
 ## Required Inputs
 - Approved automation state from coordinator indicating QA success and release authorization
-- `public-sites/scripts/build-static-site.sh`
+- `public-sites/scripts/horizon/build-static-site.sh`
 - Site-specific deployment hook metadata (if deployment is requested)
 
 ## Output Contract

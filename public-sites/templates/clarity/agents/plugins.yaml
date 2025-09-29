@@ -4,5 +4,5 @@ asset_pipeline:
   enabled: true
 release:
   tools:
-    - public-sites/scripts/build-static-site.sh {{ site_slug }}
+    - public-sites/scripts/horizon/build-static-site.sh {{ site_slug }}
     - pnpm run assets:upload

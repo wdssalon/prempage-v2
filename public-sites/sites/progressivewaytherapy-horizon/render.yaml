@@ -5,7 +5,7 @@ services:
     repo: https://github.com/wdssalon/prempage-v2.git
     branch: master
     rootDir: .
-    buildCommand: ./public-sites/scripts/build-static-site.sh progressivewaytherapy-horizon
+    buildCommand: ./public-sites/scripts/horizon/build-static-site.sh progressivewaytherapy-horizon
     staticPublishPath: public-sites/dist/progressivewaytherapy-horizon
     envVars:
       - key: NODE_VERSION

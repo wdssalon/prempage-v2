@@ -19,13 +19,13 @@
     "extension_runs": {
       "repo_prep": {
         "bootstrap_horizon_app": {
-          "last_ran_at": "2025-09-28T15:13:09",
+          "last_ran_at": "2025-09-28T21:07:47",
           "last_status": "failed",
           "runs": [
             {
               "commands": [
                 {
-          "command": "python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug progressivewaytherapy-horizon --template-slug horizon",
+                  "command": "python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug progressivewaytherapy-horizon --template-slug horizon",
                   "duration_ms": 684,
                   "exit_code": 1,
                   "parsed_json": {
@@ -44,6 +44,33 @@
               ],
               "extension_id": "bootstrap_horizon_app",
               "ran_at": "2025-09-28T15:13:09",
+              "stage_id": "repo_prep",
+              "status": "failed",
+              "summary": "If the site workspace is missing or lacks a Next.js project, copy the Horizon boilerplate and install dependencies.",
+              "when": "after"
+            },
+            {
+              "commands": [
+                {
+                  "command": "python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug progressivewaytherapy-horizon --template-slug horizon",
+                  "duration_ms": 552,
+                  "exit_code": 1,
+                  "parsed_json": {
+                    "error": {
+                      "code": "destination_exists",
+                      "details": {
+                        "destination": "/Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon"
+                      },
+                      "message": "Destination already exists: /Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon"
+                    },
+                    "status": "error"
+                  },
+                  "stderr_tail": "",
+                  "stdout_tail": "{\"error\": {\"code\": \"destination_exists\", \"details\": {\"destination\": \"/Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon\"}, \"message\": \"Destination already exists: /Users/scottscialabba/Projects/prempage-v2/public-sites/sites/progressivewaytherapy-horizon\"}, \"status\": \"error\"}"
+                }
+              ],
+              "extension_id": "bootstrap_horizon_app",
+              "ran_at": "2025-09-28T21:07:47",
               "stage_id": "repo_prep",
               "status": "failed",
               "summary": "If the site workspace is missing or lacks a Next.js project, copy the Horizon boilerplate and install dependencies.",
@@ -214,7 +241,7 @@
         ],
         "role": "assembler",
         "tools": [
-          "public-sites/scripts/build-static-site.sh progressivewaytherapy-horizon --dry-run"
+          "public-sites/scripts/horizon/build-static-site.sh progressivewaytherapy-horizon --dry-run"
         ]
       },
       {

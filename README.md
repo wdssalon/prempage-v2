@@ -125,7 +125,7 @@ Run these from `client/`:
 - The `public-sites/` directory houses the tooling and instructions for the static site deployments.
 
 - Review `public-sites/agents/guardrails.md` and `public-sites/agents/coordinator.md` before editing. Per-stage guidance lives in `public-sites/agents/roles/`.
-- Template-specific build/deploy instructions live under `public-sites/templates/<template>/` (config, supplement, plugins). Run `./public-sites/scripts/build-static-site.sh <site-slug>` to mimic the production static export (`pnpm run check` → `out/`).
+- Template-specific build/deploy instructions live under `public-sites/templates/<template>/` (config, supplement, plugins). Run `./public-sites/scripts/horizon/build-static-site.sh <site-slug>` to mimic the production static export (`pnpm run check` → `out/`).
 - Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
 ## Backend ↔ Frontend Contract

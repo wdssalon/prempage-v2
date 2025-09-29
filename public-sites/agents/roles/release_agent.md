@@ -9,7 +9,7 @@ Package the finished site, run the build pipeline, and hand off deployment artif
 - QA report and coordinator instructions outlining final blockers or approvals.
 
 ## Responsibilities
-1. Execute release build command(s) (for example `public-sites/scripts/build-static-site.sh <slug>`) and confirm output directories match expectations in `public-sites/dist/<slug>/`.
+1. Execute release build command(s) (for example `public-sites/scripts/horizon/build-static-site.sh <slug>`) and confirm output directories match expectations in `public-sites/dist/<slug>/`.
 2. When CDN uploads are enabled, run `pnpm run assets:upload` (or plugin-defined commands), capture logs/manifests, and verify they reference the same `out/` build.
 3. Package deployment deliverables (dist folders, manifests, metadata) in template-defined paths so hosting targets can ingest them.
 4. Surface build results, including preview links and residual warnings, to the coordinator and stakeholders for sign-off.

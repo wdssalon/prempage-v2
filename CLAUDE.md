@@ -124,7 +124,7 @@ uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localh
 - Brand-specific exports reside in `public-sites/sites/<site-slug>/`. Keep CSS overrides, fonts, and HTML changes scoped within the relevant site bundle. Per-site `images/` directories are gitignored by default.
 - Read `public-sites/agents/guardrails.md` before automating updates; it captures the guardrails for section rotation, copy edits, navigation rules, and override assets.
 - End-to-end build guidance now lives in `public-sites/agents/coordinator.md`, with supporting role briefs in `public-sites/agents/roles/` and template supplements under `public-sites/templates/<template>/`.
-- Template-specific docs live under `public-sites/templates/<template>/`. Use `./public-sites/scripts/build-static-site.sh <site-slug>` to reproduce the static export pipeline locally.
+- Template-specific docs live under `public-sites/templates/<template>/`. Use `./public-sites/scripts/horizon/build-static-site.sh <site-slug>` to reproduce the static export pipeline locally.
 
 ### Data Storage
 

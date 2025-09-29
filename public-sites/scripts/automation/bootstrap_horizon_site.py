@@ -9,9 +9,13 @@ from __future__ import annotations
 import argparse
 import shutil
 import subprocess
+import sys
 import time
 from pathlib import Path
 from typing import Any
+
+SCRIPT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_ROOT.parent))
 
 from _utils import ScriptError, emit_error, emit_success, log_message
 from _utils.horizon import BOILERPLATE_ROOT, SITES_ROOT, TEMPLATE_ROOT, TEMPLATE_SLUG

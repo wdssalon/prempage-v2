@@ -24,7 +24,7 @@
       },
       "release": {
         "tools": [
-          "public-sites/scripts/build-static-site.sh progressivewaytherapy-clarity",
+          "public-sites/scripts/horizon/build-static-site.sh progressivewaytherapy-clarity",
           "pnpm run assets:upload"
         ]
       },
@@ -183,7 +183,7 @@
         ],
         "role": "assembler",
         "tools": [
-          "public-sites/scripts/build-static-site.sh progressivewaytherapy-clarity --dry-run"
+          "public-sites/scripts/horizon/build-static-site.sh progressivewaytherapy-clarity --dry-run"
         ]
       },
       {
@@ -221,7 +221,7 @@
         ],
         "role": "release_agent",
         "tools": [
-          "public-sites/scripts/build-static-site.sh progressivewaytherapy-clarity",
+          "public-sites/scripts/horizon/build-static-site.sh progressivewaytherapy-clarity",
           "pnpm run assets:upload"
         ]
       }

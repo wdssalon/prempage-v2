@@ -12,7 +12,7 @@ Apply global elements (navigation, footers, metadata) and run optional asset wor
 ## Responsibilities
 1. Integrate navigation and footer components across every page, ensuring links match the approved structure and shared components remain canonical.
 2. Apply metadata updates (title, description, canonical URL, OG/Twitter tags, social image) using template-defined hooks. Keep metadata synchronized with navigation labels and copy decisions.
-3. Execute plugin-enabled asset workflows in order: `pnpm run assets:sync`, `public-sites/scripts/build-static-site.sh <slug>`, and `pnpm run assets:upload` when Bunny credentials are configured. Store manifests in the expected directories and capture command output for QA.
+3. Execute plugin-enabled asset workflows in order: `pnpm run assets:sync`, `public-sites/scripts/horizon/build-static-site.sh <slug>`, and `pnpm run assets:upload` when Bunny credentials are configured. Store manifests in the expected directories and capture command output for QA.
 4. Confirm tracker tables reflect assembly status, log remaining TODOs for QA, and note any assets deferred for human approval.
 5. Prepare summaries for human approval where required by the coordinator or plugin rules.
 
