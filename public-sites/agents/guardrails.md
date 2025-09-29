@@ -19,7 +19,7 @@ Centralize the non-negotiable rules for the `public-sites` workspace. Every coor
 
 ## Editing Rules
 - Work inside the approved site slug and template directories only. Never touch template catalogs, starter shells, or compiled output except when a template supplement explicitly instructs you to do so.
-- Keep `client-overview.md` strictly ASCII. Replace smart quotes, em/en dashes, and other Unicode glyphs before saving.
+- The `client-overview.md` file must be strictly ASCII.
 - Update literal copy, alt text, and links only.
 - Default to the template’s canonical sections/components—import them or copy their markup exactly. Only author new layouts when the active template supplement explicitly allows it (for example Horizon can add reusable components in `src/components/`).
 - Maintain the trackers inside `client-overview.md`: `Approved Website Structure`, `Section Usage Tracker`, and `Sections Remaining To Use`. Update them immediately after each page-level change.
