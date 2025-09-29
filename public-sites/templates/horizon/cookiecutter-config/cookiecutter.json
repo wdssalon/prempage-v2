@@ -1,0 +1,19 @@
+{
+  "project_name": "Progressive Way Therapy",
+  "project_slug": "progressivewaytherapy-horizon",
+  "seo_title": "Progressive Way Therapy | Horizon Template",
+  "seo_description": "Progressive, inclusive therapy for LGBTQIA+, BIPOC, and marginalized communities across Texas.",
+  "serif_font_loader": "Playfair_Display",
+  "serif_font_variable": "--font-serif",
+  "serif_font_display": "swap",
+  "body_font_loader": "Inter",
+  "body_font_variable": "--font-body",
+  "body_font_display": "swap",
+  "light_background": "30 47% 93%",
+  "light_foreground": "0 0% 29%",
+  "light_primary": "136 23% 53%",
+  "light_secondary": "343 80% 94%",
+  "dark_background": "347 12% 15%",
+  "dark_foreground": "337 45% 91%",
+  "dark_primary": "136 23% 56%"
+}

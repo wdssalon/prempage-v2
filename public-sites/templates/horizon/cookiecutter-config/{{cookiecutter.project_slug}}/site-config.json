@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "title": "{{ cookiecutter.seo_title }}",
+    "description": "{{ cookiecutter.seo_description }}"
+  },
+  "fonts": [
+    {
+      "id": "serif",
+      "loader": "{{ cookiecutter.serif_font_loader }}",
+      "variable": "{{ cookiecutter.serif_font_variable }}",
+      "options": {
+        "subsets": ["latin"],
+        "display": "{{ cookiecutter.serif_font_display }}"
+      }
+    },
+    {
+      "id": "body",
+      "loader": "{{ cookiecutter.body_font_loader }}",
+      "variable": "{{ cookiecutter.body_font_variable }}",
+      "options": {
+        "subsets": ["latin"],
+        "display": "{{ cookiecutter.body_font_display }}"
+      }
+    }
+  ],
+  "colors": {
+    "light": {
+      "background": "{{ cookiecutter.light_background }}",
+      "foreground": "{{ cookiecutter.light_foreground }}",
+      "primary": "{{ cookiecutter.light_primary }}",
+      "secondary": "{{ cookiecutter.light_secondary }}"
+    },
+    "dark": {
+      "background": "{{ cookiecutter.dark_background }}",
+      "foreground": "{{ cookiecutter.dark_foreground }}",
+      "primary": "{{ cookiecutter.dark_primary }}"
+    }
+  }
+}

@@ -97,35 +97,33 @@ def render_layout(config: Dict) -> str:
         options = {**options, "variable": variable}
 
         options_json = json.dumps(options, indent=2)
-        font_consts.append(
-            f"const {const_name} = {loader}({options_json});"
-        )
+        options_json = re.sub(r'"([A-Za-z0-9_]+)":', r'\1:', options_json)
+        font_consts.append(f"const {const_name} = {loader}({options_json});")
         class_refs.append(f"{const_name}.variable")
 
     loaders_import = ", ".join(loaders)
-    font_consts_str = "\n\n".join(font_consts)
     class_expr = " ".join(f"${{{ref}}}" for ref in class_refs)
 
-    layout_template = f"""import {{{loaders_import}}} from \"next/font/google\";
-import \"./globals.css\";
+    lines: List[str] = []
+    lines.append('import { ' + loaders_import + ' } from "next/font/google";')
+    lines.append('import "./globals.css";')
+    lines.append('')
+    lines.extend(font_consts)
+    lines.append('')
+    lines.append('export const metadata = {')
+    lines.append(f'  title: {json.dumps(title)},')
+    lines.append(f'  description: {json.dumps(description)},')
+    lines.append('};')
+    lines.append('')
+    lines.append('export default function RootLayout({ children }) {')
+    lines.append('  return (')
+    lines.append('    <html lang="en" className={`' + class_expr + '`}>')
+    lines.append('      <body className="bg-background text-foreground font-body">{children}</body>')
+    lines.append('    </html>')
+    lines.append('  );')
+    lines.append('}')
 
-{font_consts_str}
-
-export const metadata = {{
-  title: {json.dumps(title)},
-  description: {json.dumps(description)},
-}};
-
-export default function RootLayout({{ children }}) {{
-  return (
-    <html lang=\"en\" className={`{class_expr}`}>
-      <body className=\"bg-background text-foreground font-body\">{{children}}</body>
-    </html>
-  );
-}}
-"""
-
-    return layout_template
+    return "\n".join(lines) + "\n"
 
 
 # ---------------------------------------------------------------------------
@@ -159,15 +157,21 @@ def update_colors(lines: List[str], selector: str, replacements: Dict[str, str])
     present = set()
 
     # Determine indentation for new declarations.
-    indent_match = re.match(r"(\s*)", lines[start + 1]) if start + 1 < len(lines) else None
-    indent = indent_match.group(1) if indent_match else "  "
+    indent = None
+    for search_idx in range(start + 1, end):
+        indent_match = re.match(r"(\s*)--", lines[search_idx])
+        if indent_match:
+            indent = indent_match.group(1)
+            break
+    if indent is None:
+        indent = "  "
 
     for idx in range(start + 1, end):
         line = lines[idx]
         for key, value in replacements.items():
-            pattern = re.compile(rf"(--{re.escape(key)}\s*:\s*)([^;]+)(;)\")
+            pattern = re.compile(rf"(--{re.escape(key)}\s*:\s*)([^;]+)(;)")
             if pattern.search(line):
-                lines[idx] = pattern.sub(rf"\1{value}\3", line)
+                lines[idx] = pattern.sub(rf"\g<1>{value}\g<3>", line)
                 present.add(key)
 
     missing = [key for key in replacements.keys() if key not in present]

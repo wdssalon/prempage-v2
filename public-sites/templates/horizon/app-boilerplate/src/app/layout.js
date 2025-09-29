@@ -1,30 +1,30 @@
-import { Inter, Playfair_Display } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-serif",
+const serifFont = Playfair_Display({
+  subsets: [
+    "latin"
+  ],
   display: "swap",
+  variable: "--font-serif"
 });
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
+const bodyFont = Inter({
+  subsets: [
+    "latin"
+  ],
   display: "swap",
+  variable: "--font-body"
 });
 
 export const metadata = {
   title: "Progressive Way Therapy | Horizon Template",
-  description:
-    "Progressive, inclusive therapy for LGBTQIA+, BIPOC, and marginalized communities across Texas.",
+  description: "Progressive, inclusive therapy for LGBTQIA+, BIPOC, and marginalized communities across Texas.",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="bg-background text-foreground font-body">
-        {children}
-      </body>
+    <html lang="en" className={`${serifFont.variable} ${bodyFont.variable}`}>
+      <body className="bg-background text-foreground font-body">{children}</body>
     </html>
   );
 }

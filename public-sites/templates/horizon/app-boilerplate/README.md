@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Horizon App Boilerplate
 
-## Getting Started
+PremPage's Horizon boilerplate is a Next.js 14 site that mirrors the Progressive Way Therapy home page. It is intentionally JavaScript-only so it can act as the seed for future cookie-cutter clones.
 
-First, run the development server:
+## Prerequisites
+- Node 18+
+- pnpm 8+
+- Python 3.10+
 
+## Install & Run
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
+```
+The dev server defaults to http://localhost:3000.
+
+Production checks:
+```bash
+pnpm lint
+pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Parameterised Site Configuration
+Use `scripts/apply_site_config.py` to inject fonts, metadata, and color tokens from a JSON payload. The script accepts either a file path or an inline JSON string:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+python scripts/apply_site_config.py --config config/example-site.json
+# or
+python scripts/apply_site_config.py --config '{"fonts": [...], "colors": {...}}'
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Schema Overview
+```jsonc
+{
+  "metadata": {
+    "title": "Page title",
+    "description": "SEO description"
+  },
+  "fonts": [
+    {
+      "id": "serif",
+      "loader": "Playfair_Display", // named import from next/font/google
+      "variable": "--font-serif",    // CSS custom property to expose
+      "options": {                    // forwarded to the loader
+        "subsets": ["latin"],
+        "display": "swap"
+      }
+    },
+    {
+      "id": "body",
+      "loader": "Inter",
+      "variable": "--font-body",
+      "options": {
+        "subsets": ["latin"],
+        "display": "swap"
+      }
+    }
+  ],
+  "colors": {
+    "light": { "background": "30 47% 93%", "foreground": "0 0% 29%" },
+    "dark": { "background": "347 12% 15%", "foreground": "337 45% 91%" }
+  }
+}
+```
+- Font list order is preserved; each entry produces a `const` assignment and is added to the `<html>` className.
+- `colors.light` updates the `:root` CSS variables; `colors.dark` updates the `.dark` block. Only provided keys are touched, so partial overrides are fine.
 
-## Learn More
+A full reference configuration that recreates the Progressive Way Therapy palette lives at `config/example-site.json`.
 
-To learn more about Next.js, take a look at the following resources:
+Run the script before templating to bake the chosen palette/fonts into `layout.js` and `globals.css`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Cookiecutter Template
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The reusable template lives at `public-sites/templates/horizon/cookiecutter-config`. Generate a site directly into the shared `public-sites/sites` directory:
 
-## Deploy on Vercel
+```bash
+uv tool run cookiecutter $(pwd)/public-sites/templates/horizon/cookiecutter-config \
+  --config-file public-sites/templates/horizon/cookiecutter-config/example-cookiecutter-context.json \
+  --output-dir public-sites/sites \
+  --no-input
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Then install dependencies and run the dev server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+cd public-sites/sites/calmpath-horizon
+pnpm install
+pnpm dev
+```
