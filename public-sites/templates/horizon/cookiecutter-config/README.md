@@ -9,7 +9,7 @@ Generate a new site directly inside `public-sites/sites`:
 ```bash
 uv tool run cookiecutter $(pwd)/public-sites/templates/horizon/cookiecutter-config \
   --output-dir public-sites/sites \
-  --config-file public-sites/templates/horizon/cookiecutter-config/example-cookiecutter-context.json \
+  --config-file public-sites/templates/horizon/cookiecutter-config/cookiecutter.json \
   --no-input
 ```
 

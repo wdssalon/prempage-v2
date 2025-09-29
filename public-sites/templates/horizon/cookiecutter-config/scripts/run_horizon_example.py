@@ -23,7 +23,7 @@ REPO_ROOT = CONFIG_DIR.parents[4]
 SITES_DIR = REPO_ROOT / "public-sites" / "sites"
 PROJECT_SLUG = "horizon-example"
 PROJECT_DIR = SITES_DIR / PROJECT_SLUG
-EXAMPLE_CONTEXT_PATH = CONFIG_DIR / "example-cookiecutter-context.json"
+EXAMPLE_CONTEXT_PATH = CONFIG_DIR / "cookiecutter.json"
 
 
 def load_context() -> dict[str, str]:

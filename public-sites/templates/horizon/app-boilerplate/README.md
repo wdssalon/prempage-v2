@@ -75,7 +75,7 @@ The reusable template lives at `public-sites/templates/horizon/cookiecutter-conf
 
 ```bash
 uv tool run cookiecutter $(pwd)/public-sites/templates/horizon/cookiecutter-config \
-  --config-file public-sites/templates/horizon/cookiecutter-config/example-cookiecutter-context.json \
+  --config-file public-sites/templates/horizon/cookiecutter-config/cookiecutter.json \
   --output-dir public-sites/sites \
   --no-input
 ```
