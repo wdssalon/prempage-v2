@@ -17,7 +17,7 @@ export default function Footer({ variant = "default" }) {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
                 <div>
-                  <h3 id={headingId} className="text-xl font-serif font-semibold" style={{ color: "var(--color-brand-primary)" }}>
+                  <h3 id={headingId} className="text-brand font-serif font-semibold text-xl">
                     Progressive Way Therapy
                   </h3>
                   <p className="text-copy/70 text-sm">Inclusive Mental Health Care</p>
@@ -46,19 +46,19 @@ export default function Footer({ variant = "default" }) {
             </div>
 
             <div>
-              <h4 className="font-serif font-semibold mb-4" style={{ color: "var(--color-brand-primary)" }}>Quick Links</h4>
+              <h4 className="text-brand font-serif font-semibold mb-4 text-lg">Quick Links</h4>
               <ul className="space-y-2 text-sm text-copy/80">
-                <li><a href="/about" className="transition-colors hover:[color:var(--color-brand-primary)]">About Blanca</a></li>
-                <li><a href="/#services" className="transition-colors hover:[color:var(--color-brand-primary)]">Our Services</a></li>
-                <li><a href="/#emdr" className="transition-colors hover:[color:var(--color-brand-primary)]">EMDR Therapy</a></li>
-                <li><a href="/#ketamine" className="transition-colors hover:[color:var(--color-brand-primary)]">Ketamine Treatment</a></li>
+                <li><a href="/about" className="transition-colors hover:text-brand">About Blanca</a></li>
+                <li><a href="/#services" className="transition-colors hover:text-brand">Our Services</a></li>
+                <li><a href="/#emdr" className="transition-colors hover:text-brand">EMDR Therapy</a></li>
+                <li><a href="/#ketamine" className="transition-colors hover:text-brand">Ketamine Treatment</a></li>
                 <li><a href="/#rates" className="hover:text-brand-soft transition-colors">Rates &amp; Insurance</a></li>
                 <li><a href="/#faq" className="hover:text-brand-soft transition-colors">FAQs</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-serif font-semibold mb-4 text-brand-soft">Resources</h4>
+              <h4 className="text-brand font-serif font-semibold mb-4 text-lg">Resources</h4>
               <ul className="space-y-2 text-sm text-copy/80">
                 <li><a href="/#blog" className="hover:text-brand-soft transition-colors">Mental Health Blog</a></li>
                 <li><a href="/#crisis" className="hover:text-brand-soft transition-colors">Crisis Resources</a></li>

@@ -101,7 +101,7 @@ export default function Testimonials({ sectionId, variant = "default" }) {
               </div>
 
               <div>
-                <p className="font-semibold text-[color:var(--color-brand-primary)] text-lg">{testimonials[currentSlide].name}</p>
+                <p className="font-semibold text-brand text-lg">{testimonials[currentSlide].name}</p>
                 <p className="text text-muted">{testimonials[currentSlide].identity}</p>
               </div>
             </div>

@@ -143,7 +143,7 @@ export default function Services({ sectionId, variant = "default" }) {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Shield className="w-6 h-6 mt-1 shrink-0" style={{ color: "var(--color-brand-primary)" }} aria-hidden="true" />
+                  <Shield className="w-6 h-6 mt-1 shrink-0 text-brand" aria-hidden="true" />
                   <div>
                     <h4 className={detailHeadingClasses}>EMDR Therapy</h4>
                     <p className="text text-sm text-muted leading-relaxed">
@@ -154,7 +154,7 @@ export default function Services({ sectionId, variant = "default" }) {
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <Heart className="w-6 h-6 mt-1 shrink-0" style={{ color: "var(--color-brand-primary)" }} aria-hidden="true" />
+                  <Heart className="w-6 h-6 mt-1 shrink-0 text-brand" aria-hidden="true" />
                   <div>
                     <h4 className={detailHeadingClasses}>Ketamine-Assisted Psychotherapy</h4>
                     <p className="text text-sm text-muted leading-relaxed">
@@ -167,7 +167,7 @@ export default function Services({ sectionId, variant = "default" }) {
 
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Users className="w-6 h-6 mt-1 shrink-0" style={{ color: "var(--color-brand-primary)" }} aria-hidden="true" />
+                  <Users className="w-6 h-6 mt-1 shrink-0 text-brand" aria-hidden="true" />
                   <div>
                     <h4 className={detailHeadingClasses}>Liberation-Based Healing</h4>
                     <p className="text text-sm text-muted leading-relaxed">
@@ -178,7 +178,7 @@ export default function Services({ sectionId, variant = "default" }) {
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <Brain className="w-6 h-6 mt-1 shrink-0" style={{ color: "var(--color-brand-primary)" }} aria-hidden="true" />
+                  <Brain className="w-6 h-6 mt-1 shrink-0 text-brand" aria-hidden="true" />
                   <div>
                     <h4 className={detailHeadingClasses}>Somatic & Nervous System Work</h4>
                     <p className="text text-sm text-muted leading-relaxed">

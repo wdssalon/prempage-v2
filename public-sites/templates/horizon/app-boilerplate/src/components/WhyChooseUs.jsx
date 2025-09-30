@@ -63,7 +63,7 @@ export default function WhyChooseUs({ sectionId, variant = "default" }) {
                     <IconComponent className="w-10 h-10 text-inverse" aria-hidden="true" />
                   </div>
 
-                  <h3 className="heading is-subsection font-semibold mb-4" style={{ color: "var(--color-brand-primary)" }}>{reason.title}</h3>
+                  <h3 className="heading is-subsection font-semibold mb-4">{reason.title}</h3>
 
                   <p className="text text-muted leading-relaxed">{reason.description}</p>
                 </div>
