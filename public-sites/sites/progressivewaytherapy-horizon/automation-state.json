@@ -15,7 +15,7 @@
     "sections_remaining": ""
   },
   "workflow": {
-    "definition_path": "public-sites/agents/workflows/website_build.yaml",
+    "definition_path": "agents/workflows/website_build.yaml",
     "extension_runs": {
       "repo_prep": {
         "bootstrap_horizon_app": {
@@ -80,42 +80,18 @@
         }
       }
     },
-    "hooks_manifest_path": "public-sites/templates/horizon/agents/hooks.yaml",
-    "plugin_manifest_path": "public-sites/templates/horizon/agents/plugins.yaml",
-    "plugins": {
-      "asset_pipeline": {
-        "enabled": false
-      },
-      "release": {
-        "tools": [
-          "pnpm --dir sites/progressivewaytherapy-horizon lint",
-          "pnpm --dir sites/progressivewaytherapy-horizon build"
-        ]
-      },
-      "visual_system": {
-        "enabled": true
-      }
-    },
+    "hooks_manifest_path": "",
+    "plugin_manifest_path": "",
+    "plugins": {},
     "stages": [
       {
         "condition": null,
         "enabled": true,
-        "extensions": {
-          "after": [
-            {
-              "commands": [
-                "python public-sites/scripts/automation/bootstrap_horizon_site.py --site-slug progressivewaytherapy-horizon --template-slug horizon"
-              ],
-              "id": "bootstrap_horizon_app",
-              "role": "coordinator",
-              "summary": "If the site workspace is missing or lacks a Next.js project, copy the Horizon boilerplate and install dependencies."
-            }
-          ]
-        },
+        "extensions": {},
         "foreach": null,
         "gates": [],
-        "id": "repo_prep",
-        "label": "repo-prep",
+        "id": "prep",
+        "label": null,
         "optional_requires": [],
         "requires": [],
         "role": "coordinator",
@@ -130,11 +106,9 @@
           "human_approval"
         ],
         "id": "intake",
-        "label": "intake",
+        "label": null,
         "optional_requires": [],
-        "requires": [
-          "workspace_ready"
-        ],
+        "requires": [],
         "role": "brief_synthesizer",
         "tools": []
       },
@@ -145,48 +119,39 @@
         "foreach": null,
         "gates": [],
         "id": "plan",
-        "label": "planning",
+        "label": null,
         "optional_requires": [],
-        "requires": [
-          "client_overview_path",
-          "page_list"
-        ],
-        "role": "coordinator",
+        "requires": [],
+        "role": "planner",
         "tools": []
       },
       {
-        "condition": "plugins.visual_system.enabled",
+        "condition": "state.style_guide_required",
         "enabled": true,
         "extensions": {},
         "foreach": null,
         "gates": [
-          "coordinator_check"
+          "human_approval"
         ],
-        "id": "visual_system",
-        "label": "visual-system",
+        "id": "style_guide",
+        "label": null,
         "optional_requires": [],
-        "requires": [
-          "section_usage_tracker"
-        ],
-        "role": "coordinator",
+        "requires": [],
+        "role": "style_guide_designer",
         "tools": []
       },
       {
         "condition": null,
         "enabled": true,
         "extensions": {},
-        "foreach": "page in page_list.approved",
+        "foreach": "page in state.approved_pages",
         "gates": [
           "coordinator_check"
         ],
         "id": "skeletons",
-        "label": "skeletons",
-        "optional_requires": [
-          "style_token_manifest"
-        ],
-        "requires": [
-          "section_usage_tracker"
-        ],
+        "label": null,
+        "optional_requires": [],
+        "requires": [],
         "role": "skeleton_builder",
         "tools": []
       },
@@ -194,55 +159,31 @@
         "condition": null,
         "enabled": true,
         "extensions": {},
-        "foreach": "page in page_list.approved",
+        "foreach": "page in state.approved_pages",
         "gates": [
           "coordinator_check"
         ],
         "id": "copy",
-        "label": "copy",
-        "optional_requires": [],
-        "requires": [
-          "skeletons.page.workspace_path"
-        ],
-        "role": "copy_drafter",
-        "tools": []
-      },
-      {
-        "condition": "plugins.asset_pipeline.enabled",
-        "enabled": false,
-        "extensions": {},
-        "foreach": null,
-        "gates": [
-          "coordinator_check"
-        ],
-        "id": "assets",
-        "label": "asset-pipeline",
+        "label": null,
         "optional_requires": [],
         "requires": [],
-        "role": "assembler",
-        "tools": [
-          "pnpm run assets:sync",
-          "pnpm run assets:upload"
-        ]
+        "role": "copy_drafter",
+        "tools": []
       },
       {
         "condition": null,
         "enabled": true,
         "extensions": {},
         "foreach": null,
-        "gates": [],
-        "id": "assembly",
-        "label": "assembly",
-        "optional_requires": [
-          "asset_pipeline_log"
+        "gates": [
+          "human_approval"
         ],
-        "requires": [
-          "copy"
-        ],
+        "id": "assemble",
+        "label": null,
+        "optional_requires": [],
+        "requires": [],
         "role": "assembler",
-        "tools": [
-          "public-sites/scripts/horizon/build-static-site.sh progressivewaytherapy-horizon --dry-run"
-        ]
+        "tools": []
       },
       {
         "condition": null,
@@ -253,14 +194,14 @@
           "coordinator_check"
         ],
         "id": "qa",
-        "label": "qa",
+        "label": null,
         "optional_requires": [],
-        "requires": [
-          "assembly_report"
-        ],
+        "requires": [],
         "role": "qa_agent",
         "tools": [
-          "public-sites/checks/base.yaml"
+          "checks/allowed_sections_check",
+          "checks/seo_meta_check",
+          "checks/link_checker"
         ]
       },
       {
@@ -272,15 +213,13 @@
           "human_approval"
         ],
         "id": "release",
-        "label": "release",
+        "label": null,
         "optional_requires": [],
-        "requires": [
-          "qa_report"
-        ],
+        "requires": [],
         "role": "release_agent",
         "tools": [
-          "pnpm --dir sites/progressivewaytherapy-horizon lint",
-          "pnpm --dir sites/progressivewaytherapy-horizon build"
+          "tools/build",
+          "tools/render"
         ]
       }
     ]

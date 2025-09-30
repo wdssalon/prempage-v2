@@ -118,14 +118,14 @@ Run these from `client/`:
 - `client/` – Next.js Studio workspace (App Router, Tailwind, TypeScript).
 - `backend/` – FastAPI application managed by uv (`main.py`, `pyproject.toml`, `.venv/`).
 - `services/` – Standalone microservices: `form-relay/` (FastAPI service for static-site form submissions) and `static-site-extractor/` (Static Site Extractor FastAPI service for parsing static pages).
-- `public-sites/` – Static site toolkit and exports. Load `public-sites/agents/guardrails.md`, `agents/coordinator.md`, and template supplements before working on a site.
+- `public-sites/` – Static site toolkit and exports. Load `agents/policy/public-sites.md` and the active template supplement before working on a site.
 - `prempage-webflow/` – Imported Webflow export available for reference/integration (ignored by git).
 
 ## Static Sites
 - The `public-sites/` directory houses the tooling and instructions for the static site deployments.
 
-- Review `public-sites/agents/guardrails.md` and `public-sites/agents/coordinator.md` before editing. Per-stage guidance lives in `public-sites/agents/roles/`.
-- Template-specific build/deploy instructions live under `public-sites/templates/<template>/` (config, supplement, plugins). Run `./public-sites/scripts/horizon/build-static-site.sh <site-slug>` to mimic the production static export (`pnpm run check` → `out/`).
+- Review `agents/policy/public-sites.md` before editing. Per-stage guidance lives in `agents/roles/`.
+- Template-specific build/deploy instructions live under `public-sites/templates/<template>/` (config, supplement) with automation manifests in `agents/templates/<template>/`. Run `./public-sites/scripts/horizon/build-static-site.sh <site-slug>` to mimic the production static export (`pnpm run check` → `out/`).
 - Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
 ## Backend ↔ Frontend Contract

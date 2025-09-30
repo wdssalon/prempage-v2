@@ -4,8 +4,8 @@ plan:
       role: coordinator
       summary: Ensure section inventory reflects Clarity catalog limits and aligns with the guardrails before skeleton work begins.
       uses:
-        - public-sites/agents/guardrails.md
-        - public-sites/agents/coordinator.md
-        - templates/clarity/sections.yaml
-        - templates/clarity/template-supplement.md
+        - agents/policy/public-sites.md
+        - agents/coordinator.md
+        - public-sites/templates/clarity/sections.yaml
+        - public-sites/templates/clarity/template-supplement.md
       outputs: [clarity_section_inventory]

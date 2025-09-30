@@ -65,7 +65,7 @@ class AutomationRunner:
             config_data = yaml.safe_load(fh) or {}
         self.style_guide_config = StyleGuideConfig.from_mapping(config_data.get("style_guide", {}))
 
-        self.workflow_path = PUBLIC_SITES_ROOT / "agents" / "workflows" / "website_build.yaml"
+        self.workflow_path = REPO_ROOT / "agents" / "workflows" / "website_build.yaml"
         if not self.workflow_path.exists():
             raise SystemExit(f"Workflow definition missing: {self.workflow_path}")
         self.workflow_definition = self._load_yaml(self.workflow_path)
@@ -117,7 +117,7 @@ class AutomationRunner:
         manifest_data: dict[str, Any] = {}
         if isinstance(manifest_template, str):
             manifest_rel = self._render_template_string(manifest_template)
-            manifest_path = PUBLIC_SITES_ROOT / manifest_rel
+            manifest_path = REPO_ROOT / manifest_rel
             if manifest_path.exists():
                 manifest_data = self._render_structure(self._load_yaml(manifest_path))
                 self.plugin_manifest_path = manifest_path
@@ -138,7 +138,7 @@ class AutomationRunner:
         if not manifest_template:
             return {}
         hooks_rel = self._render_template_string(str(manifest_template))
-        hooks_path = PUBLIC_SITES_ROOT / hooks_rel
+        hooks_path = REPO_ROOT / hooks_rel
         if not hooks_path.exists():
             if optional:
                 self.hooks_manifest_path = hooks_path

@@ -1,6 +1,6 @@
 # Clarity Template Supplement
 
-Use this guidance alongside `public-sites/agents/guardrails.md`, the coordinator brief, and the role guides. Clarity ships static HTML exports; these notes capture the template-specific rules that layer on top of the global process.
+Use this guidance alongside `agents/policy/public-sites.md`, the coordinator brief, and the role guides. Clarity ships static HTML exports; these notes capture the template-specific rules that layer on top of the global process.
 
 ## Coordinator Hooks
 - Confirm the static workspace exists under `sites/<slug>/`. Each page must start from the shell declared at `config.yaml > scaffolding.page_shell` (currently `page-shell.html`). It carries canonical `<head>` content, navigation/footer placeholders, and global scripts.

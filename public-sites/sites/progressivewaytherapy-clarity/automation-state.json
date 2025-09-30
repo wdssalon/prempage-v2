@@ -15,9 +15,9 @@
     "sections_remaining": ""
   },
   "workflow": {
-    "definition_path": "public-sites/agents/workflows/website_build.yaml",
-    "hooks_manifest_path": "public-sites/templates/clarity/agents/hooks.yaml",
-    "plugin_manifest_path": "public-sites/templates/clarity/agents/plugins.yaml",
+    "definition_path": "agents/workflows/website_build.yaml",
+    "hooks_manifest_path": "agents/templates/clarity/hooks.yaml",
+    "plugin_manifest_path": "agents/templates/clarity/plugins.yaml",
     "plugins": {
       "asset_pipeline": {
         "enabled": true
@@ -76,10 +76,10 @@
               "role": "coordinator",
               "summary": "Ensure section inventory reflects Clarity catalog limits and aligns with the guardrails before skeleton work begins.",
               "uses": [
-                "public-sites/agents/guardrails.md",
-                "public-sites/agents/coordinator.md",
-                "templates/clarity/sections.yaml",
-                "templates/clarity/template-supplement.md"
+                "agents/policy/public-sites.md",
+                "agents/coordinator.md",
+                "public-sites/templates/clarity/sections.yaml",
+                "public-sites/templates/clarity/template-supplement.md"
               ]
             }
           ]

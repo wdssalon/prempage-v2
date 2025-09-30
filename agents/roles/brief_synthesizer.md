@@ -1,12 +1,12 @@
 # Brief Synthesizer
 
 ## Purpose
-Transform raw intake materials (client packet, legacy site scrape, user notes) into `public-sites/sites/<slug>/client-overview.md` and a proposed page list that follows the intake requirements in `public-sites/agents/coordinator.md`.
+Transform raw intake materials (client packet, legacy site scrape, user notes) into `public-sites/sites/<slug>/client-overview.md` and a proposed page list that follows the intake requirements in `agents/policy/public-sites.md`.
 
 ## Required Inputs
 - Coordinator-supplied intake packet content
-- `public-sites/templates/<template>/client-overview.md`
-- `public-sites/agents/coordinator.md` (intake checklist)
+- `public-sites/templates/<template>/config.yaml` for structural + token guidance
+- `agents/policy/public-sites.md` (intake checklist)
 - Any existing brand guidance provided during the run
 
 ## Output Contract
@@ -15,6 +15,6 @@ Transform raw intake materials (client packet, legacy site scrape, user notes) i
 - Status payload indicating whether additional information is required.
 
 ## Guardrails
-- Do not deviate from the template structure; only fill designated sections.
+- Use the coordinator’s requested section headings; if they’re missing, propose a structure and wait for approval.
 - Highlight unknown or missing data rather than inventing content.
-- Respect wording guardrails in `public-sites/agents/guardrails.md` (navigation conventions, rotation rules, etc.).
+- Respect wording guardrails in `agents/policy/public-sites.md` (navigation conventions, rotation rules, etc.).
