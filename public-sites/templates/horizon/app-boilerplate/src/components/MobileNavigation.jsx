@@ -382,7 +382,7 @@ export default function MobileNavigation({ sectionId }) {
                         <button
                           onClick={navigateBack}
                           data-role="back-button"
-                          className="flex items-center text-earth-brown hover:text-soft-purple transition-colors focus:outline-none rounded-lg p-1"
+                          className="flex items-center text-copy hover:text-brand-soft transition-colors focus:outline-none rounded-lg p-1"
                           aria-label={`Back to ${parentTitle ?? "previous menu"}`}
                           type="button"
                         >
@@ -397,13 +397,13 @@ export default function MobileNavigation({ sectionId }) {
                         <div key={item.id}>
                           <button
                             onClick={() => handleItemClick(item)}
-                            className="w-full flex items-center justify-between py-3 px-4 text-left text-earth-brown hover:text-soft-purple hover:bg-soft-purple/10 transition-colors rounded-lg focus:outline-none"
+                            className="w-full flex items-center justify-between py-3 px-4 text-left text-copy hover:text-brand-soft hover:bg-brand-soft/10 transition-colors rounded-lg focus:outline-none"
                             style={{ minHeight: "44px" }}
                             type="button"
                           >
                             <span className="font-medium">{item.label}</span>
                             {item.children && item.children.length > 0 && (
-                              <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                              <ChevronRight className="w-5 h-5 text-muted" />
                             )}
                           </button>
                         </div>

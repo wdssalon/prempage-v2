@@ -39,9 +39,9 @@ python scripts/apply_site_config.py --config '{"fonts": [...], "colors": {...}}'
   "fonts": [
     {
       "id": "serif",
-      "loader": "Playfair_Display", // named import from next/font/google
-      "variable": "--font-serif",    // CSS custom property to expose
-      "options": {                    // forwarded to the loader
+      "loader": "Playfair_Display",
+      "variable": "--font-serif",
+      "options": {
         "subsets": ["latin"],
         "display": "swap"
       }
@@ -57,13 +57,41 @@ python scripts/apply_site_config.py --config '{"fonts": [...], "colors": {...}}'
     }
   ],
   "colors": {
-    "light": { "background": "30 47% 93%", "foreground": "0 0% 29%" },
-    "dark": { "background": "347 12% 15%", "foreground": "337 45% 91%" }
+    "light": {
+      "bg_base": "#f6ede5",
+      "bg_surface": "#faf5f0",
+      "bg_contrast": "#fce3ea",
+      "text_primary": "#4a4a4a",
+      "text_secondary": "#6b5247",
+      "text_inverse": "#ffffff",
+      "brand_primary": "#6ca37a",
+      "brand_secondary": "#d9a6b5",
+      "accent": "#e4d0c9",
+      "border": "#ddccc5",
+      "ring": "#6ca37a",
+      "critical": "#dd3c3c",
+      "critical_contrast": "#faf8f5"
+    },
+    "dark": {
+      "bg_base": "#2b2224",
+      "bg_surface": "#33282b",
+      "bg_contrast": "#493139",
+      "text_primary": "#f2dee6",
+      "text_secondary": "#cd98ac",
+      "text_inverse": "#2b2224",
+      "brand_primary": "#75a983",
+      "brand_secondary": "#9b4b63",
+      "accent": "#6b4753",
+      "border": "#47383b",
+      "ring": "#75a983",
+      "critical": "#ae2929",
+      "critical_contrast": "#f2dee6"
+    }
   }
 }
 ```
 - Font list order is preserved; each entry produces a `const` assignment and is added to the `<html>` className.
-- `colors.light` updates the `:root` CSS variables; `colors.dark` updates the `.dark` block. Only provided keys are touched, so partial overrides are fine.
+- `colors.light` updates the `:root` palette; `colors.dark` updates the `.dark` block. Provide HEX strings—`apply_site_config.py` handles conversion to the HSL values used in CSS.
 
 A full reference configuration that recreates the Progressive Way Therapy palette lives at `config/example-site.json`.
 
@@ -75,7 +103,6 @@ The reusable template lives at `public-sites/templates/horizon/cookiecutter-conf
 
 ```bash
 uv tool run cookiecutter $(pwd)/public-sites/templates/horizon/cookiecutter-config \
-  --config-file public-sites/templates/horizon/cookiecutter-config/cookiecutter.json \
   --output-dir public-sites/sites \
   --no-input
 ```

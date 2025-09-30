@@ -20,9 +20,9 @@ export default function FinalCTA({ sectionId }) {
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="animate-fade-in-up">
-            <h2 className="heading is-section is-on-dark text-cream md:text-5xl mb-6">
+            <h2 className="heading is-section is-on-dark text-inverse md:text-5xl mb-6">
               Ready to Start Your
-              <span className="block text-warm-tan">Healing Journey?</span>
+              <span className="block text-accent">Healing Journey?</span>
             </h2>
 
             <p className="text is-lead is-on-dark text-xl mb-8 max-w-2xl mx-auto">
@@ -32,43 +32,43 @@ export default function FinalCTA({ sectionId }) {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            <div className="bg-card/20 backdrop-blur-sm rounded-md p-6 border border-cream/20">
-              <Phone className="w-8 h-8 text-warm-tan mx-auto mb-4" />
-              <h3 className="font-serif text-lg text-cream mb-2">Free Consultation</h3>
-              <p className="text-cream/80 text-sm mb-4">15-minute phone call to see if we're a good fit</p>
+            <div className="bg-surface/20 backdrop-blur-sm rounded-md p-6 border border-border/20">
+              <Phone className="w-8 h-8 text-accent mx-auto mb-4" />
+              <h3 className="font-serif text-lg text-inverse mb-2">Free Consultation</h3>
+              <p className="text-inverse/80 text-sm mb-4">15-minute phone call to see if we're a good fit</p>
               <button type="button" className="btn-primary is-on-dark is-fluid">
                 Book Now
               </button>
             </div>
 
-            <div className="bg-card/20 backdrop-blur-sm rounded-md p-6 border border-cream/20">
-              <MessageSquare className="w-8 h-8 text-warm-tan mx-auto mb-4" />
-              <h3 className="font-serif text-lg text-cream mb-2">Send a Message</h3>
-              <p className="text-cream/80 text-sm mb-4">Share your story and questions securely</p>
+            <div className="bg-surface/20 backdrop-blur-sm rounded-md p-6 border border-border/20">
+              <MessageSquare className="w-8 h-8 text-accent mx-auto mb-4" />
+              <h3 className="font-serif text-lg text-inverse mb-2">Send a Message</h3>
+              <p className="text-inverse/80 text-sm mb-4">Share your story and questions securely</p>
               <button type="button" className="btn-secondary is-fluid">
                 Contact Form
               </button>
             </div>
 
-            <div className="bg-card/20 backdrop-blur-sm rounded-md p-6 border border-cream/20">
-              <Calendar className="w-8 h-8 text-warm-tan mx-auto mb-4" />
-              <h3 className="font-serif text-lg text-cream mb-2">Direct Scheduling</h3>
-              <p className="text-cream/80 text-sm mb-4">Book your first session online</p>
+            <div className="bg-surface/20 backdrop-blur-sm rounded-md p-6 border border-border/20">
+              <Calendar className="w-8 h-8 text-accent mx-auto mb-4" />
+              <h3 className="font-serif text-lg text-inverse mb-2">Direct Scheduling</h3>
+              <p className="text-inverse/80 text-sm mb-4">Book your first session online</p>
               <button type="button" className="btn-secondary is-fluid">
                 View Calendar
               </button>
             </div>
           </div>
 
-          <div className="bg-card/10 backdrop-blur-sm rounded-md p-8 border border-cream/20 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
+          <div className="bg-surface/10 backdrop-blur-sm rounded-md p-8 border border-border/20 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center justify-center mb-4">
-              <MapPin className="w-5 h-5 text-warm-tan mr-2" />
-              <span className="text-cream font-medium">Serving All of Texas via Telehealth</span>
+              <MapPin className="w-5 h-5 text-accent mr-2" />
+              <span className="text-inverse font-medium">Serving All of Texas via Telehealth</span>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 text-cream/80">
+            <div className="grid md:grid-cols-2 gap-8 text-inverse/80">
               <div>
-                <h4 className="font-serif text-cream mb-3">Available Hours</h4>
+                <h4 className="font-serif text-inverse mb-3">Available Hours</h4>
                 <div className="space-y-1 text-sm">
                   <p>Monday - Thursday: 9am - 7pm</p>
                   <p>Friday: 9am - 5pm</p>
@@ -77,7 +77,7 @@ export default function FinalCTA({ sectionId }) {
               </div>
 
               <div>
-                <h4 className="font-serif text-cream mb-3">What to Expect</h4>
+                <h4 className="font-serif text-inverse mb-3">What to Expect</h4>
                 <div className="space-y-1 text-sm">
                   <p>✓ Completely confidential space</p>
                   <p>✓ No judgment, just compassion</p>
@@ -88,7 +88,7 @@ export default function FinalCTA({ sectionId }) {
           </div>
 
           <div className="mt-8 text-center animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
-            <p className="text-cream/70 text-sm">
+            <p className="text-inverse/70 text-sm">
               If you're experiencing a mental health emergency, please call 988 (Suicide & Crisis Lifeline) or go to your
               nearest emergency room.
             </p>

@@ -66,28 +66,28 @@ export default function Testimonials({ sectionId }) {
 
           <div className="relative">
             <div className="inclusive-card text-center min-h-[300px] flex flex-col justify-center animate-fade-in-up">
-              <Quote className="w-12 h-12 text-sage-green mx-auto mb-6 opacity-50" />
+              <Quote className="w-12 h-12 text-brand mx-auto mb-6 opacity-50" />
 
-              <blockquote className="text-xl md:text-2xl font-serif text-soft-purple leading-relaxed mb-8 italic">
+              <blockquote className="text-xl md:text-2xl font-serif text-brand-soft leading-relaxed mb-8 italic">
                 "{testimonials[currentSlide].quote}"
               </blockquote>
 
               <div className="flex justify-center mb-4">
                 {Array.from({ length: testimonials[currentSlide].rating }).map((_, index) => (
-                  <Star key={index} className="w-5 h-5 text-warm-tan fill-current" />
+                  <Star key={index} className="w-5 h-5 text-accent fill-current" />
                 ))}
               </div>
 
               <div>
-                <p className="font-semibold text-soft-purple text-lg">{testimonials[currentSlide].name}</p>
-                <p className="text text-muted-foreground">{testimonials[currentSlide].identity}</p>
+                <p className="font-semibold text-brand-soft text-lg">{testimonials[currentSlide].name}</p>
+                <p className="text text-muted">{testimonials[currentSlide].identity}</p>
               </div>
             </div>
 
             <button
               type="button"
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple transition"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-surface shadow-gentle hover:shadow-warm hover:bg-brand-soft/20 hover:text-brand-soft transition"
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-6 h-6" />
@@ -96,7 +96,7 @@ export default function Testimonials({ sectionId }) {
             <button
               type="button"
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-card shadow-gentle hover:shadow-warm hover:bg-soft-purple/20 hover:text-soft-purple transition"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-surface shadow-gentle hover:shadow-warm hover:bg-brand-soft/20 hover:text-brand-soft transition"
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-6 h-6" />
@@ -109,7 +109,7 @@ export default function Testimonials({ sectionId }) {
                   type="button"
                   onClick={() => setCurrentSlide(index)}
                   className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentSlide ? "bg-sage-green w-8" : "bg-border hover:bg-sage-green/50"
+                    index === currentSlide ? "bg-brand w-8" : "bg-border hover:bg-brand/50"
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -118,7 +118,7 @@ export default function Testimonials({ sectionId }) {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text text-sm text-muted-foreground italic">
+            <p className="text text-sm text-muted italic">
               Client names have been changed to protect privacy. Testimonials shared with permission.
             </p>
           </div>

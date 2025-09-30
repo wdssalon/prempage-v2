@@ -6,8 +6,7 @@ specify:
 
 - metadata.title / metadata.description
 - fonts: list of font loaders from next/font/google with options
-- colors.light / colors.dark: maps of CSS custom property tokens (without the
-  leading `--`) to `value` strings (e.g. `"30 47% 93%"`).
+- colors.light / colors.dark: palette entries as HEX strings (e.g. `"#6ca37a"`).
 
 Example invocation:
     python scripts/apply_site_config.py --config config/example-site.json
@@ -21,6 +20,8 @@ import json
 import re
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+from colorsys import rgb_to_hls
 
 ROOT = Path(__file__).resolve().parents[1]
 LAYOUT_PATH = ROOT / "src" / "app" / "layout.js"
@@ -118,7 +119,7 @@ def render_layout(config: Dict) -> str:
     lines.append('export default function RootLayout({ children }) {')
     lines.append('  return (')
     lines.append('    <html lang="en" className={`' + class_expr + '`}>')
-    lines.append('      <body className="bg-background text-foreground font-body">{children}</body>')
+    lines.append('      <body className="bg-base text-copy font-body">{children}</body>')
     lines.append('    </html>')
     lines.append('  );')
     lines.append('}')
@@ -129,6 +130,62 @@ def render_layout(config: Dict) -> str:
 # ---------------------------------------------------------------------------
 # Color handling
 # ---------------------------------------------------------------------------
+
+COLOR_VAR_MAP_LIGHT = {
+    "bg_base": "color-bg-base",
+    "bg_surface": "color-bg-surface",
+    "bg_contrast": "color-bg-contrast",
+    "text_primary": "color-text-primary",
+    "text_secondary": "color-text-secondary",
+    "text_inverse": "color-text-inverse",
+    "brand_primary": "color-brand-primary",
+    "brand_secondary": "color-brand-secondary",
+    "accent": "color-highlight",
+    "border": "color-border",
+    "ring": "color-ring",
+    "critical": "color-critical",
+    "critical_contrast": "color-critical-contrast",
+}
+
+COLOR_VAR_MAP_DARK = COLOR_VAR_MAP_LIGHT
+
+
+def hex_to_hsl(value: str) -> str:
+    value = value.strip()
+    if value.startswith("#"):
+        value = value[1:]
+    if len(value) == 3:
+        value = "".join(ch * 2 for ch in value)
+    if len(value) != 6:
+        raise ValueError(f"Expected a 3 or 6 digit hex colour, got '{value}'.")
+
+    r = int(value[0:2], 16) / 255
+    g = int(value[2:4], 16) / 255
+    b = int(value[4:6], 16) / 255
+
+    h, l, s = rgb_to_hls(r, g, b)
+    hue = round(h * 360)
+    sat = round(s * 100)
+    light = round(l * 100)
+    return f"{hue} {sat}% {light}%"
+
+
+def normalize_colors(color_config: Dict[str, str], mapping: Dict[str, str]) -> Dict[str, str]:
+    normalized: Dict[str, str] = {}
+    for key, css_var in mapping.items():
+        raw = color_config.get(key)
+        if raw is None:
+            continue
+        raw = raw.strip()
+        if not raw:
+            continue
+        if raw.startswith("#"):
+            normalized[css_var] = hex_to_hsl(raw)
+        elif "%" in raw or raw.startswith("hsl"):
+            normalized[css_var] = raw
+        else:
+            raise ValueError(f"Unsupported colour format for '{key}': '{raw}'")
+    return normalized
 
 def find_block_bounds(lines: List[str], selector: str) -> Tuple[int, int]:
     pattern = re.compile(rf"^\s*{re.escape(selector)}\s*{{")
@@ -193,8 +250,11 @@ def render_globals(config: Dict) -> str:
     light = colors.get("light", {}) if isinstance(colors, dict) else {}
     dark = colors.get("dark", {}) if isinstance(colors, dict) else {}
 
-    lines = update_colors(lines, ":root", light)
-    lines = update_colors(lines, ".dark", dark)
+    light_replacements = normalize_colors(light, COLOR_VAR_MAP_LIGHT)
+    dark_replacements = normalize_colors(dark, COLOR_VAR_MAP_DARK)
+
+    lines = update_colors(lines, ":root", light_replacements)
+    lines = update_colors(lines, ".dark", dark_replacements)
 
     return "".join(lines)
 

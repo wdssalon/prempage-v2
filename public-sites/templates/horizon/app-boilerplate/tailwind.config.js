@@ -1,5 +1,12 @@
 const tailwindcssAnimate = require("tailwindcss-animate");
 
+const withOpacityValue = (variable) => ({ opacityValue } = {}) => {
+  if (opacityValue !== undefined) {
+    return `hsl(var(${variable}) / ${opacityValue})`;
+  }
+  return `hsl(var(${variable}))`;
+};
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -15,60 +22,30 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        transparent: "transparent",
+        current: "currentColor",
+        border: withOpacityValue("--color-border"),
+        ring: withOpacityValue("--color-ring"),
+        base: withOpacityValue("--color-bg-base"),
+        surface: withOpacityValue("--color-bg-surface"),
+        contrast: withOpacityValue("--color-bg-contrast"),
+        copy: withOpacityValue("--color-text-primary"),
+        muted: withOpacityValue("--color-text-secondary"),
+        inverse: withOpacityValue("--color-text-inverse"),
+        brand: withOpacityValue("--color-brand-primary"),
+        "brand-soft": withOpacityValue("--color-brand-secondary"),
+        accent: withOpacityValue("--color-highlight"),
+        critical: withOpacityValue("--color-critical"),
+        "critical-contrast": withOpacityValue("--color-critical-contrast"),
+        neutral: {
+          0: "#ffffff",
+          50: "#f8fafc",
+          100: "#f1f5f9",
+          200: "#e2e8f0",
+          400: "#94a3b8",
+          700: "#334155",
+          900: "#0f172a",
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-        },
-        "sage-green": "hsl(var(--sage-green))",
-        "warm-tan": "hsl(var(--warm-tan))",
-        "soft-purple": "hsl(var(--soft-purple))",
-        "earth-brown": "hsl(var(--earth-brown))",
-        cream: "hsl(var(--cream))",
-        "nature-green": "hsl(var(--nature-green))",
-        "deep-forest": "hsl(var(--deep-forest))",
-        "river-stone": "hsl(var(--river-stone))",
-        "sunrise-peach": "hsl(var(--sunrise-peach))",
-        "plum-mauve": "hsl(var(--plum-mauve))",
-        "soft-cream": "hsl(var(--soft-cream))",
-        "sidebar-border": "hsl(var(--sidebar-border))",
-        "sidebar-ring": "hsl(var(--sidebar-ring))",
       },
       fontFamily: {
         serif: ["var(--font-serif)", "serif"],

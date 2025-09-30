@@ -49,37 +49,37 @@ export default function WhyChooseUs({ sectionId }) {
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="w-20 h-20 mx-auto mb-6 bg-gradient-nature rounded-full flex items-center justify-center shadow-soft">
-                    <IconComponent className="w-10 h-10 text-cream" />
+                    <IconComponent className="w-10 h-10 text-inverse" />
                   </div>
 
-                  <h3 className="heading is-subsection text-soft-purple font-semibold mb-4">{reason.title}</h3>
+                  <h3 className="heading is-subsection text-brand-soft font-semibold mb-4">{reason.title}</h3>
 
-                  <p className="text text-muted-foreground leading-relaxed">{reason.description}</p>
+                  <p className="text text-muted leading-relaxed">{reason.description}</p>
                 </div>
               );
             })}
           </div>
 
           <div className="mt-16 text-center animate-fade-in-up">
-            <div className="inline-flex items-center justify-center space-x-8 px-8 py-4 bg-card/50 backdrop-blur-sm rounded-md border border-border/50">
+            <div className="inline-flex items-center justify-center space-x-8 px-8 py-4 bg-surface/50 backdrop-blur-sm rounded-md border border-border/50">
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-sage-green">10+</p>
-                <p className="text text-sm text-muted-foreground">Years Experience</p>
+                <p className="text-2xl font-serif font-bold text-brand">10+</p>
+                <p className="text text-sm text-muted">Years Experience</p>
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-sage-green">EMDR</p>
-                <p className="text text-sm text-muted-foreground">Certified</p>
+                <p className="text-2xl font-serif font-bold text-brand">EMDR</p>
+                <p className="text text-sm text-muted">Certified</p>
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-sage-green">100%</p>
-                <p className="text text-sm text-muted-foreground">Confidential</p>
+                <p className="text-2xl font-serif font-bold text-brand">100%</p>
+                <p className="text text-sm text-muted">Confidential</p>
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-sage-green">TX</p>
-                <p className="text text-sm text-muted-foreground">Licensed</p>
+                <p className="text-2xl font-serif font-bold text-brand">TX</p>
+                <p className="text text-sm text-muted">Licensed</p>
               </div>
             </div>
           </div>

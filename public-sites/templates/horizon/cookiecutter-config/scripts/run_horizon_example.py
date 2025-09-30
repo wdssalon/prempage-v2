@@ -11,7 +11,6 @@ The script deletes any existing `horizon-example` directory before regeneration.
 
 from __future__ import annotations
 
-import json
 import shutil
 import subprocess
 import sys
@@ -23,23 +22,15 @@ REPO_ROOT = CONFIG_DIR.parents[4]
 SITES_DIR = REPO_ROOT / "public-sites" / "sites"
 PROJECT_SLUG = "horizon-example"
 PROJECT_DIR = SITES_DIR / PROJECT_SLUG
-EXAMPLE_CONTEXT_PATH = CONFIG_DIR / "cookiecutter.json"
 
 
 def load_context() -> dict[str, str]:
-    base_context = {}
-    if EXAMPLE_CONTEXT_PATH.exists():
-        with EXAMPLE_CONTEXT_PATH.open("r", encoding="utf-8") as handle:
-            data = json.load(handle)
-            base_context = data.get("default_context", {})
-    context = dict(base_context)
-    context.update(
-        project_name="Horizon Example",
-        project_slug=PROJECT_SLUG,
-        seo_title="Horizon Example | Horizon Template",
-        seo_description="Reference site generated for quick regression testing",
-    )
-    return context
+    return {
+        "project_name": "Horizon Example",
+        "project_slug": PROJECT_SLUG,
+        "seo_title": "Horizon Example | Horizon Template",
+        "seo_description": "Reference site generated for quick regression testing",
+    }
 
 
 def run_cookiecutter(context: dict[str, str]) -> None:

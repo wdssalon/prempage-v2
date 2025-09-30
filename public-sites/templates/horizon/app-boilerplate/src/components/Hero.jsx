@@ -21,14 +21,14 @@ export default function Hero({ sectionId }) {
 
       <div className="relative z-10 w-full lg:max-w-4xl mx-auto px-4 md:px-6 text-center">
         <div className="animate-fade-in-up">
-          <div className="inline-flex items-center px-4 py-2 bg-cream/20 backdrop-blur-sm rounded-full mb-6 border border-cream/30">
-            <MapPin className="w-4 h-4 mr-2 text-cream" />
-            <span className="text-cream font-medium">Telehealth Services Across Texas</span>
+          <div className="inline-flex items-center px-4 py-2 bg-base/20 backdrop-blur-sm rounded-full mb-6 border border-border/30">
+            <MapPin className="w-4 h-4 mr-2 text-inverse" />
+            <span className="text-inverse font-medium">Telehealth Services Across Texas</span>
           </div>
 
           <h1 className="heading is-display is-on-dark mb-6 drop-shadow-lg">
             A Safe Space for Your
-            <span className="block text-warm-tan">Authentic Self</span>
+            <span className="block text-accent">Authentic Self</span>
           </h1>
 
           <p className="text is-lead is-on-dark text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
@@ -36,17 +36,17 @@ export default function Hero({ sectionId }) {
             care that honors your whole story.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 mb-10 text-cream/80">
+          <div className="flex flex-wrap justify-center gap-6 mb-10 text-inverse/80">
             <div className="flex items-center">
-              <Heart className="w-5 h-5 mr-2 text-warm-tan" />
+              <Heart className="w-5 h-5 mr-2 text-accent" />
               <span>Trauma-Informed Care</span>
             </div>
             <div className="flex items-center">
-              <Heart className="w-5 h-5 mr-2 text-warm-tan" />
+              <Heart className="w-5 h-5 mr-2 text-accent" />
               <span>LGBTQIA+ Affirming</span>
             </div>
             <div className="flex items-center">
-              <Heart className="w-5 h-5 mr-2 text-warm-tan" />
+              <Heart className="w-5 h-5 mr-2 text-accent" />
               <span>Evidence-Based Treatment</span>
             </div>
           </div>
@@ -62,8 +62,8 @@ export default function Hero({ sectionId }) {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-cream/70 text-sm mb-2">Licensed Professional Counselor</p>
-            <div className="flex justify-center items-center space-x-4 text-cream/60 text-xs">
+            <p className="text-inverse/70 text-sm mb-2">Licensed Professional Counselor</p>
+            <div className="flex justify-center items-center space-x-4 text-inverse/60 text-xs">
               <span>M.Ed., LPC</span>
               <span>•</span>
               <span>10+ Years Experience</span>

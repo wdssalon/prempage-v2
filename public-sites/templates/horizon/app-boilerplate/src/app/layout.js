@@ -24,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${serifFont.variable} ${bodyFont.variable}`}>
-      <body className="bg-background text-foreground font-body">{children}</body>
+      <body className="bg-base text-copy font-body">{children}</body>
     </html>
   );
 }
