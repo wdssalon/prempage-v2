@@ -6,7 +6,7 @@ specify:
 
 - metadata.title / metadata.description
 - fonts: list of font loaders from next/font/google with options
-- colors.light / colors.dark: palette entries as HEX strings (e.g. `"#6ca37a"`).
+- colors: palette entries as HEX strings (e.g. `"#6ca37a"`).
 
 Example invocation:
     python scripts/apply_site_config.py --config config/example-site.json
@@ -131,7 +131,7 @@ def render_layout(config: Dict) -> str:
 # Color handling
 # ---------------------------------------------------------------------------
 
-COLOR_VAR_MAP_LIGHT = {
+PALETTE_VAR_MAP = {
     "bg_base": "color-bg-base",
     "bg_surface": "color-bg-surface",
     "bg_contrast": "color-bg-contrast",
@@ -146,8 +146,6 @@ COLOR_VAR_MAP_LIGHT = {
     "critical": "color-critical",
     "critical_contrast": "color-critical-contrast",
 }
-
-COLOR_VAR_MAP_DARK = COLOR_VAR_MAP_LIGHT
 
 
 def hex_to_hsl(value: str) -> str:
@@ -246,15 +244,10 @@ def render_globals(config: Dict) -> str:
     with GLOBALS_CSS_PATH.open("r", encoding="utf-8") as fh:
         lines = fh.readlines()
 
-    colors = config.get("colors", {})
-    light = colors.get("light", {}) if isinstance(colors, dict) else {}
-    dark = colors.get("dark", {}) if isinstance(colors, dict) else {}
+    colors = config.get("colors", {}) if isinstance(config.get("colors", {}), dict) else {}
+    replacements = normalize_colors(colors, PALETTE_VAR_MAP)
 
-    light_replacements = normalize_colors(light, COLOR_VAR_MAP_LIGHT)
-    dark_replacements = normalize_colors(dark, COLOR_VAR_MAP_DARK)
-
-    lines = update_colors(lines, ":root", light_replacements)
-    lines = update_colors(lines, ".dark", dark_replacements)
+    lines = update_colors(lines, ":root", replacements)
 
     return "".join(lines)
 

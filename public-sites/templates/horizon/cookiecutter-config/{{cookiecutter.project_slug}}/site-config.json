@@ -24,35 +24,18 @@
     }
   ],
   "colors": {
-    "light": {
-      "bg_base": "{{ cookiecutter.colors.light.bg_base }}",
-      "bg_surface": "{{ cookiecutter.colors.light.bg_surface }}",
-      "bg_contrast": "{{ cookiecutter.colors.light.bg_contrast }}",
-      "text_primary": "{{ cookiecutter.colors.light.text_primary }}",
-      "text_secondary": "{{ cookiecutter.colors.light.text_secondary }}",
-      "text_inverse": "{{ cookiecutter.colors.light.text_inverse }}",
-      "brand_primary": "{{ cookiecutter.colors.light.brand_primary }}",
-      "brand_secondary": "{{ cookiecutter.colors.light.brand_secondary }}",
-      "accent": "{{ cookiecutter.colors.light.accent }}",
-      "border": "{{ cookiecutter.colors.light.border }}",
-      "ring": "{{ cookiecutter.colors.light.ring }}",
-      "critical": "{{ cookiecutter.colors.light.critical }}",
-      "critical_contrast": "{{ cookiecutter.colors.light.critical_contrast }}"
-    },
-    "dark": {
-      "bg_base": "{{ cookiecutter.colors.dark.bg_base }}",
-      "bg_surface": "{{ cookiecutter.colors.dark.bg_surface }}",
-      "bg_contrast": "{{ cookiecutter.colors.dark.bg_contrast }}",
-      "text_primary": "{{ cookiecutter.colors.dark.text_primary }}",
-      "text_secondary": "{{ cookiecutter.colors.dark.text_secondary }}",
-      "text_inverse": "{{ cookiecutter.colors.dark.text_inverse }}",
-      "brand_primary": "{{ cookiecutter.colors.dark.brand_primary }}",
-      "brand_secondary": "{{ cookiecutter.colors.dark.brand_secondary }}",
-      "accent": "{{ cookiecutter.colors.dark.accent }}",
-      "border": "{{ cookiecutter.colors.dark.border }}",
-      "ring": "{{ cookiecutter.colors.dark.ring }}",
-      "critical": "{{ cookiecutter.colors.dark.critical }}",
-      "critical_contrast": "{{ cookiecutter.colors.dark.critical_contrast }}"
-    }
+    "bg_base": "{{ cookiecutter.colors.bg_base }}",
+    "bg_surface": "{{ cookiecutter.colors.bg_surface }}",
+    "bg_contrast": "{{ cookiecutter.colors.bg_contrast }}",
+    "text_primary": "{{ cookiecutter.colors.text_primary }}",
+    "text_secondary": "{{ cookiecutter.colors.text_secondary }}",
+    "text_inverse": "{{ cookiecutter.colors.text_inverse }}",
+    "brand_primary": "{{ cookiecutter.colors.brand_primary }}",
+    "brand_secondary": "{{ cookiecutter.colors.brand_secondary }}",
+    "accent": "{{ cookiecutter.colors.accent }}",
+    "border": "{{ cookiecutter.colors.border }}",
+    "ring": "{{ cookiecutter.colors.ring }}",
+    "critical": "{{ cookiecutter.colors.critical }}",
+    "critical_contrast": "{{ cookiecutter.colors.critical_contrast }}"
   }
 }

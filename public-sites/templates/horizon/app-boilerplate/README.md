@@ -91,7 +91,7 @@ python scripts/apply_site_config.py --config '{"fonts": [...], "colors": {...}}'
 }
 ```
 - Font list order is preserved; each entry produces a `const` assignment and is added to the `<html>` className.
-- `colors.light` updates the `:root` palette; `colors.dark` updates the `.dark` block. Provide HEX strings—`apply_site_config.py` handles conversion to the HSL values used in CSS.
+- `colors` updates the global palette. Provide HEX strings—`apply_site_config.py` converts them to the internal HSL tokens.
 
 A full reference configuration that recreates the Progressive Way Therapy palette lives at `config/example-site.json`.
 

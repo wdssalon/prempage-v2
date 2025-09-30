@@ -25,35 +25,18 @@
     }
   ],
   "colors": {
-    "light": {
-      "bg_base": "#f6ede5",
-      "bg_surface": "#faf5f0",
-      "bg_contrast": "#fce3ea",
-      "text_primary": "#4a4a4a",
-      "text_secondary": "#6b5247",
-      "text_inverse": "#ffffff",
-      "brand_primary": "#6ca37a",
-      "brand_secondary": "#d9a6b5",
-      "accent": "#e4d0c9",
-      "border": "#ddccc5",
-      "ring": "#6ca37a",
-      "critical": "#dd3c3c",
-      "critical_contrast": "#faf8f5"
-    },
-    "dark": {
-      "bg_base": "#2b2224",
-      "bg_surface": "#33282b",
-      "bg_contrast": "#493139",
-      "text_primary": "#f2dee6",
-      "text_secondary": "#cd98ac",
-      "text_inverse": "#2b2224",
-      "brand_primary": "#75a983",
-      "brand_secondary": "#9b4b63",
-      "accent": "#6b4753",
-      "border": "#47383b",
-      "ring": "#75a983",
-      "critical": "#ae2929",
-      "critical_contrast": "#f2dee6"
-    }
+    "bg_base": "#f6ede5",
+    "bg_surface": "#faf5f0",
+    "bg_contrast": "#fce3ea",
+    "text_primary": "#4a4a4a",
+    "text_secondary": "#6b5247",
+    "text_inverse": "#ffffff",
+    "brand_primary": "#6ca37a",
+    "brand_secondary": "#d9a6b5",
+    "accent": "#e4d0c9",
+    "border": "#ddccc5",
+    "ring": "#6ca37a",
+    "critical": "#dd3c3c",
+    "critical_contrast": "#faf8f5"
   }
 }

@@ -10,35 +10,18 @@
   "body_font_variable": "--font-body",
   "body_font_display": "swap",
   "colors": {
-    "light": {
-      "bg_base": "#f5f9ff",
-      "bg_surface": "#ffffff",
-      "bg_contrast": "#e0f2ff",
-      "text_primary": "#0f172a",
-      "text_secondary": "#475569",
-      "text_inverse": "#ffffff",
-      "brand_primary": "#2563eb",
-      "brand_secondary": "#7c3aed",
-      "accent": "#10b981",
-      "border": "#c5d7f7",
-      "ring": "#2563eb",
-      "critical": "#ef4444",
-      "critical_contrast": "#fef2f2"
-    },
-    "dark": {
-      "bg_base": "#0b1020",
-      "bg_surface": "#141b2d",
-      "bg_contrast": "#1f2940",
-      "text_primary": "#e2e8f0",
-      "text_secondary": "#94a3b8",
-      "text_inverse": "#0b1020",
-      "brand_primary": "#3b82f6",
-      "brand_secondary": "#a855f7",
-      "accent": "#34d399",
-      "border": "#23314d",
-      "ring": "#3b82f6",
-      "critical": "#f87171",
-      "critical_contrast": "#fee2e2"
-    }
+    "bg_base": "#fef7f1",
+    "bg_surface": "#ffffff",
+    "bg_contrast": "#fde6da",
+    "text_primary": "#2c1b18",
+    "text_secondary": "#5b3a32",
+    "text_inverse": "#ffffff",
+    "brand_primary": "#c5542a",
+    "brand_secondary": "#f4a261",
+    "accent": "#2a9d8f",
+    "border": "#f1c1aa",
+    "ring": "#c5542a",
+    "critical": "#d92d20",
+    "critical_contrast": "#fef2f2"
   }
 }
