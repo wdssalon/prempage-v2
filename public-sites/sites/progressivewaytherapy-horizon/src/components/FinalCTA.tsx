@@ -1,7 +1,7 @@
 "use client";
 
-import { Phone, Calendar, MessageSquare, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Calendar, MapPin, MessageSquare, Phone } from "lucide-react";
 
 import { getAssetUrl } from "@/lib/site-assets";
 
@@ -55,7 +55,7 @@ const FinalCTA = ({ sectionId }: FinalCTAProps) => {
             <div className="bg-card/20 backdrop-blur-sm rounded-md p-6 border border-cream/20">
               <Calendar className="w-8 h-8 text-warm-tan mx-auto mb-4" />
               <h3 className="font-serif text-lg text-cream mb-2">Direct Scheduling</h3>
-              <p className="text-cream/80 text-sm mb-4">Book your first session online</p>
+              <p className="text-cream/80 text-sm mb-4">Book your first session online to get started.</p>
               <Button variant="unstyled" className="btn-secondary is-fluid">
                 View Calendar
               </Button>
