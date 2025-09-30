@@ -18,7 +18,16 @@ from pathlib import Path
 
 SCRIPT_PATH = Path(__file__).resolve()
 CONFIG_DIR = SCRIPT_PATH.parent.parent
-REPO_ROOT = CONFIG_DIR.parents[4]
+
+
+def find_repo_root(start: Path) -> Path:
+    for candidate in (start, *start.parents):
+        if (candidate / ".git").exists():
+            return candidate
+    raise SystemExit(f"Unable to locate repo root from {start}")
+
+
+REPO_ROOT = find_repo_root(CONFIG_DIR)
 SITES_DIR = REPO_ROOT / "public-sites" / "sites"
 PROJECT_SLUG = "horizon-example"
 PROJECT_DIR = SITES_DIR / PROJECT_SLUG

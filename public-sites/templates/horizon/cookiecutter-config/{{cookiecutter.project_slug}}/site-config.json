@@ -7,19 +7,17 @@
     {
       "id": "serif",
       "loader": "{{ cookiecutter.serif_font_loader }}",
-      "variable": "{{ cookiecutter.serif_font_variable }}",
       "options": {
         "subsets": ["latin"],
-        "display": "{{ cookiecutter.serif_font_display }}"
+        "display": "swap"
       }
     },
     {
       "id": "body",
       "loader": "{{ cookiecutter.body_font_loader }}",
-      "variable": "{{ cookiecutter.body_font_variable }}",
       "options": {
         "subsets": ["latin"],
-        "display": "{{ cookiecutter.body_font_display }}"
+        "display": "swap"
       }
     }
   ],
