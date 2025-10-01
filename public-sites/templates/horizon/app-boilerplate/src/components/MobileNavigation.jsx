@@ -14,7 +14,7 @@ const menuData = [
     id: "main",
     title: "Menu",
     items: [
-      { id: "home", label: "Home", href: "/" },
+      { id: "home", label: "Home", href: "/?intent=mobile-home#home--liberation-hero" },
       { id: "about", label: "About", href: "/about" },
       {
         id: "services",
@@ -231,7 +231,7 @@ export default function MobileNavigation({ sectionId, variant: _variant = "defau
 
   const handleCTAClick = useCallback(() => {
     closeMenu();
-    router.push("/#book-consultation");
+    router.push("/?intent=mobile-consultation#book-consultation");
   }, [closeMenu, router]);
 
   const handleLogoClick = useCallback(() => {

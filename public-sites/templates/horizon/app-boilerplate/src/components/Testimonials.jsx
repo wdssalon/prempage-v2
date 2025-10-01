@@ -67,6 +67,7 @@ export default function Testimonials({ sectionId, variant = "default" }) {
 
   return (
     <section
+      id={sectionId}
       data-section-id={sectionId}
       className={sectionClasses}
       aria-labelledby={headingId}

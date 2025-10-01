@@ -70,7 +70,7 @@ export default function Footer({ variant = "default" }) {
 
           <div className="border-t border-border/30 pt-8 mb-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
+              <div id="portal" className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
                 <a href="#portal" className="btn-secondary is-on-light is-fluid">
                   <Lock className="w-4 h-4" />
                   Client Portal
@@ -100,6 +100,12 @@ export default function Footer({ variant = "default" }) {
                 <a href="#privacy" className="hover:text-brand-soft transition-colors">Privacy Policy</a>
                 <a href="#accessibility" className="hover:text-brand-soft transition-colors">Accessibility</a>
               </div>
+            </div>
+
+            <div className="sr-only">
+              <p id="terms">Terms of Service: Detailed engagement policies available upon request.</p>
+              <p id="privacy">Privacy Policy: We protect your personal information and only use it to deliver requested services.</p>
+              <p id="accessibility">Accessibility Statement: We strive to make PremPage experiences usable for everyone and welcome feedback.</p>
             </div>
 
             <div className="mt-6 p-4 bg-brand-soft/20 rounded-lg border">

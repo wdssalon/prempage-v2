@@ -42,6 +42,7 @@ export default function Hero({ sectionId, variant = "default" }) {
 
   return (
     <section
+      id={sectionId}
       data-section-id={sectionId}
       className={sectionClasses}
       aria-labelledby={headingId}
@@ -96,7 +97,7 @@ export default function Hero({ sectionId, variant = "default" }) {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/#book-consultation" className={isAda ? "btn-primary" : "btn-primary is-on-dark"} prefetch={false}>
+            <Link href="/?intent=hero-consultation#book-consultation" className={isAda ? "btn-primary" : "btn-primary is-on-dark"} prefetch={false}>
               <Phone className="w-5 h-5" aria-hidden="true" />
               Book Free 15-Minute Consultation
             </Link>

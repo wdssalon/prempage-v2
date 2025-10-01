@@ -123,11 +123,6 @@ export default function Navigation({ variant = "default" }) {
           <nav className="hidden xl:flex items-center space-x-6" aria-label="Primary navigation">
             <ul className="flex items-center space-x-6">
               <li>
-                <Link href="/" className="text-copy hover:text-brand-soft transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
                 <Link href="/about" className="text-copy hover:text-brand-soft transition-colors">
                   About
                 </Link>
@@ -356,7 +351,7 @@ export default function Navigation({ variant = "default" }) {
           </nav>
 
           <div className="hidden xl:flex items-center">
-            <Link href="/#book-consultation" className="btn-primary is-compact" prefetch={false}>
+            <Link href="/?intent=nav-consultation#book-consultation" className="btn-primary is-compact" prefetch={false}>
               <Phone className="w-4 h-4" />
               Book Free Consultation
             </Link>

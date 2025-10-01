@@ -35,6 +35,7 @@ const serviceGroups = [
       "Immigrant/Refugee Counseling",
     ],
     color: "brand",
+    ctaHref: "/?intent=trauma-recovery#contact",
   },
   {
     icon: Brain,
@@ -48,6 +49,7 @@ const serviceGroups = [
       "Mood Regulation",
     ],
     color: "brand-soft",
+    ctaHref: "/?intent=anxiety-support#contact",
   },
   {
     icon: Users,
@@ -61,6 +63,7 @@ const serviceGroups = [
       "Identity Exploration",
     ],
     color: "accent",
+    ctaHref: "/?intent=identity-support#contact",
   },
 ];
 
@@ -76,7 +79,7 @@ export default function Services({ sectionId, variant = "default" }) {
 
   return (
     <section
-      id="services"
+      id={sectionId}
       data-section-id={sectionId}
       className={sectionClasses}
       aria-labelledby={headingId}
@@ -121,7 +124,7 @@ export default function Services({ sectionId, variant = "default" }) {
                   </ul>
 
                   <Link
-                    href="/#contact"
+                    href={group.ctaHref}
                     className="btn-secondary is-on-light is-fluid"
                     aria-label={`Learn more about ${group.title}`}
                     prefetch={false}

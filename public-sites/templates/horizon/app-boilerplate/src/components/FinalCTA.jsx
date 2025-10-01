@@ -47,11 +47,14 @@ export default function FinalCTA({ sectionId, variant = "default" }) {
 
   return (
     <section
+      id={sectionId}
       data-section-id={sectionId}
       className={sectionClasses}
       aria-labelledby={headingId}
       aria-describedby={descriptionId}
     >
+      <div id="contact" className="sr-only" />
+      <div id="book-consultation" className="sr-only" />
       {variant !== "ada" && (
         <div className="absolute inset-0" aria-hidden="true">
           {shouldShowImage ? (
@@ -87,7 +90,7 @@ export default function FinalCTA({ sectionId, variant = "default" }) {
               <h3 className={cardTitleClasses}>Free Consultation</h3>
               <p className={cardBodyClasses}>15-minute phone call to see if we're a good fit</p>
               <Link
-                href="/#book-consultation"
+                href="/?intent=cta-consultation#book-consultation"
                 className={callToActionClasses}
                 prefetch={false}
               >
@@ -99,16 +102,16 @@ export default function FinalCTA({ sectionId, variant = "default" }) {
               <MessageSquare className={cn("w-8 h-8 mx-auto mb-4", variant === "ada" ? "text-brand" : "text-accent")} aria-hidden="true" />
               <h3 className={cardTitleClasses}>Send a Message</h3>
               <p className={cardBodyClasses}>Share your story and questions securely</p>
-              <Link href="/#contact" className={callToActionClasses} prefetch={false}>
+              <Link href="/?intent=cta-message#contact" className={callToActionClasses} prefetch={false}>
                 Contact Form
               </Link>
             </div>
 
-            <div className="bg-surface/70 rounded-md p-6 border border-border/30 shadow-gentle">
+            <div id="calendar" className="bg-surface/70 rounded-md p-6 border border-border/30 shadow-gentle">
               <Calendar className={cn("w-8 h-8 mx-auto mb-4", variant === "ada" ? "text-brand" : "text-accent")} aria-hidden="true" />
               <h3 className={cardTitleClasses}>Direct Scheduling</h3>
               <p className={cardBodyClasses}>Book your first session online to get started.</p>
-              <Link href="/#calendar" className={callToActionClasses} prefetch={false}>
+              <Link href="/?intent=cta-calendar#calendar" className={callToActionClasses} prefetch={false}>
                 View Calendar
               </Link>
             </div>
