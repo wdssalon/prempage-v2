@@ -1,0 +1,42 @@
+{
+  "project_name": "Example Therapy Brand",
+  "metadata": {
+    "title": "Example Therapy Brand | Horizon Template",
+    "description": "Inclusive telehealth support across Texas"
+  },
+  "fonts": [
+    {
+      "id": "serif",
+      "loader": "Playfair_Display",
+      "variable": "--font-serif",
+      "options": {
+        "subsets": ["latin"],
+        "display": "swap"
+      }
+    },
+    {
+      "id": "body",
+      "loader": "Inter",
+      "variable": "--font-body",
+      "options": {
+        "subsets": ["latin"],
+        "display": "swap"
+      }
+    }
+  ],
+  "colors": {
+    "bg_base": "#f6ede5",
+    "bg_surface": "#faf5f0",
+    "bg_contrast": "#fce3ea",
+    "text_primary": "#4a4a4a",
+    "text_secondary": "#6b5247",
+    "text_inverse": "#ffffff",
+    "brand_primary": "#6ca37a",
+    "brand_secondary": "#d9a6b5",
+    "accent": "#e4d0c9",
+    "border": "#ddccc5",
+    "ring": "#6ca37a",
+    "critical": "#dd3c3c",
+    "critical_contrast": "#faf8f5"
+  }
+}
