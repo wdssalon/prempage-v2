@@ -35,6 +35,7 @@ Short answer: same repo, separate deployables. Make a single Studio front-end fo
 ### Preview Target — site under edit
 - Prefer a preview domain such as `preview--{slug}.prempagepro.com` (live site stays read-only).
 - Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
+- During editing the preview runs on a live Next.js server so the overlay can read component-level metadata; the static export is generated only during the publish step to keep the deploy artifacts reproducible.
 
 **Status:** The Next.js Studio lives in `client/`; the legacy Vite app has been retired so all frontend work now happens inside the Studio workspace. App B (overlay bundle) is the next focus once the Studio shell solidifies.
 
@@ -221,8 +222,8 @@ Static Site Extractor (`services/static-site-extractor/`) exposes a FastAPI endp
      ```
 
 3. **Persistence**  
-   - Patches map back to source of truth (`client-overview.md`, YAML configs, or site bundle).  
-   - Site rebuild + redeploy ensures edits are reproducible and auditable.
+   - Patches map back to source of truth (`client-overview.md`, YAML configs, or site bundle) while the Next.js server stays authoritative during the session.  
+   - Publishing applies the persisted patches and kicks off a static Next.js export so the deployed bundle reflects the audited changes.
 
 4. **Selector Strategy**  
    - Prefer stable `data-loc` or `data-cms` attributes.  
@@ -236,7 +237,7 @@ Static Site Extractor (`services/static-site-extractor/`) exposes a FastAPI endp
    - **AntD components** may also be used for forms and modals.
 
 6. **Workflow Integration**  
-   - Visual edits → patch queue → orchestrator validation → file updates → rebuild (`pnpm check`) → Render deploy hook.  
+   - Visual edits → patch queue → orchestrator validation → file updates → static export (`pnpm check` + `next export`) → Render deploy hook.  
    - Audit logs map DOM-level edits back to version-controlled file changes.
 
 **Note about Lovable:**  

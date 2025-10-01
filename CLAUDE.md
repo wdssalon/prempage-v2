@@ -26,6 +26,7 @@ Short answer: same repo, separate deployables. Make a single Studio front-end fo
 ### Preview Target — site under edit
 - Prefer a preview domain such as `preview--{slug}.prempagepro.com` (live site stays read-only).
 - Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
+- During editing the preview runs on a live Next.js server so the overlay can read component-level metadata; the static export is generated only during the publish step to keep the deploy artifacts reproducible.
 
 **Status:** The Next.js Studio resides in `client/`; the legacy Vite app has been retired. App A is the focus now, with App B (overlay) queued next.
 
@@ -279,8 +280,8 @@ This ensures all changes are deliberate and agreed upon.
      ```
 
 3. **Persistence**  
-   - Patches map back to source of truth (`client-overview.md`, YAML configs, or site bundle).  
-   - Site rebuild + redeploy ensures edits are reproducible and auditable.
+   - Patches map back to source of truth (`client-overview.md`, YAML configs, or site bundle) while the Next.js server stays authoritative during the session.  
+   - Publishing applies the persisted patches and kicks off a static Next.js export so the deployed bundle reflects the audited changes.
 
 4. **Selector Strategy**  
    - Prefer stable `data-loc` or `data-cms` attributes.  
