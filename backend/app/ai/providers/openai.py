@@ -13,7 +13,7 @@ from app.ai.base import PaletteGenerator, PaletteGeneratorError
 from app.ai.debug import InteractionDebugger, to_serialisable
 
 
-DEFAULT_OPENAI_MODEL = "gpt-5-nano"
+DEFAULT_OPENAI_MODEL = "gpt-4.1-mini"
 
 
 HEX_COLOR_PATTERN = r"^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$"
