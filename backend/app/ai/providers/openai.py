@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 import random
+import re
 from typing import ClassVar, Mapping, Optional, Tuple
 
 from loguru import logger
@@ -12,8 +13,10 @@ from openai import OpenAI
 from app.ai.base import PaletteGenerator, PaletteGeneratorError
 from app.ai.debug import InteractionDebugger, to_serialisable
 
-
-DEFAULT_OPENAI_MODEL = "gpt-4.1-mini"
+# DEFAULT_OPENAI_MODEL = "gpt-4.1-nano"  # occassionally makes mistakes
+DEFAULT_OPENAI_MODEL = "gpt-4o-mini"
+# DEFAULT_OPENAI_MODEL = "gpt-4.1-mini"
+# DEFAULT_OPENAI_MODEL = "gpt-5-mini"
 
 
 HEX_COLOR_PATTERN = r"^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$"
@@ -22,19 +25,19 @@ HEX_COLOR_PATTERN = r"^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$"
 PALETTE_SCHEMA = {
     "type": "object",
     "properties": {
-        "bg_base": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "bg_surface": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "bg_contrast": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "text_primary": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "text_secondary": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "text_inverse": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "brand_primary": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "brand_secondary": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "accent": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "border": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "ring": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "critical": {"type": "string", "pattern": HEX_COLOR_PATTERN},
-        "critical_contrast": {"type": "string", "pattern": HEX_COLOR_PATTERN},
+        "bg_base": {"type": "string"},
+        "bg_surface": {"type": "string"},
+        "bg_contrast": {"type": "string"},
+        "text_primary": {"type": "string"},
+        "text_secondary": {"type": "string"},
+        "text_inverse": {"type": "string"},
+        "brand_primary": {"type": "string"},
+        "brand_secondary": {"type": "string"},
+        "accent": {"type": "string"},
+        "border": {"type": "string"},
+        "ring": {"type": "string"},
+        "critical": {"type": "string"},
+        "critical_contrast": {"type": "string"},
     },
     "required": [
         "bg_base",
@@ -54,11 +57,6 @@ PALETTE_SCHEMA = {
     "additionalProperties": False,
 }
 
-PALETTE_RESPONSE_FORMAT = {
-    "type": "json_schema",
-    "name": "horizon_palette",
-    "schema": PALETTE_SCHEMA,
-}
 
 
 class OpenAIPaletteGenerator(PaletteGenerator):
@@ -152,6 +150,29 @@ class OpenAIPaletteGenerator(PaletteGenerator):
 
         return hue, anchor_long, combo_hint
 
+    @staticmethod
+    def _is_valid_hex(color: str) -> bool:
+        """Validate hex color format client-side."""
+        return bool(re.match(HEX_COLOR_PATTERN, color))
+
+    def _validate_palette(self, data: dict) -> dict:
+        """Validate palette data and ensure all colors are valid hex values."""
+        required_fields = [
+            "bg_base", "bg_surface", "bg_contrast", "text_primary", "text_secondary",
+            "text_inverse", "brand_primary", "brand_secondary", "accent", "border",
+            "ring", "critical", "critical_contrast"
+        ]
+
+        for field in required_fields:
+            if field not in data:
+                raise ValueError(f"Missing required field: {field}")
+
+            color = str(data[field])
+            if not self._is_valid_hex(color):
+                raise ValueError(f"Invalid hex color for {field}: {color}")
+
+        return data
+
     def generate(self, current_palette: Mapping[str, str], notes: str | None) -> Mapping[str, str]:
         anchor_hue, anchor_description, combination_hint = self._anchor_context()
 
@@ -203,7 +224,18 @@ class OpenAIPaletteGenerator(PaletteGenerator):
                 model=self._model,
                 instructions=system_prompt,
                 input=user_prompt,
-                text={"format": PALETTE_RESPONSE_FORMAT},
+                text={
+                    "format": {
+                        "type": "json_schema",
+                        "name": "horizon_palette",
+                        "schema": PALETTE_SCHEMA,
+                        "strict": True,
+                    }
+                },
+                max_output_tokens=500,  # gpt-5 needs more tokens
+                # controls the randomness/creativity (0.0 - 2.0, 1.0 default)
+                # not available in gpt-5
+                # temperature=0.2,  
             )
         except Exception as exc:  # noqa: BLE001
             logger.error("OpenAI palette generation failed: {exc}", exc=str(exc))
@@ -222,7 +254,8 @@ class OpenAIPaletteGenerator(PaletteGenerator):
                 data = json.loads(response.output_text)  # type: ignore[arg-type]
                 if self._debugger.enabled:
                     self._debugger.log_json("parsed", data)
-                return {k: str(v) for k, v in data.items()}
+                validated_data = self._validate_palette(data)
+                return {k: str(v) for k, v in validated_data.items()}
 
             for chunk in getattr(response, "output", []) or []:
                 for item in getattr(chunk, "content", []) or []:
@@ -230,12 +263,14 @@ class OpenAIPaletteGenerator(PaletteGenerator):
                         data = item.json
                         if self._debugger.enabled:
                             self._debugger.log_json("parsed", data)
-                        return {k: str(v) for k, v in data.items()}
+                        validated_data = self._validate_palette(data)
+                        return {k: str(v) for k, v in validated_data.items()}
                     if getattr(item, "type", None) == "output_text" and getattr(item, "text", None):
                         data = json.loads(item.text)
                         if self._debugger.enabled:
                             self._debugger.log_json("parsed", data)
-                        return {k: str(v) for k, v in data.items()}
+                        validated_data = self._validate_palette(data)
+                        return {k: str(v) for k, v in validated_data.items()}
             raise ValueError("No usable content returned")
         except Exception as exc:  # noqa: BLE001
             logger.error("OpenAI returned an unexpected response: {error}", error=str(exc))
