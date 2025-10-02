@@ -20,7 +20,13 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   }
 
   const [leftRatio, setLeftRatio] = useState(0.4);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === "undefined") {
+      return true;
+    }
+
+    return window.matchMedia("(min-width: 1024px)").matches;
+  });
   const layoutRef = useRef<HTMLDivElement>(null);
 
   const instructions = useMemo(() => project.instructions, [project.instructions]);
