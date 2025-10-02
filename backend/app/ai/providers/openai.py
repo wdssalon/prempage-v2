@@ -66,6 +66,8 @@ class OpenAIPaletteGenerator(PaletteGenerator):
 
         self._client = OpenAI(api_key=key)
         self._model = model
+        debug_raw = os.getenv("PREMPAGE_OPENAI_DEBUG", "0")
+        self._debug = str(debug_raw).lower() in {"1", "true", "yes", "on"}
 
     def generate(self, current_palette: Mapping[str, str], notes: str | None) -> Mapping[str, str]:
         system_prompt = (
@@ -81,6 +83,14 @@ class OpenAIPaletteGenerator(PaletteGenerator):
             f"{notes if notes else 'Create a new harmonious variant while keeping contrast readable.'}"
         )
 
+        if self._debug:
+            logger.debug(
+                "OpenAI palette request payload",
+                instructions=system_prompt,
+                input=user_prompt,
+                response_format=PALETTE_RESPONSE_FORMAT,
+            )
+
         try:
             response = self._client.responses.create(
                 model=self._model,
@@ -93,6 +103,21 @@ class OpenAIPaletteGenerator(PaletteGenerator):
             raise PaletteGeneratorError("OpenAI request failed") from exc
 
         try:
+            if self._debug:
+                serialized = None
+                if hasattr(response, "model_dump"):
+                    serialized = response.model_dump(mode="json")  # type: ignore[attr-defined]
+                elif hasattr(response, "model_dump_json"):
+                    serialized = json.loads(response.model_dump_json())  # type: ignore[attr-defined]
+                elif hasattr(response, "to_dict"):
+                    serialized = response.to_dict()  # type: ignore[attr-defined]
+                elif hasattr(response, "json"):
+                    serialized = json.loads(response.json())  # type: ignore[attr-defined]
+                logger.debug(
+                    "OpenAI palette raw response",
+                    response=serialized if serialized is not None else repr(response),
+                )
+
             if getattr(response, "output_text", None):
                 data = json.loads(response.output_text)  # type: ignore[arg-type]
                 return {k: str(v) for k, v in data.items()}
