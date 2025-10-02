@@ -1,4 +1,4 @@
-"""Pydantic schemas shared by the FastAPI application."""
+"""System-level response models."""
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -16,7 +16,6 @@ class ServiceMetadata(BaseModel):
 
 class HealthCheckResponse(BaseModel):
     """Standard payload returned by the health check endpoint."""
-
     status: Literal["ok", "degraded", "error"]
     service: ServiceMetadata
     environment: Literal["dev", "staging", "prod"] = "dev"

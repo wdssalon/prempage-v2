@@ -131,20 +131,25 @@ Run these from `client/`:
 
 ## Backend ↔ Frontend Contract
 
-- Pydantic schemas live in `backend/schemas.py`. The `/health` endpoint in `backend/main.py` returns a `HealthCheckResponse` sample payload that exercises the contract.
-- Export the OpenAPI schema anytime those models change:
+- Shared models live under `backend/app/models/`. The `/health` endpoint returns a `HealthCheckResponse` payload built from those schemas.
+- Keep the generated OpenAPI schema (`backend/openapi.json`) and Studio API types (`client/src/api/types.ts`) in lockstep by running:
   ```bash
-  cd backend
-  uv run python export_openapi.py
+  python scripts/check_openapi_sync.py
   ```
-- Generate TypeScript bindings from the Studio workspace (`client/`):
-  ```bash
-  pnpm openapi:types
-  ```
-  The command writes `src/api/types.ts` via `openapi-typescript` so the UI always reflects the backend schema.
+  The script refreshes both artifacts and exits non-zero if either file changes, forcing you to commit the updates before continuing.
 - Use the generated types to keep fetch helpers and UI in sync. See `client/src/api/health.ts` for a typed fetch wrapper and `client/src/App.tsx` for how the React view consumes that data.
 
 Docker builds run the same pipeline, so containerized runs will always ship matching backend and frontend contracts.
+
+### Pre-push Guard
+
+The repository ships with `.githooks/pre-push`, which runs the sync check before every push when your Git config points `core.hooksPath` at `.githooks` (this is already true if you see the static-site lint logs during push). If the hook reports drift, run:
+
+```bash
+python scripts/check_openapi_sync.py
+```
+
+Commit the regenerated `backend/openapi.json` and `client/src/api/types.ts` before pushing again.
 
 ## Form Relay Service
 

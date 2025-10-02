@@ -6,6 +6,10 @@ import type { CSSProperties } from "react";
 import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getStudioProject } from "@/lib/studioProjects";
+import {
+  swapPalette,
+  type HorizonPaletteSwapResponse,
+} from "@/api/palette";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -27,6 +31,10 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
 
     return window.matchMedia("(min-width: 1024px)").matches;
   });
+  const [isSwapping, setIsSwapping] = useState(false);
+  const [swapError, setSwapError] = useState<string | null>(null);
+  const [lastSwap, setLastSwap] =
+    useState<HorizonPaletteSwapResponse | null>(null);
   const layoutRef = useRef<HTMLDivElement>(null);
 
   const instructions = useMemo(() => project.instructions, [project.instructions]);
@@ -126,8 +134,39 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
             >
               Publish
             </button>
+            <button
+              type="button"
+              onClick={async () => {
+                setIsSwapping(true);
+                setSwapError(null);
+                try {
+                  const response = await swapPalette(slug, {
+                    notes: "Triggered from Studio header button",
+                  });
+                  setLastSwap(response);
+                } catch (error) {
+                  setLastSwap(null);
+                  setSwapError(
+                    error instanceof Error ? error.message : String(error),
+                  );
+                } finally {
+                  setIsSwapping(false);
+                }
+              }}
+              className="inline-flex items-center justify-center rounded-full bg-slate-900 px-3 py-1 text-xs font-medium text-white transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
+              disabled={isSwapping}
+            >
+              {isSwapping ? "Swapping…" : "Swap colors"}
+            </button>
           </div>
         </div>
+        {swapError ? (
+          <div className="px-4 pb-3 text-xs text-rose-600">{swapError}</div>
+        ) : lastSwap ? (
+          <div className="px-4 pb-3 text-xs text-emerald-600">
+            Palette applied at {new Date(lastSwap.applied_at).toLocaleTimeString()}.
+          </div>
+        ) : null}
       </header>
 
       <div className="flex w-full flex-1 flex-col gap-2 px-4 py-3" ref={layoutRef}>

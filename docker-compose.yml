@@ -23,10 +23,14 @@ services:
     ports:
       - "8000:8000"
     working_dir: /app
+    env_file:
+      - ./backend/.env
     environment:
+      - PREMPAGE_REPO_ROOT=/workspace
       - PYTHONUNBUFFERED=1
       - STATIC_SITE_EXTRACTOR_URL=http://static-site-extractor:8081
     volumes:
+      - .:/workspace
       - ./backend:/app
       - backend-uv-cache:/root/.cache/uv
 

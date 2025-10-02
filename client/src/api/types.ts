@@ -24,10 +24,35 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/sites/{slug}/palette/swap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Generate and apply a new palette
+         * @description Generate a new palette and apply it to the requested site.
+         */
+        post: operations["swap_site_palette_sites__slug__palette_swap_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
         /**
          * HealthCheckResponse
          * @description Standard payload returned by the health check endpoint.
@@ -63,6 +88,62 @@ export interface components {
             uptime_seconds: number;
         };
         /**
+         * HorizonPalette
+         * @description Palette schema for the Horizon template color keys.
+         */
+        HorizonPalette: {
+            /** Bg Base */
+            bg_base: string;
+            /** Bg Surface */
+            bg_surface: string;
+            /** Bg Contrast */
+            bg_contrast: string;
+            /** Text Primary */
+            text_primary: string;
+            /** Text Secondary */
+            text_secondary: string;
+            /** Text Inverse */
+            text_inverse: string;
+            /** Brand Primary */
+            brand_primary: string;
+            /** Brand Secondary */
+            brand_secondary: string;
+            /** Accent */
+            accent: string;
+            /** Border */
+            border: string;
+            /** Ring */
+            ring: string;
+            /** Critical */
+            critical: string;
+            /** Critical Contrast */
+            critical_contrast: string;
+        };
+        /**
+         * HorizonPaletteSwapRequest
+         * @description Optional metadata supplied when requesting a Horizon palette refresh.
+         */
+        HorizonPaletteSwapRequest: {
+            /**
+             * Notes
+             * @description Optional freeform guidance for palette generation.
+             */
+            notes?: string | null;
+        };
+        /**
+         * HorizonPaletteSwapResponse
+         * @description Payload returned after the backend applies a new Horizon palette.
+         */
+        HorizonPaletteSwapResponse: {
+            palette: components["schemas"]["HorizonPalette"];
+            /**
+             * Applied At
+             * Format: date-time
+             * @description UTC timestamp when the palette was applied.
+             */
+            applied_at?: string;
+        };
+        /**
          * ServiceMetadata
          * @description Metadata describing the running backend service.
          */
@@ -71,6 +152,15 @@ export interface components {
             name: string;
             /** Version */
             version: string;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
         };
     };
     responses: never;
@@ -97,6 +187,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthCheckResponse"];
+                };
+            };
+        };
+    };
+    swap_site_palette_sites__slug__palette_swap_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HorizonPaletteSwapRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HorizonPaletteSwapResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

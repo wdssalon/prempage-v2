@@ -4,12 +4,20 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { fetchHealth, type HealthResponse } from "@/api/health";
+import {
+  swapPalette,
+  type HorizonPaletteSwapResponse,
+} from "@/api/palette";
 import { listStudioProjects } from "@/lib/studioProjects";
 
 export default function HomePage() {
   const [count, setCount] = useState(0);
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [healthError, setHealthError] = useState<string | null>(null);
+  const [isSwapping, setIsSwapping] = useState(false);
+  const [swapError, setSwapError] = useState<string | null>(null);
+  const [lastSwap, setLastSwap] =
+    useState<HorizonPaletteSwapResponse | null>(null);
   const projects = useMemo(() => listStudioProjects(), []);
 
   useEffect(() => {
@@ -76,12 +84,49 @@ export default function HomePage() {
             interactivity and the backend health check wired through our
             typed OpenAPI client.
           </p>
+          <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <button
+              type="button"
+              onClick={async () => {
+                setIsSwapping(true);
+                setSwapError(null);
+                try {
+                  const response = await swapPalette("horizon-example", {
+                    notes: "Triggered from Studio swap button",
+                  });
+                  setLastSwap(response);
+                } catch (error) {
+                  setLastSwap(null);
+                  setSwapError(
+                    error instanceof Error ? error.message : String(error),
+                  );
+                } finally {
+                  setIsSwapping(false);
+                }
+              }}
+              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
+              disabled={isSwapping}
+            >
+              {isSwapping ? "Swapping colors…" : "Swap colors"}
+            </button>
+            <div className="text-sm text-left text-slate-600">
+              {swapError ? (
+                <p className="text-rose-600">{swapError}</p>
+              ) : lastSwap ? (
+                <p className="text-emerald-600">
+                  Applied at {new Date(lastSwap.applied_at).toLocaleTimeString()}.
+                </p>
+              ) : (
+                <p>Trigger a new Horizon palette with one click.</p>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
       <main className="flex w-full max-w-3xl flex-col gap-6">
-        <section className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">Counter</h2>
+      <section className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+        <h2 className="text-xl font-semibold text-slate-900">Counter</h2>
           <p className="mt-2 text-sm text-slate-500">
             This stateful widget verifies that client-side hydration still
             works as expected inside the new Next.js shell.
@@ -95,8 +140,8 @@ export default function HomePage() {
           </button>
         </section>
 
-        <section className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">Backend Health</h2>
+      <section className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+        <h2 className="text-xl font-semibold text-slate-900">Backend Health</h2>
           <p className="mt-2 text-sm text-slate-500">
             Powered by `openapi-typescript` to keep the Studio UI in lockstep with
             the FastAPI contract.
@@ -142,7 +187,7 @@ export default function HomePage() {
         {" "}to continue building the Studio.
       </footer>
 
-      <section className="w-full max-w-3xl rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+     <section className="w-full max-w-3xl rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
         <h2 className="text-xl font-semibold text-slate-900">Project Sandboxes</h2>
         <p className="mt-2 text-sm text-slate-500">
           Each project opens a live Next.js preview in the editor shell so we can
@@ -169,7 +214,20 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+     </section>
+      {lastSwap ? (
+        <section className="w-full max-w-3xl rounded-2xl border border-dashed border-emerald-200 bg-emerald-50/60 p-6 text-left shadow-sm">
+          <h2 className="text-xl font-semibold text-slate-900">
+            Latest palette
+          </h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Preview of the palette applied by the last swap request.
+          </p>
+          <pre className="mt-4 max-h-64 overflow-auto rounded-lg bg-white p-4 text-xs text-slate-800 shadow-inner">
+            {JSON.stringify(lastSwap.palette, null, 2)}
+          </pre>
+        </section>
+      ) : null}
     </div>
   );
 }

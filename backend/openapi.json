@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Prempage Backend",
-    "summary": "Boilerplate FastAPI service for Prempage V2",
+    "summary": "Backend service supporting the Prempage Studio",
     "version": "0.1.0"
   },
   "paths": {
@@ -27,10 +27,76 @@
           }
         }
       }
+    },
+    "/sites/{slug}/palette/swap": {
+      "post": {
+        "tags": [
+          "palette"
+        ],
+        "summary": "Generate and apply a new palette",
+        "description": "Generate a new palette and apply it to the requested site.",
+        "operationId": "swap_site_palette_sites__slug__palette_swap_post",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HorizonPaletteSwapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HorizonPaletteSwapResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
       "HealthCheckResponse": {
         "properties": {
           "status": {
@@ -81,6 +147,119 @@
         "title": "HealthCheckResponse",
         "description": "Standard payload returned by the health check endpoint."
       },
+      "HorizonPalette": {
+        "properties": {
+          "bg_base": {
+            "type": "string",
+            "title": "Bg Base"
+          },
+          "bg_surface": {
+            "type": "string",
+            "title": "Bg Surface"
+          },
+          "bg_contrast": {
+            "type": "string",
+            "title": "Bg Contrast"
+          },
+          "text_primary": {
+            "type": "string",
+            "title": "Text Primary"
+          },
+          "text_secondary": {
+            "type": "string",
+            "title": "Text Secondary"
+          },
+          "text_inverse": {
+            "type": "string",
+            "title": "Text Inverse"
+          },
+          "brand_primary": {
+            "type": "string",
+            "title": "Brand Primary"
+          },
+          "brand_secondary": {
+            "type": "string",
+            "title": "Brand Secondary"
+          },
+          "accent": {
+            "type": "string",
+            "title": "Accent"
+          },
+          "border": {
+            "type": "string",
+            "title": "Border"
+          },
+          "ring": {
+            "type": "string",
+            "title": "Ring"
+          },
+          "critical": {
+            "type": "string",
+            "title": "Critical"
+          },
+          "critical_contrast": {
+            "type": "string",
+            "title": "Critical Contrast"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "bg_base",
+          "bg_surface",
+          "bg_contrast",
+          "text_primary",
+          "text_secondary",
+          "text_inverse",
+          "brand_primary",
+          "brand_secondary",
+          "accent",
+          "border",
+          "ring",
+          "critical",
+          "critical_contrast"
+        ],
+        "title": "HorizonPalette",
+        "description": "Palette schema for the Horizon template color keys."
+      },
+      "HorizonPaletteSwapRequest": {
+        "properties": {
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Optional freeform guidance for palette generation."
+          }
+        },
+        "type": "object",
+        "title": "HorizonPaletteSwapRequest",
+        "description": "Optional metadata supplied when requesting a Horizon palette refresh."
+      },
+      "HorizonPaletteSwapResponse": {
+        "properties": {
+          "palette": {
+            "$ref": "#/components/schemas/HorizonPalette"
+          },
+          "applied_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Applied At",
+            "description": "UTC timestamp when the palette was applied."
+          }
+        },
+        "type": "object",
+        "required": [
+          "palette"
+        ],
+        "title": "HorizonPaletteSwapResponse",
+        "description": "Payload returned after the backend applies a new Horizon palette."
+      },
       "ServiceMetadata": {
         "properties": {
           "name": {
@@ -99,6 +278,39 @@
         ],
         "title": "ServiceMetadata",
         "description": "Metadata describing the running backend service."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     }
   }

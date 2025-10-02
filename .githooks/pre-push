@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "[pre-push] Checking OpenAPI schema parity"
+if ! python3 scripts/check_openapi_sync.py; then
+  echo "[pre-push] OpenAPI schema / TypeScript types out of sync" >&2
+  exit 1
+fi
+
 SLUGS=("progressivewaytherapy-horizon")
 
 if ! command -v pnpm >/dev/null 2>&1; then
