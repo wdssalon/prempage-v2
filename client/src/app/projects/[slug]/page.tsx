@@ -131,7 +131,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
       </header>
 
       <div className="flex w-full flex-1 flex-col gap-2 px-4 py-3" ref={layoutRef}>
-        <div className="flex h-full min-h-0 flex-col gap-1 lg:flex-row">
+        <div className="flex h-[90vh] flex-col gap-1 lg:flex-row">
           <section
             className="flex min-h-[320px] flex-col rounded-2xl border border-stone-200 bg-white shadow-sm lg:min-h-0"
             style={leftPaneStyle}
