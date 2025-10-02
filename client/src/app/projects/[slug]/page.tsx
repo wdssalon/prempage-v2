@@ -1,9 +1,9 @@
 "use client";
 
-import type { CSSProperties } from "react";
-import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
+import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getStudioProject } from "@/lib/studioProjects";
 
@@ -87,7 +87,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   return (
     <div className="flex min-h-screen flex-col bg-stone-100 text-slate-900">
       <header className="border-b border-stone-200 bg-white">
-        <div className="flex w-full items-center justify-between gap-6 px-8 py-4">
+        <div className="flex w-full items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -96,21 +96,11 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
             >
               ←
             </Link>
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-[0.25em] text-slate-400">
-                  Preview sandbox
-                </p>
-                <div className="mt-1 flex items-center gap-2">
-                  <h1 className="text-base font-semibold sm:text-lg">{project.name}</h1>
-                  <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">
-                    Live preview
-                  </span>
-                </div>
-              </div>
-              <p className="text-sm text-slate-500 sm:max-w-xs sm:text-left">
-                {project.description}
-              </p>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-semibold sm:text-xl">{project.name}</h1>
+              <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                Live preview
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-500">
@@ -134,13 +124,13 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
         </div>
       </header>
 
-      <div className="flex w-full flex-1 flex-col gap-6 px-8 pb-10 pt-6" ref={layoutRef}>
-        <div className="flex h-full flex-col gap-6 lg:flex-row">
+      <div className="flex w-full flex-1 flex-col gap-2 px-4 py-3" ref={layoutRef}>
+        <div className="flex h-full min-h-0 flex-col gap-1 lg:flex-row">
           <section
-            className="flex min-h-[320px] flex-col rounded-2xl border border-stone-200 bg-white shadow-sm"
+            className="flex min-h-[320px] flex-col rounded-2xl border border-stone-200 bg-white shadow-sm lg:min-h-0"
             style={leftPaneStyle}
           >
-            <div className="flex items-center justify-between border-b border-stone-200 px-5 py-4">
+            <div className="flex items-center justify-between border-b border-stone-200 px-4 py-3">
               <div className="flex items-center gap-3">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
                   AI
@@ -158,9 +148,9 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-5 py-4">
+            <div className="flex-1 overflow-y-auto px-4 py-3">
               <div className="space-y-4">
-                <article className="rounded-2xl bg-stone-50 p-4 text-sm text-slate-700">
+                <article className="rounded-2xl bg-stone-50 p-3 text-sm text-slate-700">
                   <p className="font-medium text-slate-900">
                     Ready when you are—here’s how to start editing this site:
                   </p>
@@ -175,13 +165,13 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
                     ))}
                   </ol>
                 </article>
-                <article className="rounded-2xl border border-dashed border-stone-200 p-4 text-sm text-slate-500">
+                <article className="rounded-2xl border border-dashed border-stone-200 p-3 text-sm text-slate-500">
                   Ask the copilot to adjust copy, capture screenshots, or explain how to edit a section. We’ll record every patch here once persistence lands.
                 </article>
               </div>
             </div>
 
-            <form className="border-t border-stone-200 px-5 py-4">
+            <form className="border-t border-stone-200 px-4 py-3">
               <label htmlFor="copilot-input" className="sr-only">
                 Ask Studio Copilot
               </label>
@@ -212,27 +202,8 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
             <span className="h-10 w-1 rounded-full bg-stone-300" />
           </div>
 
-          <section className="flex min-h-[320px] flex-1 flex-col rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-200 pb-3 text-sm text-slate-600">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-stone-100 px-2.5 py-1 text-xs font-medium text-slate-700">
-                  iframe preview
-                </span>
-                <span>Served from</span>
-                <code className="rounded-md border border-stone-200 bg-stone-50 px-2 py-1 text-xs text-slate-600">
-                  {project.devUrl}
-                </code>
-              </div>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="rounded-full border border-stone-200 px-3 py-1 uppercase tracking-[0.2em] text-slate-500">
-                  Preview
-                </span>
-                <span className="rounded-full border border-stone-200 px-3 py-1 uppercase tracking-[0.2em] text-slate-400">
-                  Overlay off
-                </span>
-              </div>
-            </div>
-            <div className="mt-4 flex-1 overflow-hidden rounded-xl border border-stone-200 shadow-inner">
+          <section className="flex min-h-[320px] flex-1 flex-col rounded-2xl border border-stone-200 bg-white p-2 shadow-sm lg:min-h-0">
+            <div className="flex-1 overflow-hidden rounded-xl border border-stone-200 shadow-inner">
               <iframe
                 title={`${project.name} preview`}
                 src={project.devUrl}
