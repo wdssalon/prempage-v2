@@ -1,34 +1,59 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getStudioProject } from "@/lib/studioProjects";
 
 type ProjectPageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export default function ProjectPreviewPage({ params }: ProjectPageProps) {
-  const project = getStudioProject(params.slug);
+  const { slug } = use(params);
+  const project = getStudioProject(slug);
 
   if (!project) {
     notFound();
   }
 
   const [leftRatio, setLeftRatio] = useState(0.4);
+  const [isDesktop, setIsDesktop] = useState(false);
   const layoutRef = useRef<HTMLDivElement>(null);
 
   const instructions = useMemo(() => project.instructions, [project.instructions]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    const update = (event: MediaQueryListEvent | MediaQueryList) => {
+      setIsDesktop(event.matches);
+    };
+
+    update(mediaQuery);
+    mediaQuery.addEventListener("change", update);
+
+    return () => {
+      mediaQuery.removeEventListener("change", update);
+    };
+  }, []);
+
   const handleResize = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     event.preventDefault();
+    if (!isDesktop) {
+      return;
+    }
+
     const container = layoutRef.current;
 
     if (!container) {
       return;
     }
+
+    const handleElement = event.currentTarget;
+    handleElement.setPointerCapture?.(event.pointerId);
 
     const updateRatio = (moveEvent: PointerEvent) => {
       const rect = container.getBoundingClientRect();
@@ -39,6 +64,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     };
 
     const stopResize = () => {
+      handleElement.releasePointerCapture?.(event.pointerId);
       document.body.style.removeProperty("cursor");
       window.removeEventListener("pointermove", updateRatio);
       window.removeEventListener("pointerup", stopResize);
@@ -47,7 +73,16 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     document.body.style.cursor = "col-resize";
     window.addEventListener("pointermove", updateRatio);
     window.addEventListener("pointerup", stopResize, { once: true });
-  }, []);
+  }, [isDesktop]);
+
+  const leftPaneStyle: CSSProperties | undefined = useMemo(() => {
+    if (!isDesktop) {
+      return undefined;
+    }
+
+    const width = `${Math.round(leftRatio * 1000) / 10}%`;
+    return { flex: `0 0 ${width}`, minWidth: "280px" };
+  }, [isDesktop, leftRatio]);
 
   return (
     <div className="flex min-h-screen flex-col bg-stone-100 text-slate-900">
@@ -103,7 +138,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
         <div className="flex flex-1 flex-col gap-4 lg:flex-row">
           <section
             className="flex min-h-[320px] flex-col rounded-2xl border border-stone-200 bg-white shadow-sm"
-            style={{ flexBasis: `${leftRatio * 100}%`, maxWidth: `${leftRatio * 100}%` }}
+            style={leftPaneStyle}
           >
             <div className="flex items-center justify-between border-b border-stone-200 px-5 py-4">
               <div className="flex items-center gap-3">
