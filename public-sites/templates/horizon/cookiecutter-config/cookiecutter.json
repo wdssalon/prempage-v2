@@ -6,18 +6,18 @@
   "serif_font_loader": "Fraunces",
   "body_font_loader": "Lora",
   "colors": {
-    "bg_base": "#f6f1eb",
+    "bg_base": "#f6ede5",
     "bg_surface": "#ffffff",
-    "bg_contrast": "#dcc8b5",
+    "bg_contrast": "#e8d8cd",
     "text_primary": "#1f140f",
     "text_secondary": "#3f2a22",
     "text_inverse": "#ffffff",
     "brand_primary": "#1d675a",
-    "brand_secondary": "#b95d2c",
-    "accent": "#3c6a9a",
+    "brand_secondary": "#288e7c",
+    "accent": "#33b69f",
     "border": "#d9c2b0",
     "ring": "#1d675a",
     "critical": "#b42318",
-    "critical_contrast": "#fdf3f2"
+    "critical_contrast": "#fbeae9"
   }
 }

@@ -26,18 +26,18 @@
     }
   ],
   "colors": {
-    "bg_base": "#e1f5fe",
-    "bg_surface": "#ffffff",
-    "bg_contrast": "#333333",
-    "text_primary": "#202124",
-    "text_secondary": "#ef5350",
+    "bg_base": "#f7eef6",
+    "bg_surface": "#e8d5e0",
+    "bg_contrast": "#d4b5cb",
+    "text_primary": "#2b1a3a",
+    "text_secondary": "#3b2a6a",
     "text_inverse": "#ffffff",
-    "brand_primary": "#00695c",
-    "brand_secondary": "#ffca28",
-    "accent": "#4db6ac",
-    "border": "#ffe0b2",
-    "ring": "#00695c",
-    "critical": "#d32f2f",
-    "critical_contrast": "#f48fb1"
+    "brand_primary": "#ff4d97",
+    "brand_secondary": "#ff9cd2",
+    "accent": "#ff6fb3",
+    "border": "#d44786",
+    "ring": "#ff8acd",
+    "critical": "#d64545",
+    "critical_contrast": "#ffe1e1"
   }
 }

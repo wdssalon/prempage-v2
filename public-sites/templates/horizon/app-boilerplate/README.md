@@ -59,39 +59,42 @@ python scripts/apply_site_config.py --config '{"fonts": [...], "colors": {...}}'
   "colors": {
     "light": {
       "bg_base": "#f6ede5",
-      "bg_surface": "#faf5f0",
-      "bg_contrast": "#fce3ea",
-      "text_primary": "#4a4a4a",
-      "text_secondary": "#6b5247",
+      "bg_surface": "#ffffff",
+      "bg_contrast": "#e8d8cd",
+      "text_primary": "#1f140f",
+      "text_secondary": "#3f2a22",
       "text_inverse": "#ffffff",
-      "brand_primary": "#6ca37a",
-      "brand_secondary": "#d9a6b5",
-      "accent": "#e4d0c9",
-      "border": "#ddccc5",
-      "ring": "#6ca37a",
-      "critical": "#dd3c3c",
-      "critical_contrast": "#faf8f5"
+      "brand_primary": "#1d675a",
+      "brand_secondary": "#288e7c",
+      "accent": "#33b69f",
+      "border": "#d9c2b0",
+      "ring": "#1d675a",
+      "critical": "#b42318",
+      "critical_contrast": "#fbeae9"
     },
     "dark": {
-      "bg_base": "#2b2224",
-      "bg_surface": "#33282b",
-      "bg_contrast": "#493139",
-      "text_primary": "#f2dee6",
-      "text_secondary": "#cd98ac",
-      "text_inverse": "#2b2224",
-      "brand_primary": "#75a983",
-      "brand_secondary": "#9b4b63",
-      "accent": "#6b4753",
-      "border": "#47383b",
-      "ring": "#75a983",
-      "critical": "#ae2929",
-      "critical_contrast": "#f2dee6"
+      "bg_base": "#082b28",
+      "bg_surface": "#0c3b36",
+      "bg_contrast": "#114540",
+      "text_primary": "#f5f5f5",
+      "text_secondary": "#ccbfb3",
+      "text_inverse": "#ffffff",
+      "brand_primary": "#1d675a",
+      "brand_secondary": "#288e7c",
+      "accent": "#33b69f",
+      "border": "#2f6059",
+      "ring": "#2d9f8a",
+      "critical": "#b42318",
+      "critical_contrast": "#ffffff"
     }
   }
 }
 ```
 - Font list order is preserved; each entry produces a `const` assignment and is added to the `<html>` className.
 - `colors` updates the global palette. Provide HEX strings—`apply_site_config.py` converts them to the internal HSL tokens.
+  - `brand_secondary` can be a tonal shift (lighter/darker than primary) or a complementary hue. Gradients and elevation tokens handle both options.
+
+Apply `data-theme="dark"` to the `<html>` or `<body>` element to opt into the dark palette. Only the neutrals shift—the brand colors stay intact so tonal or complementary pairs remain valid in either mode.
 
 A full reference configuration that recreates the Progressive Way Therapy palette lives at `config/example-site.json`.
 
