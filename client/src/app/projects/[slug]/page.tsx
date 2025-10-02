@@ -87,7 +87,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   return (
     <div className="flex min-h-screen flex-col bg-stone-100 text-slate-900">
       <header className="border-b border-stone-200 bg-white">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6 px-6 py-3">
+        <div className="flex w-full items-center justify-between gap-6 px-8 py-4">
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -134,8 +134,8 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4 px-6 pb-8 pt-6" ref={layoutRef}>
-        <div className="flex flex-1 flex-col gap-4 lg:flex-row">
+      <div className="flex w-full flex-1 flex-col gap-6 px-8 pb-10 pt-6" ref={layoutRef}>
+        <div className="flex h-full flex-col gap-6 lg:flex-row">
           <section
             className="flex min-h-[320px] flex-col rounded-2xl border border-stone-200 bg-white shadow-sm"
             style={leftPaneStyle}
