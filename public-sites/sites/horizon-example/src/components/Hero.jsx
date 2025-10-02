@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { Heart, MapPin, Phone } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { getAssetUrl } from "@/lib/site-assets";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { getAssetUrl } from "@/lib/site-assets";
+import { cn } from "@/lib/utils";
+import { Heart, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero({ sectionId, variant = "default" }) {
   const prefersReducedMotion = usePrefersReducedMotion();
