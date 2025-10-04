@@ -13,6 +13,7 @@ services:
     volumes:
       - .:/app
       - frontend-node-modules:/app/client/node_modules
+      - frontend-root-node-modules:/app/node_modules
     depends_on:
       backend:
         condition: service_started
@@ -66,6 +67,7 @@ services:
 
 volumes:
   frontend-node-modules:
+  frontend-root-node-modules:
   backend-uv-cache:
   form-relay-uv-cache:
   static-site-extractor-uv-cache:

@@ -7,20 +7,20 @@
 @layer base {
   :root {
     /* Core palette (secondary can be a tonal shift or complementary hue) */
-    --color-bg-base: 82 67% 95%;
-    --color-bg-surface: 81 77% 86%;
-    --color-bg-contrast: 91 52% 76%;
+    --color-bg-base: 30 58% 93%;
+    --color-bg-surface: 29 67% 82%;
+    --color-bg-contrast: 22 54% 76%;
 
-    --color-text-primary: 89 32% 29%;
-    --color-text-secondary: 76 26% 39%;
+    --color-text-primary: 11 38% 32%;
+    --color-text-secondary: 11 34% 44%;
     --color-text-inverse: 0 0% 100%;
 
-    --color-brand-primary: 84 53% 54%;
-    --color-brand-secondary: 82 67% 31%;
-    --color-highlight: 69 63% 57%;
+    --color-brand-primary: 32 71% 49%;
+    --color-brand-secondary: 18 73% 45%;
+    --color-highlight: 39 87% 61%;
 
-    --color-border: 89 58% 47%;
-    --color-ring: 84 53% 54%;
+    --color-border: 30 60% 49%;
+    --color-ring: 32 71% 49%;
     --color-critical: 346 100% 42%;
     --color-critical-contrast: 0 71% 91%;
 
