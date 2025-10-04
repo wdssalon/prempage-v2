@@ -1,14 +1,15 @@
-import { Playfair_Display, Inter } from "next/font/google";
+import { Fraunces, Lora } from "next/font/google";
 import "./globals.css";
+import OverlayBridge from "@/components/OverlayBridge";
 
-const serifFont = Playfair_Display({
+const serifFont = Fraunces({
   subsets: [
     "latin"
   ],
   display: "swap",
   variable: "--font-serif"
 });
-const bodyFont = Inter({
+const bodyFont = Lora({
   subsets: [
     "latin"
   ],
@@ -17,19 +18,14 @@ const bodyFont = Inter({
 });
 
 export const metadata = {
-  title: "Progressive Way Therapy | Horizon Template",
-  description: "Progressive, inclusive therapy for LGBTQIA+, BIPOC, and marginalized communities across Texas.",
+  title: "Horizon Example | Horizon Template",
+  description: "Reference site generated for quick regression testing",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${serifFont.variable} ${bodyFont.variable}`}>
-      <body className="bg-base text-copy font-body">
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        {children}
-      </body>
+      <body className="bg-base text-copy font-body"><OverlayBridge />{children}</body>
     </html>
   );
 }

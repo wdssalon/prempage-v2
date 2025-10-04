@@ -5,7 +5,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Align static-site tracing with monorepo root so multiple lockfiles don't trigger warnings.
+  // Ensures Next.js resolves traces against the repository root despite per-site lockfiles.
   outputFileTracingRoot: path.join(__dirname, "..", "..", ".."),
 };
 

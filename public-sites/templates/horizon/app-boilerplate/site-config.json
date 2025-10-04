@@ -1,5 +1,4 @@
 {
-  "project_name": "Horizon Example",
   "metadata": {
     "title": "Horizon Example | Horizon Template",
     "description": "Reference site generated for quick regression testing"
@@ -8,18 +7,20 @@
     {
       "id": "serif",
       "loader": "Fraunces",
-      "variable": "--font-serif",
       "options": {
-        "subsets": ["latin"],
+        "subsets": [
+          "latin"
+        ],
         "display": "swap"
       }
     },
     {
       "id": "body",
       "loader": "Lora",
-      "variable": "--font-body",
       "options": {
-        "subsets": ["latin"],
+        "subsets": [
+          "latin"
+        ],
         "display": "swap"
       }
     }

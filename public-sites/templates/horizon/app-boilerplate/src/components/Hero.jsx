@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { Heart, MapPin, Phone } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { getAssetUrl } from "@/lib/site-assets";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { getAssetUrl } from "@/lib/site-assets";
+import { cn } from "@/lib/utils";
+import { Heart, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero({ sectionId, variant = "default" }) {
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -72,8 +72,8 @@ export default function Hero({ sectionId, variant = "default" }) {
           </div>
 
           <h1 id={headingId} className={headingClasses}>
-            A Safe Space for Your
-            <span className="block text-accent">Authentic Self</span>
+            <span data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.heading.primary">Therapi is just for you</span>
+            <span className="block text-accent" data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.heading.highlight">Authentic Self</span>
           </h1>
 
           <p id={descriptionId} className={descriptionClasses}>
