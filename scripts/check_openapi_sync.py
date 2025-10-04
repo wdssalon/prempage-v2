@@ -59,8 +59,11 @@ def main() -> None:
 
     if diff.stdout.strip():
         print(
-            "OpenAPI schema or generated types changed. Commit the updated files "
-            "before pushing. (python scripts/check_openapi_sync.py)",
+            "OpenAPI schema or generated types changed. Regenerate and commit "
+            "before pushing:\n"
+            "    cd backend && uv run --frozen python export_openapi.py\n"
+            "    cd client && pnpm openapi:types\n"
+            "Then stage backend/openapi.json and client/src/api/types.ts.",
             file=sys.stderr,
         )
         sys.exit(1)
