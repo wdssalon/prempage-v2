@@ -1,6 +1,6 @@
 # Prempage V2
 
-This repository hosts the Prempage V2 workspaces - the current React + Vite client, the FastAPI backend, and the static-site tooling used to build and deploy static sites. We're transitioning to a two-deployable front-end model built around a Next.js Studio app and a standalone editor overlay bundle so the whole project lifecycle—from app development to static exports—remains in a single repo.
+This repository hosts the Prempage V2 workspaces: the current React + Vite client, the FastAPI backend, and the static-site tooling used to build and deploy static sites. We're transitioning to a two-deployable front-end model built around a Next.js Studio app and a standalone editor overlay bundle so the whole project lifecycle—from app development to static exports—remains in a single repo.
 
 ## Prerequisites
 - Node.js 24 or newer (Corepack with pnpm ≥ 8)
