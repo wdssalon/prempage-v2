@@ -37,13 +37,13 @@ def _parse_ppid(ppid: str) -> tuple[str, str]:
         scheme, remainder = ppid.split(":", 1)
     except ValueError as exc:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="Invalid PPID format",
         ) from exc
 
     if scheme != PPID_PREFIX_CODE:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail=f"Unsupported PPID namespace '{scheme}'",
         )
 

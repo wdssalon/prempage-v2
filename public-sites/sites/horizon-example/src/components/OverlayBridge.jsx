@@ -22,6 +22,10 @@ export default function OverlayBridge() {
       if (window.__premOverlayController) {
         console.debug("[overlay] controller already cached");
         const existing = window.__premOverlayController;
+        window.parent?.postMessage(
+          { source: SITE_SOURCE, type: "overlay-mounted" },
+          "*",
+        );
         console.timeEnd("[overlay] ensureOverlay");
         return existing;
       }

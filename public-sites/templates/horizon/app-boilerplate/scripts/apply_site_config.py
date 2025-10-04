@@ -108,6 +108,7 @@ def render_layout(config: Dict) -> str:
     lines: List[str] = []
     lines.append('import { ' + loaders_import + ' } from "next/font/google";')
     lines.append('import "./globals.css";')
+    lines.append('import OverlayBridge from "@/components/OverlayBridge";')
     lines.append('')
     lines.extend(font_consts)
     lines.append('')
@@ -119,7 +120,7 @@ def render_layout(config: Dict) -> str:
     lines.append('export default function RootLayout({ children }) {')
     lines.append('  return (')
     lines.append('    <html lang="en" className={`' + class_expr + '`}>')
-    lines.append('      <body className="bg-base text-copy font-body">{children}</body>')
+    lines.append('      <body className="bg-base text-copy font-body"><OverlayBridge />{children}</body>')
     lines.append('    </html>')
     lines.append('  );')
     lines.append('}')
