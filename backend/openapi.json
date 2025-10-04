@@ -80,6 +80,52 @@
           }
         }
       }
+    },
+    "/overlay/events/edit": {
+      "post": {
+        "tags": [
+          "overlay"
+        ],
+        "summary": "Ingest Overlay Edit",
+        "description": "Accept an overlay edit payload and log it for downstream processing.",
+        "operationId": "ingest_overlay_edit_overlay_events_edit_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OverlayEditEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Ingest Overlay Edit Overlay Events Edit Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -259,6 +305,71 @@
         ],
         "title": "HorizonPaletteSwapResponse",
         "description": "Payload returned after the backend applies a new Horizon palette."
+      },
+      "OverlayEditEvent": {
+        "properties": {
+          "projectSlug": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Projectslug",
+            "description": "Slug of the Studio project emitting the edit"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/OverlayEditPayload"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OverlayEditMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "projectSlug",
+          "payload",
+          "meta"
+        ],
+        "title": "OverlayEditEvent",
+        "description": "Full payload accepted by the overlay ingest endpoint."
+      },
+      "OverlayEditMeta": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "enum": [
+              "enter",
+              "blur"
+            ],
+            "title": "Reason",
+            "description": "Trigger that finalized the edit inside the overlay"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "title": "OverlayEditMeta",
+        "description": "Additional metadata describing how the edit was committed."
+      },
+      "OverlayEditPayload": {
+        "properties": {
+          "ppid": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Ppid",
+            "description": "Stable identifier for the edited node"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Sanitized text content captured from the overlay"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ppid",
+          "text"
+        ],
+        "title": "OverlayEditPayload",
+        "description": "Text edit emitted from the in-page overlay."
       },
       "ServiceMetadata": {
         "properties": {

@@ -10,6 +10,7 @@ import {
   swapPalette,
   type HorizonPaletteSwapResponse,
 } from "@/api/palette";
+import { logOverlayEdit } from "@/api/overlay";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -22,6 +23,8 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   if (!project) {
     notFound();
   }
+
+  console.debug("[overlay] project page render");
 
   const [leftRatio, setLeftRatio] = useState(0.4);
   const [isDesktop, setIsDesktop] = useState(() => {
@@ -36,6 +39,9 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   const [lastSwap, setLastSwap] =
     useState<HorizonPaletteSwapResponse | null>(null);
   const layoutRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const overlayMountedRef = useRef(false);
+  const overlayInitIntervalRef = useRef<number | null>(null);
 
   const instructions = useMemo(() => project.instructions, [project.instructions]);
 
@@ -88,6 +94,103 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     window.addEventListener("pointermove", updateRatio);
     window.addEventListener("pointerup", stopResize, { once: true });
   }, [isDesktop]);
+
+  const sendOverlayInit = useCallback(() => {
+    const frame = iframeRef.current;
+    if (!frame) {
+      return;
+    }
+
+    frame.contentWindow?.postMessage(
+      { source: "prempage-studio", type: "overlay-init" },
+      "*",
+    );
+  }, []);
+
+  const clearOverlayInitInterval = useCallback(() => {
+    if (overlayInitIntervalRef.current !== null) {
+      clearInterval(overlayInitIntervalRef.current);
+      overlayInitIntervalRef.current = null;
+    }
+  }, []);
+
+  const requestOverlayInit = useCallback(() => {
+    sendOverlayInit();
+    console.debug("[overlay] requested overlay init");
+
+    if (overlayMountedRef.current) {
+      clearOverlayInitInterval();
+      return;
+    }
+
+    if (overlayInitIntervalRef.current === null) {
+      console.debug("[overlay] starting overlay init polling interval");
+      overlayInitIntervalRef.current = window.setInterval(() => {
+        if (overlayMountedRef.current) {
+          clearOverlayInitInterval();
+          return;
+        }
+
+        sendOverlayInit();
+        console.debug("[overlay] re-posted overlay init");
+      }, 1000);
+    }
+  }, [clearOverlayInitInterval, sendOverlayInit]);
+
+  const handleIframeLoad = useCallback(() => {
+    overlayMountedRef.current = false;
+    requestOverlayInit();
+  }, [requestOverlayInit]);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.debug("[overlay] message event", event.data, event.origin);
+      const { data } = event;
+      if (!data || typeof data !== "object") {
+        return;
+      }
+
+      if (data.source === "prempage-site") {
+        if (data.type === "bridge-ready") {
+          console.debug("[overlay] bridge-ready received from site");
+          overlayMountedRef.current = false;
+          requestOverlayInit();
+        } else if (data.type === "overlay-mounted") {
+          console.debug("[overlay] overlay-mounted received from site");
+          overlayMountedRef.current = true;
+          clearOverlayInitInterval();
+        } else if (data.type === "overlay-destroy") {
+          console.debug("[overlay] overlay-destroy received from site");
+          overlayMountedRef.current = false;
+          requestOverlayInit();
+        }
+        return;
+      }
+
+      if (data.source === "prempage-overlay" && data.type === "overlay-edit") {
+        console.info("Overlay edit", data.payload, data.meta);
+        void logOverlayEdit({
+          projectSlug: slug,
+          payload: data.payload,
+          meta: data.meta,
+        }).catch((error) => {
+          console.error("Failed to log overlay edit", error);
+        });
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    console.debug("[overlay] message listener mounted");
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      clearOverlayInitInterval();
+    };
+  }, [clearOverlayInitInterval, requestOverlayInit, slug]);
+
+  useEffect(() => {
+    overlayMountedRef.current = false;
+    requestOverlayInit();
+  }, [requestOverlayInit]);
 
   const leftPaneStyle: CSSProperties | undefined = useMemo(() => {
     if (!isDesktop) {
@@ -250,6 +353,8 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
           <section className="flex min-h-[320px] flex-1 flex-col rounded-2xl border border-stone-200 bg-white p-2 shadow-sm lg:min-h-0">
             <div className="flex-1 overflow-hidden rounded-xl border border-stone-200 shadow-inner">
               <iframe
+                ref={iframeRef}
+                onLoad={handleIframeLoad}
                 title={`${project.name} preview`}
                 src={project.devUrl}
                 className="h-full w-full min-h-[520px] border-0 bg-white"

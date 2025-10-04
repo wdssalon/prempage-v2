@@ -9,6 +9,7 @@ services:
     working_dir: /app/client
     environment:
       - NODE_ENV=development
+      - CI=true
     volumes:
       - .:/app
       - frontend-node-modules:/app/client/node_modules

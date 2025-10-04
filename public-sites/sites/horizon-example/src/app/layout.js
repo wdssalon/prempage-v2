@@ -1,5 +1,6 @@
 import { Fraunces, Lora } from "next/font/google";
 import "./globals.css";
+import OverlayBridge from "@/components/OverlayBridge";
 
 const serifFont = Fraunces({
   subsets: [
@@ -24,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${serifFont.variable} ${bodyFont.variable}`}>
-      <body className="bg-base text-copy font-body">{children}</body>
+      <body className="bg-base text-copy font-body"><OverlayBridge />{children}</body>
     </html>
   );
 }

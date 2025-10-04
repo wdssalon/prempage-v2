@@ -44,6 +44,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/overlay/events/edit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Ingest Overlay Edit
+         * @description Accept an overlay edit payload and log it for downstream processing.
+         */
+        post: operations["ingest_overlay_edit_overlay_events_edit_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -144,6 +164,47 @@ export interface components {
             applied_at?: string;
         };
         /**
+         * OverlayEditEvent
+         * @description Full payload accepted by the overlay ingest endpoint.
+         */
+        OverlayEditEvent: {
+            /**
+             * Projectslug
+             * @description Slug of the Studio project emitting the edit
+             */
+            projectSlug: string;
+            payload: components["schemas"]["OverlayEditPayload"];
+            meta: components["schemas"]["OverlayEditMeta"];
+        };
+        /**
+         * OverlayEditMeta
+         * @description Additional metadata describing how the edit was committed.
+         */
+        OverlayEditMeta: {
+            /**
+             * Reason
+             * @description Trigger that finalized the edit inside the overlay
+             * @enum {string}
+             */
+            reason: "enter" | "blur";
+        };
+        /**
+         * OverlayEditPayload
+         * @description Text edit emitted from the in-page overlay.
+         */
+        OverlayEditPayload: {
+            /**
+             * Ppid
+             * @description Stable identifier for the edited node
+             */
+            ppid: string;
+            /**
+             * Text
+             * @description Sanitized text content captured from the overlay
+             */
+            text: string;
+        };
+        /**
          * ServiceMetadata
          * @description Metadata describing the running backend service.
          */
@@ -213,6 +274,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HorizonPaletteSwapResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    ingest_overlay_edit_overlay_events_edit_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OverlayEditEvent"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
                 };
             };
             /** @description Validation Error */
