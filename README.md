@@ -37,7 +37,18 @@ Short answer: same repo, separate deployables. Make a single Studio front-end fo
 - Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
 - During editing the preview runs on a live Next.js server so the overlay can read component-level metadata; the static export is generated only during the publish step to keep the deploy artifacts reproducible.
 
-**Status:** The Next.js Studio lives in `client/`; the legacy Vite app has been retired so all frontend work now happens inside the Studio workspace. App B (overlay bundle) is the next focus once the Studio shell solidifies.
+**Status:** The Next.js Studio lives in `client/`; the legacy Vite app has been retired so all frontend work now happens inside the Studio workspace. The initial overlay MVP is live: edits made inside the preview iframe post back to the backend and immediately update the source file under `public-sites/sites/<slug>/`.
+
+### Overlay Editing Workflow (MVP)
+1. **Rebuild the overlay bundle on macOS** (Docker containers rewrite `node_modules` with Linux binaries):
+   ```bash
+   pnpm install --filter @prempage/editor-overlay --force
+   pnpm --filter @prempage/editor-overlay build
+   ```
+2. **Start the preview site**: `pnpm install --filter horizon-example && pnpm --filter horizon-example dev` (serves http://localhost:3000).
+3. **Run the Docker stack**: `docker compose up -d`. If the Studio container logged a Next.js module error, run `pnpm install --filter client && docker compose restart frontend` to resync dependencies.
+4. Open `http://localhost:3001/projects/horizon-example`, click an element with a highlight, edit, and press Enter. The Studio console logs `Overlay edit applied` and the backend prints `Overlay edit applied` with the target file path. The matching `data-ppid` span in `public-sites/sites/horizon-example/src/...` updates immediately.
+5. Rebuild the overlay bundle after any code changes, then refresh the preview. Persistent edits (writing to git, audit trails) will layer on later; today’s flow edits the repo directly.
 
 ## Studio Frontend (Next.js)
 1. Change into the Studio workspace:
@@ -70,6 +81,7 @@ Run these from `client/`:
 - `pnpm lint` – run ESLint against the project source.
 - `pnpm typecheck` – run the TypeScript compiler in no-emit mode.
 - `pnpm openapi:types` – regenerate typed API bindings from the FastAPI OpenAPI schema.
+- `pnpm install --filter @prempage/editor-overlay --force && pnpm --filter @prempage/editor-overlay build` – refresh the overlay bundle when Docker has touched `node_modules`.
 
 ## Backend (FastAPI + uv)
 1. Change into the backend project:

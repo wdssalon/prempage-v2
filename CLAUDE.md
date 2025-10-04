@@ -28,7 +28,7 @@ Short answer: same repo, separate deployables. Make a single Studio front-end fo
 - Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
 - During editing the preview runs on a live Next.js server so the overlay can read component-level metadata; the static export is generated only during the publish step to keep the deploy artifacts reproducible.
 
-**Status:** The Next.js Studio resides in `client/`; the legacy Vite app has been retired. App A is the focus now, with App B (overlay) queued next.
+**Status:** The Next.js Studio resides in `client/`; the legacy Vite app has been retired. The initial overlay pipeline is active: edits made inside the iframe dispatch to the FastAPI backend and rewrite the matching `data-ppid` node inside `public-sites/sites/<slug>/`.
 
 ## Running the Application
 
@@ -91,6 +91,16 @@ uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localh
 ```
 
 - Responses return deduped images/fonts plus a `text_blob` and best-guess `navigation` tree for downstream tooling.
+
+### Overlay Editing Checklist
+1. Refresh overlay deps after Docker modifies shared `node_modules`:
+   ```bash
+   pnpm install --filter @prempage/editor-overlay --force
+   pnpm --filter @prempage/editor-overlay build
+   ```
+2. Start the Horizon preview (`pnpm install --filter horizon-example && pnpm --filter horizon-example dev`).
+3. Run Docker services and, if the Studio container throws a Next.js module error, follow with `pnpm install --filter client && docker compose restart frontend`.
+4. Visit `http://localhost:3001/projects/horizon-example`, make an inline edit, and press Enter. Confirm `Overlay edit applied` in the Studio console or backend logs; the corresponding file under `public-sites/sites/horizon-example/` will update immediately.
 
 ## Core Requirements
 
