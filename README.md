@@ -46,7 +46,7 @@ Short answer: same repo, separate deployables. Make a single Studio front-end fo
    pnpm --filter @prempage/editor-overlay build
    ```
 2. **Start the preview site**: `pnpm install --filter horizon-example && pnpm --filter horizon-example dev` (serves http://localhost:3000).
-3. **Run the Docker stack**: `docker compose up -d`. If the Studio container logged a Next.js module error, run `pnpm install --filter client && docker compose restart frontend` to resync dependencies.
+3. **Run the Docker stack**: `docker compose up -d`. If the Studio container logged a Next.js module error, run `pnpm --dir client install && docker compose restart frontend` to resync dependencies.
 4. Open `http://localhost:3001/projects/horizon-example`, click an element with a highlight, edit, and press Enter. The Studio console logs `Overlay edit applied` and the backend prints `Overlay edit applied` with the target file path. The matching `data-ppid` span in `public-sites/sites/horizon-example/src/...` updates immediately.
 5. Rebuild the overlay bundle after any code changes, then refresh the preview. Persistent edits (writing to git, audit trails) will layer on later; today’s flow edits the repo directly.
 

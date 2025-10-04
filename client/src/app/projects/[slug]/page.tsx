@@ -43,6 +43,11 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   const overlayMountedRef = useRef(false);
   const overlayInitIntervalRef = useRef<number | null>(null);
 
+  const lastSwapAppliedAt = lastSwap?.applied_at ?? null;
+  const paletteSwapTimestamp = lastSwapAppliedAt
+    ? new Date(lastSwapAppliedAt).toLocaleTimeString()
+    : null;
+
   const instructions = useMemo(() => project.instructions, [project.instructions]);
 
   useEffect(() => {
@@ -271,7 +276,9 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
           <div className="px-4 pb-3 text-xs text-rose-600">{swapError}</div>
         ) : lastSwap ? (
           <div className="px-4 pb-3 text-xs text-emerald-600">
-            Palette applied at {new Date(lastSwap.applied_at).toLocaleTimeString()}.
+            {paletteSwapTimestamp
+              ? `Palette applied at ${paletteSwapTimestamp}.`
+              : "Palette swap applied."}
           </div>
         ) : null}
       </header>

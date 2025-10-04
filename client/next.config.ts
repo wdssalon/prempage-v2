@@ -1,7 +1,9 @@
+import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Root tells Next where to trace files when multiple lockfiles exist (workspace + client).
+  outputFileTracingRoot: path.join(__dirname, ".."),
 };
 
 export default nextConfig;

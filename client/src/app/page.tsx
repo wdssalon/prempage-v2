@@ -20,6 +20,20 @@ export default function HomePage() {
     useState<HorizonPaletteSwapResponse | null>(null);
   const projects = useMemo(() => listStudioProjects(), []);
 
+  const lastSwapAppliedAt = lastSwap?.applied_at ?? null;
+  const paletteSwapTime = lastSwapAppliedAt
+    ? new Date(lastSwapAppliedAt).toLocaleTimeString()
+    : null;
+
+  const healthTimestamp = health?.timestamp ?? null;
+  const formattedHealthTimestamp = healthTimestamp
+    ? new Intl.DateTimeFormat("en-US", {
+        dateStyle: "short",
+        timeStyle: "medium",
+        timeZone: "UTC",
+      }).format(new Date(healthTimestamp))
+    : null;
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -114,7 +128,9 @@ export default function HomePage() {
                 <p className="text-rose-600">{swapError}</p>
               ) : lastSwap ? (
                 <p className="text-emerald-600">
-                  Applied at {new Date(lastSwap.applied_at).toLocaleTimeString()}.
+                  {paletteSwapTime
+                    ? `Applied at ${paletteSwapTime}.`
+                    : "Palette swap applied."}
                 </p>
               ) : (
                 <p>Trigger a new Horizon palette with one click.</p>
@@ -164,15 +180,7 @@ export default function HomePage() {
                     ? `${health.uptime_seconds.toFixed(1)}s`
                     : "Unavailable"}
                 </p>
-                <p>
-                  Timestamp: {health.timestamp
-                    ? new Intl.DateTimeFormat("en-US", {
-                        dateStyle: "short",
-                        timeStyle: "medium",
-                        timeZone: "UTC",
-                      }).format(new Date(health.timestamp))
-                    : "No timestamp provided"}
-                </p>
+                <p>Timestamp: {formattedHealthTimestamp ?? "No timestamp provided"}</p>
               </>
             ) : (
               <p className="text-slate-500">Loading health information…</p>

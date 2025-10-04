@@ -6,6 +6,7 @@ import {
   beforeEach,
   afterEach,
   vi,
+  it,
   type MockedFunction,
 } from "vitest";
 
@@ -45,7 +46,7 @@ describe("HomePage", () => {
   const healthPayload: HealthResponse = {
     status: "ok",
     message: "All good",
-    environment: "test",
+    environment: "dev",
     uptime_seconds: 120,
     timestamp: new Date("2024-01-01T00:00:00Z").toISOString(),
     service: {
@@ -54,15 +55,24 @@ describe("HomePage", () => {
     },
   };
 
-  const swapPayload = {
+  const swapPayload: HorizonPaletteSwapResponse = {
     applied_at: new Date("2024-01-01T01:23:45Z").toISOString(),
     palette: {
-      primary: "#111111",
-      secondary: "#222222",
-      accent: "#333333",
-      neutrals: [],
+      bg_base: "#111111",
+      bg_surface: "#222222",
+      bg_contrast: "#000000",
+      text_primary: "#111111",
+      text_secondary: "#444444",
+      text_inverse: "#ffffff",
+      brand_primary: "#0066ff",
+      brand_secondary: "#0055dd",
+      accent: "#ff3366",
+      border: "#e2e8f0",
+      ring: "#2563eb",
+      critical: "#dc2626",
+      critical_contrast: "#ffffff",
     },
-  } as HorizonPaletteSwapResponse;
+  };
 
   beforeEach(() => {
     mockFetchHealth.mockResolvedValue(healthPayload);

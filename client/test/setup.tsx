@@ -9,25 +9,68 @@ declare global {
 }
 
 if (typeof window !== "undefined" && !window.matchMedia) {
-  const listeners = new Set<(event: MediaQueryListEvent) => void>();
+  type MediaQueryListener = (event: MediaQueryListEvent) => void;
+  const listeners = new Set<MediaQueryListener>();
+  const listenerStore = new WeakMap<EventListenerOrEventListenerObject, MediaQueryListener>();
+
+  const toListener = (
+    candidate: EventListenerOrEventListenerObject,
+  ): MediaQueryListener | null => {
+    if (typeof candidate === "function") {
+      return candidate as MediaQueryListener;
+    }
+
+    if (
+      candidate &&
+      typeof (candidate as EventListenerObject).handleEvent === "function"
+    ) {
+      const handler = candidate as EventListenerObject;
+      return (event: MediaQueryListEvent) => {
+        handler.handleEvent(event);
+      };
+    }
+
+    return null;
+  };
+
   const createList = (matches: boolean): MediaQueryList => ({
     matches,
     media: "",
     onchange: null,
-    addEventListener: (_event, listener) => {
-      listeners.add(listener);
+    addEventListener: (
+      _event: keyof MediaQueryListEventMap | string,
+      listener: EventListenerOrEventListenerObject,
+      _options?: boolean | AddEventListenerOptions,
+    ) => {
+      const resolved = toListener(listener);
+      if (resolved) {
+        listenerStore.set(listener, resolved);
+        listeners.add(resolved);
+      }
     },
-    removeEventListener: (_event, listener) => {
-      listeners.delete(listener);
+    removeEventListener: (
+      _event: keyof MediaQueryListEventMap | string,
+      listener: EventListenerOrEventListenerObject,
+      _options?: boolean | EventListenerOptions,
+    ) => {
+      const resolved = listenerStore.get(listener);
+      if (resolved) {
+        listeners.delete(resolved);
+        listenerStore.delete(listener);
+      }
     },
-    addListener: (listener) => {
-      listeners.add(listener);
+    addListener: (listener: MediaQueryListener | null) => {
+      if (listener) {
+        listeners.add(listener);
+      }
     },
-    removeListener: (listener) => {
-      listeners.delete(listener);
+    removeListener: (listener: MediaQueryListener | null) => {
+      if (listener) {
+        listeners.delete(listener);
+      }
     },
-    dispatchEvent: (event) => {
-      listeners.forEach((listener) => listener(event));
+    dispatchEvent: (event: Event) => {
+      listeners.forEach((listener) => listener(event as MediaQueryListEvent));
       return true;
     },
   });
