@@ -92,6 +92,16 @@ uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localh
 
 - Responses return deduped images/fonts plus a `text_blob` and best-guess `navigation` tree for downstream tooling.
 
+### Regenerating the Horizon example site
+Cookiecutting wipes and recreates `public-sites/sites/horizon-example/`, then the compose rebuild refreshes the Studio container with the new site bundle. Run these commands from the repo root whenever you need a clean Horizon workspace:
+
+```bash
+python public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py
+docker compose up --build --force-recreate --remove-orphans -d
+```
+
+The compose step ensures the frontend container installs Linux-native dependencies (including Lightning CSS) after regeneration.
+
 ### Overlay Editing Checklist
 1. Refresh overlay deps after Docker modifies shared `node_modules`:
    ```bash

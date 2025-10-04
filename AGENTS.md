@@ -92,6 +92,16 @@ uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localh
 
 - Response payloads include deduplicated image/font lists, a flattened `text_blob`, and an inferred `navigation` hierarchy when menus are detected.
 
+### Regenerating the Horizon example site
+Use the automation script to reset `public-sites/sites/horizon-example/`, then rebuild the Docker stack so the Studio container picks up the refreshed bundle:
+
+```bash
+python public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py
+docker compose up --build --force-recreate --remove-orphans -d
+```
+
+The compose step reinstalls Linux `node_modules` inside the frontend container, preventing Lightning CSS mismatches after regeneration.
+
 ### Overlay Editing Loop
 1. Rebuild the overlay bundle after Docker touches shared `node_modules`:
    ```bash

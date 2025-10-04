@@ -141,6 +141,16 @@ Run these from `client/`:
 - Template-specific build/deploy instructions live under `public-sites/templates/<template>/` (config, supplement) with automation manifests in `agents/templates/<template>/`. Run `./public-sites/scripts/horizon/build-static-site.sh <site-slug>` to mimic the production static export (`pnpm run check` → `out/`).
 - Keep static assets (images, CSS overrides, fonts) scoped inside each `public-sites/sites/<site-slug>/` bundle. The repo-level `.gitignore` already excludes per-site `images/` directories under `public-sites/sites/` so new exports stay clean.
 
+### Regenerating the Horizon example site
+The cookiecutter script wipes and rehydrates `public-sites/sites/horizon-example/`, then the compose rebuild ensures the Studio container picks up the latest bundle. Run these from the repo root whenever you need a fresh Horizon workspace:
+
+```bash
+python public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py
+docker compose up --build --force-recreate --remove-orphans -d
+```
+
+The compose step recreates the frontend container with clean Linux `node_modules`, so the Studio comes back online with the regenerated site.
+
 ## Backend ↔ Frontend Contract
 
 - Shared models live under `backend/app/models/`. The `/health` endpoint returns a `HealthCheckResponse` payload built from those schemas.
