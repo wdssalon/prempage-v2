@@ -34,9 +34,29 @@ class OverlayEditEvent(BaseModel):
     meta: OverlayEditMeta
 
 
+class OverlayEditResponse(BaseModel):
+    """Summary of an applied overlay edit."""
+
+    status: Literal["applied"] = Field(
+        "applied", description="Indicates the edit was applied to the source file"
+    )
+    project_slug: str = Field(..., alias="projectSlug")
+    relative_path: str = Field(
+        ...,
+        alias="relativePath",
+        description="Path to the updated file relative to the repository root",
+    )
+    previous_text: str = Field(
+        ..., alias="previousText", description="Text that was replaced"
+    )
+    updated_text: str = Field(
+        ..., alias="updatedText", description="New text that was written"
+    )
+
+
 __all__ = [
     "OverlayEditEvent",
     "OverlayEditMeta",
     "OverlayEditPayload",
+    "OverlayEditResponse",
 ]
-

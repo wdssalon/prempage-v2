@@ -5,11 +5,12 @@ const DEFAULT_API_BASE_URL = "http://localhost:8000";
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_BASE_URL;
 
 export type OverlayEditEvent = components["schemas"]["OverlayEditEvent"];
+export type OverlayEditResponse = components["schemas"]["OverlayEditResponse"];
 
 export async function logOverlayEdit(
   event: OverlayEditEvent,
   signal?: AbortSignal,
-): Promise<void> {
+): Promise<OverlayEditResponse> {
   const response = await fetch(`${apiBaseUrl}/overlay/events/edit`, {
     method: "POST",
     headers: {
@@ -27,4 +28,6 @@ export async function logOverlayEdit(
       }`,
     );
   }
+
+  return (await response.json()) as OverlayEditResponse;
 }

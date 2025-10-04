@@ -173,9 +173,13 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
           projectSlug: slug,
           payload: data.payload,
           meta: data.meta,
-        }).catch((error) => {
-          console.error("Failed to log overlay edit", error);
-        });
+        })
+          .then((result) => {
+            console.info("Overlay edit applied", result);
+          })
+          .catch((error) => {
+            console.error("Failed to log overlay edit", error);
+          });
       }
     };
 

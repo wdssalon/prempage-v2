@@ -87,7 +87,7 @@
           "overlay"
         ],
         "summary": "Ingest Overlay Edit",
-        "description": "Accept an overlay edit payload and log it for downstream processing.",
+        "description": "Accept an overlay edit payload and apply it to the target source file.",
         "operationId": "ingest_overlay_edit_overlay_events_edit_post",
         "requestBody": {
           "content": {
@@ -100,16 +100,12 @@
           "required": true
         },
         "responses": {
-          "202": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": {
-                    "type": "string"
-                  },
-                  "type": "object",
-                  "title": "Response Ingest Overlay Edit Overlay Events Edit Post"
+                  "$ref": "#/components/schemas/OverlayEditResponse"
                 }
               }
             }
@@ -370,6 +366,45 @@
         ],
         "title": "OverlayEditPayload",
         "description": "Text edit emitted from the in-page overlay."
+      },
+      "OverlayEditResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "applied",
+            "title": "Status",
+            "description": "Indicates the edit was applied to the source file",
+            "default": "applied"
+          },
+          "projectSlug": {
+            "type": "string",
+            "title": "Projectslug"
+          },
+          "relativePath": {
+            "type": "string",
+            "title": "Relativepath",
+            "description": "Path to the updated file relative to the repository root"
+          },
+          "previousText": {
+            "type": "string",
+            "title": "Previoustext",
+            "description": "Text that was replaced"
+          },
+          "updatedText": {
+            "type": "string",
+            "title": "Updatedtext",
+            "description": "New text that was written"
+          }
+        },
+        "type": "object",
+        "required": [
+          "projectSlug",
+          "relativePath",
+          "previousText",
+          "updatedText"
+        ],
+        "title": "OverlayEditResponse",
+        "description": "Summary of an applied overlay edit."
       },
       "ServiceMetadata": {
         "properties": {

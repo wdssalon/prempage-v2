@@ -55,7 +55,7 @@ export interface paths {
         put?: never;
         /**
          * Ingest Overlay Edit
-         * @description Accept an overlay edit payload and log it for downstream processing.
+         * @description Accept an overlay edit payload and apply it to the target source file.
          */
         post: operations["ingest_overlay_edit_overlay_events_edit_post"];
         delete?: never;
@@ -205,6 +205,36 @@ export interface components {
             text: string;
         };
         /**
+         * OverlayEditResponse
+         * @description Summary of an applied overlay edit.
+         */
+        OverlayEditResponse: {
+            /**
+             * Status
+             * @description Indicates the edit was applied to the source file
+             * @default applied
+             * @constant
+             */
+            status: "applied";
+            /** Projectslug */
+            projectSlug: string;
+            /**
+             * Relativepath
+             * @description Path to the updated file relative to the repository root
+             */
+            relativePath: string;
+            /**
+             * Previoustext
+             * @description Text that was replaced
+             */
+            previousText: string;
+            /**
+             * Updatedtext
+             * @description New text that was written
+             */
+            updatedText: string;
+        };
+        /**
          * ServiceMetadata
          * @description Metadata describing the running backend service.
          */
@@ -301,14 +331,12 @@ export interface operations {
         };
         responses: {
             /** @description Successful Response */
-            202: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: string;
-                    };
+                    "application/json": components["schemas"]["OverlayEditResponse"];
                 };
             };
             /** @description Validation Error */
