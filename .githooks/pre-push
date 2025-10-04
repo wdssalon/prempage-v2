@@ -22,7 +22,7 @@ for slug in "${SLUGS[@]}"; do
   fi
 
   echo "[pre-push] Installing dependencies for ${slug}"
-  pnpm --dir "${site_dir}" install --frozen-lockfile --prefer-offline >/dev/null
+  CI=1 pnpm --dir "${site_dir}" install --frozen-lockfile --prefer-offline >/dev/null
 
   echo "[pre-push] Linting ${slug}"
   pnpm --dir "${site_dir}" run lint
