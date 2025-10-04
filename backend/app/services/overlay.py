@@ -5,6 +5,7 @@ import html
 import os
 import re
 from dataclasses import dataclass
+from http import HTTPStatus
 from pathlib import Path
 
 from fastapi import HTTPException, status
@@ -37,13 +38,13 @@ def _parse_ppid(ppid: str) -> tuple[str, str]:
         scheme, remainder = ppid.split(":", 1)
     except ValueError as exc:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail="Invalid PPID format",
         ) from exc
 
     if scheme != PPID_PREFIX_CODE:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail=f"Unsupported PPID namespace '{scheme}'",
         )
 
@@ -51,7 +52,7 @@ def _parse_ppid(ppid: str) -> tuple[str, str]:
         path_fragment, anchor = remainder.split("#", 1)
     except ValueError as exc:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail="PPID missing anchor identifier",
         ) from exc
 
@@ -91,7 +92,7 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
 
     if not event.payload.text:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail="Overlay text payload is empty",
         )
 

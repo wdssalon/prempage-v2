@@ -71,6 +71,7 @@ def overlay_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Ov
 
 
 @pytest.fixture
-def api_client(overlay_repo: OverlayFixture) -> TestClient:  # pragma: no cover - fixture
+def api_client(overlay_repo: OverlayFixture) -> Iterator[TestClient]:  # pragma: no cover - fixture
   app = create_app()
-  return TestClient(app)
+  with TestClient(app) as client:
+    yield client

@@ -85,7 +85,19 @@ class OpenAIPaletteGenerator(PaletteGenerator):
         if not key:
             raise PaletteGeneratorError("OPENAI_API_KEY is not configured")
 
-        self._client = OpenAI(api_key=key)
+        try:
+            self._client = OpenAI(api_key=key)
+        except ModuleNotFoundError as exc:
+            missing = exc.name
+            if not missing:
+                message = str(exc)
+                if "'" in message:
+                    missing = message.split("'")[1]
+                else:
+                    missing = message or "dependency"
+            raise PaletteGeneratorError(
+                f"OpenAI client dependency '{missing}' is missing; run `uv sync --frozen` in backend/"
+            ) from exc
         self._model = model
         self._debugger = InteractionDebugger.from_env(
             flag_env="PREMPAGE_OPENAI_DEBUG",

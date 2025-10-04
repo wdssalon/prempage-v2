@@ -229,26 +229,6 @@ curl http://localhost:8000/docs
 - Do not include "Args" and "Returns" in function comments.
 - Handlers should be slim.
 
-## Code Review Process
-
-When receiving code review feedback:
-
-1. **Analyze Each Point**: Go through feedback one by one
-2. **Provide Analysis**: For each point, give:
-   - Your assessment of the feedback
-   - Pros and cons of making the change
-   - Alternative approaches if applicable
-3. **Wait for Approval**: Don't make changes until explicitly approved
-4. **Implement Approved Changes**: Only make changes that have been approved
-
-### Code Review Flow
-
-```
-Reviewer Feedback → Analysis + Pros/Cons → User Approval → Implementation
-```
-
-This ensures all changes are deliberate and agreed upon.
-
 ## VERY IMPORTANT
 
 - Focus on writing clear, DRY, simple code.

@@ -5,6 +5,7 @@ description = "Boilerplate FastAPI service for Prempage V2"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.117.1",
+    "httpcore>=1.0.0",
     "loguru>=0.7.3",
     "openai>=1.55.3",
     "pytest>=8.3.3",

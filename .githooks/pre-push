@@ -7,12 +7,28 @@ if ! python3 scripts/check_openapi_sync.py; then
   exit 1
 fi
 
-SLUGS=("progressivewaytherapy-horizon")
-
-if ! command -v pnpm >/dev/null 2>&1; then
-  echo "[pre-push] pnpm is required to lint static sites. Install pnpm (Node >= 20) first." >&2
+if ! command -v uv >/dev/null 2>&1; then
+  echo "[pre-push] uv is required to run backend tests. Install uv (Python >= 3.11) first." >&2
   exit 1
 fi
+
+echo "[pre-push] Running FastAPI backend tests"
+( cd backend && uv run --active pytest )
+echo "[pre-push] FastAPI backend tests passed"
+
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "[pre-push] pnpm is required to run Studio tests and lint static sites. Install pnpm (Node >= 20) first." >&2
+  exit 1
+fi
+
+echo "[pre-push] Ensuring Studio dependencies are installed"
+CI=1 pnpm --dir client install --frozen-lockfile >/dev/null
+
+echo "[pre-push] Running Studio UI tests"
+CI=1 pnpm --dir client run test
+echo "[pre-push] Studio UI tests passed"
+
+SLUGS=("progressivewaytherapy-horizon")
 
 for slug in "${SLUGS[@]}"; do
   site_dir="public-sites/sites/${slug}"
