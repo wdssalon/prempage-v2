@@ -15,7 +15,7 @@ export const serviceGroups = [
     services: [
       {
         id: "emdr-therapy",
-        label: "EMDR Therapi",
+        label: "EMDR Therapy",
         itemPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.services.emdr-therapy.item",
         labelPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.services.emdr-therapy.label",
       },
@@ -33,7 +33,7 @@ export const serviceGroups = [
       },
       {
         id: "grief-bereavement",
-        label: "Grief & Bereavementy",
+        label: "Grief & Bereavement",
         itemPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.services.grief-bereavement.item",
         labelPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.services.grief-bereavement.label",
       },
@@ -61,7 +61,7 @@ export const serviceGroups = [
     services: [
       {
         id: "anxiety-management",
-        label: "Anxiety Managementy",
+        label: "Anxiety Management",
         itemPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.anxiety-depression.services.anxiety-management.item",
         labelPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.anxiety-depression.services.anxiety-management.label",
       },
@@ -113,7 +113,7 @@ export const serviceGroups = [
       },
       {
         id: "womens-issues",
-        label: "Women's Issuesy",
+        label: "Women's Issues",
         itemPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.identity-relationships.services.womens-issues.item",
         labelPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.identity-relationships.services.womens-issues.label",
       },

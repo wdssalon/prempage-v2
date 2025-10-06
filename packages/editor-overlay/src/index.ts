@@ -26,6 +26,8 @@ type InternalState = {
   originalText: string;
 };
 
+const CLICK_CAPTURE_OPTIONS: AddEventListenerOptions = { capture: true };
+
 const defaultState: InternalState = {
   current: null,
   originalText: "",
@@ -219,23 +221,35 @@ export function initOverlay(options: OverlayOptions = {}) {
     const target = getEditableElement(event.target);
     if (!target) return;
 
+    console.debug("[overlay] intercepting click for editing", {
+      ppid: target.dataset.ppid,
+      tag: target.tagName,
+      defaultPrevented: event.defaultPrevented,
+    });
+
     event.preventDefault();
+    event.stopImmediatePropagation();
     activateEditing(target);
   };
 
-  const addListener = (node: Document | HTMLElement, type: string, handler: EventListener) => {
-    node.addEventListener(type, handler);
+  const addListener = (
+    node: Document | HTMLElement,
+    type: string,
+    handler: EventListener,
+    options?: boolean | AddEventListenerOptions,
+  ) => {
+    node.addEventListener(type, handler, options);
   };
 
   addListener(root, "pointerover", handlePointerOver as EventListener);
   addListener(root, "pointerout", handlePointerOut as EventListener);
-  addListener(root, "click", handleClick as EventListener);
+  addListener(root, "click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
 
   const destroy = () => {
     teardownEditing(state);
     root.removeEventListener("pointerover", handlePointerOver as EventListener);
     root.removeEventListener("pointerout", handlePointerOut as EventListener);
-    root.removeEventListener("click", handleClick as EventListener);
+    root.removeEventListener("click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
   };
 
   return { destroy };
