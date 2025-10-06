@@ -17,15 +17,17 @@ export default function OverlayBridge() {
       return undefined;
     }
 
-    const ensureOverlay = async () => {
+    const ensureOverlay = async (notifyParent = true) => {
       console.time("[overlay] ensureOverlay");
       if (window.__premOverlayController) {
         console.debug("[overlay] controller already cached");
         const existing = window.__premOverlayController;
-        window.parent?.postMessage(
-          { source: SITE_SOURCE, type: "overlay-mounted" },
-          "*",
-        );
+        if (notifyParent) {
+          window.parent?.postMessage(
+            { source: SITE_SOURCE, type: "overlay-mounted" },
+            "*",
+          );
+        }
         console.timeEnd("[overlay] ensureOverlay");
         return existing;
       }
@@ -38,10 +40,12 @@ export default function OverlayBridge() {
             const controller = module.initOverlay();
             window.__premOverlayController = controller;
             console.timeEnd("[overlay] ensureOverlay");
-            window.parent?.postMessage(
-              { source: SITE_SOURCE, type: "overlay-mounted" },
-              "*",
-            );
+            if (notifyParent) {
+              window.parent?.postMessage(
+                { source: SITE_SOURCE, type: "overlay-mounted" },
+                "*",
+              );
+            }
             return controller;
           })
           .catch((error) => {
@@ -79,6 +83,21 @@ export default function OverlayBridge() {
         ensureOverlay().catch(() => {
           /* error already logged */
         });
+      } else if (data.type === "overlay-set-mode") {
+        console.debug("[overlay] received overlay-set-mode", data.editing);
+        const applyEditing = (controller) => {
+          controller?.setEditingEnabled?.(Boolean(data.editing));
+        };
+
+        if (window.__premOverlayController) {
+          applyEditing(window.__premOverlayController);
+        } else {
+          ensureOverlay(false)
+            .then(applyEditing)
+            .catch(() => {
+              /* error already logged */
+            });
+        }
       } else if (data.type === "overlay-destroy") {
         console.debug("[overlay] received overlay-destroy from studio");
         destroyOverlay();

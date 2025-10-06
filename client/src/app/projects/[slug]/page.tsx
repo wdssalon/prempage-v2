@@ -42,6 +42,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const overlayMountedRef = useRef(false);
   const overlayInitIntervalRef = useRef<number | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const lastSwapAppliedAt = lastSwap?.applied_at ?? null;
   const paletteSwapTimestamp = lastSwapAppliedAt
@@ -100,17 +101,26 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     window.addEventListener("pointerup", stopResize, { once: true });
   }, [isDesktop]);
 
-  const sendOverlayInit = useCallback(() => {
+  const postToIframe = useCallback((message: unknown) => {
     const frame = iframeRef.current;
     if (!frame) {
       return;
     }
 
-    frame.contentWindow?.postMessage(
-      { source: "prempage-studio", type: "overlay-init" },
-      "*",
-    );
+    frame.contentWindow?.postMessage(message, "*");
   }, []);
+
+  const sendOverlayInit = useCallback(() => {
+    postToIframe({ source: "prempage-studio", type: "overlay-init" });
+  }, [postToIframe]);
+
+  const syncOverlayMode = useCallback(() => {
+    postToIframe({
+      source: "prempage-studio",
+      type: "overlay-set-mode",
+      editing: isEditMode,
+    });
+  }, [isEditMode, postToIframe]);
 
   const clearOverlayInitInterval = useCallback(() => {
     if (overlayInitIntervalRef.current !== null) {
@@ -164,6 +174,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
           console.debug("[overlay] overlay-mounted received from site");
           overlayMountedRef.current = true;
           clearOverlayInitInterval();
+          syncOverlayMode();
         } else if (data.type === "overlay-destroy") {
           console.debug("[overlay] overlay-destroy received from site");
           overlayMountedRef.current = false;
@@ -194,12 +205,21 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
       window.removeEventListener("message", handleMessage);
       clearOverlayInitInterval();
     };
-  }, [clearOverlayInitInterval, requestOverlayInit, slug]);
+  }, [
+    clearOverlayInitInterval,
+    requestOverlayInit,
+    slug,
+    syncOverlayMode,
+  ]);
 
   useEffect(() => {
     overlayMountedRef.current = false;
     requestOverlayInit();
   }, [requestOverlayInit]);
+
+  useEffect(() => {
+    syncOverlayMode();
+  }, [syncOverlayMode]);
 
   const leftPaneStyle: CSSProperties | undefined = useMemo(() => {
     if (!isDesktop) {
@@ -346,6 +366,33 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
                   aria-label="Send message"
                 >
                   →
+                </button>
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-2">
+                <span className="text-[11px] text-slate-400">
+                  {isEditMode
+                    ? "Links disabled while editing"
+                    : "All links active until you enter edit"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditMode((previous) => {
+                      const next = !previous;
+                      if (next && !overlayMountedRef.current) {
+                        requestOverlayInit();
+                      }
+                      return next;
+                    });
+                  }}
+                  aria-pressed={isEditMode}
+                  className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 ${
+                    isEditMode
+                      ? "bg-slate-900 text-white hover:bg-slate-800"
+                      : "border border-stone-200 bg-white text-slate-600 hover:border-stone-300 hover:text-slate-900"
+                  }`}
+                >
+                  {isEditMode ? "Editing" : "Edit"}
                 </button>
               </div>
             </form>

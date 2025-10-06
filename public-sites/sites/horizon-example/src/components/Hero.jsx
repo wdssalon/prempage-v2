@@ -125,12 +125,17 @@ export default function Hero({ sectionId, variant = "default" }) {
               href="/?intent=hero-consultation#book-consultation"
               className={isAda ? "btn-primary" : "btn-primary is-on-dark"}
               prefetch={false}
-              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.1">Book Free 15-Minute Consultationnn</Link>
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.1">
+              <Phone className="w-5 h-5" aria-hidden="true" />
+              Book Free 15-Minute Consultation
+            </Link>
             <Link
               href="/#services"
               className="btn-secondary"
               prefetch={false}
-              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.2">Learn About Our Servicesss</Link>
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.2">
+              Learn About Our Services
+            </Link>
           </div>
 
           <div className="mt-12 text-center">

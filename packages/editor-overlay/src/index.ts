@@ -17,6 +17,8 @@ export type OverlayOptions = {
   root?: Document | HTMLElement;
   /** Called whenever a text edit is committed. */
   onCommit?: (payload: OverlayEditPayload, meta: CommitMeta) => void;
+  /** Whether editing should be enabled when the overlay boots. Defaults to false. */
+  editingInitiallyEnabled?: boolean;
 };
 
 type EditableElement = HTMLElement & { dataset: { ppid?: string } };
@@ -24,14 +26,18 @@ type EditableElement = HTMLElement & { dataset: { ppid?: string } };
 type InternalState = {
   current: EditableElement | null;
   originalText: string;
+  editingEnabled: boolean;
 };
 
 const CLICK_CAPTURE_OPTIONS: AddEventListenerOptions = { capture: true };
 
-const defaultState: InternalState = {
-  current: null,
-  originalText: "",
-};
+function createInitialState(editingInitiallyEnabled: boolean): InternalState {
+  return {
+    current: null,
+    originalText: "",
+    editingEnabled: editingInitiallyEnabled,
+  };
+}
 
 function resolveDocument(root: Document | HTMLElement | undefined): Document {
   if (!root) {
@@ -105,6 +111,12 @@ function setHover(el: EditableElement | null, shouldHover: boolean) {
   }
 }
 
+function clearHoverState(root: Document | HTMLElement) {
+  root
+    .querySelectorAll<EditableElement>(`[data-ppid].${HOVER_CLASS}`)
+    .forEach((el) => el.classList.remove(HOVER_CLASS));
+}
+
 function setEditing(el: EditableElement | null, isEditing: boolean) {
   if (!el) return;
   if (isEditing) {
@@ -135,17 +147,21 @@ export function initOverlay(options: OverlayOptions = {}) {
   const root = options.root ?? window.document;
   const rootDoc = resolveDocument(root);
   const dispatch = options.onCommit ?? defaultDispatch;
-  const state: InternalState = { ...defaultState };
+  const state: InternalState = createInitialState(
+    options.editingInitiallyEnabled ?? false,
+  );
 
   injectStyles(rootDoc);
 
   const handlePointerOver = (event: Event) => {
+    if (!state.editingEnabled) return;
     const target = getEditableElement(event.target);
     if (!target || target === state.current) return;
     setHover(target, true);
   };
 
   const handlePointerOut = (event: Event) => {
+    if (!state.editingEnabled) return;
     const target = getEditableElement(event.target);
     if (!target || target === state.current) return;
 
@@ -198,6 +214,7 @@ export function initOverlay(options: OverlayOptions = {}) {
   };
 
   const activateEditing = (element: EditableElement) => {
+    if (!state.editingEnabled) return;
     if (state.current === element) return;
     if (state.current) {
       teardownEditing(state);
@@ -220,6 +237,14 @@ export function initOverlay(options: OverlayOptions = {}) {
   const handleClick = (event: MouseEvent) => {
     const target = getEditableElement(event.target);
     if (!target) return;
+
+    if (!state.editingEnabled) {
+      console.debug("[overlay] click ignored; editing disabled", {
+        ppid: target.dataset.ppid,
+        tag: target.tagName,
+      });
+      return;
+    }
 
     console.debug("[overlay] intercepting click for editing", {
       ppid: target.dataset.ppid,
@@ -245,14 +270,30 @@ export function initOverlay(options: OverlayOptions = {}) {
   addListener(root, "pointerout", handlePointerOut as EventListener);
   addListener(root, "click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
 
+  const setEditingEnabled = (enabled: boolean) => {
+    if (state.editingEnabled === enabled) {
+      return;
+    }
+
+    console.debug("[overlay] editing mode", enabled ? "enabled" : "disabled");
+
+    if (!enabled) {
+      teardownEditing(state);
+      clearHoverState(root);
+    }
+
+    state.editingEnabled = enabled;
+  };
+
   const destroy = () => {
     teardownEditing(state);
+    clearHoverState(root);
     root.removeEventListener("pointerover", handlePointerOver as EventListener);
     root.removeEventListener("pointerout", handlePointerOut as EventListener);
     root.removeEventListener("click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
   };
 
-  return { destroy };
+  return { destroy, setEditingEnabled };
 }
 
 export type OverlayController = ReturnType<typeof initOverlay>;

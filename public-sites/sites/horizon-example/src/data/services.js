@@ -9,7 +9,7 @@ export const serviceGroups = [
     descriptionPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.description",
     listPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.services",
     ctaHref: "/?intent=trauma-recovery#contact",
-    ctaLabel: "Learn More",
+    ctaLabel: "Learn Mor\n",
     ctaPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.cta",
     ctaLabelPpid: "code:public-sites/sites/horizon-example/src/data/services.js#serviceGroups.trauma-recovery.ctaLabel",
     services: [
