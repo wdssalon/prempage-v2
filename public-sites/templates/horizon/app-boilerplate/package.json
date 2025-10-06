@@ -9,19 +9,23 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@prempage/editor-overlay": "workspace:*",
     "lucide-react": "^0.462.0",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "tailwindcss-animate": "^1.0.7",
-    "@prempage/editor-overlay": "workspace:*"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@babel/parser": "^7.28.4",
+    "@babel/traverse": "^7.28.4",
+    "@babel/types": "^7.28.4",
     "@eslint/eslintrc": "^3.3.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.37.0",
     "eslint-config-next": "15.5.4",
     "postcss": "^8.5.6",
+    "recast": "^0.23.11",
     "tailwindcss": "^3.4.17"
   },
   "optionalDependencies": {

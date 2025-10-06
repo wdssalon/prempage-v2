@@ -62,23 +62,30 @@ export default function FinalCTA({ sectionId, variant = "default" }) {
               src={communityImage}
               alt="Diverse community supporting each other"
               className="w-full h-full object-cover opacity-20"
-            />
+              data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.image.1" />
           ) : (
             <div className="w-full h-full bg-brand/20" />
           )}
           <div className={overlayClass} />
         </div>
       )}
-
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="animate-fade-in-up">
-            <h2 id={headingId} className={headingClasses}>
+            <h2
+              id={headingId}
+              className={headingClasses}
+              data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.heading.1">
               Ready to Start Your
-              <span className="block text-accent">Healing Journey?</span>
+              <span
+                className="block text-accent"
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.inline.1">Healing Journey?</span>
             </h2>
 
-            <p id={descriptionId} className={descriptionClasses}>
+            <p
+              id={descriptionId}
+              className={descriptionClasses}
+              data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.1">
               Take the first step toward authentic healing. Your free consultation is completely confidential and
               pressure-free.
             </p>
@@ -87,31 +94,51 @@ export default function FinalCTA({ sectionId, variant = "default" }) {
           <div className="grid md:grid-cols-3 gap-6 mb-12 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             <div className="bg-surface/70 rounded-md p-6 border border-border/30 shadow-gentle">
               <Phone className={cn("w-8 h-8 mx-auto mb-4", variant === "ada" ? "text-brand" : "text-accent")} aria-hidden="true" />
-              <h3 className={cardTitleClasses}>Free Consultation</h3>
-              <p className={cardBodyClasses}>15-minute phone call to see if we're a good fit</p>
+              <h3
+                className={cardTitleClasses}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.heading.2">Free Consultation</h3>
+              <p
+                className={cardBodyClasses}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.2">15-minute phone call to see if we're a good fit</p>
               <Link
                 href="/?intent=cta-consultation#book-consultation"
                 className={callToActionClasses}
                 prefetch={false}
-              >
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.link.1">
                 Book Now
               </Link>
             </div>
 
             <div className="bg-surface/70 rounded-md p-6 border border-border/30 shadow-gentle">
               <MessageSquare className={cn("w-8 h-8 mx-auto mb-4", variant === "ada" ? "text-brand" : "text-accent")} aria-hidden="true" />
-              <h3 className={cardTitleClasses}>Send a Message</h3>
-              <p className={cardBodyClasses}>Share your story and questions securely</p>
-              <Link href="/?intent=cta-message#contact" className={callToActionClasses} prefetch={false}>
+              <h3
+                className={cardTitleClasses}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.heading.3">Send a Message</h3>
+              <p
+                className={cardBodyClasses}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.3">Share your story and questions securely</p>
+              <Link
+                href="/?intent=cta-message#contact"
+                className={callToActionClasses}
+                prefetch={false}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.link.2">
                 Contact Form
               </Link>
             </div>
 
             <div id="calendar" className="bg-surface/70 rounded-md p-6 border border-border/30 shadow-gentle">
               <Calendar className={cn("w-8 h-8 mx-auto mb-4", variant === "ada" ? "text-brand" : "text-accent")} aria-hidden="true" />
-              <h3 className={cardTitleClasses}>Direct Scheduling</h3>
-              <p className={cardBodyClasses}>Book your first session online to get started.</p>
-              <Link href="/?intent=cta-calendar#calendar" className={callToActionClasses} prefetch={false}>
+              <h3
+                className={cardTitleClasses}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.heading.4">Direct Scheduling</h3>
+              <p
+                className={cardBodyClasses}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.4">Book your first session online to get started.</p>
+              <Link
+                href="/?intent=cta-calendar#calendar"
+                className={callToActionClasses}
+                prefetch={false}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.link.3">
                 View Calendar
               </Link>
             </div>
@@ -120,33 +147,47 @@ export default function FinalCTA({ sectionId, variant = "default" }) {
           <div className="bg-surface/60 rounded-md p-8 border border-border/30 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center justify-center mb-4">
               <MapPin className={inlineIconClasses} aria-hidden="true" />
-              <span className={cn("font-medium", variant === "ada" ? "text-brand" : "text-inverse")}>Serving All of Texas via Telehealth</span>
+              <span
+                className={cn("font-medium", variant === "ada" ? "text-brand" : "text-inverse")}
+                data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.inline.2">Serving All of Texas via Telehealth</span>
             </div>
 
             <div className={cn("grid md:grid-cols-2 gap-8", variant === "ada" ? "text-muted" : "text-inverse/80")}
             >
               <div>
-                <h4 className={supportingLabelClasses}>Available Hours</h4>
+                <h4
+                  className={supportingLabelClasses}
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.heading.5">Available Hours</h4>
                 <div className={supportingTextClasses}>
-                  <p>Monday - Thursday: 9am - 7pm</p>
-                  <p>Friday: 9am - 5pm</p>
-                  <p>Weekend: Limited availability</p>
+                  <p
+                    data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.5">Monday - Thursday: 9am - 7pm</p>
+                  <p
+                    data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.6">Friday: 9am - 5pm</p>
+                  <p
+                    data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.7">Weekend: Limited availability</p>
                 </div>
               </div>
 
               <div>
-                <h4 className={supportingLabelClasses}>What to Expect</h4>
+                <h4
+                  className={supportingLabelClasses}
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.heading.6">What to Expect</h4>
                 <div className={supportingTextClasses}>
-                  <p>✓ Completely confidential space</p>
-                  <p>✓ No judgment, just compassion</p>
-                  <p>✓ Evidence-based treatment</p>
+                  <p
+                    data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.8">✓ Completely confidential space</p>
+                  <p
+                    data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.9">✓ No judgment, just compassion</p>
+                  <p
+                    data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.10">✓ Evidence-based treatment</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="mt-8 text-center animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
-            <p className={cn("text-sm", variant === "ada" ? "text-muted" : "text-inverse/70") }>
+            <p
+              className={cn("text-sm", variant === "ada" ? "text-muted" : "text-inverse/70") }
+              data-ppid="code:public-sites/sites/horizon-example/src/components/FinalCTA.jsx#FinalCTA.body.11">
               If you're experiencing a mental health emergency, please call 988 (Suicide & Crisis Lifeline) or go to your
               nearest emergency room.
             </p>

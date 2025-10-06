@@ -111,19 +111,29 @@ export default function Navigation({ variant = "default" }) {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-40">
           <div className="flex items-center">
-            <Link href="/" aria-label="Go to home" className="flex items-center focus:outline-none">
+            <Link
+              href="/"
+              aria-label="Go to home"
+              className="flex items-center focus:outline-none"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.1">
               <img
                 src={logoSrc}
                 alt="Progressive Way Therapy Logo"
                 className="w-48 h-36 sm:w-56 sm:h-[10.5rem] md:w-64 md:h-48 object-contain"
-              />
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.image.1" />
             </Link>
           </div>
 
           <nav className="hidden xl:flex items-center space-x-6" aria-label="Primary navigation">
-            <ul className="flex items-center space-x-6">
-              <li>
-                <Link href="/about" className="text-copy hover:text-brand-soft transition-colors">
+            <ul
+              className="flex items-center space-x-6"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.list.1">
+              <li
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.1">
+                <Link
+                  href="/about"
+                  className="text-copy hover:text-brand-soft transition-colors"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.2">
                   About
                 </Link>
               </li>
@@ -134,7 +144,7 @@ export default function Navigation({ variant = "default" }) {
                 ref={(node) => {
                   dropdownRefs.current.services = node;
                 }}
-              >
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.2">
                 <button
                   type="button"
                   onClick={() => toggleDropdown("services")}
@@ -143,7 +153,7 @@ export default function Navigation({ variant = "default" }) {
                   aria-haspopup="true"
                   aria-expanded={activeDropdown === "services"}
                   aria-controls={SERVICES_MENU_ID}
-                >
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.cta.1">
                   Services <ChevronDown className="ml-1 w-4 h-4" />
                 </button>
                 {activeDropdown === "services" && (
@@ -155,111 +165,144 @@ export default function Navigation({ variant = "default" }) {
                   >
                     <div className="grid gap-4">
                       <div>
-                        <h3 className="font-serif font-semibold text-brand mb-2">Individual Therapy</h3>
-                        <ul className="space-y-1 text-sm">
-                          <li>
+                        <h3
+                          className="font-serif font-semibold text-brand mb-2"
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.heading.1">Individual Therapy</h3>
+                        <ul
+                          className="space-y-1 text-sm"
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.list.2">
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.3">
                             <Link
                               href="/services/individual-therapy"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.3">
                               Individual Counseling
                             </Link>
                           </li>
-                          <li>
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.4">
                             <Link
                               href="/services/individual-therapy/anxiety"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.4">
                               Counseling for Anxiety
                             </Link>
                           </li>
-                          <li>
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.5">
                             <Link
                               href="/services/individual-therapy/depression"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.5">
                               Therapy for Depression
                             </Link>
                           </li>
-                          <li>
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.6">
                             <Link
                               href="/services/individual-therapy/trauma"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.6">
                               Counseling for Trauma
                             </Link>
                           </li>
                         </ul>
                       </div>
                       <div>
-                        <h3 className="font-serif font-semibold text-brand mb-2">Specialized Support</h3>
-                        <ul className="space-y-1 text-sm">
-                          <li>
+                        <h3
+                          className="font-serif font-semibold text-brand mb-2"
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.heading.2">Specialized Support</h3>
+                        <ul
+                          className="space-y-1 text-sm"
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.list.3">
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.7">
                             <Link
                               href="/services/specialized-support/lgbtq"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.7">
                               LGBTQIA+
                             </Link>
                           </li>
-                          <li>
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.8">
                             <a
                               href="/#services"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.8">
                               Women's Issues
                             </a>
                           </li>
-                          <li>
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.9">
                             <a
                               href="/#services"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.9">
                               Pregnancy Complications / Miscarriage
                             </a>
                           </li>
-                          <li>
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.10">
                             <a
                               href="/#services"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.10">
                               Abortion
                             </a>
                           </li>
                         </ul>
                       </div>
                       <div>
-                        <h3 className="font-serif font-semibold text-brand mb-2">Trauma & Recovery</h3>
-                        <ul className="space-y-1 text-sm">
-                          <li>
+                        <h3
+                          className="font-serif font-semibold text-brand mb-2"
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.heading.3">Trauma & Recovery</h3>
+                        <ul
+                          className="space-y-1 text-sm"
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.list.4">
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.11">
                             <a
                               href="/#services"
                               className="text-muted hover:text-brand-soft transition-colors"
                               role="menuitem"
-                            >
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.11">
                               Sexual Assault / Sexual Abuse
                             </a>
                           </li>
-                          <li>
-                            <a href="/#services" className="text-muted hover:text-brand-soft transition-colors">
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.12">
+                            <a
+                              href="/#services"
+                              className="text-muted hover:text-brand-soft transition-colors"
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.12">
                               Domestic Violence & Toxic Relationships
                             </a>
                           </li>
-                          <li>
-                            <a href="/#services" className="text-muted hover:text-brand-soft transition-colors">
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.13">
+                            <a
+                              href="/#services"
+                              className="text-muted hover:text-brand-soft transition-colors"
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.13">
                               Grief & Bereavement Counseling
                             </a>
                           </li>
-                          <li>
-                            <a href="/#services" className="text-muted hover:text-brand-soft transition-colors">
+                          <li
+                            data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.14">
+                            <a
+                              href="/#services"
+                              className="text-muted hover:text-brand-soft transition-colors"
+                              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.14">
                               Immigrant / Refugee Counseling
                             </a>
                           </li>
@@ -276,7 +319,7 @@ export default function Navigation({ variant = "default" }) {
                 ref={(node) => {
                   dropdownRefs.current.started = node;
                 }}
-              >
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.15">
                 <button
                   type="button"
                   onClick={() => toggleDropdown("started")}
@@ -285,7 +328,7 @@ export default function Navigation({ variant = "default" }) {
                   aria-haspopup="true"
                   aria-expanded={activeDropdown === "started"}
                   aria-controls={STARTED_MENU_ID}
-                >
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.cta.2">
                   Get Started <ChevronDown className="ml-1 w-4 h-4" />
                 </button>
                 {activeDropdown === "started" && (
@@ -295,40 +338,46 @@ export default function Navigation({ variant = "default" }) {
                     role="menu"
                     aria-label="Get started"
                   >
-                    <ul className="space-y-2">
-                      <li>
+                    <ul
+                      className="space-y-2"
+                      data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.list.5">
+                      <li
+                        data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.16">
                         <a
                           href="/#appointment"
                           className="block text-copy hover:text-brand-soft transition-colors"
                           role="menuitem"
-                        >
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.15">
                           Appointment Request
                         </a>
                       </li>
-                      <li>
+                      <li
+                        data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.17">
                         <a
                           href="/#privacy"
                           className="block text-copy hover:text-brand-soft transition-colors"
                           role="menuitem"
-                        >
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.16">
                           Privacy Practices
                         </a>
                       </li>
-                      <li>
+                      <li
+                        data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.18">
                         <a
                           href="/#faq"
                           className="block text-copy hover:text-brand-soft transition-colors"
                           role="menuitem"
-                        >
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.17">
                           FAQs
                         </a>
                       </li>
-                      <li>
+                      <li
+                        data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.19">
                         <a
                           href="/#rates"
                           className="block text-copy hover:text-brand-soft transition-colors"
                           role="menuitem"
-                        >
+                          data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.18">
                           Rates & Insurance
                         </a>
                       </li>
@@ -337,13 +386,21 @@ export default function Navigation({ variant = "default" }) {
                 )}
               </li>
 
-              <li>
-                <a href="/#portal" className="text-copy hover:text-brand-soft transition-colors">
+              <li
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.20">
+                <a
+                  href="/#portal"
+                  className="text-copy hover:text-brand-soft transition-colors"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.19">
                   Client Portal
                 </a>
               </li>
-              <li>
-                <a href="/#contact" className="text-copy hover:text-brand-soft transition-colors">
+              <li
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.listItem.21">
+                <a
+                  href="/#contact"
+                  className="text-copy hover:text-brand-soft transition-colors"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.20">
                   Contact
                 </a>
               </li>
@@ -351,7 +408,11 @@ export default function Navigation({ variant = "default" }) {
           </nav>
 
           <div className="hidden xl:flex items-center">
-            <Link href="/?intent=nav-consultation#book-consultation" className="btn-primary is-compact" prefetch={false}>
+            <Link
+              href="/?intent=nav-consultation#book-consultation"
+              className="btn-primary is-compact"
+              prefetch={false}
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Navigation.jsx#Navigation.link.21">
               <Phone className="w-4 h-4" />
               Book Free Consultation
             </Link>

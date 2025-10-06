@@ -51,32 +51,53 @@ export default function Hero({ sectionId, variant = "default" }) {
       {!isAda && (
         <div className="absolute inset-0" aria-hidden="true">
           {shouldRenderVideo ? (
-            <video autoPlay loop muted playsInline className="w-full h-full object-cover">
-              <source src="https://wds-prod-public.s3.us-west-1.amazonaws.com/videos/ocean.mp4" type="video/mp4" />
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.video.1">
+              <source
+                src="https://wds-prod-public.s3.us-west-1.amazonaws.com/videos/ocean.mp4"
+                type="video/mp4"
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.imageSource.1" />
               {heroImage ? (
-                <img src={heroImage} alt="Peaceful ocean scene as video fallback" className="w-full h-full object-cover" />
+                <img
+                  src={heroImage}
+                  alt="Peaceful ocean scene as video fallback"
+                  className="w-full h-full object-cover"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.image.1" />
               ) : null}
             </video>
           ) : (
-            heroImage && <img src={heroImage} alt="Calming ocean scene" className="w-full h-full object-cover" />
+            heroImage && <img
+              src={heroImage}
+              alt="Calming ocean scene"
+              className="w-full h-full object-cover"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.image.2" />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/70 to-black/75" />
         </div>
       )}
-
       <div className="relative z-10 w-full lg:max-w-4xl mx-auto px-4 md:px-6 text-center">
         <div className="animate-fade-in-up">
           <div className={eyebrowClasses}>
             <MapPin className={eyebrowIconClasses} aria-hidden="true" />
-            <span className={eyebrowTextClasses}>Telehealth Services Across Texas</span>
+            <span
+              className={eyebrowTextClasses}
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.1">Telehealth Services Across Texas</span>
           </div>
 
           <h1 id={headingId} className={headingClasses}>
-            <span data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.heading.primary">Therapi is just for you</span>
-            <span className="block text-accent" data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.heading.highlight">Authentic Self</span>
+            <span data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.2">Therapi is just for you</span>
+            <span className="block text-accent" data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.3">Authentic Self</span>
           </h1>
 
-          <p id={descriptionId} className={descriptionClasses}>
+          <p
+            id={descriptionId}
+            className={descriptionClasses}
+            data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.body.1">
             Progressive, inclusive therapy for LGBTQIA+, BIPOC, and marginalized communities. You deserve compassionate
             care that honors your whole story.
           </p>
@@ -84,36 +105,54 @@ export default function Hero({ sectionId, variant = "default" }) {
           <div className={valueRowClasses}>
             <div className="flex items-center">
               <Heart className="w-5 h-5 mr-2 text-accent" aria-hidden="true" />
-              <span>Trauma-Informed Care</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.4">Trauma-Informed Care</span>
             </div>
             <div className="flex items-center">
               <Heart className="w-5 h-5 mr-2 text-accent" aria-hidden="true" />
-              <span>LGBTQIA+ Affirming</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.5">LGBTQIA+ Affirming</span>
             </div>
             <div className="flex items-center">
               <Heart className="w-5 h-5 mr-2 text-accent" aria-hidden="true" />
-              <span>Evidence-Based Treatment</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.6">Evidence-Based Treatment</span>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/?intent=hero-consultation#book-consultation" className={isAda ? "btn-primary" : "btn-primary is-on-dark"} prefetch={false}>
+            <Link
+              href="/?intent=hero-consultation#book-consultation"
+              className={isAda ? "btn-primary" : "btn-primary is-on-dark"}
+              prefetch={false}
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.1">
               <Phone className="w-5 h-5" aria-hidden="true" />
               Book Free 15-Minute Consultation
             </Link>
-            <Link href="/#services" className="btn-secondary" prefetch={false}>
+            <Link
+              href="/#services"
+              className="btn-secondary"
+              prefetch={false}
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.2">
               Learn About Our Services
             </Link>
           </div>
 
           <div className="mt-12 text-center">
-            <p className={metaLabelClasses}>Licensed Professional Counselor</p>
+            <p
+              className={metaLabelClasses}
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.body.2">Licensed Professional Counselor</p>
             <div className={metaDetailClasses}>
-              <span>M.Ed., LPC</span>
-              <span>•</span>
-              <span>10+ Years Experience</span>
-              <span>•</span>
-              <span>EMDR Trained</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.7">M.Ed., LPC</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.8">•</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.9">10+ Years Experience</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.10">•</span>
+              <span
+                data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.11">EMDR Trained</span>
             </div>
           </div>
         </div>

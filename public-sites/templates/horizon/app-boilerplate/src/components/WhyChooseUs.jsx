@@ -43,10 +43,16 @@ export default function WhyChooseUs({ sectionId, variant = "default" }) {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 id={headingId} className="heading is-section mb-6">
+            <h2
+              id={headingId}
+              className="heading is-section mb-6"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.heading.1">
               Why Choose Progressive Way Therapy
             </h2>
-            <p id={descriptionId} className="text is-lead max-w-3xl mx-auto">
+            <p
+              id={descriptionId}
+              className="text is-lead max-w-3xl mx-auto"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.1">
               More than therapy - it's a movement toward authentic healing and social justice
             </p>
           </div>
@@ -75,23 +81,39 @@ export default function WhyChooseUs({ sectionId, variant = "default" }) {
           <div className="mt-16 text-center animate-fade-in-up">
             <div className="inline-flex items-center justify-center space-x-8 px-8 py-4 bg-surface/50 backdrop-blur-sm rounded-md border border-border/50">
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-brand">10+</p>
-                <p className="text text-sm text-muted">Years Experience</p>
+                <p
+                  className="text-2xl font-serif font-bold text-brand"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.2">10+</p>
+                <p
+                  className="text text-sm text-muted"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.3">Years Experience</p>
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-brand">EMDR</p>
-                <p className="text text-sm text-muted">Certified</p>
+                <p
+                  className="text-2xl font-serif font-bold text-brand"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.4">EMDR</p>
+                <p
+                  className="text text-sm text-muted"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.5">Certified</p>
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-brand">100%</p>
-                <p className="text text-sm text-muted">Confidential</p>
+                <p
+                  className="text-2xl font-serif font-bold text-brand"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.6">100%</p>
+                <p
+                  className="text text-sm text-muted"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.7">Confidential</p>
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="text-2xl font-serif font-bold text-brand">TX</p>
-                <p className="text text-sm text-muted">Licensed</p>
+                <p
+                  className="text-2xl font-serif font-bold text-brand"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.8">TX</p>
+                <p
+                  className="text text-sm text-muted"
+                  data-ppid="code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.body.9">Licensed</p>
               </div>
             </div>
           </div>

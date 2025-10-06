@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import html
+import json
 import os
 import re
 from dataclasses import dataclass
@@ -108,34 +109,78 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
     content = target_path.read_text(encoding="utf-8")
 
     match = pattern.search(content)
-    if not match:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Target node not found in file",
+
+    if match:
+        previous_text = match.group(2)
+        escaped_text = html.escape(event.payload.text, quote=False).replace("\n", "<br />")
+
+        if previous_text == escaped_text:
+            return OverlayApplicationResult(
+                relative_path=path_fragment,
+                previous_text=_html_to_plain_text(previous_text),
+                updated_text=event.payload.text,
+            )
+
+        updated_content = pattern.sub(
+            lambda m: f"{m.group(1)}{escaped_text}{m.group(3)}",
+            content,
+            count=1,
         )
 
-    previous_text = match.group(2)
-    escaped_text = html.escape(event.payload.text, quote=False)
-    escaped_text = escaped_text.replace("\n", "<br />")
+        target_path.write_text(updated_content, encoding="utf-8")
 
-    if previous_text == escaped_text:
         return OverlayApplicationResult(
             relative_path=path_fragment,
             previous_text=_html_to_plain_text(previous_text),
             updated_text=event.payload.text,
         )
 
-    updated_content = pattern.sub(
-        lambda m: f"{m.group(1)}{escaped_text}{m.group(3)}",
-        content,
-        count=1,
-    )
+    # Fallback: update structured data entries that declare a sibling `<key>Ppid`
+    escaped_ppid = re.escape(event.payload.ppid)
+    fallback_pattern = re.compile(rf'(\w+)Ppid\s*:\s*"{escaped_ppid}"')
+    fallback_match = fallback_pattern.search(content)
+
+    if not fallback_match:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Target node not found in file",
+        )
+
+    value_key = fallback_match.group(1)
+    search_end = fallback_match.start()
+    search_start = max(0, search_end - 1000)
+    value_pattern = re.compile(rf'{value_key}\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"')
+
+    value_match: re.Match[str] | None = None
+    for match_candidate in value_pattern.finditer(content[search_start:search_end]):
+        value_match = match_candidate
+
+    if value_match is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Target node not found in file",
+        )
+
+    value_start = search_start + value_match.start(1)
+    value_end = search_start + value_match.end(1)
+    previous_encoded = content[value_start:value_end]
+    previous_text_plain = json.loads(f'"{previous_encoded}"')
+    updated_encoded = json.dumps(event.payload.text)[1:-1]
+
+    if previous_encoded == updated_encoded:
+        return OverlayApplicationResult(
+            relative_path=path_fragment,
+            previous_text=previous_text_plain,
+            updated_text=event.payload.text,
+        )
+
+    updated_content = content[:value_start] + updated_encoded + content[value_end:]
 
     target_path.write_text(updated_content, encoding="utf-8")
 
     return OverlayApplicationResult(
         relative_path=path_fragment,
-        previous_text=_html_to_plain_text(previous_text),
+        previous_text=previous_text_plain,
         updated_text=event.payload.text,
     )
 

@@ -328,13 +328,13 @@ export default function MobileNavigation({ sectionId, variant: _variant = "defau
             onClick={handleLogoClick}
             className="flex items-center focus:outline-none"
             aria-label="Go to home"
-          >
+            data-ppid="code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.link.1">
             <img
               src={logoSrc}
               alt="Progressive Way Therapy Logo"
               className="object-contain h-full w-auto"
               style={{ maxHeight: "calc(var(--mobile-toolbar-height, 112px) - 16px)" }}
-            />
+              data-ppid="code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.image.1" />
           </Link>
         </div>
 
@@ -346,14 +346,17 @@ export default function MobileNavigation({ sectionId, variant: _variant = "defau
           aria-expanded={isMenuOpen}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           type="button"
-        >
+          data-ppid="code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.cta.1">
           <div className="w-6 h-6 relative flex items-center justify-center">
-            <span className="hamburger-line absolute" />
-            <span className="hamburger-line absolute" />
+            <span
+              className="hamburger-line absolute"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.wrapper.1" />
+            <span
+              className="hamburger-line absolute"
+              data-ppid="code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.wrapper.2" />
           </div>
         </button>
       </header>
-
       {isMenuOpen && (
         <div
           ref={overlayRef}
@@ -385,13 +388,14 @@ export default function MobileNavigation({ sectionId, variant: _variant = "defau
                           className="flex items-center text-copy hover:text-brand-soft transition-colors focus:outline-none rounded-lg p-1"
                           aria-label={`Back to ${parentTitle ?? "previous menu"}`}
                           type="button"
-                        >
+                          data-ppid={`code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.cta.2.${panel.id}`}>
                           <ChevronLeft className="w-5 h-5 mr-2" />
-                          <span className="font-medium">{panel.title}</span>
+                          <span
+                            className="font-medium"
+                            data-ppid={`code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.wrapper.3.${panel.id}`}>{panel.title}</span>
                         </button>
                       </div>
                     )}
-
                     <div className="space-y-2">
                       {panel.items.map((item) => (
                         <div key={item.id}>
@@ -400,8 +404,10 @@ export default function MobileNavigation({ sectionId, variant: _variant = "defau
                             className="w-full flex items-center justify-between py-3 px-4 text-left text-copy hover:text-brand-soft hover:bg-brand-soft/10 transition-colors rounded-lg focus:outline-none"
                             style={{ minHeight: "44px" }}
                             type="button"
-                          >
-                            <span className="font-medium">{item.label}</span>
+                            data-ppid={`code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.cta.3.${item.id}`}>
+                            <span
+                              className="font-medium"
+                              data-ppid={`code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.wrapper.4.${item.id}`}>{item.label}</span>
                             {item.children && item.children.length > 0 && (
                               <ChevronRight className="w-5 h-5 text-muted" />
                             )}
@@ -415,7 +421,11 @@ export default function MobileNavigation({ sectionId, variant: _variant = "defau
             </div>
 
             <div className="mobile-cta-bar">
-              <button type="button" onClick={handleCTAClick} className="btn-primary is-medium is-fluid">
+              <button
+                type="button"
+                onClick={handleCTAClick}
+                className="btn-primary is-medium is-fluid"
+                data-ppid="code:public-sites/sites/horizon-example/src/components/MobileNavigation.jsx#MobileNavigation.ctaPrimary.1">
                 <Phone className="w-4 h-4" />
                 Book Free Consultation
               </button>
