@@ -90,7 +90,7 @@ export default function Hero({ sectionId, variant = "default" }) {
           </div>
 
           <h1 id={headingId} className={headingClasses}>
-            <span data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.2">Therapi is just for you</span>
+            <span data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.2">Therapyy is just for you</span>
             <span className="block text-accent" data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.3">Authentic Self</span>
           </h1>
 
@@ -125,10 +125,7 @@ export default function Hero({ sectionId, variant = "default" }) {
               href="/?intent=hero-consultation#book-consultation"
               className={isAda ? "btn-primary" : "btn-primary is-on-dark"}
               prefetch={false}
-              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.1">
-              <Phone className="w-5 h-5" aria-hidden="true" />
-              Book Free 15-Minute Consultation
-            </Link>
+              data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.link.1">Book Free 15-Minute Consultationnn</Link>
             <Link
               href="/#services"
               className="btn-secondary"
