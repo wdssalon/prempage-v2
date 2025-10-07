@@ -1,16 +1,8 @@
 # Dev image for the Prempage FastAPI backend
-FROM python:3.13-slim AS base
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    UV_LINK_MODE=copy
-
-# Install dependencies required to install uv and build packages
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y curl build-essential \
-    && rm -rf /var/lib/apt/lists/* \
-    && curl -LsSf https://astral.sh/uv/install.sh | sh \
-    && ln -s /root/.local/bin/uv /usr/local/bin/uv
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
 

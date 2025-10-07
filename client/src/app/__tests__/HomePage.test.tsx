@@ -40,6 +40,7 @@ describe("HomePage", () => {
     name: "Horizon Example",
     description: "Example site",
     devUrl: "http://localhost:3000",
+    previewBaseUrl: "http://localhost:3000/preview",
     instructions: ["Start dev server"],
   };
 

@@ -46,11 +46,12 @@ describe("ProjectPreviewPage", () => {
 
   const project: StudioProject = {
     slug: "horizon-example",
-    name: "Horizon Example",
-    description: "Example",
-    devUrl: "http://localhost:3000",
-    instructions: ["Run pnpm dev", "Open the preview"],
-  };
+   name: "Horizon Example",
+   description: "Example",
+   devUrl: "http://localhost:3000",
+    previewBaseUrl: "http://localhost:3000/preview",
+   instructions: ["Run pnpm dev", "Open the preview"],
+ };
 
   const swapResponse: HorizonPaletteSwapResponse = {
     applied_at: new Date("2024-01-01T02:34:56Z").toISOString(),

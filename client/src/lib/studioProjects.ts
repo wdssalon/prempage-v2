@@ -3,6 +3,7 @@ export type StudioProject = {
   name: string;
   description: string;
   devUrl: string;
+  previewBaseUrl: string;
   instructions: string[];
 };
 
@@ -13,6 +14,7 @@ const PROJECTS: StudioProject[] = [
     description:
       "Baseline static site bundle used to prototype the Studio editing flow.",
     devUrl: "http://localhost:3000",
+    previewBaseUrl: "http://localhost:3000/preview",
     instructions: [
       "In a separate terminal run `pnpm dev` inside public-sites/sites/horizon-example/.",
       "Keep the dev server running; the iframe below streams straight from the live Next.js instance.",

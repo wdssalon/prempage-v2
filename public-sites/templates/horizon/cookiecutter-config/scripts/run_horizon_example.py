@@ -35,6 +35,7 @@ PROJECT_SLUG = "horizon-example"
 PROJECT_DIR = SITES_DIR / PROJECT_SLUG
 APP_BOILERPLATE_DIR = REPO_ROOT / "public-sites" / "templates" / "horizon" / "app-boilerplate"
 ANNOTATE_SCRIPT = APP_BOILERPLATE_DIR / "scripts" / "annotate_ppids.py"
+SECTION_GENERATOR = REPO_ROOT / "public-sites" / "templates" / "horizon" / "scripts" / "generate_section_catalog.py"
 
 
 def load_context() -> dict[str, str]:
@@ -74,6 +75,15 @@ def annotate_template_ppids() -> None:
     subprocess.run([sys.executable, str(ANNOTATE_SCRIPT), "--rewrite"], check=True, cwd=APP_BOILERPLATE_DIR)
 
 
+def generate_section_catalog() -> None:
+    if not SECTION_GENERATOR.exists():
+        print(f"Section generator missing at {SECTION_GENERATOR}; skipping Studio catalog refresh.")
+        return
+
+    print("Generating Studio section catalog from template metadata...")
+    subprocess.run([sys.executable, str(SECTION_GENERATOR)], check=True, cwd=REPO_ROOT)
+
+
 def _handle_remove_readonly(func, path, exc_info):  # type: ignore[override]
     """Ensure read-only files are deleted when removing the project directory."""
 
@@ -108,6 +118,7 @@ def main() -> None:
     context = load_context()
     run_cookiecutter(context)
     run_pnpm("install")
+    generate_section_catalog()
     print(f"\n✅ Horizon example regenerated. Run `pnpm dev` inside {PROJECT_DIR} when you want to start the server.\n")
 
 

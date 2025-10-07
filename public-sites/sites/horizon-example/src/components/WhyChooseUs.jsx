@@ -2,28 +2,48 @@ import { Calendar, Heart, Shield, Video } from "lucide-react";
 
 const reasons = [
   {
+    id: "progressive-values",
     icon: Heart,
     title: "Progressive Values",
+    titlePpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.progressive-values.title",
     description:
       "Openly progressive, LGBTQIA+ affirming therapy that honors your authentic self and challenges systemic oppression.",
+    descriptionPpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.progressive-values.description",
   },
   {
+    id: "inclusive-safe",
     icon: Shield,
     title: "Inclusive & Safe",
+    titlePpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.inclusive-safe.title",
     description:
       "A judgment-free space for BIPOC, LGBTQIA+, women, and non-faith-based individuals in conservative Texas.",
+    descriptionPpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.inclusive-safe.description",
   },
   {
+    id: "secure-telehealth",
     icon: Video,
     title: "Secure Telehealth",
+    titlePpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.secure-telehealth.title",
     description:
       "Convenient, HIPAA-compliant online sessions from the comfort and privacy of your own space across Texas.",
+    descriptionPpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.secure-telehealth.description",
   },
   {
+    id: "easy-scheduling",
     icon: Calendar,
     title: "Easy Scheduling",
+    titlePpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.easy-scheduling.title",
     description:
       "Start with a free 15-minute consultation to see if we're a good fit - no pressure, just connection.",
+    descriptionPpid:
+      "code:public-sites/sites/horizon-example/src/components/WhyChooseUs.jsx#WhyChooseUs.reasons.easy-scheduling.description",
   },
 ];
 
@@ -62,7 +82,7 @@ export default function WhyChooseUs({ sectionId, variant = "default" }) {
               const IconComponent = reason.icon;
               return (
                 <div
-                  key={reason.title}
+                  key={reason.id}
                   className="text-center animate-fade-in-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
@@ -70,9 +90,16 @@ export default function WhyChooseUs({ sectionId, variant = "default" }) {
                     <IconComponent className="w-10 h-10 text-inverse" aria-hidden="true" />
                   </div>
 
-                  <h3 className="heading is-subsection font-semibold mb-4">{reason.title}</h3>
+                  <h3
+                    className="heading is-subsection font-semibold mb-4"
+                    data-ppid={reason.titlePpid}
+                  >
+                    {reason.title}
+                  </h3>
 
-                  <p className="text text-muted leading-relaxed">{reason.description}</p>
+                  <p className="text text-muted leading-relaxed" data-ppid={reason.descriptionPpid}>
+                    {reason.description}
+                  </p>
                 </div>
               );
             })}

@@ -11,6 +11,7 @@ import {
   type HorizonPaletteSwapResponse,
 } from "@/api/palette";
 import { logOverlayEdit } from "@/api/overlay";
+import { SectionLibraryDialog } from "./SectionLibraryDialog";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -41,10 +42,13 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   const [isCopilotVisible, setIsCopilotVisible] = useState(true);
   const hasHydratedCopilotPreference = useRef(false);
   const layoutRef = useRef<HTMLDivElement>(null);
+  const editMenuRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const overlayMountedRef = useRef(false);
   const overlayInitIntervalRef = useRef<number | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
+  const [isSectionLibraryOpen, setIsSectionLibraryOpen] = useState(false);
 
   const lastSwapAppliedAt = lastSwap?.applied_at ?? null;
   const paletteSwapTimestamp = lastSwapAppliedAt
@@ -80,6 +84,23 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
       String(isCopilotVisible),
     );
   }, [isCopilotVisible]);
+
+  useEffect(() => {
+    if (!isEditMenuOpen) {
+      return;
+    }
+
+    const handleClick = (event: MouseEvent) => {
+      if (!editMenuRef.current?.contains(event.target as Node)) {
+        setIsEditMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [isEditMenuOpen]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 1024px)");
@@ -187,6 +208,17 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     requestOverlayInit();
   }, [requestOverlayInit]);
 
+  const handleToggleInlineEditing = useCallback(() => {
+    setIsEditMode((previous) => {
+      const next = !previous;
+      if (next && !overlayMountedRef.current) {
+        requestOverlayInit();
+      }
+      return next;
+    });
+    setIsEditMenuOpen(false);
+  }, [requestOverlayInit]);
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       console.debug("[overlay] message event", event.data, event.origin);
@@ -262,29 +294,29 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
 
   return (
     <div className="flex min-h-screen flex-col bg-stone-100 text-slate-900">
-      <header className="border-b border-stone-200 bg-white">
-        <div className="flex w-full items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-stone-200 bg-white text-sm font-medium text-slate-600 shadow-sm transition hover:border-stone-300 hover:text-slate-900"
-              aria-label="Back to projects"
-            >
-              ←
-            </Link>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg font-semibold sm:text-xl">{project.name}</h1>
-              <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">
-                Live preview
-              </span>
+        <header className="border-b border-stone-200 bg-white">
+          <div className="flex w-full items-center justify-between gap-3 px-4 py-3">
+            <div className="flex items-center gap-3">
+              <Link
+                href="/"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-stone-200 bg-white text-sm font-medium text-slate-600 shadow-sm transition hover:border-stone-300 hover:text-slate-900"
+                aria-label="Back to projects"
+              >
+                ←
+              </Link>
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-semibold sm:text-xl">{project.name}</h1>
+                <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                  Live preview
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-slate-500">
-            <span className="hidden items-center gap-1 rounded-full border border-stone-200 bg-white px-3 py-1 sm:inline-flex">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
-              Connected
-            </span>
-            <span className="hidden text-xs uppercase tracking-[0.2em] text-slate-400 sm:inline">
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <span className="hidden items-center gap-1 rounded-full border border-stone-200 bg-white px-3 py-1 sm:inline-flex">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
+                Connected
+              </span>
+              <span className="hidden text-xs uppercase tracking-[0.2em] text-slate-400 sm:inline">
               Preview url
             </span>
             <code className="rounded-md border border-stone-200 bg-stone-50 px-2 py-1 text-xs text-slate-600">
@@ -426,32 +458,58 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
                     →
                   </button>
                 </div>
-                <div className="mt-3 flex items-center justify-between gap-2">
-                  <span className="text-[11px] text-slate-400">
+                <div className="mt-3 flex flex-col gap-2 text-[11px] text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+                  <span>
                     {isEditMode
                       ? "Links disabled while editing"
                       : "All links active until you enter edit"}
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsEditMode((previous) => {
-                        const next = !previous;
-                        if (next && !overlayMountedRef.current) {
-                          requestOverlayInit();
-                        }
-                        return next;
-                      });
-                    }}
-                    aria-pressed={isEditMode}
-                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 ${
-                      isEditMode
-                        ? "bg-slate-900 text-white hover:bg-slate-800"
-                        : "border border-stone-200 bg-white text-slate-600 hover:border-stone-300 hover:text-slate-900"
-                    }`}
-                  >
-                    {isEditMode ? "Editing" : "Edit"}
-                  </button>
+                  <div className="relative" ref={editMenuRef}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsEditMenuOpen((previous) => !previous);
+                      }}
+                      aria-haspopup="menu"
+                      aria-expanded={isEditMenuOpen}
+                      className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 ${
+                        isEditMode
+                          ? "bg-slate-900 text-white hover:bg-slate-800"
+                          : "border border-stone-200 bg-white text-slate-600 hover:border-stone-300 hover:text-slate-900"
+                      } ${isEditMenuOpen ? "ring-2 ring-slate-200" : ""}`}
+                    >
+                      <span>{isEditMode ? "Editing" : "Edit"}</span>
+                      <span aria-hidden className="text-[10px]">
+                        {isEditMenuOpen ? "▲" : "▼"}
+                      </span>
+                    </button>
+                    {isEditMenuOpen ? (
+                      <div
+                        role="menu"
+                        className="absolute right-0 z-20 mt-2 w-56 rounded-xl border border-stone-200 bg-white p-1 shadow-xl"
+                      >
+                        <button
+                          type="button"
+                          onClick={handleToggleInlineEditing}
+                          className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-slate-600 transition hover:bg-stone-50 hover:text-slate-900"
+                        >
+                          <span>{isEditMode ? "Stop inline editing" : "Enable inline editing"}</span>
+                          <span className="text-[10px] uppercase tracking-wide text-slate-400">Text</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsSectionLibraryOpen(true);
+                            setIsEditMenuOpen(false);
+                          }}
+                          className="mt-1 flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-slate-600 transition hover:bg-stone-50 hover:text-slate-900"
+                        >
+                          <span>Edit sections…</span>
+                          <span className="text-[10px] uppercase tracking-wide text-slate-400">Sections</span>
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               </form>
             </section>
@@ -484,6 +542,12 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
           </section>
         </div>
       </div>
+      <SectionLibraryDialog
+        open={isSectionLibraryOpen}
+        onClose={() => setIsSectionLibraryOpen(false)}
+        projectDevUrl={project.devUrl}
+        previewBaseUrl={project.previewBaseUrl ?? project.devUrl}
+      />
     </div>
   );
 }
