@@ -1,14 +1,46 @@
-import { render, screen } from "@testing-library/react";
+import { Suspense, act } from "react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   afterEach,
+  beforeAll,
   beforeEach,
   describe,
   expect,
-  vi,
   it,
+  vi,
   type MockedFunction,
 } from "vitest";
+
+vi.mock("@/generated/sections/horizon", () => ({
+  HORIZON_SECTIONS: [
+    {
+      key: "hero",
+      label: "Hero",
+      category: "hero",
+      sectionId: "hero-section",
+    },
+  ],
+}));
+
+const dialogPropsRef: { current: any } = { current: undefined };
+
+vi.mock("@/app/projects/[slug]/SectionLibraryDialog", () => ({
+  SectionLibraryDialog: (props: any) => {
+    dialogPropsRef.current = props;
+    if (!props.open) {
+      return null;
+    }
+
+    return (
+      <div data-testid="section-library-dialog">
+        {props.insertFeedback?.message ? (
+          <p>{props.insertFeedback.message}</p>
+        ) : null}
+      </div>
+    );
+  },
+}));
 
 vi.mock("@/lib/studioProjects", () => ({
   getStudioProject: vi.fn(),
@@ -22,87 +54,244 @@ vi.mock("@/api/overlay", () => ({
   logOverlayEdit: vi.fn(),
 }));
 
-import ProjectPreviewPage from "../[slug]/page";
+vi.mock("@/api/sections", () => ({
+  insertSection: vi.fn(),
+}));
+
+import ProjectPreviewPage from "@/app/projects/[slug]/page";
 import { getStudioProject, type StudioProject } from "@/lib/studioProjects";
 import { swapPalette, type HorizonPaletteSwapResponse } from "@/api/palette";
-
-type ParamsThenable = Promise<{ slug: string }> & {
-  status?: "fulfilled";
-  value?: { slug: string };
-};
-
-function createResolvedParams(slug: string): ParamsThenable {
-  const value = { slug };
-  const promise = Promise.resolve(value) as ParamsThenable;
-  promise.status = "fulfilled";
-  promise.value = value;
-  return promise;
-}
+import {
+  insertSection,
+  type HorizonSectionInsertResponse,
+} from "@/api/sections";
 
 describe("ProjectPreviewPage", () => {
-  const mockGetStudioProject =
-    getStudioProject as MockedFunction<typeof getStudioProject>;
+  const mockGetStudioProject = getStudioProject as MockedFunction<
+    typeof getStudioProject
+  >;
   const mockSwapPalette = swapPalette as MockedFunction<typeof swapPalette>;
+  const mockInsertSection = insertSection as MockedFunction<typeof insertSection>;
 
   const project: StudioProject = {
     slug: "horizon-example",
-   name: "Horizon Example",
-   description: "Example",
-   devUrl: "http://localhost:3000",
+    name: "Horizon Example",
+    description: "Baseline site",
+    devUrl: "http://localhost:3000",
     previewBaseUrl: "http://localhost:3000/preview",
-   instructions: ["Run pnpm dev", "Open the preview"],
- };
+    instructions: ["Step one", "Step two"],
+  };
 
-  const swapResponse: HorizonPaletteSwapResponse = {
-    applied_at: new Date("2024-01-01T02:34:56Z").toISOString(),
+  const paletteResponse: HorizonPaletteSwapResponse = {
+    applied_at: new Date("2024-02-01T10:00:00Z").toISOString(),
     palette: {
       bg_base: "#111111",
-      bg_surface: "#1f1f1f",
+      bg_surface: "#222222",
       bg_contrast: "#000000",
-      text_primary: "#f8fafc",
-      text_secondary: "#cbd5f5",
-      text_inverse: "#000000",
-      brand_primary: "#312e81",
-      brand_secondary: "#4338ca",
-      accent: "#f59e0b",
-      border: "#334155",
-      ring: "#c084fc",
-      critical: "#ef4444",
-      critical_contrast: "#0f172a",
+      text_primary: "#111111",
+      text_secondary: "#444444",
+      text_inverse: "#ffffff",
+      brand_primary: "#0066ff",
+      brand_secondary: "#0055dd",
+      accent: "#ff3366",
+      border: "#e2e8f0",
+      ring: "#2563eb",
+      critical: "#dc2626",
+      critical_contrast: "#ffffff",
     },
   };
 
+  const insertResponse: HorizonSectionInsertResponse = {
+    component_relative_path: "src/components/Hero__copy.jsx",
+    import_identifier: "HeroCopy",
+    section_id: "hero--copy",
+    slot: "before-section",
+  };
+
+  beforeAll(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation(() => ({
+        matches: true,
+        media: "(min-width: 1024px)",
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+  });
+
   beforeEach(() => {
     mockGetStudioProject.mockReturnValue(project);
-    mockSwapPalette.mockResolvedValue(swapResponse);
+    mockSwapPalette.mockResolvedValue(paletteResponse);
+    mockInsertSection.mockResolvedValue(insertResponse);
+    dialogPropsRef.current = undefined;
+    window.localStorage.clear();
   });
 
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it("renders the project instructions", () => {
-    render(<ProjectPreviewPage params={createResolvedParams(project.slug)} />);
+  const createResolvedParams = (slug: string) => {
+    const value = { slug };
+    const thenable = Promise.resolve(value) as Promise<{ slug: string }> & {
+      status?: "fulfilled";
+      value?: { slug: string };
+    };
+    thenable.status = "fulfilled";
+    thenable.value = value;
+    return thenable;
+  };
 
-    expect(screen.getByText(/Ready when you are/i)).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem").length).toBe(project.instructions.length);
-  });
+  const renderPage = async () => {
+    render(
+      <Suspense fallback={null}>
+        <ProjectPreviewPage params={createResolvedParams(project.slug)} />
+      </Suspense>,
+    );
 
-  it("sends a palette swap request when the action is invoked", async () => {
+    await screen.findByRole("button", { name: /swap colors/i });
+  };
+
+  it("surfaces palette swap confirmations", async () => {
     const user = userEvent.setup();
-    render(<ProjectPreviewPage params={createResolvedParams(project.slug)} />);
+    await renderPage();
 
-    const button = screen.getByRole("button", { name: /swap colors/i });
+    const button = await screen.findByRole("button", { name: /swap colors/i });
     await user.click(button);
 
+    await waitFor(() => expect(mockSwapPalette).toHaveBeenCalledTimes(1));
     expect(mockSwapPalette).toHaveBeenCalledWith(
       project.slug,
-      expect.objectContaining({
-        notes: expect.stringContaining("header button"),
-      }),
+      { notes: "Triggered from Studio header button" },
     );
 
     expect(await screen.findByText(/Palette applied at/i)).toBeInTheDocument();
   });
 
+  it("reports palette swap failures", async () => {
+    mockSwapPalette.mockRejectedValueOnce(new Error("Swap failed"));
+    const user = userEvent.setup();
+    await renderPage();
+
+    const button = await screen.findByRole("button", { name: /swap colors/i });
+    await user.click(button);
+
+    expect(await screen.findByText("Swap failed")).toBeInTheDocument();
+    await waitFor(() => expect(button).not.toBeDisabled());
+  });
+
+  it("syncs overlay state through the bridge", async () => {
+    const postMessage = vi.fn();
+    const user = userEvent.setup();
+    await renderPage();
+
+    const iframe = screen.getByTitle(`${project.name} preview`);
+    Object.defineProperty(iframe, "contentWindow", {
+      value: { postMessage },
+      configurable: true,
+    });
+
+    const dispatchOverlayEvent = async (data: unknown) => {
+      await act(async () => {
+        window.dispatchEvent(new MessageEvent("message", { data }));
+      });
+    };
+
+    await dispatchOverlayEvent({ source: "prempage-site", type: "bridge-ready" });
+
+    await waitFor(() =>
+      expect(postMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: "prempage-studio",
+          type: "overlay-init",
+        }),
+        "*",
+      ),
+    );
+
+    await dispatchOverlayEvent({ source: "prempage-site", type: "overlay-mounted" });
+
+    await waitFor(() =>
+      expect(postMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: "prempage-studio",
+          type: "overlay-set-mode",
+          editing: false,
+        }),
+        "*",
+      ),
+    );
+
+    await user.click(screen.getByRole("button", { name: /^edit$/i }));
+    await user.click(
+      await screen.findByRole("button", { name: /enable inline editing/i }),
+    );
+
+    await waitFor(() =>
+      expect(postMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: "prempage-studio",
+          type: "overlay-set-mode",
+          editing: true,
+        }),
+        "*",
+      ),
+    );
+  });
+
+  it("reports errors when section insertion fails during drop", async () => {
+    const user = userEvent.setup();
+    await renderPage();
+
+    await user.click(screen.getByRole("button", { name: /^edit$/i }));
+    await user.click(
+      await screen.findByRole("button", { name: /edit sections/i }),
+    );
+
+    await waitFor(() => expect(dialogPropsRef.current?.open).toBe(true));
+    await waitFor(() =>
+      expect(dialogPropsRef.current?.selectedSectionKey).toBeTruthy(),
+    );
+
+    const error = new Error("Insert failed");
+    mockInsertSection.mockRejectedValueOnce(error);
+
+    const selectedKey = dialogPropsRef.current?.selectedSectionKey ?? "hero";
+
+    await act(async () => {
+      dialogPropsRef.current?.onRequestDropZone(selectedKey);
+    });
+
+    await act(async () => {
+      window.dispatchEvent(
+        new MessageEvent("message", {
+          data: {
+            source: "prempage-overlay",
+            type: "overlay-section-drop-selected",
+            payload: {
+              sectionId: "existing-section",
+              position: "before",
+            },
+          },
+        }),
+      );
+    });
+
+    await waitFor(() =>
+      expect(mockInsertSection).toHaveBeenCalledWith({
+        projectSlug: project.slug,
+        sectionKey: selectedKey,
+        position: "before",
+        targetSectionId: "existing-section",
+      }),
+    );
+
+    expect(await screen.findByText(error.message)).toBeInTheDocument();
+    expect(dialogPropsRef.current?.isSelectingDropZone).toBe(false);
+    expect(dialogPropsRef.current?.insertFeedback?.status).toBe("error");
+  });
 });
