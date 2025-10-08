@@ -226,7 +226,9 @@ describe("ProjectPreviewPage", () => {
       ),
     );
 
-    await user.click(screen.getByRole("button", { name: /^edit$/i }));
+    await user.click(
+      screen.getAllByRole("button", { name: /^edit$/i })[0],
+    );
     await user.click(
       await screen.findByRole("button", { name: /enable inline editing/i }),
     );
@@ -247,7 +249,9 @@ describe("ProjectPreviewPage", () => {
     const user = userEvent.setup();
     await renderPage();
 
-    await user.click(screen.getByRole("button", { name: /^edit$/i }));
+    await user.click(
+      screen.getAllByRole("button", { name: /^edit$/i })[0],
+    );
     await user.click(
       await screen.findByRole("button", { name: /edit sections/i }),
     );

@@ -24,7 +24,7 @@
 - Horizon preview: `pnpm install --filter horizon-example` and `pnpm --filter horizon-example dev`
 
 ## Workflow reminders
-- Regenerate Horizon example via `public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py`, then rebuild the Docker stack with `--force-recreate --remove-orphans`.
+- For a clean Horizon example, run `python public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py`, rebuild the stack with `docker compose up --build -d` (add `--force-recreate --remove-orphans` if containers are already up), and start the preview via `pnpm --dir public-sites/sites/horizon-example dev`. The python script handles overlay rebuild and catalog refresh—no `uv sync` step is needed beforehand.
 - Regenerate OpenAPI JSON and Studio TypeScript types after backend model changes.
 - Use Docker when verifying cross-service flows; the compose stack mounts the repo for hot reload.
 

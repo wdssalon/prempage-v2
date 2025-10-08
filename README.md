@@ -33,11 +33,13 @@ Services listen on: Studio `http://localhost:3001`, backend `http://localhost:80
 - Horizon example preview site: `pnpm install --filter horizon-example && pnpm --filter horizon-example dev` (port 3000)
 
 ## Common workflows
-- Regenerate the Horizon example bundle:
+- Clean Horizon example reset + UI smoke test:
   ```bash
   python public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py
-  docker compose up --build --force-recreate --remove-orphans -d
+  docker compose up --build -d  # add --force-recreate --remove-orphans if the stack is already running
+  pnpm --dir public-sites/sites/horizon-example dev
   ```
+  The regeneration script already rebuilds the overlay bundle and refreshes the section catalog—no `uv sync` step is required beforehand.
 - Rebuild the overlay bundle when `node_modules` changes:
   ```bash
   pnpm install --filter @prempage/editor-overlay --force
