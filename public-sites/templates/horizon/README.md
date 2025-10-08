@@ -70,3 +70,21 @@ Publishing = merging to the tracked branch. The Render build runs the same lint 
 - Update this document if the build command, tooling, or Render configuration changes.
 - For now, new site scaffolds are produced locally with Codex; the hosted editor will focus on safe iterative edits once it launches.
 - Automation backlog: add CI checks to run `public-sites/scripts/horizon/build-static-site.sh <slug>` on pull requests, and script `render blueprint apply` once the static site service name and branch strategy are finalized.
+
+### Dropping library sections into a site
+
+Use the insertion helper to clone a section from the template app-boilerplate into a site and render it at one of the predefined drop slots:
+
+```bash
+python public-sites/templates/horizon/scripts/insert_section.py \
+  --site horizon-example \
+  --section horizon_home_services \
+  --slot before-home-stories
+```
+
+The script will:
+- copy the section component to `public-sites/sites/<site>/src/components/<Component>__TIMESTAMP.tsx`
+- add an import inside the site's `HomePage.jsx`
+- insert the component call at the requested slot using the `/* prempage:slot:* */` markers
+
+Each invocation clones a fresh copy of the component so earlier customisations remain untouched. Run `pnpm lint` (or your preferred checks) afterwards to confirm formatting stays tidy.
