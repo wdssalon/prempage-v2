@@ -1,7 +1,6 @@
 const OVERLAY_SOURCE = "prempage-overlay";
 const HOVER_CLASS = "prem-overlay--hover";
 const EDITING_CLASS = "prem-overlay--editing";
-const DROP_HOVER_CLASS = "prem-overlay--drop-hover";
 const DROP_MODE_CLASS = "prem-overlay--drop-mode";
 const CONTENTEDITABLE_MODE = "plaintext-only";
 
@@ -116,16 +115,144 @@ function injectStyles(rootDoc: Document) {
       outline-offset: 2px;
       background-color: rgba(16, 185, 129, 0.08);
     }
-    [data-section-id].${DROP_HOVER_CLASS} {
-      outline: 3px dashed rgba(59, 130, 246, 0.75);
-      outline-offset: 6px;
-      cursor: copy;
-    }
     body.${DROP_MODE_CLASS} {
-      cursor: copy;
+      cursor: pointer;
     }
   `;
   rootDoc.head.append(style);
+}
+
+type DropOverlayController = {
+  mount: () => void;
+  update: (section: SectionElement, pointerY: number) => void;
+  hide: () => void;
+  destroy: () => void;
+};
+
+function createDropOverlay(rootDoc: Document): DropOverlayController {
+  const container = rootDoc.createElement("div");
+  container.id = "prem-overlay-drop-container";
+  Object.assign(container.style, {
+    position: "absolute",
+    inset: "0",
+    pointerEvents: "none",
+    display: "none",
+    zIndex: "2147483647",
+  });
+
+  const backdrop = rootDoc.createElement("div");
+  Object.assign(backdrop.style, {
+    position: "absolute",
+    inset: "0",
+    background: "rgba(17, 24, 39, 0.45)",
+    borderRadius: "18px",
+    transition: "opacity 120ms ease",
+  });
+
+  const split = rootDoc.createElement("div");
+  Object.assign(split.style, {
+    position: "absolute",
+    inset: "0",
+    display: "flex",
+    flexDirection: "column",
+    color: "#fff",
+    fontFamily: "Inter, sans-serif",
+    fontSize: "12px",
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+    pointerEvents: "none",
+  });
+
+  const createHalf = (label: string) => {
+    const half = rootDoc.createElement("div");
+    Object.assign(half.style, {
+      flex: "1",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative",
+      transition: "background 120ms ease",
+    });
+
+    const text = rootDoc.createElement("span");
+    text.textContent = label;
+    Object.assign(text.style, {
+      padding: "8px 14px",
+      borderRadius: "9999px",
+      background: "rgba(15, 15, 15, 0.65)",
+      backdropFilter: "blur(10px)",
+      pointerEvents: "none",
+      transition: "transform 120ms ease, background 120ms ease, box-shadow 120ms ease",
+    });
+
+    half.append(text);
+    return { half, text };
+  };
+
+  const top = createHalf("Insert above");
+  const bottom = createHalf("Insert below");
+
+  const divider = rootDoc.createElement("div");
+  Object.assign(divider.style, {
+    height: "2px",
+    background: "rgba(30, 41, 59, 0.6)",
+    margin: "0 18px",
+  });
+
+  split.append(top.half, divider, bottom.half);
+  container.append(backdrop, split);
+  rootDoc.body.append(container);
+
+  const updateStyles = (active: "top" | "bottom") => {
+    const activate = (item: typeof top | typeof bottom, isActive: boolean) => {
+      item.half.style.background = isActive
+        ? "linear-gradient(180deg, rgba(15,15,15,0.55) 0%, rgba(15,15,15,0.2) 100%)"
+        : "rgba(15, 23, 42, 0.0)";
+      item.text.style.background = isActive
+        ? "rgba(15, 15, 15, 0.85)"
+        : "rgba(15, 15, 15, 0.65)";
+      item.text.style.transform = isActive ? "scale(1.05)" : "scale(1)";
+      item.text.style.boxShadow = isActive
+        ? "0 12px 35px rgba(15,15,15,0.55)"
+        : "none";
+    };
+
+    activate(top, active === "top");
+    activate(bottom, active === "bottom");
+  };
+
+  let mounted = false;
+
+  return {
+    mount() {
+      if (!mounted) {
+        container.style.display = "block";
+        mounted = true;
+      }
+    },
+    update(section, pointerY) {
+      const rect = section.getBoundingClientRect();
+
+      Object.assign(container.style, {
+        display: "block",
+        top: `${rect.top + window.scrollY}px`,
+        left: `${rect.left + window.scrollX}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`,
+      });
+
+      const halfway = rect.height / 2;
+      const localY = pointerY - rect.top;
+      updateStyles(localY <= halfway ? "top" : "bottom");
+    },
+    hide() {
+      container.style.display = "none";
+      mounted = false;
+    },
+    destroy() {
+      container.remove();
+    },
+  };
 }
 
 function defaultDispatch(payload: OverlayEditPayload, meta: CommitMeta) {
@@ -143,15 +270,6 @@ function setHover(el: EditableElement | null, shouldHover: boolean) {
     el.classList.add(HOVER_CLASS);
   } else {
     el.classList.remove(HOVER_CLASS);
-  }
-}
-
-function setDropHover(el: SectionElement | null, shouldHover: boolean) {
-  if (!el) return;
-  if (shouldHover) {
-    el.classList.add(DROP_HOVER_CLASS);
-  } else {
-    el.classList.remove(DROP_HOVER_CLASS);
   }
 }
 
@@ -196,6 +314,12 @@ export function initOverlay(options: OverlayOptions = {}) {
   );
 
   injectStyles(rootDoc);
+  const dropOverlay = createDropOverlay(rootDoc);
+
+  const updateDropOverlay = (section: SectionElement, pointerY: number) => {
+    dropOverlay.mount();
+    dropOverlay.update(section, pointerY);
+  };
 
   function exitDropMode(reason: "selected" | "cancelled") {
     if (!state.dropModeActive) {
@@ -205,10 +329,10 @@ export function initOverlay(options: OverlayOptions = {}) {
     console.debug("[overlay] exiting drop mode", reason);
     state.dropModeActive = false;
     if (state.dropHover) {
-      setDropHover(state.dropHover, false);
       state.dropHover = null;
     }
     rootDoc.body.classList.remove(DROP_MODE_CLASS);
+    dropOverlay.hide();
 
     if (reason === "cancelled") {
       window.parent?.postMessage(
@@ -245,12 +369,9 @@ export function initOverlay(options: OverlayOptions = {}) {
   const handlePointerOver = (event: Event) => {
     if (state.dropModeActive) {
       const dropTarget = getSectionElement(event.target);
-      if (!dropTarget || dropTarget === state.dropHover) return;
-      if (state.dropHover) {
-        setDropHover(state.dropHover, false);
-      }
-      setDropHover(dropTarget, true);
+      if (!dropTarget) return;
       state.dropHover = dropTarget;
+      updateDropOverlay(dropTarget, (event as PointerEvent).clientY);
       return;
     }
 
@@ -270,9 +391,9 @@ export function initOverlay(options: OverlayOptions = {}) {
         return;
       }
 
-      setDropHover(target, false);
       if (state.dropHover === target) {
         state.dropHover = null;
+        dropOverlay.hide();
       }
       return;
     }
@@ -287,6 +408,19 @@ export function initOverlay(options: OverlayOptions = {}) {
     }
 
     setHover(target, false);
+  };
+
+  const handlePointerMove = (event: Event) => {
+    if (!state.dropModeActive) {
+      return;
+    }
+
+    const target = getSectionElement(event.target);
+    if (!target || target !== state.dropHover) {
+      return;
+    }
+
+    updateDropOverlay(target, (event as PointerEvent).clientY);
   };
 
   const commitEdit = (reason: CommitMeta["reason"]) => {
@@ -417,6 +551,7 @@ export function initOverlay(options: OverlayOptions = {}) {
 
   addListener(root, "pointerover", handlePointerOver as EventListener);
   addListener(root, "pointerout", handlePointerOut as EventListener);
+  addListener(root, "pointermove", handlePointerMove as EventListener);
   addListener(root, "click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -452,8 +587,10 @@ export function initOverlay(options: OverlayOptions = {}) {
     }
     root.removeEventListener("pointerover", handlePointerOver as EventListener);
     root.removeEventListener("pointerout", handlePointerOut as EventListener);
+    root.removeEventListener("pointermove", handlePointerMove as EventListener);
     root.removeEventListener("click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
     rootDoc.removeEventListener("keydown", handleKeyDown as EventListener);
+    dropOverlay.destroy();
   };
 
   return {

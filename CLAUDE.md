@@ -1,335 +1,67 @@
-# Prempage V2 - Full Stack Development Project
+# Prempage V2 – LLM Brief
 
-## Project Overview
+## Workspace snapshot
+- `client/`: Next.js 15 Studio (React 19, Tailwind 4) with scripts in `package.json`
+- `packages/editor-overlay/`: reusable overlay bundle injected into previews and static exports
+- `backend/`: FastAPI API using uv; regenerate the schema with `export_openapi.py`
+- `services/form-relay/` and `services/static-site-extractor/`: FastAPI microservices with `uvicorn` entrypoints
+- `public-sites/`: editable site bundles (e.g., `horizon-example`) plus template tooling
+- `docker-compose.yml`: wires Studio, backend, and services for local development
 
-Prempage V2 is a modern full-stack application featuring:
-- **Frontend**: Next.js Studio + overlay architecture (Next app in `client/`)
-- **Backend**: FastAPI with Python 3.13 and uv package management
-- **Microservices**: Additional FastAPI services under `services/` (e.g., `form-relay` for static form submissions)
-- **Development**: Docker Compose setup with hot reloading across frontend, backend, and services
-- **Architecture**: Lightweight, fast iteration focused design
+## Environment defaults
+- Node.js 24+ with pnpm (enable via Corepack)
+- Python 3.13+; use `uv sync` and `uv run` inside Python projects
+- Ports: Studio 3001, backend 8000, form relay 8080, static-site-extractor 8081, site previews 3000
+- `public-sites/sites/*/images/` is gitignored; keep edits scoped to each site
 
-## Frontend Roadmap
+## Primary commands
+- Docker stack: `docker compose up --build -d`, `docker compose up -d`, `docker compose down`
+- Studio: `pnpm --dir client install`, `pnpm --dir client dev`, `pnpm --dir client build`
+- Backend: from `backend/`, `uv sync` then `uv run uvicorn main:app --reload --port 8000`
+- Form relay: `cd services/form-relay && uv sync && uv run uvicorn app.main:app --reload --port 8080 --env-file .env`
+- Static-site-extractor: `cd services/static-site-extractor && uv sync && uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081`
+- Overlay rebuild: `pnpm install --filter @prempage/editor-overlay --force` and `pnpm --filter @prempage/editor-overlay build`
+- Horizon preview: `pnpm install --filter horizon-example` and `pnpm --filter horizon-example dev`
 
-Short answer: same repo, separate deployables. Make a single Studio front-end for onboarding and operations, and ship the Lovable-style editor as a separate overlay bundle that the Studio loads into a preview iframe (or that a browser extension injects). This keeps the UX cohesive while isolating responsibilities.
-
-### App A — Studio (Next.js web app)
-- Auth, org/projects, onboarding (enter URL -> pick/select photos -> upload), asset library, build/publish, history, roles.
-- Hosts the editor shell UI (left sidebar: pages/sections/assets; right: properties; top: Edit toggle).
-- Routes like `studio.prempage.com/{org}/{project}`.
-
-### App B — Editor Overlay (standalone JS bundle)
-- Pure overlay SDK: hover highlights, selection, inline editors, selector/fingerprint logic, patch queue.
-- No routing or stateful pages; exports `initEditor({ container, tools, auth })`.
-- Loaded by Studio into the preview iframe via `<script src=".../overlay.js">` with `postMessage` RPC, and can ship as a browser extension later using the same core.
-
-### Preview Target — site under edit
-- Prefer a preview domain such as `preview--{slug}.prempagepro.com` (live site stays read-only).
-- Exposes a tiny bridge (~1-2 kB) that listens for overlay messages, measures nodes, and reports metadata — no app logic lives here.
-- During editing the preview runs on a live Next.js server so the overlay can read component-level metadata; the static export is generated only during the publish step to keep the deploy artifacts reproducible.
-
-**Status:** The Next.js Studio resides in `client/`; the legacy Vite app has been retired. The initial overlay pipeline is active: edits made inside the iframe dispatch to the FastAPI backend and rewrite the matching `data-ppid` node inside `public-sites/sites/<slug>/`.
-
-## Running the Application
-
-> **Automation standard**: default to Python for new scripts. If you must use another language, note the rationale alongside the change for reviewer visibility.
-
-**Prerequisites:**
-- Node.js 24 or newer (Corepack with pnpm ≥ 8)
-- Python 3.13 or newer
-- Docker and Docker Compose
-
-### Service Port Map
-- `client` (Next.js Studio) — http://localhost:3001
-- `backend` (FastAPI core API) — http://localhost:8000
-- `services/form-relay` (form submission relay) — http://localhost:8080
-- Static Site Extractor (`services/static-site-extractor`) — http://localhost:8081
-- `public-sites/sites/*` (site bundles) — share http://localhost:3000 when developing inside a site directory; live exports serve from disk
-
-Keep this table current whenever you add a new service or change a port. Every service must claim a unique local port so concurrent runs never collide—the lone exception is the static site workspaces under `public-sites/sites`, which may reuse port 3000.
-
-### Local Development
-
-**Option 1: Docker Compose (Recommended)**
-```bash
-# Initial setup or after dependency changes (frontend, backend, form-relay)
-docker compose up --build -d
-
-# Regular development
-docker compose up -d
-
-# Stop services
-docker compose down
-
-# Start specific services (example: backend + form relay + extractor)
-docker compose up backend form-relay static-site-extractor
-```
-
-**Option 2: Native Development**
-```bash
-# Studio frontend
-cd client
-pnpm install
-pnpm dev  # http://localhost:3001
-
-# Legacy frontend (optional)
-# Backend
-cd ../backend
-uv sync
-uv run uvicorn main:app --reload  # http://localhost:8000
-
-# Form Relay microservice
-cd ../services/form-relay
-cp .env.example .env  # first time only
-uv sync
-uv run uvicorn app.main:app --reload --port 8080 --env-file .env  # http://localhost:8080
-
-# Static Site Extractor microservice
-cd ../static-site-extractor
-uv sync
-uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8081  # http://localhost:8081
-```
-
-- Responses return deduped images/fonts plus a `text_blob` and best-guess `navigation` tree for downstream tooling.
-
-### Regenerating the Horizon example site
-Cookiecutting wipes and recreates `public-sites/sites/horizon-example/`, then the compose rebuild refreshes the Studio container with the new site bundle. Run these commands from the repo root whenever you need a clean Horizon workspace:
-
-```bash
-python public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py
-docker compose up --build --force-recreate --remove-orphans -d
-```
-
-The compose step ensures the frontend container installs Linux-native dependencies (including Lightning CSS) after regeneration.
-
-### Overlay Editing Checklist
-1. Refresh overlay deps after Docker modifies shared `node_modules`:
-   ```bash
-   pnpm install --filter @prempage/editor-overlay --force
-   pnpm --filter @prempage/editor-overlay build
-   ```
-2. Start the Horizon preview (`pnpm install --filter horizon-example && pnpm --filter horizon-example dev`).
-3. Run Docker services and, if the Studio container throws a Next.js module error, follow with `pnpm install --filter client && docker compose restart frontend`.
-4. Visit `http://localhost:3001/projects/horizon-example`, make an inline edit, and press Enter. Confirm `Overlay edit applied` in the Studio console or backend logs; the corresponding file under `public-sites/sites/horizon-example/` will update immediately.
-
-## Core Requirements
-
-### Endpoints
-
-**API Documentation:**
-- Interactive docs (Swagger UI): http://localhost:8000/docs
-- Alternative docs (ReDoc): http://localhost:8000/redoc
-- Health check: http://localhost:8000/health
-
-### Technical Stack
-
-**Frontend:**
-- Next.js 15 + React 19 in `client/` (Studio app with App Router and Tailwind)
-- TypeScript-first scaffold across both workspaces
-- ESLint 9.35.0 for code quality
-
-**Backend:**
-- FastAPI (Python web framework)
-- Python 3.13
-- uv package manager
-- Uvicorn ASGI server
-- Loguru for logging
-
-**Development:**
-- Docker Compose multi-container setup (frontend, backend, form-relay, static site extractor)
-- Hot reloading for all containers
-- Volume mounting for live code updates
-
-## Static Site Workspace
-- The `public-sites/` directory houses the tooling and instructions for the static site deployments.
-- Brand-specific exports reside in `public-sites/sites/<site-slug>/`. Keep CSS overrides, fonts, and HTML changes scoped within the relevant site bundle. Per-site `images/` directories are gitignored by default.
-- Read `agents/policy/public-sites.md` before automating updates; it captures the guardrails for section rotation, copy edits, navigation rules, and override assets.
-- End-to-end build guidance now lives in this policy, with supporting role briefs in `agents/roles/` and template supplements under `public-sites/templates/<template>/`.
-- Template-specific docs live under `public-sites/templates/<template>/`. Use `./public-sites/scripts/horizon/build-static-site.sh <site-slug>` to reproduce the static export pipeline locally.
-
-### Data Storage
-
-Currently lightweight setup with:
-- No external database dependencies in base configuration
-- Ready for integration with PostgreSQL, Redis, or other databases
-- FastAPI supports async database operations
-
-### Deployment
-
-**Development:**
-- Docker Compose for local development
-- Hot reloading enabled
-- Ports: Studio frontend :3001, Backend :8000, Form Relay :8080, Static Site Extractor :8081 (all services must keep unique ports; update the Service Port Map when new ones appear).
-
-**Production Ready:**
-- Containerized applications
-- Vite production builds
-- FastAPI production deployment patterns
+## Workflow reminders
+- Regenerate Horizon example via `public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py`, then rebuild the Docker stack with `--force-recreate --remove-orphans`.
+- Regenerate OpenAPI JSON and Studio TypeScript types after backend model changes.
+- Use Docker when verifying cross-service flows; the compose stack mounts the repo for hot reload.
 
 ### Backend ↔ Frontend Contract
 
 API types flow from backend to frontend automatically:
-- Update Pydantic schemas (example: `backend/schemas.py`).
+- Update Pydantic schemas in `backend/app/models/` (for example `system.py`).
 - Export the OpenAPI document with `uv run python export_openapi.py` inside `backend/`.
-- Regenerate TypeScript bindings with `pnpm openapi:types` from the Studio workspace (`client/`).
-- Import the generated shapes—`src/api/health.ts` shows how to wrap a fetch with strong typing and how the UI renders the typed response across both workspaces.
+- Regenerate TypeScript bindings with `pnpm --dir client openapi:types`.
+- Import the generated shapes; `client/src/api/health.ts` wraps `/health` with the typed response for reference.
 
-The `/health` endpoint is our reference contract; it surfaces service metadata, message, and a timestamp to validate the end-to-end generation path.
-
-### Data Persistence
-
-- Backend configured for easy database integration
-- uv.lock ensures reproducible Python environments
-- pnpm-lock.yaml for consistent Node.js dependencies
-
-## Evaluation Criteria
-
-TBD..
-
-
-## Testing Commands
-
-**Frontend:**
-```bash
-pnpm lint        # ESLint code quality checks
-pnpm typecheck   # Run the TypeScript compiler w/out emitting files
-pnpm build       # Production build verification
-pnpm preview     # Preview production build
-```
-
-**Backend:**
-```bash
-cd backend
-uv run pytest      # Run test suite (when implemented)
-uv sync            # Sync dependencies
-```
-
-**Integration:**
-```bash
-docker compose up --build -d    # Full stack test
-curl http://localhost:8000/health
-curl http://localhost:8000/docs
-```
-
-### Test Architecture
-
-**Frontend Testing:**
-- ESLint for code quality and consistency
-- Vite build process for integration testing
-- Ready for Jest/Vitest unit testing framework
-
-**Backend Testing:**
-- pytest framework ready for implementation
-- FastAPI TestClient for API testing
-- Async test support with Python 3.13
+The `/health` endpoint is the reference contract. It returns status metadata, a message, and a timestamp to validate the end-to-end generation path.
 
 ### Testing Approach
 
-- Coverage target: Aim for 80%+ meaningful coverage; optimize for fewer, higher-value tests.
-- Prioritize units: Put core logic in services; unit-test services thoroughly. Keep route tests as slim end-to-end smoke checks.
-- Avoid redundancy: Don't duplicate assertions across service and route tests. Prefer one comprehensive service test over multiple granular variants.
-- Parametrize duplicates: Use pytest.mark.parametrize to collapse similar cases (e.g., redis:// vs rediss://).
-- Error handling: Include explicit tests for failure paths without over-mocking internals.
-- No placeholders: Do not add tests for unimplemented endpoints; add them when functionality lands
-- Fixture simplicity: Prefer a single app/client fixtures
-- Combine where possible: Merge basic/multiple/normalization assertions into one test per unit; keep route e2e to one or two scenarios.
-- Pros/cons first: Before adding complex or backward-compat test scaffolding, present options with pros/cons and choose the simplest that meets requirements.
+- Target ~80% meaningful coverage; prioritize high-value assertions.
+- Keep business logic in services and cover it with focused unit tests; let route tests act as thin smoke checks.
+- Avoid redundant assertions between service and route layers—opt for one comprehensive test instead of many near-duplicates.
+- Use `pytest.mark.parametrize` to collapse variant cases (e.g. protocol checks).
+- Exercise failure paths without over-mocking internals.
+- Skip placeholder tests for unimplemented endpoints; land them with the actual feature.
+- Prefer a single shared app/client fixture to keep setup simple.
+- Merge normalization/basic assertions where possible; reserve multi-case e2e tests for truly distinct behavior.
+- Before adding heavy scaffolding for backward compatibility, outline options with pros/cons and choose the simplest path that satisfies requirements.
+
+## Guardrails
+- Default to Python for new automation; document any exceptions for reviewers.
+- Read `agents/policy/public-sites.md` before editing static site bundles programmatically.
+- Keep port assignments and command snippets aligned with `docker-compose.yml` and package scripts.
+- Ignore unrelated working tree changes and default to ASCII when writing files.
 
 ## Code Style Notes
-
-- Do not include "Args" and "Returns" in function comments.
-- Handlers should be slim.
+- Skip "Args"/"Returns" headings in docstrings.
+- Keep request handlers slim; move logic into services.
 
 ## VERY IMPORTANT
-
-- Focus on writing clear, DRY, simple code.
-- Only add abstrction when it's justified. Do not over-engineer!!
-- DO NOT include any dead code. Remove any you find.
-- Always ask before adding complexity to support backwards compatibility.
-
-## AI-Assisted Editing Roadmap
-- Goal: ship an internal, behind-auth GPT-5-Codex powered editor that can safely update `public-sites/sites/<slug>` in place while keeping deployments reproducible and auditable.
-- Hosting: start with a single Render Private Service (process-level jail) backed by a persistent disk; every session is confined to `/opt/render/project/src/sites/<slug>` via path normalization and explicit allowlists.
-- Scope: v1 focuses on internal teammates editing existing site bundles; brand-new site scaffolds stay a local Codex workflow until the hosted pipeline proves stable.
-- Tooling surface: only expose `list_dir`, `read_file`, `search`, `apply_patch`, `write_file`, and a `run_script` wrapper for vetted commands (`fmt`, `lint`, `build`). Budgets cap file size, patch size, call count, and wall time.
-- Workflow: React chat UI → FastAPI orchestrator → GPT-5-Codex tool calls → git worktree per session → format/lint/build gates → commit + diff summary surfaced to the UI. Publish jobs run the static export and call the Render deploy hook.
-- Preview: keep a Next.js/Vite dev server running against the same disk for near-instant hot reload during editing; production builds stay in background workers.
-- Guardrails: per-site mutexes, audit log of tool calls, secret redaction on reads, automatic halt after repeated failures, and git history for rollback.
-- Status: plan only. Update this section as we finalize tool schemas, disk sizing, or decide to move off Render.
-
-### New Feature: In-Page Visual Editing (Lovable-style)
-
-**Goal:** Allow non-technical users (e.g., therapists) to click **“Edit”**, hover elements, and update text/images directly on the rendered site preview.
-
-**How it works:**
-1. **Overlay Layer**  
-   - React overlay highlights DOM nodes on hover (`getBoundingClientRect`, `elementFromPoint`).  
-   - Editable candidates limited to `h1-h6`, `p`, `li`, `a`, `button`, or nodes with `data-*` attributes.
-
-2. **Inline Editing**  
-   - Clicking swaps the element into a `contenteditable` region or overlay editor.  
-   - Changes captured as structured patches:
-     ```json
-     {
-       "selector": "[data-loc='hero.headline']",
-       "type": "text",
-       "old": "Therapy for adults",
-       "new": "Therapy that feels like you"
-     }
-     ```
-
-3. **Persistence**  
-   - Patches map back to source of truth (`client-overview.md`, YAML configs, or site bundle) while the Next.js server stays authoritative during the session.  
-   - Publishing applies the persisted patches and kicks off a static Next.js export so the deployed bundle reflects the audited changes.
-
-4. **Selector Strategy**  
-   - Prefer stable `data-loc` or `data-cms` attributes.  
-   - Fall back to generated CSS paths with checksums/fingerprints for drift detection.
-
-5. **UI Stack (learned from Lovable)**  
-   - **Next.js + Tailwind** with reusable utility classes (`heading is-section`, `text is-lead`, etc.).  
-   - **Radix UI primitives** for dialogs/menus.  
-   - **Sonner** for toasts, **Vaul** for side drawers.  
-   - **Lucide-react icons** for inline controls.  
-   - **AntD components** may also be used for forms and modals.
-
-6. **Workflow Integration**  
-   - Visual edits → patch queue → orchestrator validation → file updates → rebuild (`pnpm check`) → Render deploy hook.  
-   - Audit logs map DOM-level edits back to version-controlled file changes.
-
-**Note about Lovable:**  
-Lovable implements this by overlaying a React editor on top of Next.js static exports, powered by Tailwind, Radix UI, AntD, and Sonner toasts. Their approach demonstrates how in-browser editing can feel live while still preserving reproducibility through static builds and deploy hooks.
-
-### Additional Notes from Market Research
-
-**Learnings from Base44**
-- Their editor is a **React SPA** built with **Tailwind CSS** and **Ant Design** components.
-- They lean heavily on **Radix UI primitives** for accessibility and interactive elements.
-- **Lucide-react** icons are used consistently across the UI.
-- The architecture is a single-page app with clear overlay/editor panels, which makes state management simpler but can bloat the main bundle.
-- **Takeaway for PremPage:** Favor keeping our editor lightweight. Split the **Studio app** (onboarding, content, assets) from the **Overlay SDK** (DOM highlighting + inline editing), to avoid bundle creep and keep the overlay re-usable in different contexts.
-
-**Learnings from Bolt.new**
-- Bolt uses **Remix + React** with a **Vite + TypeScript** toolchain.
-- Styling: **Tailwind CSS** with custom DS tokens, **Radix UI**, **React Toastify**, and icon libraries like **Lucide/Heroicons/Phosphor**.
-- Embedded editors: **CodeMirror 6** for code and **xterm.js** for terminal simulation.
-- Heavy instrumentation: **Sentry**, **HubSpot**, **Chameleon** tours, and multiple ad/analytics SDKs.
-- **Takeaway for PremPage:** 
-  - Adopt **TypeScript-first** for type safety across the editor and Studio.
-  - Consider **CodeMirror** for structured content blocks (blog editing, schema-driven forms) if we expand beyond simple text replacement.
-  - Keep instrumentation minimal (Sentry + one analytics) to avoid Bolt’s SDK overhead.
-
-**Shared Patterns (Lovable / Base44 / Bolt)**
-- All rely on **React + Tailwind + Radix** as the foundation.
-- Toast notifications (Sonner, Toastify) and drawer/panel systems (Vaul, Radix Drawer) are common.
-- In-page editors always build around a **selector + patch model** for reproducible changes.
-- Preview domains are essential (`preview--slug.domain.com`) to separate draft vs. production safely.
-
-**PremPage Direction**
-- Stick with **Next.js (App Router + Static Export)** for Studio and client sites.
-- Keep the **editor overlay as a separate bundle** (`/packages/editor-overlay`) injected into preview iframes.
-- **Tech stack commitment:** 
-  - **Next.js + Tailwind + Radix** as the base.
-  - **Sonner** for toasts, **Vaul** for drawers, **Lucide-react** icons.
-  - **TypeScript** across all apps/packages.
-- Future exploration: evaluate **CodeMirror** for schema-aware editing, but don’t overcomplicate v1.
+- Favor clear, DRY, simple code.
+- Introduce abstraction only when justified; avoid over-engineering.
+- Remove dead code as you find it.
+- Ask before adding complexity just for backward compatibility.

@@ -213,11 +213,6 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     setPendingSectionKey(null);
   }, []);
 
-  const cancelDropZoneSelection = useCallback(() => {
-    postToIframe({ source: "prempage-studio", type: "overlay-cancel-drop-mode" });
-    resetDropZoneState();
-  }, [postToIframe, resetDropZoneState]);
-
   const requestOverlayInit = useCallback(() => {
     sendOverlayInit();
     console.debug("[overlay] requested overlay init");
@@ -353,10 +348,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
                 targetSectionId,
               });
 
-              setInsertFeedback({
-                status: "success",
-                message: `Inserted at ${response.slot}.`,
-              });
+              setInsertFeedback({ status: "idle" });
               setSelectedSectionKey(pendingKey);
             } catch (error) {
               setInsertFeedback({
@@ -366,10 +358,12 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
                     ? error.message
                     : "Failed to insert section.",
               });
+              setIsSectionLibraryOpen(true);
+              resetDropZoneState();
+              return;
             } finally {
               setIsInsertingSection(false);
               resetDropZoneState();
-              setIsSectionLibraryOpen(true);
             }
           })();
         } else if (data.type === "overlay-drop-mode-cancelled") {
