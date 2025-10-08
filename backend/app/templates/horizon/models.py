@@ -4,7 +4,9 @@ from __future__ import annotations
 import re
 from datetime import datetime, timezone
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 _HEX_COLOR_PATTERN = re.compile(r"^#[0-9A-Fa-f]{6}$")
@@ -53,4 +55,40 @@ class HorizonPaletteSwapResponse(BaseModel):
     applied_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         description="UTC timestamp when the palette was applied.",
+    )
+
+
+class HorizonSectionInsertRequest(BaseModel):
+    """Request payload for inserting a Horizon section."""
+
+    section_key: str = Field(..., description="Catalog key for the section to insert")
+    position: Literal["before", "after", "start", "end"] = Field(
+        ..., description="Relative placement for the new section",
+    )
+    target_section_id: str | None = Field(
+        default=None,
+        description="Section ID the insertion is relative to (required for before/after)",
+    )
+
+    @model_validator(mode="after")
+    def validate_target(cls, values: "HorizonSectionInsertRequest") -> "HorizonSectionInsertRequest":
+        if values.position in {"before", "after"} and not values.target_section_id:
+            raise ValueError("target_section_id is required for before/after positions")
+        return values
+
+
+class HorizonSectionInsertResponse(BaseModel):
+    """Response payload after inserting a Horizon section."""
+
+    component_relative_path: str = Field(
+        ..., description="Path to the cloned component relative to the site root",
+    )
+    import_identifier: str = Field(
+        ..., description="Identifier used in the HomePage.jsx import",
+    )
+    section_id: str = Field(
+        ..., description="Generated sectionId assigned to the new component",
+    )
+    slot: str = Field(
+        ..., description="Slot marker where the component was inserted",
     )

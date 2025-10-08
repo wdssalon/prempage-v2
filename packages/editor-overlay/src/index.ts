@@ -1,6 +1,8 @@
 const OVERLAY_SOURCE = "prempage-overlay";
 const HOVER_CLASS = "prem-overlay--hover";
 const EDITING_CLASS = "prem-overlay--editing";
+const DROP_HOVER_CLASS = "prem-overlay--drop-hover";
+const DROP_MODE_CLASS = "prem-overlay--drop-mode";
 const CONTENTEDITABLE_MODE = "plaintext-only";
 
 export type OverlayEditPayload = {
@@ -22,11 +24,15 @@ export type OverlayOptions = {
 };
 
 type EditableElement = HTMLElement & { dataset: { ppid?: string } };
+type SectionElement = HTMLElement & { dataset: { sectionId?: string } };
 
 type InternalState = {
   current: EditableElement | null;
   originalText: string;
   editingEnabled: boolean;
+  dropModeActive: boolean;
+  dropHover: SectionElement | null;
+  resumeEditingOnExit: boolean;
 };
 
 const CLICK_CAPTURE_OPTIONS: AddEventListenerOptions = { capture: true };
@@ -36,6 +42,9 @@ function createInitialState(editingInitiallyEnabled: boolean): InternalState {
     current: null,
     originalText: "",
     editingEnabled: editingInitiallyEnabled,
+    dropModeActive: false,
+    dropHover: null,
+    resumeEditingOnExit: false,
   };
 }
 
@@ -55,6 +64,24 @@ function getEditableElement(node: EventTarget | null): EditableElement | null {
 
   if (node instanceof Node) {
     return (node.parentElement && node.parentElement.closest<EditableElement>("[data-ppid]")) || null;
+  }
+
+  return null;
+}
+
+function getSectionElement(node: EventTarget | null): SectionElement | null {
+  if (!node) return null;
+
+  if (node instanceof HTMLElement) {
+    return node.closest<SectionElement>("[data-section-id]");
+  }
+
+  if (node instanceof Node) {
+    return (
+      (node.parentElement &&
+        node.parentElement.closest<SectionElement>("[data-section-id]")) ||
+      null
+    );
   }
 
   return null;
@@ -89,6 +116,14 @@ function injectStyles(rootDoc: Document) {
       outline-offset: 2px;
       background-color: rgba(16, 185, 129, 0.08);
     }
+    [data-section-id].${DROP_HOVER_CLASS} {
+      outline: 3px dashed rgba(59, 130, 246, 0.75);
+      outline-offset: 6px;
+      cursor: copy;
+    }
+    body.${DROP_MODE_CLASS} {
+      cursor: copy;
+    }
   `;
   rootDoc.head.append(style);
 }
@@ -108,6 +143,15 @@ function setHover(el: EditableElement | null, shouldHover: boolean) {
     el.classList.add(HOVER_CLASS);
   } else {
     el.classList.remove(HOVER_CLASS);
+  }
+}
+
+function setDropHover(el: SectionElement | null, shouldHover: boolean) {
+  if (!el) return;
+  if (shouldHover) {
+    el.classList.add(DROP_HOVER_CLASS);
+  } else {
+    el.classList.remove(DROP_HOVER_CLASS);
   }
 }
 
@@ -153,7 +197,63 @@ export function initOverlay(options: OverlayOptions = {}) {
 
   injectStyles(rootDoc);
 
+  function exitDropMode(reason: "selected" | "cancelled") {
+    if (!state.dropModeActive) {
+      return;
+    }
+
+    console.debug("[overlay] exiting drop mode", reason);
+    state.dropModeActive = false;
+    if (state.dropHover) {
+      setDropHover(state.dropHover, false);
+      state.dropHover = null;
+    }
+    rootDoc.body.classList.remove(DROP_MODE_CLASS);
+
+    if (reason === "cancelled") {
+      window.parent?.postMessage(
+        { source: OVERLAY_SOURCE, type: "overlay-drop-mode-cancelled" },
+        "*",
+      );
+    }
+
+    if (state.resumeEditingOnExit) {
+      setEditingEnabled(true);
+      state.resumeEditingOnExit = false;
+    }
+  }
+
+  function enterDropMode() {
+    if (state.dropModeActive) {
+      return;
+    }
+
+    console.debug("[overlay] entering drop mode");
+    state.resumeEditingOnExit = state.editingEnabled;
+    if (state.editingEnabled) {
+      setEditingEnabled(false);
+    }
+    state.dropModeActive = true;
+    state.dropHover = null;
+    rootDoc.body.classList.add(DROP_MODE_CLASS);
+    window.parent?.postMessage(
+      { source: OVERLAY_SOURCE, type: "overlay-drop-mode-started" },
+      "*",
+    );
+  }
+
   const handlePointerOver = (event: Event) => {
+    if (state.dropModeActive) {
+      const dropTarget = getSectionElement(event.target);
+      if (!dropTarget || dropTarget === state.dropHover) return;
+      if (state.dropHover) {
+        setDropHover(state.dropHover, false);
+      }
+      setDropHover(dropTarget, true);
+      state.dropHover = dropTarget;
+      return;
+    }
+
     if (!state.editingEnabled) return;
     const target = getEditableElement(event.target);
     if (!target || target === state.current) return;
@@ -161,6 +261,22 @@ export function initOverlay(options: OverlayOptions = {}) {
   };
 
   const handlePointerOut = (event: Event) => {
+    if (state.dropModeActive) {
+      const target = getSectionElement(event.target);
+      if (!target) return;
+
+      const related = (event as PointerEvent).relatedTarget as Node | null;
+      if (related && target.contains(related)) {
+        return;
+      }
+
+      setDropHover(target, false);
+      if (state.dropHover === target) {
+        state.dropHover = null;
+      }
+      return;
+    }
+
     if (!state.editingEnabled) return;
     const target = getEditableElement(event.target);
     if (!target || target === state.current) return;
@@ -235,6 +351,39 @@ export function initOverlay(options: OverlayOptions = {}) {
   };
 
   const handleClick = (event: MouseEvent) => {
+    if (state.dropModeActive) {
+      const sectionTarget = getSectionElement(event.target);
+      if (!sectionTarget) {
+        return;
+      }
+
+      const sectionId = sectionTarget.dataset.sectionId;
+      if (!sectionId) {
+        return;
+      }
+
+      const rect = sectionTarget.getBoundingClientRect();
+      const offset = event.clientY - rect.top;
+      const position = offset < rect.height / 2 ? "before" : "after";
+
+      window.parent?.postMessage(
+        {
+          source: OVERLAY_SOURCE,
+          type: "overlay-section-drop-selected",
+          payload: {
+            sectionId,
+            position,
+          },
+        },
+        "*",
+      );
+
+      exitDropMode("selected");
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
     const target = getEditableElement(event.target);
     if (!target) return;
 
@@ -270,6 +419,16 @@ export function initOverlay(options: OverlayOptions = {}) {
   addListener(root, "pointerout", handlePointerOut as EventListener);
   addListener(root, "click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (!state.dropModeActive) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      exitDropMode("cancelled");
+    }
+  };
+
+  addListener(rootDoc, "keydown", handleKeyDown as EventListener);
+
   const setEditingEnabled = (enabled: boolean) => {
     if (state.editingEnabled === enabled) {
       return;
@@ -288,12 +447,21 @@ export function initOverlay(options: OverlayOptions = {}) {
   const destroy = () => {
     teardownEditing(state);
     clearHoverState(root);
+    if (state.dropModeActive) {
+      exitDropMode("cancelled");
+    }
     root.removeEventListener("pointerover", handlePointerOver as EventListener);
     root.removeEventListener("pointerout", handlePointerOut as EventListener);
     root.removeEventListener("click", handleClick as EventListener, CLICK_CAPTURE_OPTIONS);
+    rootDoc.removeEventListener("keydown", handleKeyDown as EventListener);
   };
 
-  return { destroy, setEditingEnabled };
+  return {
+    destroy,
+    setEditingEnabled,
+    enterSectionDropMode: enterDropMode,
+    cancelSectionDropMode: () => exitDropMode("cancelled"),
+  };
 }
 
 export type OverlayController = ReturnType<typeof initOverlay>;

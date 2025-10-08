@@ -11,6 +11,8 @@ import {
   type HorizonPaletteSwapResponse,
 } from "@/api/palette";
 import { logOverlayEdit } from "@/api/overlay";
+import { insertSection } from "@/api/sections";
+import { HORIZON_SECTIONS } from "@/generated/sections/horizon";
 import { SectionLibraryDialog } from "./SectionLibraryDialog";
 
 type ProjectPageProps = {
@@ -49,6 +51,16 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
   const [isSectionLibraryOpen, setIsSectionLibraryOpen] = useState(false);
+  const [selectedSectionKey, setSelectedSectionKey] = useState<string | null>(
+    HORIZON_SECTIONS[0]?.key ?? null,
+  );
+  const [isSelectingDropZone, setIsSelectingDropZone] = useState(false);
+  const [isInsertingSection, setIsInsertingSection] = useState(false);
+  const [insertFeedback, setInsertFeedback] = useState<{
+    status: "idle" | "success" | "error";
+    message?: string;
+  }>({ status: "idle" });
+  const [pendingSectionKey, setPendingSectionKey] = useState<string | null>(null);
 
   const lastSwapAppliedAt = lastSwap?.applied_at ?? null;
   const paletteSwapTimestamp = lastSwapAppliedAt
@@ -180,6 +192,32 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     }
   }, []);
 
+  const beginDropZoneSelection = useCallback(
+    (sectionKey: string) => {
+      if (!sectionKey) {
+        setInsertFeedback({ status: "error", message: "Pick a section first." });
+        return;
+      }
+
+      setPendingSectionKey(sectionKey);
+      setInsertFeedback({ status: "idle" });
+      setIsSectionLibraryOpen(false);
+      setIsSelectingDropZone(true);
+      postToIframe({ source: "prempage-studio", type: "overlay-start-drop-mode" });
+    },
+    [postToIframe],
+  );
+
+  const resetDropZoneState = useCallback(() => {
+    setIsSelectingDropZone(false);
+    setPendingSectionKey(null);
+  }, []);
+
+  const cancelDropZoneSelection = useCallback(() => {
+    postToIframe({ source: "prempage-studio", type: "overlay-cancel-drop-mode" });
+    resetDropZoneState();
+  }, [postToIframe, resetDropZoneState]);
+
   const requestOverlayInit = useCallback(() => {
     sendOverlayInit();
     console.debug("[overlay] requested overlay init");
@@ -245,19 +283,101 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
         return;
       }
 
-      if (data.source === "prempage-overlay" && data.type === "overlay-edit") {
-        console.info("Overlay edit", data.payload, data.meta);
-        void logOverlayEdit({
-          projectSlug: slug,
-          payload: data.payload,
-          meta: data.meta,
-        })
-          .then((result) => {
-            console.info("Overlay edit applied", result);
+      if (data.source === "prempage-overlay") {
+        if (data.type === "overlay-edit") {
+          console.info("Overlay edit", data.payload, data.meta);
+          void logOverlayEdit({
+            projectSlug: slug,
+            payload: data.payload,
+            meta: data.meta,
           })
-          .catch((error) => {
-            console.error("Failed to log overlay edit", error);
-          });
+            .then((result) => {
+              console.info("Overlay edit applied", result);
+            })
+            .catch((error) => {
+              console.error("Failed to log overlay edit", error);
+            });
+        } else if (data.type === "overlay-drop-mode-started") {
+          setIsSelectingDropZone(true);
+        } else if (data.type === "overlay-section-drop-selected") {
+          setIsSelectingDropZone(false);
+
+          const payload = data.payload as {
+            sectionId?: string;
+            position?: string;
+          };
+
+          const pendingKey = pendingSectionKey;
+          if (!pendingKey) {
+            setInsertFeedback({
+              status: "error",
+              message: "Select a section before choosing a drop zone.",
+            });
+            setIsSectionLibraryOpen(true);
+            resetDropZoneState();
+            return;
+          }
+
+          if (!payload || payload.position !== "before" && payload.position !== "after") {
+            setInsertFeedback({
+              status: "error",
+              message: "We couldn't understand that drop location.",
+            });
+            setIsSectionLibraryOpen(true);
+            resetDropZoneState();
+            return;
+          }
+
+          const position: "before" | "after" = payload.position;
+
+          if (typeof payload.sectionId !== "string") {
+            setInsertFeedback({
+              status: "error",
+              message: "We couldn't detect which section you selected.",
+            });
+            setIsSectionLibraryOpen(true);
+            resetDropZoneState();
+            return;
+          }
+
+          setIsInsertingSection(true);
+          setInsertFeedback({ status: "idle" });
+          const targetSectionId = payload.sectionId;
+
+          void (async () => {
+            try {
+              const response = await insertSection({
+                projectSlug: slug,
+                sectionKey: pendingKey,
+                position,
+                targetSectionId,
+              });
+
+              setInsertFeedback({
+                status: "success",
+                message: `Inserted at ${response.slot}.`,
+              });
+              setSelectedSectionKey(pendingKey);
+            } catch (error) {
+              setInsertFeedback({
+                status: "error",
+                message:
+                  error instanceof Error
+                    ? error.message
+                    : "Failed to insert section.",
+              });
+            } finally {
+              setIsInsertingSection(false);
+              resetDropZoneState();
+              setIsSectionLibraryOpen(true);
+            }
+          })();
+        } else if (data.type === "overlay-drop-mode-cancelled") {
+          resetDropZoneState();
+          setInsertFeedback({ status: "idle" });
+          setIsSectionLibraryOpen(true);
+        }
+        return;
       }
     };
 
@@ -272,6 +392,8 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     requestOverlayInit,
     slug,
     syncOverlayMode,
+    pendingSectionKey,
+    resetDropZoneState,
   ]);
 
   useEffect(() => {
@@ -282,6 +404,22 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
   useEffect(() => {
     syncOverlayMode();
   }, [syncOverlayMode]);
+
+  useEffect(() => {
+    if (!isSectionLibraryOpen && !isSelectingDropZone) {
+      setInsertFeedback((current) =>
+        current.status === "success" || current.status === "error"
+          ? current
+          : { status: "idle" },
+      );
+    }
+  }, [isSectionLibraryOpen, isSelectingDropZone]);
+
+  useEffect(() => {
+    if (isSectionLibraryOpen && !selectedSectionKey && HORIZON_SECTIONS[0]) {
+      setSelectedSectionKey(HORIZON_SECTIONS[0].key);
+    }
+  }, [isSectionLibraryOpen, selectedSectionKey]);
 
   const leftPaneStyle: CSSProperties | undefined = useMemo(() => {
     if (!isDesktop || !isCopilotVisible) {
@@ -547,6 +685,12 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
         onClose={() => setIsSectionLibraryOpen(false)}
         projectDevUrl={project.devUrl}
         previewBaseUrl={project.previewBaseUrl ?? project.devUrl}
+        selectedSectionKey={selectedSectionKey}
+        onSelectSection={setSelectedSectionKey}
+        onRequestDropZone={beginDropZoneSelection}
+        isSelectingDropZone={isSelectingDropZone}
+        isInsertingSection={isInsertingSection}
+        insertFeedback={insertFeedback}
       />
     </div>
   );

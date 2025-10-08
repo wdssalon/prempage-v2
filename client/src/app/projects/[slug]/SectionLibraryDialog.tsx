@@ -9,24 +9,37 @@ type SectionLibraryDialogProps = {
   onClose: () => void;
   projectDevUrl: string;
   previewBaseUrl: string;
+  selectedSectionKey: string | null;
+  onSelectSection: (sectionKey: string) => void;
+  onRequestDropZone: (sectionKey: string) => void;
+  isSelectingDropZone: boolean;
+  isInsertingSection: boolean;
+  insertFeedback: InsertFeedback;
 };
 
 const SUBTITLE_COPY = "Pick a section to preview it in context, then choose where it should land.";
+
+type InsertFeedback = {
+  status: "idle" | "success" | "error";
+  message?: string;
+};
 
 export function SectionLibraryDialog({
   open,
   onClose,
   projectDevUrl,
   previewBaseUrl,
+  selectedSectionKey,
+  onSelectSection,
+  onRequestDropZone,
+  isSelectingDropZone,
+  isInsertingSection,
+  insertFeedback,
 }: SectionLibraryDialogProps): ReactElement | null {
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     if (open) {
-      setSelectedKey((current) => current ?? HORIZON_SECTIONS[0]?.key ?? null);
-      setStatusMessage(null);
       setIsSidebarCollapsed(false);
     }
   }, [open]);
@@ -50,9 +63,11 @@ export function SectionLibraryDialog({
   }, [open, onClose]);
 
   const selectedSection = useMemo(() => {
-    if (!selectedKey) return null;
-    return HORIZON_SECTIONS.find((section) => section.key === selectedKey) ?? null;
-  }, [selectedKey]);
+    if (!selectedSectionKey) return null;
+    return (
+      HORIZON_SECTIONS.find((section) => section.key === selectedSectionKey) ?? null
+    );
+  }, [selectedSectionKey]);
 
   if (!open) {
     return null;
@@ -107,8 +122,7 @@ export function SectionLibraryDialog({
                         <button
                           type="button"
                           onClick={() => {
-                            setSelectedKey(section.key);
-                            setStatusMessage(null);
+                            onSelectSection(section.key);
                           }}
                           className={`w-full rounded-xl border px-4 py-3 text-left transition ${
                             isActive
@@ -137,39 +151,32 @@ export function SectionLibraryDialog({
                   className="h-full min-h-[420px] w-full border-0"
                 />
               </div>
-              <div className="flex flex-col gap-3 rounded-xl border border-dashed border-stone-300 p-4">
-                <p className="text-sm font-semibold text-slate-800">Where should we place it?</p>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setStatusMessage("Drop zones coming soon – we’ll highlight targets in the page preview.");
-                    }}
-                    className="inline-flex items-center rounded-full border border-slate-900 px-3 py-1 text-xs font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white"
-                  >
-                    Select drop zone
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setStatusMessage("Drag-and-drop will be enabled in the next iteration.");
-                    }}
-                    className="inline-flex items-center rounded-full border border-stone-200 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-stone-300 hover:text-slate-900"
-                  >
-                    Drag into page (soon)
-                  </button>
-                </div>
-                {statusMessage ? (
-                  <p className="text-xs italic text-slate-500">{statusMessage}</p>
-                ) : (
-                  <p className="text-xs text-slate-500">
-                    We’ll integrate with the overlay next—pick a drop zone and we’ll add the section there.
-                  </p>
-                )}
+            <div className="flex flex-col gap-3 rounded-xl border border-dashed border-stone-300 p-4">
+              <p className="text-sm font-semibold text-slate-800">Where should we place it?</p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (selectedSection) {
+                      onRequestDropZone(selectedSection.key);
+                    }
+                  }}
+                  disabled={!selectedSection || isSelectingDropZone || isInsertingSection}
+                  className="inline-flex items-center rounded-full border border-slate-900 px-3 py-1 text-xs font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white disabled:cursor-not-allowed disabled:border-stone-200 disabled:text-stone-400"
+                >
+                  {isSelectingDropZone ? "Click in preview…" : "Select drop zone"}
+                </button>
               </div>
+              <InsertionStatus
+                feedback={insertFeedback}
+                isSelecting={isSelectingDropZone}
+                isInserting={isInsertingSection}
+                selectedSectionLabel={selectedSection?.label ?? null}
+              />
             </div>
+          </div>
 
-            {isSidebarCollapsed ? (
+          {isSidebarCollapsed ? (
               <button
                 type="button"
                 onClick={() => setIsSidebarCollapsed(false)}
@@ -183,5 +190,41 @@ export function SectionLibraryDialog({
         </div>
       </div>
     </div>
+  );
+}
+
+function InsertionStatus({
+  isSelecting,
+  isInserting,
+  feedback,
+  selectedSectionLabel,
+}: {
+  isSelecting: boolean;
+  isInserting: boolean;
+  feedback: InsertFeedback;
+  selectedSectionLabel: string | null;
+}) {
+  if (feedback.status === "success") {
+    return <p className="text-xs text-emerald-600">{feedback.message ?? "Section inserted."}</p>;
+  }
+
+  if (feedback.status === "error") {
+    return <p className="text-xs text-rose-600">{feedback.message ?? "Unable to insert section."}</p>;
+  }
+
+  if (isSelecting) {
+    return <p className="text-xs text-slate-500">Click the preview to choose where this section should land.</p>;
+  }
+
+  if (isInserting) {
+    return <p className="text-xs text-slate-500">Inserting section…</p>;
+  }
+
+  return (
+    <p className="text-xs text-slate-500">
+      {selectedSectionLabel
+        ? `Click “Select drop zone” then choose where ${selectedSectionLabel} should land.`
+        : "Pick a section and choose where it should land."}
+    </p>
   );
 }

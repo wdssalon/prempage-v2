@@ -122,6 +122,59 @@
           }
         }
       }
+    },
+    "/projects/{project_slug}/sections/insert": {
+      "post": {
+        "tags": [
+          "sections"
+        ],
+        "summary": "Insert Section",
+        "description": "Clone a Horizon section into the specified project workspace.",
+        "operationId": "insert_section_projects__project_slug__sections_insert_post",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HorizonSectionInsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HorizonSectionInsertResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -301,6 +354,78 @@
         ],
         "title": "HorizonPaletteSwapResponse",
         "description": "Payload returned after the backend applies a new Horizon palette."
+      },
+      "HorizonSectionInsertRequest": {
+        "properties": {
+          "section_key": {
+            "type": "string",
+            "title": "Section Key",
+            "description": "Catalog key for the section to insert"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "before",
+              "after",
+              "start",
+              "end"
+            ],
+            "title": "Position",
+            "description": "Relative placement for the new section"
+          },
+          "target_section_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Section Id",
+            "description": "Section ID the insertion is relative to (required for before/after)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "section_key",
+          "position"
+        ],
+        "title": "HorizonSectionInsertRequest",
+        "description": "Request payload for inserting a Horizon section."
+      },
+      "HorizonSectionInsertResponse": {
+        "properties": {
+          "component_relative_path": {
+            "type": "string",
+            "title": "Component Relative Path",
+            "description": "Path to the cloned component relative to the site root"
+          },
+          "import_identifier": {
+            "type": "string",
+            "title": "Import Identifier",
+            "description": "Identifier used in the HomePage.jsx import"
+          },
+          "section_id": {
+            "type": "string",
+            "title": "Section Id",
+            "description": "Generated sectionId assigned to the new component"
+          },
+          "slot": {
+            "type": "string",
+            "title": "Slot",
+            "description": "Slot marker where the component was inserted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "component_relative_path",
+          "import_identifier",
+          "section_id",
+          "slot"
+        ],
+        "title": "HorizonSectionInsertResponse",
+        "description": "Response payload after inserting a Horizon section."
       },
       "OverlayEditEvent": {
         "properties": {

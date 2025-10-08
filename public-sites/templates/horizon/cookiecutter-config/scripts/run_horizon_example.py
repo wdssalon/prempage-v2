@@ -38,6 +38,17 @@ ANNOTATE_SCRIPT = APP_BOILERPLATE_DIR / "scripts" / "annotate_ppids.py"
 SECTION_GENERATOR = REPO_ROOT / "public-sites" / "templates" / "horizon" / "scripts" / "generate_section_catalog.py"
 
 
+def build_overlay_bundle() -> None:
+    """Rebuild the editor overlay bundle so the preview iframe gets fresh code."""
+
+    print("Rebuilding editor overlay bundle for drop-mode support...")
+    subprocess.run(
+        ["pnpm", "--filter", "@prempage/editor-overlay", "build"],
+        check=True,
+        cwd=REPO_ROOT,
+    )
+
+
 def load_context() -> dict[str, str]:
     return {
         "project_name": "Horizon Example",
@@ -118,6 +129,7 @@ def main() -> None:
     context = load_context()
     run_cookiecutter(context)
     run_pnpm("install")
+    build_overlay_bundle()
     generate_section_catalog()
     print(f"\n✅ Horizon example regenerated. Run `pnpm dev` inside {PROJECT_DIR} when you want to start the server.\n")
 

@@ -98,6 +98,30 @@ export default function OverlayBridge() {
               /* error already logged */
             });
         }
+      } else if (data.type === "overlay-start-drop-mode") {
+        console.debug("[overlay] received overlay-start-drop-mode");
+        const beginDropMode = (controller) => {
+          controller?.enterSectionDropMode?.();
+        };
+
+        if (window.__premOverlayController) {
+          beginDropMode(window.__premOverlayController);
+        } else {
+          ensureOverlay(false)
+            .then(beginDropMode)
+            .catch(() => {
+              /* error already logged */
+            });
+        }
+      } else if (data.type === "overlay-cancel-drop-mode") {
+        console.debug("[overlay] received overlay-cancel-drop-mode");
+        const cancelDropMode = (controller) => {
+          controller?.cancelSectionDropMode?.();
+        };
+
+        if (window.__premOverlayController) {
+          cancelDropMode(window.__premOverlayController);
+        }
       } else if (data.type === "overlay-destroy") {
         console.debug("[overlay] received overlay-destroy from studio");
         destroyOverlay();

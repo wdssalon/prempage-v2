@@ -64,6 +64,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/projects/{project_slug}/sections/insert": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Insert Section
+         * @description Clone a Horizon section into the specified project workspace.
+         */
+        post: operations["insert_section_projects__project_slug__sections_insert_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -162,6 +182,54 @@ export interface components {
              * @description UTC timestamp when the palette was applied.
              */
             applied_at?: string;
+        };
+        /**
+         * HorizonSectionInsertRequest
+         * @description Request payload for inserting a Horizon section.
+         */
+        HorizonSectionInsertRequest: {
+            /**
+             * Section Key
+             * @description Catalog key for the section to insert
+             */
+            section_key: string;
+            /**
+             * Position
+             * @description Relative placement for the new section
+             * @enum {string}
+             */
+            position: "before" | "after" | "start" | "end";
+            /**
+             * Target Section Id
+             * @description Section ID the insertion is relative to (required for before/after)
+             */
+            target_section_id?: string | null;
+        };
+        /**
+         * HorizonSectionInsertResponse
+         * @description Response payload after inserting a Horizon section.
+         */
+        HorizonSectionInsertResponse: {
+            /**
+             * Component Relative Path
+             * @description Path to the cloned component relative to the site root
+             */
+            component_relative_path: string;
+            /**
+             * Import Identifier
+             * @description Identifier used in the HomePage.jsx import
+             */
+            import_identifier: string;
+            /**
+             * Section Id
+             * @description Generated sectionId assigned to the new component
+             */
+            section_id: string;
+            /**
+             * Slot
+             * @description Slot marker where the component was inserted
+             */
+            slot: string;
         };
         /**
          * OverlayEditEvent
@@ -337,6 +405,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["OverlayEditResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    insert_section_projects__project_slug__sections_insert_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                project_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HorizonSectionInsertRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HorizonSectionInsertResponse"];
                 };
             };
             /** @description Validation Error */
