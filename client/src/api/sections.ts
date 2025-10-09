@@ -1,8 +1,8 @@
+import { getApiBaseUrl } from "./config";
+import { getResponseErrorDetail } from "./error-utils";
 import type { components } from "./types";
 
-const DEFAULT_API_BASE_URL = "http://localhost:8000";
-
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_BASE_URL;
+const apiBaseUrl = getApiBaseUrl();
 
 export type HorizonSectionInsertRequest =
   components["schemas"]["HorizonSectionInsertRequest"];
@@ -36,24 +36,7 @@ export async function insertSection(
   );
 
   if (!response.ok) {
-    const rawBody = await response.text();
-    let detail: string | null = null;
-
-    if (rawBody) {
-      try {
-        const payload = JSON.parse(rawBody) as { detail?: unknown };
-        if (payload && typeof payload.detail === "string") {
-          detail = payload.detail;
-        }
-      } catch {
-        detail = rawBody;
-      }
-
-      if (!detail) {
-        detail = rawBody;
-      }
-    }
-
+    const detail = await getResponseErrorDetail(response);
     throw new Error(
       `Section insert failed with status ${response.status}${
         detail ? `: ${detail}` : ""

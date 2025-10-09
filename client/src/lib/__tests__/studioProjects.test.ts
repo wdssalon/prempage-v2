@@ -6,10 +6,13 @@ describe("studioProjects", () => {
   it("lists the available studio sandboxes", () => {
     const projects = listStudioProjects();
 
+    const expectedDevUrl =
+      process.env.NEXT_PUBLIC_HORIZON_DEV_URL ?? "http://localhost:3000";
+
     expect(projects.length).toBeGreaterThan(0);
     expect(projects[0]).toMatchObject({
       slug: "horizon-example",
-      devUrl: "http://localhost:3000",
+      devUrl: expectedDevUrl,
     });
   });
 
