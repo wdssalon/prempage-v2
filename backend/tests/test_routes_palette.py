@@ -71,11 +71,11 @@ def test_swap_palette_returns_response_payload(
 
 
 @pytest.mark.parametrize(
-    ("exception_cls", "status_code"),
+    ("exception_cls", "status_code", "error_code"),
     [
-        (HorizonSiteNotFoundError, status.HTTP_404_NOT_FOUND),
-        (HorizonPaletteGenerationError, status.HTTP_502_BAD_GATEWAY),
-        (HorizonPaletteApplyError, status.HTTP_500_INTERNAL_SERVER_ERROR),
+        (HorizonSiteNotFoundError, status.HTTP_404_NOT_FOUND, "not_found"),
+        (HorizonPaletteGenerationError, status.HTTP_502_BAD_GATEWAY, "service_unavailable"),
+        (HorizonPaletteApplyError, status.HTTP_500_INTERNAL_SERVER_ERROR, "internal_error"),
     ],
 )
 def test_swap_palette_error_mapping(
@@ -83,6 +83,7 @@ def test_swap_palette_error_mapping(
     monkeypatch: pytest.MonkeyPatch,
     exception_cls: type[Exception],
     status_code: int,
+    error_code: str,
 ) -> None:
     class DummyService(HorizonPaletteService):
         def __init__(self) -> None:  # pragma: no cover - stub wiring
@@ -99,4 +100,4 @@ def test_swap_palette_error_mapping(
     )
 
     assert response.status_code == status_code
-    assert response.json() == {"detail": "boom"}
+    assert response.json() == {"detail": "boom", "error_code": error_code}
