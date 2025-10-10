@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core import configure_logging, lifespan, settings
+from app.core.error_handlers import register_error_handlers
 from app.routes import router as api_router
 
 
@@ -27,6 +28,8 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    register_error_handlers(app)
 
     app.include_router(api_router)
 

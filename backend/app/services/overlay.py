@@ -6,11 +6,16 @@ import json
 import os
 import re
 from dataclasses import dataclass
-from http import HTTPStatus
 from pathlib import Path
 
-from fastapi import HTTPException, status
-
+from app.errors import (
+    BadRequestError,
+    ForbiddenError,
+    InternalServerError,
+    NotFoundError,
+    RequestEntityTooLargeError,
+    UnprocessableEntityError,
+)
 from app.models.overlay import OverlayEditEvent
 
 PPID_PREFIX_CODE = "code"
@@ -39,23 +44,23 @@ def _parse_ppid(ppid: str) -> tuple[str, str]:
     try:
         scheme, remainder = ppid.split(":", 1)
     except ValueError as exc:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail="Invalid PPID format",
+        raise UnprocessableEntityError(
+            "Invalid PPID format",
+            error_code="overlay_invalid_ppid_format",
         ) from exc
 
     if scheme != PPID_PREFIX_CODE:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail=f"Unsupported PPID namespace '{scheme}'",
+        raise UnprocessableEntityError(
+            f"Unsupported PPID namespace '{scheme}'",
+            error_code="overlay_unsupported_namespace",
         )
 
     try:
         path_fragment, anchor = remainder.split("#", 1)
     except ValueError as exc:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail="PPID missing anchor identifier",
+        raise UnprocessableEntityError(
+            "PPID missing anchor identifier",
+            error_code="overlay_missing_anchor",
         ) from exc
 
     return path_fragment, anchor
@@ -66,24 +71,30 @@ def _resolve_target_path(path_fragment: str, project_slug: str) -> Path:
     candidate = (repo_root / path_fragment).resolve()
 
     if not candidate.is_file():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Target file not found",
+        raise NotFoundError(
+            "Target file not found",
+            error_code="overlay_target_not_found",
+            context={"path": str(candidate)},
         )
 
     try:
         candidate.relative_to(repo_root)
     except ValueError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Target path escapes repository root",
+        raise ForbiddenError(
+            "Target path escapes repository root",
+            error_code="overlay_path_escape",
+            context={"path": str(candidate)},
         ) from exc
 
     expected_root = (repo_root / "public-sites" / "sites" / project_slug).resolve()
     if expected_root not in candidate.parents:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="PPID does not belong to the specified project",
+        raise BadRequestError(
+            "PPID does not belong to the specified project",
+            error_code="overlay_project_mismatch",
+            context={
+                "expected_root": str(expected_root),
+                "candidate": str(candidate),
+            },
         )
 
     return candidate
@@ -93,9 +104,9 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
     """Apply the requested overlay edit to the target source file."""
 
     if not event.payload.text:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail="Overlay text payload is empty",
+        raise UnprocessableEntityError(
+            "Overlay text payload is empty",
+            error_code="overlay_empty_text",
         )
 
     path_fragment, _anchor = _parse_ppid(event.payload.ppid)
@@ -104,15 +115,20 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
     try:
         file_size = target_path.stat().st_size
     except OSError as exc:
-        raise HTTPException(
-            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
-            detail="Unable to inspect target file",
+        raise InternalServerError(
+            "Unable to inspect target file",
+            error_code="overlay_stat_failed",
+            context={"path": str(target_path)},
         ) from exc
 
     if file_size > MAX_EDITABLE_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=HTTPStatus.REQUEST_ENTITY_TOO_LARGE,
-            detail="Target file exceeds editable size limit",
+        raise RequestEntityTooLargeError(
+            "Target file exceeds editable size limit",
+            context={
+                "path": str(target_path),
+                "size_bytes": file_size,
+                "limit_bytes": MAX_EDITABLE_FILE_SIZE_BYTES,
+            },
         )
 
     escaped_ppid = re.escape(event.payload.ppid)
@@ -156,12 +172,12 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
     fallback_match = fallback_pattern.search(content)
 
     if not fallback_match:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=(
+        raise NotFoundError(
+            (
                 f"Unable to locate PPID '{event.payload.ppid}' "
                 f"in '{path_fragment}'"
             ),
+            error_code="overlay_ppid_not_found",
         )
 
     value_key = fallback_match.group(1)
@@ -173,12 +189,12 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
         value_match = match_candidate
 
     if value_match is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=(
+        raise NotFoundError(
+            (
                 f"Unable to locate value for '{value_key}' associated with "
                 f"PPID '{event.payload.ppid}' in '{path_fragment}'"
             ),
+            error_code="overlay_value_not_found",
         )
 
     value_start = value_match.start(1)

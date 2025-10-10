@@ -9,8 +9,10 @@ from importlib import util as importlib_util
 from pathlib import Path
 from typing import Any
 
+from app.errors import BadRequestError
 
-class HorizonSectionInsertionError(RuntimeError):
+
+class HorizonSectionInsertionError(BadRequestError):
     """Raised when a Horizon section cannot be inserted."""
 
 

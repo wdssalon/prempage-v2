@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pytest
-from fastapi import HTTPException
+from app.errors import AppError
 
 from app.models.overlay import OverlayEditEvent
 from app.services.overlay import apply_overlay_edit
@@ -43,7 +43,7 @@ def test_apply_overlay_edit_converts_newlines_to_br(overlay_repo):
 def test_apply_overlay_edit_rejects_unknown_namespace(overlay_repo):
     event = _make_event("markdown:some/file.md#heading", "New heading")
 
-    with pytest.raises(HTTPException) as exc:
+    with pytest.raises(AppError) as exc:
         apply_overlay_edit(event)
 
     assert exc.value.status_code == 422
@@ -55,7 +55,7 @@ def test_apply_overlay_edit_missing_node(overlay_repo):
         "Text",
     )
 
-    with pytest.raises(HTTPException) as exc:
+    with pytest.raises(AppError) as exc:
         apply_overlay_edit(event)
 
     assert exc.value.status_code == 404

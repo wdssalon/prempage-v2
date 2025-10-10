@@ -15,6 +15,7 @@ from pydantic import ValidationError
 
 from app.ai.base import PaletteGenerator, PaletteGeneratorError
 from app.ai.providers.openai import DEFAULT_OPENAI_MODEL, OpenAIPaletteGenerator
+from app.errors import InternalServerError, NotFoundError, ServiceUnavailableError
 from app.templates.horizon.models import (
     HorizonPalette,
     HorizonPaletteSwapRequest,
@@ -22,15 +23,15 @@ from app.templates.horizon.models import (
 )
 
 
-class HorizonSiteNotFoundError(RuntimeError):
+class HorizonSiteNotFoundError(NotFoundError):
     """Raised when the requested Horizon site workspace is missing."""
 
 
-class HorizonPaletteGenerationError(RuntimeError):
+class HorizonPaletteGenerationError(ServiceUnavailableError):
     """Raised when a Horizon palette cannot be generated or validated."""
 
 
-class HorizonPaletteApplyError(RuntimeError):
+class HorizonPaletteApplyError(InternalServerError):
     """Raised when applying a Horizon palette via the theme script fails."""
 
 
