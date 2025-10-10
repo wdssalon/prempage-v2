@@ -91,7 +91,7 @@ export default function Hero({ sectionId, variant = "default" }) {
 
           <h1 id={headingId} className={headingClasses}>
             <span data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.2">Therapi is just for you</span>
-            <span className="block text-accent" data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.3">Authentically Self</span>
+            <span className="block text-accent" data-ppid="code:public-sites/sites/horizon-example/src/components/Hero.jsx#Hero.inline.3">Authentic Self</span>
           </h1>
 
           <p

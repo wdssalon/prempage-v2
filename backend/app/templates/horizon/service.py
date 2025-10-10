@@ -11,6 +11,7 @@ from tempfile import NamedTemporaryFile
 from typing import Mapping
 
 from loguru import logger
+from pydantic import ValidationError
 
 from app.ai.base import PaletteGenerator, PaletteGeneratorError
 from app.ai.providers.openai import DEFAULT_OPENAI_MODEL, OpenAIPaletteGenerator
@@ -99,16 +100,20 @@ class HorizonPaletteService:
             ) from exc
 
         colors = config.get("colors")
-        if not isinstance(colors, dict):
+        if not isinstance(colors, Mapping):
             raise HorizonPaletteGenerationError(
-                "site-config.json does not contain a colors object"
+                "site-config.json does not contain a valid colors mapping",
             )
 
         try:
             return HorizonPalette(**colors)
-        except Exception as exc:  # noqa: BLE001
+        except ValidationError as exc:
             raise HorizonPaletteGenerationError(
-                "Existing palette is invalid"
+                "Existing palette is invalid",
+            ) from exc
+        except TypeError as exc:
+            raise HorizonPaletteGenerationError(
+                "Existing palette has unexpected structure",
             ) from exc
 
     def _generate_palette(
@@ -122,9 +127,13 @@ class HorizonPaletteService:
 
         try:
             return HorizonPalette(**raw_palette)
-        except Exception as exc:  # noqa: BLE001
+        except ValidationError as exc:
             raise HorizonPaletteGenerationError(
-                "Generated palette failed validation"
+                "Generated palette failed validation",
+            ) from exc
+        except TypeError as exc:
+            raise HorizonPaletteGenerationError(
+                "Generated palette has unexpected structure",
             ) from exc
 
     def _apply_palette(self, site_slug: str, palette: HorizonPalette) -> None:
@@ -138,7 +147,7 @@ class HorizonPaletteService:
             temp_path = Path(temp_file.name)
 
         try:
-            subprocess.run(
+            completed = subprocess.run(
                 [
                     sys.executable,
                     str(self._apply_theme_script),
@@ -167,6 +176,19 @@ class HorizonPaletteService:
                 except FileNotFoundError:
                     pass
 
+        if completed.stdout:
+            logger.debug(
+                "apply_theme.py stdout for Horizon site '{slug}': {stdout}",
+                slug=site_slug,
+                stdout=completed.stdout.strip(),
+            )
+        if completed.stderr:
+            logger.warning(
+                "apply_theme.py stderr for Horizon site '{slug}': {stderr}",
+                slug=site_slug,
+                stderr=completed.stderr.strip(),
+            )
+
     def _resolve_repo_root(self, override: Path | None) -> Path:
         candidates: list[Path] = []
 
@@ -177,8 +199,9 @@ class HorizonPaletteService:
         if env_override:
             candidates.append(Path(env_override))
 
-        candidates.append(self._discover_repo_root())
-        candidates.append(Path.cwd())
+        discovered = self._discover_repo_root()
+        if discovered is not None:
+            candidates.append(discovered)
 
         logger.debug(
             "Evaluating repo root candidates for Horizon palette service: {}",
@@ -187,7 +210,7 @@ class HorizonPaletteService:
 
         for candidate in candidates:
             resolved = candidate.expanduser().resolve()
-            if (resolved / "public-sites").exists():
+            if self._is_valid_repo_root(resolved):
                 logger.info(
                     "Resolved Horizon repo root to {}", resolved,
                 )
@@ -202,9 +225,12 @@ class HorizonPaletteService:
         raise HorizonPaletteGenerationError(message)
 
     @staticmethod
-    def _discover_repo_root() -> Path:
-        current = Path(__file__).resolve()
-        for candidate in (current, *current.parents):
-            if (candidate / ".git").exists() or (candidate / "public-sites").exists():
+    def _discover_repo_root() -> Path | None:
+        for candidate in Path(__file__).resolve().parents:
+            if HorizonPaletteService._is_valid_repo_root(candidate):
                 return candidate
-        return current.parents[2]
+        return None
+
+    @staticmethod
+    def _is_valid_repo_root(path: Path) -> bool:
+        return path.is_dir() and (path / "public-sites").is_dir()

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, status
 from loguru import logger
+from starlette.concurrency import run_in_threadpool
 
 from app.models.overlay import OverlayEditEvent, OverlayEditResponse
 from app.services.overlay import apply_overlay_edit
@@ -19,7 +20,7 @@ router = APIRouter(prefix="/overlay", tags=["overlay"])
 async def ingest_overlay_edit(event: OverlayEditEvent) -> OverlayEditResponse:
     """Accept an overlay edit payload and apply it to the target source file."""
 
-    result = apply_overlay_edit(event)
+    result = await run_in_threadpool(apply_overlay_edit, event)
 
     logger.bind(
         project_slug=event.project_slug,

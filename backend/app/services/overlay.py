@@ -14,6 +14,7 @@ from fastapi import HTTPException, status
 from app.models.overlay import OverlayEditEvent
 
 PPID_PREFIX_CODE = "code"
+MAX_EDITABLE_FILE_SIZE_BYTES = 512 * 1024  # 512 KiB
 
 
 @dataclass
@@ -100,18 +101,34 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
     path_fragment, _anchor = _parse_ppid(event.payload.ppid)
     target_path = _resolve_target_path(path_fragment, event.project_slug)
 
+    try:
+        file_size = target_path.stat().st_size
+    except OSError as exc:
+        raise HTTPException(
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+            detail="Unable to inspect target file",
+        ) from exc
+
+    if file_size > MAX_EDITABLE_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=HTTPStatus.REQUEST_ENTITY_TOO_LARGE,
+            detail="Target file exceeds editable size limit",
+        )
+
     escaped_ppid = re.escape(event.payload.ppid)
-    pattern = re.compile(
-        rf'(<[^<>]*data-ppid="{escaped_ppid}"[^<>]*>)(.*?)(</[^<>]+>)',
+    block_pattern = re.compile(
+        rf'(?P<open><(?P<tag>[a-zA-Z][\w:-]*)[^<>]*data-ppid="{escaped_ppid}"[^<>]*>)'
+        rf'(?P<body>.*?)'
+        rf'(?P<close></(?P=tag)>)',
         re.DOTALL,
     )
 
     content = target_path.read_text(encoding="utf-8")
 
-    match = pattern.search(content)
+    match = block_pattern.search(content)
 
     if match:
-        previous_text = match.group(2)
+        previous_text = match.group("body")
         escaped_text = html.escape(event.payload.text, quote=False).replace("\n", "<br />")
 
         if previous_text == escaped_text:
@@ -121,10 +138,8 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
                 updated_text=event.payload.text,
             )
 
-        updated_content = pattern.sub(
-            lambda m: f"{m.group(1)}{escaped_text}{m.group(3)}",
-            content,
-            count=1,
+        updated_content = (
+            content[: match.start("body")] + escaped_text + content[match.end("body") :]
         )
 
         target_path.write_text(updated_content, encoding="utf-8")
@@ -143,26 +158,31 @@ def apply_overlay_edit(event: OverlayEditEvent) -> OverlayApplicationResult:
     if not fallback_match:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Target node not found in file",
+            detail=(
+                f"Unable to locate PPID '{event.payload.ppid}' "
+                f"in '{path_fragment}'"
+            ),
         )
 
     value_key = fallback_match.group(1)
-    search_end = fallback_match.start()
-    search_start = max(0, search_end - 1000)
+    search_window = content[: fallback_match.start()]
     value_pattern = re.compile(rf'{value_key}\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"')
 
     value_match: re.Match[str] | None = None
-    for match_candidate in value_pattern.finditer(content[search_start:search_end]):
+    for match_candidate in value_pattern.finditer(search_window):
         value_match = match_candidate
 
     if value_match is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Target node not found in file",
+            detail=(
+                f"Unable to locate value for '{value_key}' associated with "
+                f"PPID '{event.payload.ppid}' in '{path_fragment}'"
+            ),
         )
 
-    value_start = search_start + value_match.start(1)
-    value_end = search_start + value_match.end(1)
+    value_start = value_match.start(1)
+    value_end = value_match.end(1)
     previous_encoded = content[value_start:value_end]
     previous_text_plain = json.loads(f'"{previous_encoded}"')
     updated_encoded = json.dumps(event.payload.text)[1:-1]

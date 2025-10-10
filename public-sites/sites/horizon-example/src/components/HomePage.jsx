@@ -10,8 +10,6 @@ import Testimonials from "@/components/Testimonials";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 // prempage:imports
-import WhyChooseUs20251009230950 from "@/components/WhyChooseUs__20251009230950";
-
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 const SECTION_IDS = {
@@ -57,9 +55,6 @@ export default function HomePage({ variant = "default" }) {
         <Services sectionId={SECTION_IDS.services} variant={variant} />
         {/* prempage:slot:after-home-services-overview */}
         {/* prempage:slot:before-home-why-choose */}
-        {/* prempage:section:horizon_home_why_choose_us:home--why-choose--20251009230950:start */}
-        <WhyChooseUs20251009230950 sectionId="home--why-choose--20251009230950" variant={variant} />
-        {/* prempage:section:horizon_home_why_choose_us:home--why-choose--20251009230950:end */}
         <WhyChooseUs sectionId={SECTION_IDS.whyChooseUs} variant={variant} />
         {/* prempage:slot:after-home-why-choose */}
         {/* prempage:slot:before-home-stories */}
