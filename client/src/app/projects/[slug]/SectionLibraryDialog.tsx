@@ -18,6 +18,9 @@ type SectionLibraryDialogProps = {
 };
 
 const SUBTITLE_COPY = "Pick a section to preview it in context, then choose where it should land.";
+const CUSTOM_SECTION_KEY = "custom_blank_section";
+const CUSTOM_SECTION_LABEL = "Create custom section";
+const CUSTOM_SECTION_HELP = "Start from a blank canvas with a minimal <section> wrapper.";
 
 type InsertFeedback = {
   status: "idle" | "success" | "error";
@@ -37,6 +40,12 @@ export function SectionLibraryDialog({
   insertFeedback,
 }: SectionLibraryDialogProps): ReactElement | null {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const isCustomSectionSelected = selectedSectionKey === CUSTOM_SECTION_KEY;
+  const selectedSectionLabel = isCustomSectionSelected
+    ? CUSTOM_SECTION_LABEL
+    : selectedSectionKey
+        ? HORIZON_SECTIONS.find((section) => section.key === selectedSectionKey)?.label ?? null
+        : null;
 
   useEffect(() => {
     if (open) {
@@ -115,6 +124,24 @@ export function SectionLibraryDialog({
                   </button>
                 </div>
                 <ul className="space-y-2">
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onSelectSection(CUSTOM_SECTION_KEY);
+                      }}
+                      className={`w-full rounded-xl border px-4 py-3 text-left transition ${
+                        isCustomSectionSelected
+                          ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                          : "border-dashed border-stone-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-stone-50"
+                      }`}
+                    >
+                      <p className="text-sm font-semibold">{CUSTOM_SECTION_LABEL}</p>
+                      <p className={`text-xs ${isCustomSectionSelected ? "text-slate-200" : "text-slate-500"}`}>
+                        {CUSTOM_SECTION_HELP}
+                      </p>
+                    </button>
+                  </li>
                   {HORIZON_SECTIONS.map((section) => {
                     const isActive = section.key === selectedSection?.key;
                     return (
@@ -144,37 +171,47 @@ export function SectionLibraryDialog({
 
             <div className="flex flex-1 flex-col gap-4 overflow-hidden">
               <div className="flex-1 overflow-hidden rounded-xl border border-stone-200">
-                <iframe
-                  key={selectedSection?.key ?? "preview"}
-                  src={previewSrc}
-                  title={selectedSection?.label ?? "Section preview"}
-                  className="h-full min-h-[420px] w-full border-0"
+                {isCustomSectionSelected ? (
+                  <div className="flex h-full min-h-[420px] flex-col items-center justify-center gap-3 bg-slate-50 px-6 text-center">
+                    <p className="text-sm font-semibold text-slate-800">{CUSTOM_SECTION_LABEL}</p>
+                    <p className="text-xs text-slate-600">
+                      We&apos;ll insert a minimal <code>{"<section>"}</code> wrapper with the correct identifiers
+                      so you can build out the layout however you like.
+                    </p>
+                  </div>
+                ) : (
+                  <iframe
+                    key={selectedSection?.key ?? "preview"}
+                    src={previewSrc}
+                    title={selectedSection?.label ?? "Section preview"}
+                    className="h-full min-h-[420px] w-full border-0"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col gap-3 rounded-xl border border-dashed border-stone-300 p-4">
+                <p className="text-sm font-semibold text-slate-800">Where should we place it?</p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (selectedSectionKey) {
+                        onRequestDropZone(selectedSectionKey);
+                      }
+                    }}
+                    disabled={!selectedSectionKey || isSelectingDropZone || isInsertingSection}
+                    className="inline-flex items-center rounded-full border border-slate-900 px-3 py-1 text-xs font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white disabled:cursor-not-allowed disabled:border-stone-200 disabled:text-stone-400"
+                  >
+                    {isSelectingDropZone ? "Click in preview…" : "Select drop zone"}
+                  </button>
+                </div>
+                <InsertionStatus
+                  feedback={insertFeedback}
+                  isSelecting={isSelectingDropZone}
+                  isInserting={isInsertingSection}
+                  selectedSectionLabel={selectedSectionLabel}
                 />
               </div>
-            <div className="flex flex-col gap-3 rounded-xl border border-dashed border-stone-300 p-4">
-              <p className="text-sm font-semibold text-slate-800">Where should we place it?</p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (selectedSection) {
-                      onRequestDropZone(selectedSection.key);
-                    }
-                  }}
-                  disabled={!selectedSection || isSelectingDropZone || isInsertingSection}
-                  className="inline-flex items-center rounded-full border border-slate-900 px-3 py-1 text-xs font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white disabled:cursor-not-allowed disabled:border-stone-200 disabled:text-stone-400"
-                >
-                  {isSelectingDropZone ? "Click in preview…" : "Select drop zone"}
-                </button>
-              </div>
-              <InsertionStatus
-                feedback={insertFeedback}
-                isSelecting={isSelectingDropZone}
-                isInserting={isInsertingSection}
-                selectedSectionLabel={selectedSection?.label ?? null}
-              />
             </div>
-          </div>
 
           {isSidebarCollapsed ? (
               <button

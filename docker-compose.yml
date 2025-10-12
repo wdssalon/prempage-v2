@@ -37,6 +37,7 @@ services:
       - backend-uv-cache:/root/.cache/uv
 
   form-relay:
+    profiles: ["optional-services"]
     build:
       context: ./services/form-relay
     command: sh -c "uv sync --frozen --no-dev && uv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload"
@@ -52,6 +53,7 @@ services:
       - PYTHONUNBUFFERED=1
 
   static-site-extractor:
+    profiles: ["optional-services"]
     build:
       context: ./services/static-site-extractor
     command: sh -c "uv sync --frozen --no-dev && uv run uvicorn app.main:app --host 0.0.0.0 --port 8081 --reload"

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from importlib import util as importlib_util
 from pathlib import Path
+from textwrap import dedent
 from typing import Any
 
 from app.errors import BadRequestError
@@ -29,6 +30,31 @@ class HorizonSectionInsertionResult:
 HOME_PAGE_RELATIVE = Path("src/components/HomePage.jsx")
 IMPORT_MARKER = "// prempage:imports"
 SLOT_MARKER_TEMPLATE = "        {{/* prempage:slot:{slot_name} */}}\n"
+CUSTOM_SECTION_KEY = "custom_blank_section"
+CUSTOM_SECTION_BASENAME = "CustomSection"
+CUSTOM_SECTION_TEMPLATE = (
+    dedent(
+        """\
+        "use client";
+
+        export default function CustomSection({ sectionId, variant = "default" }) {
+          return (
+            <section
+              id={sectionId}
+              data-section-id={sectionId}
+              data-variant={variant}
+              className="py-24"
+            >
+              <div className="mx-auto max-w-5xl px-6">
+                {/* Build out your custom layout here */}
+              </div>
+            </section>
+          );
+        }
+        """
+    )
+    + "\n"
+)
 
 
 class HorizonSectionLibraryService:
@@ -46,7 +72,6 @@ class HorizonSectionLibraryService:
     def insert_section_by_slot(
         self, site_slug: str, section_key: str, slot: str
     ) -> HorizonSectionInsertionResult:
-        entry = self._find_section(section_key)
         site_dir = self._sites_root / site_slug
         if not site_dir.exists():
             raise HorizonSectionInsertionError(
@@ -60,16 +85,30 @@ class HorizonSectionLibraryService:
             )
 
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
-        identifier, component_rel_path, import_path = self._copy_component(
-            entry, site_dir, timestamp
-        )
+        if section_key == CUSTOM_SECTION_KEY:
+            (
+                identifier,
+                component_rel_path,
+                import_path,
+            ) = self._create_custom_section_component(site_dir, timestamp)
+            section_id = self._build_section_id(
+                {"section_id": "custom-section", "key": CUSTOM_SECTION_KEY},
+                timestamp,
+            )
+        else:
+            entry = self._find_section(section_key)
+            (
+                identifier,
+                component_rel_path,
+                import_path,
+            ) = self._copy_component(entry, site_dir, timestamp)
+            section_id = self._build_section_id(entry, timestamp)
 
         homepage_text = home_page_path.read_text(encoding="utf-8")
         homepage_text = self._insert_import(
             homepage_text, identifier, import_path
         )
 
-        section_id = self._build_section_id(entry, timestamp)
         homepage_text = self._insert_component_block(
             homepage_text, slot, identifier, section_id, section_key
         )
@@ -241,6 +280,22 @@ class HorizonSectionLibraryService:
         base = str(entry.get("section_id") or entry.get("key") or "section")
         safe_base = re.sub(r"[^0-9a-zA-Z_-]+", "-", base).strip("-") or "section"
         return f"{safe_base}--{timestamp}"
+
+    def _create_custom_section_component(
+        self, site_dir: Path, timestamp: str
+    ) -> tuple[str, str, str]:
+        component_rel = Path("src/components") / (
+            f"{CUSTOM_SECTION_BASENAME}__{timestamp}.jsx"
+        )
+        destination_path = (site_dir / component_rel).resolve()
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+        destination_path.write_text(CUSTOM_SECTION_TEMPLATE, encoding="utf-8")
+
+        identifier = self._sanitize_identifier(component_rel.stem)
+        relative_import = component_rel.relative_to("src").with_suffix("")
+        import_path = relative_import.as_posix()
+
+        return identifier, component_rel.as_posix(), import_path
 
 
 __all__ = [
