@@ -38,7 +38,7 @@ API types flow from backend to frontend automatically:
 
 The `/health` endpoint is the reference contract. It returns status metadata, a message, and a timestamp to validate the end-to-end generation path.
 
-### Testing Approach
+### Testing Approach 
 
 - Target ~80% meaningful coverage; prioritize high-value assertions.
 - Keep business logic in services and cover it with focused unit tests; let route tests act as thin smoke checks.
