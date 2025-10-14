@@ -389,7 +389,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 10000
+                "maxLength": 20000
               },
               {
                 "type": "null"
