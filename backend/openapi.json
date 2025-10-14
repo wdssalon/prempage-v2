@@ -384,6 +384,19 @@
             ],
             "title": "Target Section Id",
             "description": "Section ID the insertion is relative to (required for before/after)"
+          },
+          "custom_section_prompt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custom Section Prompt",
+            "description": "Natural language brief used when inserting a custom section."
           }
         },
         "type": "object",

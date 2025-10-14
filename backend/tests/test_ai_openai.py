@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from app.ai.base import PaletteGeneratorError
-from app.ai.providers.openai import OpenAIPaletteGenerator
+from app.ai.base import PaletteGeneratorError, SectionGeneratorError
+from app.ai.providers.openai import OpenAIPaletteGenerator, OpenAISectionGenerator
 
 
 def test_generator_requires_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -41,3 +41,10 @@ def test_generator_reports_missing_dependency(monkeypatch: pytest.MonkeyPatch) -
         OpenAIPaletteGenerator()
 
     assert "httpcore" in str(excinfo.value)
+
+
+def test_section_generator_requires_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    with pytest.raises(SectionGeneratorError):
+        OpenAISectionGenerator()

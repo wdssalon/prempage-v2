@@ -5,12 +5,18 @@ import json
 import os
 import random
 import re
+from textwrap import dedent
 from typing import ClassVar, Mapping, Optional, Tuple
 
 from loguru import logger
 from openai import OpenAI
 
-from app.ai.base import PaletteGenerator, PaletteGeneratorError
+from app.ai.base import (
+    PaletteGenerator,
+    PaletteGeneratorError,
+    SectionGenerator,
+    SectionGeneratorError,
+)
 from app.ai.debug import InteractionDebugger, to_serialisable
 
 # DEFAULT_OPENAI_MODEL = "gpt-4.1-nano"  # occassionally makes mistakes
@@ -54,6 +60,21 @@ PALETTE_SCHEMA = {
         "critical",
         "critical_contrast",
     ],
+    "additionalProperties": False,
+}
+
+
+DEFAULT_OPENAI_SECTION_MODEL = os.getenv("PREMPAGE_OPENAI_SECTION_MODEL", "gpt-4o-mini")
+
+SECTION_RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "html": {
+            "type": "string",
+            "description": "Complete <section> HTML markup that can be injected into the DOM.",
+        }
+    },
+    "required": ["html"],
     "additionalProperties": False,
 }
 
@@ -287,3 +308,153 @@ class OpenAIPaletteGenerator(PaletteGenerator):
         except Exception as exc:  # noqa: BLE001
             logger.error("OpenAI returned an unexpected response: {error}", error=str(exc))
             raise PaletteGeneratorError("Failed to parse OpenAI response") from exc
+
+
+class OpenAISectionGenerator(SectionGenerator):
+    """Generate custom section HTML using OpenAI's Responses API."""
+
+    def __init__(
+        self,
+        model: str | None = None,
+        api_key: str | None = None,
+        *,
+        max_output_tokens: int = 10_000,
+    ) -> None:
+        key = api_key or os.getenv("OPENAI_API_KEY")
+        if not key:
+            raise SectionGeneratorError("OPENAI_API_KEY is not configured")
+
+        try:
+            self._client = OpenAI(api_key=key)
+        except ModuleNotFoundError as exc:
+            missing = exc.name
+            if not missing:
+                message = str(exc)
+                if "'" in message:
+                    missing = message.split("'")[1]
+                else:
+                    missing = message or "dependency"
+            raise SectionGeneratorError(
+                f"OpenAI client dependency '{missing}' is missing; run `uv sync --frozen` in backend/"
+            ) from exc
+
+        self._model = model or DEFAULT_OPENAI_SECTION_MODEL
+        self._max_output_tokens = max_output_tokens
+        self._debugger = InteractionDebugger.from_env(
+            flag_env="PREMPAGE_OPENAI_DEBUG",
+            path_env="PREMPAGE_OPENAI_DEBUG_LOG",
+            default_path="/tmp/prempage_openai_debug.log",
+        )
+
+    def generate(self, *, user_prompt: str, template_html: str) -> str:
+        prompt = user_prompt.strip()
+        if not prompt:
+            raise SectionGeneratorError("user_prompt must not be empty")
+
+        template = template_html.strip()
+        system_prompt = (
+            "You are the section layout engine for Prempage's Horizon design system. "
+            "Produce the HTML for a single <section> element using Tailwind CSS utility classes only. "
+            "Do not emit <script>, <style>, <link>, inline event handlers, or external assets. "
+            "Return JSON with a single field named html containing the complete section markup."
+        )
+        guidance = dedent(
+            f"""\
+            Template anchor (keep the structure and adjust only the content/classes):
+            {template}
+
+            Rules:
+            - Keep the <section> root and include a container div using the classes "mx-auto max-w-5xl px-6".
+            - Use semantic HTML with at least one heading, supporting copy, and an action when relevant.
+            - Prefer Tailwind utility classes; avoid inline style attributes.
+            - Provide helpful alt text for any images you introduce.
+            - Keep the tone polished and concise; avoid placeholder words like "Lorem ipsum".
+
+            User brief:
+            {prompt}
+            """
+        )
+
+        if self._debugger.enabled:
+            summary = (
+                f"model: {self._model}\n"
+                f"instructions:\n{system_prompt}\n\n"
+                f"input:\n{guidance}"
+            )
+            self._debugger.log_text("request", summary)
+
+        try:
+            response = self._client.responses.create(
+                model=self._model,
+                instructions=system_prompt,
+                input=guidance,
+                text={
+                    "format": {
+                        "type": "json_schema",
+                        "name": "custom_section",
+                        "schema": SECTION_RESPONSE_SCHEMA,
+                        "strict": True,
+                    }
+                },
+                max_output_tokens=self._max_output_tokens,
+                temperature=0.35,
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.error("OpenAI section generation failed: {exc}", exc=str(exc))
+            raise SectionGeneratorError("OpenAI request failed") from exc
+
+        try:
+            if self._debugger.enabled:
+                payload = to_serialisable(response)
+                summary = (
+                    f"model: {self._model}\n"
+                    f"raw_response:\n{json.dumps(payload, indent=2, ensure_ascii=False)}"
+                )
+                self._debugger.log_text("response", summary)
+
+            status = getattr(response, "status", None)
+            if status == "incomplete":
+                details = getattr(response, "incomplete_details", {}) or {}
+                reason = details.get("reason") if isinstance(details, dict) else None
+                raise SectionGeneratorError(
+                    "Section generator response was truncated; try a shorter description or reduce requested detail."
+                    + (f" (reason: {reason})" if reason else "")
+                )
+
+            html_payload: str | None = None
+            if getattr(response, "output_text", None):
+                data = json.loads(response.output_text)  # type: ignore[arg-type]
+                if self._debugger.enabled:
+                    self._debugger.log_json("parsed", data)
+                html_payload = str(data.get("html", "")).strip()
+
+            if html_payload is None:
+                for chunk in getattr(response, "output", []) or []:
+                    for item in getattr(chunk, "content", []) or []:
+                        if getattr(item, "type", None) == "output_json" and getattr(item, "json", None) is not None:
+                            data = item.json
+                            if self._debugger.enabled:
+                                self._debugger.log_json("parsed", data)
+                            html_payload = str(data.get("html", "")).strip()
+                            break
+                        if getattr(item, "type", None) == "output_text" and getattr(item, "text", None):
+                            data = json.loads(item.text)
+                            if self._debugger.enabled:
+                                self._debugger.log_json("parsed", data)
+                            html_payload = str(data.get("html", "")).strip()
+                            break
+                    if html_payload:
+                        break
+
+            if not html_payload:
+                raise ValueError("No html field present in response")
+            if "<section" not in html_payload.lower():
+                raise ValueError("Response did not generate a <section> element")
+
+            return html_payload
+        except Exception as exc:  # noqa: BLE001
+            logger.error(
+                "OpenAI returned an unexpected section response: {error}",
+                error=str(exc),
+            )
+            raise SectionGeneratorError("Failed to parse OpenAI response") from exc

@@ -204,6 +204,11 @@ export interface components {
              * @description Section ID the insertion is relative to (required for before/after)
              */
             target_section_id?: string | null;
+            /**
+             * Custom Section Prompt
+             * @description Natural language brief used when inserting a custom section.
+             */
+            custom_section_prompt?: string | null;
         };
         /**
          * HorizonSectionInsertResponse

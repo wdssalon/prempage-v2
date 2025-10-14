@@ -30,6 +30,7 @@ def insert_section(
         site_slug=project_slug,
         section_key=payload.section_key,
         slot=slot,
+        custom_prompt=payload.custom_section_prompt,
     )
 
     return HorizonSectionInsertResponse(**result.__dict__)

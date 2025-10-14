@@ -267,7 +267,7 @@ describe("ProjectPreviewPage", () => {
     const selectedKey = dialogPropsRef.current?.selectedSectionKey ?? "hero";
 
     await act(async () => {
-      dialogPropsRef.current?.onRequestDropZone(selectedKey);
+      dialogPropsRef.current?.onRequestDropZone({ sectionKey: selectedKey });
     });
 
     await act(async () => {
@@ -289,6 +289,7 @@ describe("ProjectPreviewPage", () => {
       expect(mockInsertSection).toHaveBeenCalledWith({
         projectSlug: project.slug,
         sectionKey: selectedKey,
+        customSectionPrompt: undefined,
         position: "before",
         targetSectionId: "existing-section",
       }),

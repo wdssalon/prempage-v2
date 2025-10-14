@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useState, useId, type ReactElement } from "react";
 
 import { HORIZON_SECTIONS } from "@/generated/sections/horizon";
 
@@ -11,10 +11,15 @@ type SectionLibraryDialogProps = {
   previewBaseUrl: string;
   selectedSectionKey: string | null;
   onSelectSection: (sectionKey: string) => void;
-  onRequestDropZone: (sectionKey: string) => void;
+  onRequestDropZone: (request: SectionLibraryDropRequest) => void;
   isSelectingDropZone: boolean;
   isInsertingSection: boolean;
   insertFeedback: InsertFeedback;
+};
+
+type SectionLibraryDropRequest = {
+  sectionKey: string;
+  customPrompt?: string;
 };
 
 const SUBTITLE_COPY = "Pick a section to preview it in context, then choose where it should land.";
@@ -40,7 +45,10 @@ export function SectionLibraryDialog({
   insertFeedback,
 }: SectionLibraryDialogProps): ReactElement | null {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [customSectionPrompt, setCustomSectionPrompt] = useState("");
+  const [customPromptTouched, setCustomPromptTouched] = useState(false);
   const isCustomSectionSelected = selectedSectionKey === CUSTOM_SECTION_KEY;
+  const customPromptId = useId();
   const selectedSectionLabel = isCustomSectionSelected
     ? CUSTOM_SECTION_LABEL
     : selectedSectionKey
@@ -77,6 +85,26 @@ export function SectionLibraryDialog({
       HORIZON_SECTIONS.find((section) => section.key === selectedSectionKey) ?? null
     );
   }, [selectedSectionKey]);
+
+  useEffect(() => {
+    if (!open) {
+      setCustomSectionPrompt("");
+      setCustomPromptTouched(false);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!isCustomSectionSelected) {
+      setCustomSectionPrompt("");
+      setCustomPromptTouched(false);
+    }
+  }, [isCustomSectionSelected]);
+
+  const trimmedPrompt = customSectionPrompt.trim();
+  const requiresPrompt = isCustomSectionSelected;
+  const isPromptMissing = requiresPrompt && trimmedPrompt.length === 0;
+  const canRequestDropZone =
+    !!selectedSectionKey && !isPromptMissing && !isSelectingDropZone && !isInsertingSection;
 
   if (!open) {
     return null;
@@ -169,14 +197,14 @@ export function SectionLibraryDialog({
               </aside>
             ) : null}
 
-            <div className="flex flex-1 flex-col gap-4 overflow-hidden">
+                <div className="flex flex-1 flex-col gap-4 overflow-hidden">
               <div className="flex-1 overflow-hidden rounded-xl border border-stone-200">
                 {isCustomSectionSelected ? (
                   <div className="flex h-full min-h-[420px] flex-col items-center justify-center gap-3 bg-slate-50 px-6 text-center">
                     <p className="text-sm font-semibold text-slate-800">{CUSTOM_SECTION_LABEL}</p>
                     <p className="text-xs text-slate-600">
-                      We&apos;ll insert a minimal <code>{"<section>"}</code> wrapper with the correct identifiers
-                      so you can build out the layout however you like.
+                      Describe what you want to see in this section. We&apos;ll ask our builder to draft
+                      the HTML and keep it within the Horizon wrapper.
                     </p>
                   </div>
                 ) : (
@@ -189,16 +217,49 @@ export function SectionLibraryDialog({
                 )}
               </div>
               <div className="flex flex-col gap-3 rounded-xl border border-dashed border-stone-300 p-4">
+                {isCustomSectionSelected ? (
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor={customPromptId} className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      Custom section brief
+                    </label>
+                    <textarea
+                      id={customPromptId}
+                      value={customSectionPrompt}
+                      onChange={(event) => {
+                        setCustomSectionPrompt(event.target.value);
+                      }}
+                      onBlur={() => setCustomPromptTouched(true)}
+                      placeholder="Example: An eye-catching testimonial strip with a bold headline, three quotes, and a call-to-action button."
+                      rows={4}
+                      className={`w-full rounded-lg border px-3 py-2 text-sm text-slate-900 shadow-sm transition focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/30 ${
+                        isPromptMissing && customPromptTouched ? "border-rose-400 focus:ring-rose-400/30" : "border-stone-300"
+                      }`}
+                    />
+                    <p className={`text-xs ${isPromptMissing && customPromptTouched ? "text-rose-500" : "text-slate-500"}`}>
+                      {isPromptMissing && customPromptTouched
+                        ? "Describe the content so we know what to generate."
+                        : "Keep it short—mention layout, tone, or any key elements."}
+                    </p>
+                  </div>
+                ) : null}
                 <p className="text-sm font-semibold text-slate-800">Where should we place it?</p>
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={() => {
-                      if (selectedSectionKey) {
-                        onRequestDropZone(selectedSectionKey);
+                      if (!selectedSectionKey) {
+                        return;
                       }
+                      if (isPromptMissing) {
+                        setCustomPromptTouched(true);
+                        return;
+                      }
+                      onRequestDropZone({
+                        sectionKey: selectedSectionKey,
+                        customPrompt: isCustomSectionSelected ? trimmedPrompt : undefined,
+                      });
                     }}
-                    disabled={!selectedSectionKey || isSelectingDropZone || isInsertingSection}
+                    disabled={!canRequestDropZone}
                     className="inline-flex items-center rounded-full border border-slate-900 px-3 py-1 text-xs font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white disabled:cursor-not-allowed disabled:border-stone-200 disabled:text-stone-400"
                   >
                     {isSelectingDropZone ? "Click in preview…" : "Select drop zone"}

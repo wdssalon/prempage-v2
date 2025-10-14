@@ -16,3 +16,14 @@ class PaletteGenerator(ABC):
     def generate(self, current_palette: Mapping[str, str], notes: str | None) -> Mapping[str, str]:
         """Return a new palette derived from the current palette and optional notes."""
 
+
+class SectionGeneratorError(RuntimeError):
+    """Raised when an AI section generator cannot produce valid markup."""
+
+
+class SectionGenerator(ABC):
+    """Interface implemented by section generation backends."""
+
+    @abstractmethod
+    def generate(self, *, user_prompt: str, template_html: str) -> str:
+        """Return HTML for a <section> element based on the user prompt and template guidance."""

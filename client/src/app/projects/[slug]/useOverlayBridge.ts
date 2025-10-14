@@ -11,6 +11,11 @@ type OverlayInsertFeedback =
   | { status: "success"; message?: string }
   | { status: "error"; message: string };
 
+type PendingSectionRequest = {
+  sectionKey: string;
+  customPrompt?: string;
+};
+
 type UseOverlayBridgeOptions = {
   slug: string;
   iframeRef: React.RefObject<HTMLIFrameElement>;
@@ -35,9 +40,8 @@ export function useOverlayBridge({
   const [isInsertingSection, setIsInsertingSection] = useState(false);
   const [insertFeedback, setInsertFeedback] =
     useState<OverlayInsertFeedback>({ status: "idle" });
-  const [pendingSectionKey, setPendingSectionKey] = useState<string | null>(
-    null,
-  );
+  const [pendingSectionRequest, setPendingSectionRequest] =
+    useState<PendingSectionRequest | null>(null);
 
   const postToIframe = useCallback(
     (message: unknown) => {
@@ -72,7 +76,7 @@ export function useOverlayBridge({
 
   const resetDropZoneState = useCallback(() => {
     setIsSelectingDropZone(false);
-    setPendingSectionKey(null);
+    setPendingSectionRequest(null);
   }, []);
 
   const requestOverlayInit = useCallback(() => {
@@ -99,7 +103,8 @@ export function useOverlayBridge({
   }, [clearOverlayInitInterval, sendOverlayInit]);
 
   const beginDropZoneSelection = useCallback(
-    (sectionKey: string) => {
+    (request: PendingSectionRequest) => {
+      const { sectionKey } = request;
       if (!sectionKey) {
         setInsertFeedback({
           status: "error",
@@ -108,7 +113,7 @@ export function useOverlayBridge({
         return;
       }
 
-      setPendingSectionKey(sectionKey);
+      setPendingSectionRequest(request);
       setInsertFeedback({ status: "idle" });
       setSectionLibraryOpen(false);
       setIsSelectingDropZone(true);
@@ -175,8 +180,8 @@ export function useOverlayBridge({
             position?: string;
           };
 
-          const pendingKey = pendingSectionKey;
-          if (!pendingKey) {
+          const pendingRequest = pendingSectionRequest;
+          if (!pendingRequest) {
             setInsertFeedback({
               status: "error",
               message: "Select a section before choosing a drop zone.",
@@ -217,13 +222,14 @@ export function useOverlayBridge({
             try {
               await insertSection({
                 projectSlug: slug,
-                sectionKey: pendingKey,
+                sectionKey: pendingRequest.sectionKey,
+                customSectionPrompt: pendingRequest.customPrompt,
                 position: payload.position as "before" | "after",
                 targetSectionId,
               });
 
               setInsertFeedback({ status: "idle" });
-              onSectionSelected(pendingKey);
+              onSectionSelected(pendingRequest.sectionKey);
             } catch (error) {
               setInsertFeedback({
                 status: "error",
@@ -258,7 +264,7 @@ export function useOverlayBridge({
   }, [
     clearOverlayInitInterval,
     onSectionSelected,
-    pendingSectionKey,
+    pendingSectionRequest,
     requestOverlayInit,
     resetDropZoneState,
     setSectionLibraryOpen,

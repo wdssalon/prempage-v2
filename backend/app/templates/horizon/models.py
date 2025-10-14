@@ -10,6 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 
 _HEX_COLOR_PATTERN = re.compile(r"^#[0-9A-Fa-f]{6}$")
+CUSTOM_SECTION_KEY = "custom_blank_section"
 
 
 class HorizonPalette(BaseModel):
@@ -69,11 +70,26 @@ class HorizonSectionInsertRequest(BaseModel):
         default=None,
         description="Section ID the insertion is relative to (required for before/after)",
     )
+    custom_section_prompt: str | None = Field(
+        default=None,
+        description="Natural language brief used when inserting a custom section.",
+        max_length=10_000,
+    )
+
+    @field_validator("custom_section_prompt")
+    @classmethod
+    def normalize_custom_prompt(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        stripped = value.strip()
+        return stripped or None
 
     @model_validator(mode="after")
     def validate_target(cls, values: "HorizonSectionInsertRequest") -> "HorizonSectionInsertRequest":
         if values.position in {"before", "after"} and not values.target_section_id:
             raise ValueError("target_section_id is required for before/after positions")
+        if values.section_key == CUSTOM_SECTION_KEY and not values.custom_section_prompt:
+            raise ValueError("custom_section_prompt is required for custom sections")
         return values
 
 

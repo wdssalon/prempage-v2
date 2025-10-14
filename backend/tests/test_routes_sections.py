@@ -21,9 +21,14 @@ def test_insert_section_returns_created_response(
             return "before-section"
 
         def insert_section_by_slot(
-            self, *, site_slug: str, section_key: str, slot: str
+            self,
+            *,
+            site_slug: str,
+            section_key: str,
+            slot: str,
+            custom_prompt: str | None = None,
         ) -> HorizonSectionInsertionResult:
-            captured["insert"] = (site_slug, section_key, slot)
+            captured["insert"] = (site_slug, section_key, slot, custom_prompt)
             return HorizonSectionInsertionResult(
                 component_relative_path="src/components/Hero__20240101.jsx",
                 import_identifier="Hero20240101",
@@ -50,7 +55,7 @@ def test_insert_section_returns_created_response(
     assert body["section_id"] == "hero--20240101"
     assert captured == {
         "resolve": ("before", "section-1"),
-        "insert": ("horizon-example", "hero", "before-section"),
+        "insert": ("horizon-example", "hero", "before-section", None),
     }
 
 
@@ -67,7 +72,12 @@ def test_insert_section_propagates_bad_request(
             return "before-section"
 
         def insert_section_by_slot(
-            self, *, site_slug: str, section_key: str, slot: str
+            self,
+            *,
+            site_slug: str,
+            section_key: str,
+            slot: str,
+            custom_prompt: str | None = None,
         ) -> HorizonSectionInsertionResult:
             if failing_method == "insert":
                 raise HorizonSectionInsertionError("cannot insert")

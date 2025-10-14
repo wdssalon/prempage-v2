@@ -15,11 +15,22 @@ type InsertSectionInput = {
   sectionKey: string;
   position: HorizonSectionInsertRequest["position"];
   targetSectionId: string | null;
+  customSectionPrompt?: string;
 };
 
 export async function insertSection(
   input: InsertSectionInput,
 ): Promise<HorizonSectionInsertResponse> {
+  const payload: Record<string, unknown> = {
+    section_key: input.sectionKey,
+    position: input.position,
+    target_section_id: input.targetSectionId,
+  };
+
+  if (input.customSectionPrompt && input.customSectionPrompt.trim().length > 0) {
+    payload.custom_section_prompt = input.customSectionPrompt.trim();
+  }
+
   const response = await fetch(
     `${apiBaseUrl}/projects/${input.projectSlug}/sections/insert`,
     {
@@ -27,11 +38,7 @@ export async function insertSection(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        section_key: input.sectionKey,
-        position: input.position,
-        target_section_id: input.targetSectionId,
-      }),
+      body: JSON.stringify(payload),
     },
   );
 
