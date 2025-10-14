@@ -13,6 +13,7 @@ import { getStudioProject } from "@/lib/studioProjects";
 import { CopilotPanel } from "./CopilotPanel";
 import { PreviewHeader } from "./PreviewHeader";
 import { SectionLibraryDialog } from "./SectionLibraryDialog";
+import { overlayDebug } from "./overlayLogging";
 import { useOverlayBridge } from "./useOverlayBridge";
 
 type ProjectPageProps = {
@@ -27,7 +28,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  console.debug("[overlay] project page render");
+  overlayDebug("[overlay] project page render");
 
   const [leftRatio, setLeftRatio] = useState(0.4);
   const [isDesktop, setIsDesktop] = useState(() => {

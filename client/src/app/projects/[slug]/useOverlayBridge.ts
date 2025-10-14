@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { logOverlayEdit } from "@/api/overlay";
 import { insertSection } from "@/api/sections";
+import { overlayDebug, overlayInfo } from "./overlayLogging";
 
 type OverlayInsertFeedback =
   | { status: "idle"; message?: undefined }
@@ -76,7 +77,7 @@ export function useOverlayBridge({
 
   const requestOverlayInit = useCallback(() => {
     sendOverlayInit();
-    console.debug("[overlay] requested overlay init");
+    overlayDebug("[overlay] requested overlay init");
 
     if (overlayMountedRef.current) {
       clearOverlayInitInterval();
@@ -84,7 +85,7 @@ export function useOverlayBridge({
     }
 
     if (overlayInitIntervalRef.current === null) {
-      console.debug("[overlay] starting overlay init polling interval");
+      overlayDebug("[overlay] starting overlay init polling interval");
       overlayInitIntervalRef.current = window.setInterval(() => {
         if (overlayMountedRef.current) {
           clearOverlayInitInterval();
@@ -92,7 +93,7 @@ export function useOverlayBridge({
         }
 
         sendOverlayInit();
-        console.debug("[overlay] re-posted overlay init");
+        overlayDebug("[overlay] re-posted overlay init");
       }, 1000);
     }
   }, [clearOverlayInitInterval, sendOverlayInit]);
@@ -126,7 +127,7 @@ export function useOverlayBridge({
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      console.debug("[overlay] message event", event.data, event.origin);
+      overlayDebug("[overlay] message event", event.data, event.origin);
       const { data } = event;
       if (!data || typeof data !== "object") {
         return;
@@ -134,16 +135,16 @@ export function useOverlayBridge({
 
       if (data.source === "prempage-site") {
         if (data.type === "bridge-ready") {
-          console.debug("[overlay] bridge-ready received from site");
+          overlayDebug("[overlay] bridge-ready received from site");
           overlayMountedRef.current = false;
           requestOverlayInit();
         } else if (data.type === "overlay-mounted") {
-          console.debug("[overlay] overlay-mounted received from site");
+          overlayDebug("[overlay] overlay-mounted received from site");
           overlayMountedRef.current = true;
           clearOverlayInitInterval();
           syncOverlayMode();
         } else if (data.type === "overlay-destroy") {
-          console.debug("[overlay] overlay-destroy received from site");
+          overlayDebug("[overlay] overlay-destroy received from site");
           overlayMountedRef.current = false;
           requestOverlayInit();
         }
@@ -152,14 +153,14 @@ export function useOverlayBridge({
 
       if (data.source === "prempage-overlay") {
         if (data.type === "overlay-edit") {
-          console.info("Overlay edit", data.payload, data.meta);
+          overlayInfo("Overlay edit", data.payload, data.meta);
           void logOverlayEdit({
             projectSlug: slug,
             payload: data.payload,
             meta: data.meta,
           })
             .then((result) => {
-              console.info("Overlay edit applied", result);
+              overlayInfo("Overlay edit applied", result);
             })
             .catch((error) => {
               console.error("Failed to log overlay edit", error);
@@ -249,7 +250,7 @@ export function useOverlayBridge({
     };
 
     window.addEventListener("message", handleMessage);
-    console.debug("[overlay] message listener mounted");
+    overlayDebug("[overlay] message listener mounted");
     return () => {
       window.removeEventListener("message", handleMessage);
       clearOverlayInitInterval();
