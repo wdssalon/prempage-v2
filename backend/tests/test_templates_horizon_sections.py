@@ -71,6 +71,10 @@ def test_insert_custom_section_creates_blank_component(tmp_path) -> None:
     <a class="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-200"
        href="https://example.com/case-study"
        target="_blank">See the full story</a>
+    <form class="mt-10 max-w-md mx-auto space-y-4">
+      <label for="contact-email" class="block text-left text-sm font-medium text-slate-200">Email</label>
+      <input id="contact-email" type="email" class="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-slate-100 placeholder:text-slate-400 focus:border-white focus:outline-none" placeholder="you@example.com" />
+    </form>
   </div>
 </section>
 """.strip()
@@ -133,6 +137,7 @@ def test_insert_custom_section_creates_blank_component(tmp_path) -> None:
     assert "dangerouslySetInnerHTML={{ __html: SECTION_HTML }}" in component_source
     assert "noopener noreferrer" in component_source
     assert "Testimonials that convert" in component_source
+    assert 'label for=\\"contact-email\\"' in component_source
     assert "<section" not in component_source.split("const SECTION_HTML = ", 1)[1].split(";", 1)[0]
 
 

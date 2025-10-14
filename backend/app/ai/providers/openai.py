@@ -318,7 +318,7 @@ class OpenAISectionGenerator(SectionGenerator):
         model: str | None = None,
         api_key: str | None = None,
         *,
-        max_output_tokens: int = 10_000,
+        max_output_tokens: int = 20_000,
     ) -> None:
         key = api_key or os.getenv("OPENAI_API_KEY")
         if not key:

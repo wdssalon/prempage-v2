@@ -73,7 +73,7 @@ class HorizonSectionInsertRequest(BaseModel):
     custom_section_prompt: str | None = Field(
         default=None,
         description="Natural language brief used when inserting a custom section.",
-        max_length=10_000,
+        max_length=20_000,
     )
 
     @field_validator("custom_section_prompt")
