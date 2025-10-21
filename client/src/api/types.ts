@@ -84,6 +84,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/projects/{project_slug}/sections/insert/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Stream Insert Section
+         * @description Stream generation progress events while inserting a Horizon section.
+         */
+        get: operations["stream_insert_section_projects__project_slug__sections_insert_stream_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -445,6 +465,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HorizonSectionInsertResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    stream_insert_section_projects__project_slug__sections_insert_stream_get: {
+        parameters: {
+            query: {
+                position: "start" | "end" | "before" | "after";
+                section_key: string;
+                target_section_id?: string | null;
+                custom_section_prompt?: string | null;
+            };
+            header?: never;
+            path: {
+                project_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */
