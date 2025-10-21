@@ -2,6 +2,18 @@
 
 Prempage V2 is the monorepo for the Prempage Studio, overlay editor, and supporting FastAPI services used to build and publish marketing sites.
 
+## Quick start
+```bash
+~/Projects/prempage-v2 master*
+.venv ❯ python public-sites/templates/horizon/cookiecutter-config/scripts/run_horizon_example.py  # clean build
+.venv ❯ docker compose up --build -d  #start docker
+.venv ❯ pnpm --dir public-sites/sites/horizon-example dev
+
+# now visit http://localhost:3001/projects/horizon-example
+
+docker compose down           # stop services
+```
+
 ## Repo layout
 - `client/` – Next.js 15 Studio web app (React 19, Tailwind 4)
 - `packages/editor-overlay/` – browser overlay bundle shared by Studio and preview sites
@@ -15,13 +27,6 @@ Prempage V2 is the monorepo for the Prempage Studio, overlay editor, and support
 - Node.js 24+ with Corepack (pnpm ≥ 8)
 - Python 3.13+ with [uv](https://github.com/astral-sh/uv)
 - Docker + Docker Compose for the multi-service dev stack (optional but recommended)
-
-## Quick start with Docker
-```bash
-docker compose up --build -d  # first run or dependency updates
-docker compose up -d          # subsequent runs
-docker compose down           # stop services
-```
 
 Services listen on: Studio `http://localhost:3001`, backend `http://localhost:8000`, form relay `http://localhost:8080`, static-site-extractor `http://localhost:8081`.
 

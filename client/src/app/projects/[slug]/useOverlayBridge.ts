@@ -3,7 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { logOverlayEdit } from "@/api/overlay";
-import { insertSection } from "@/api/sections";
+import {
+  streamInsertSection,
+  type SectionInsertStage,
+} from "@/api/sections";
 import { overlayDebug, overlayInfo } from "./overlayLogging";
 
 type OverlayInsertFeedback =
@@ -15,6 +18,13 @@ type PendingSectionRequest = {
   sectionKey: string;
   customPrompt?: string;
 };
+
+export type GenerationStage =
+  | "idle"
+  | "generating"
+  | "validating"
+  | "complete"
+  | "error";
 
 type UseOverlayBridgeOptions = {
   slug: string;
@@ -42,6 +52,10 @@ export function useOverlayBridge({
     useState<OverlayInsertFeedback>({ status: "idle" });
   const [pendingSectionRequest, setPendingSectionRequest] =
     useState<PendingSectionRequest | null>(null);
+  const [generationStage, setGenerationStage] =
+    useState<GenerationStage>("idle");
+  const stageResetTimeoutRef = useRef<number | null>(null);
+  const progressStreamCleanupRef = useRef<(() => void) | null>(null);
 
   const postToIframe = useCallback(
     (message: unknown) => {
@@ -54,6 +68,25 @@ export function useOverlayBridge({
     },
     [iframeRef],
   );
+
+  const clearStageResetTimeout = useCallback(() => {
+    if (stageResetTimeoutRef.current !== null) {
+      window.clearTimeout(stageResetTimeoutRef.current);
+      stageResetTimeoutRef.current = null;
+    }
+  }, []);
+
+  const resetGenerationStage = useCallback(() => {
+    clearStageResetTimeout();
+    setGenerationStage("idle");
+  }, [clearStageResetTimeout]);
+
+  const closeProgressStream = useCallback(() => {
+    if (progressStreamCleanupRef.current) {
+      progressStreamCleanupRef.current();
+      progressStreamCleanupRef.current = null;
+    }
+  }, []);
 
   const sendOverlayInit = useCallback(() => {
     postToIframe({ source: "prempage-studio", type: "overlay-init" });
@@ -75,9 +108,10 @@ export function useOverlayBridge({
   }, []);
 
   const resetDropZoneState = useCallback(() => {
+    closeProgressStream();
     setIsSelectingDropZone(false);
     setPendingSectionRequest(null);
-  }, []);
+  }, [closeProgressStream]);
 
   const requestOverlayInit = useCallback(() => {
     sendOverlayInit();
@@ -117,12 +151,13 @@ export function useOverlayBridge({
       setInsertFeedback({ status: "idle" });
       setSectionLibraryOpen(false);
       setIsSelectingDropZone(true);
+      resetGenerationStage();
       postToIframe({
         source: "prempage-studio",
         type: "overlay-start-drop-mode",
       });
     },
-    [postToIframe, setSectionLibraryOpen],
+    [postToIframe, resetGenerationStage, setSectionLibraryOpen],
   );
 
   const handleIframeLoad = useCallback(() => {
@@ -215,39 +250,62 @@ export function useOverlayBridge({
           }
 
           setIsInsertingSection(true);
+          clearStageResetTimeout();
+          setGenerationStage("generating");
           setInsertFeedback({ status: "idle" });
           const targetSectionId = payload.sectionId;
 
-          void (async () => {
-            try {
-              await insertSection({
+          try {
+            progressStreamCleanupRef.current = streamInsertSection(
+              {
                 projectSlug: slug,
                 sectionKey: pendingRequest.sectionKey,
                 customSectionPrompt: pendingRequest.customPrompt,
                 position: payload.position as "before" | "after",
                 targetSectionId,
-              });
-
-              setInsertFeedback({ status: "idle" });
-              onSectionSelected(pendingRequest.sectionKey);
-            } catch (error) {
-              setInsertFeedback({
-                status: "error",
-                message:
-                  error instanceof Error
-                    ? error.message
-                    : "Failed to insert section.",
-              });
-              setSectionLibraryOpen(true);
-              resetDropZoneState();
-              return;
-            } finally {
-              setIsInsertingSection(false);
-              resetDropZoneState();
-            }
-          })();
+              },
+              {
+                onStage: (stage: SectionInsertStage) => {
+                  if (stage === "generating" || stage === "validating") {
+                    clearStageResetTimeout();
+                  }
+                  setGenerationStage(stage);
+                },
+                onCompleted: () => {
+                  setInsertFeedback({ status: "idle" });
+                  onSectionSelected(pendingRequest.sectionKey);
+                  setIsInsertingSection(false);
+                  resetDropZoneState();
+                },
+                onFailed: (message: string) => {
+                  setGenerationStage("error");
+                  setInsertFeedback({
+                    status: "error",
+                    message,
+                  });
+                  setIsInsertingSection(false);
+                  resetDropZoneState();
+                  setSectionLibraryOpen(true);
+                },
+              },
+            );
+          } catch (error) {
+            console.error("Failed to start section generation stream", error);
+            setGenerationStage("error");
+            setInsertFeedback({
+              status: "error",
+              message:
+                error instanceof Error
+                  ? error.message
+                  : "Failed to start section insertion.",
+            });
+            setIsInsertingSection(false);
+            resetDropZoneState();
+            setSectionLibraryOpen(true);
+          }
         } else if (data.type === "overlay-drop-mode-cancelled") {
           resetDropZoneState();
+          resetGenerationStage();
           setInsertFeedback({ status: "idle" });
           setSectionLibraryOpen(true);
         }
@@ -263,10 +321,12 @@ export function useOverlayBridge({
     };
   }, [
     clearOverlayInitInterval,
+    clearStageResetTimeout,
     onSectionSelected,
     pendingSectionRequest,
     requestOverlayInit,
     resetDropZoneState,
+    resetGenerationStage,
     setSectionLibraryOpen,
     slug,
     syncOverlayMode,
@@ -291,6 +351,54 @@ export function useOverlayBridge({
     }
   }, [isSectionLibraryOpen, isSelectingDropZone]);
 
+  useEffect(() => {
+    if (generationStage === "generating" || generationStage === "validating") {
+      clearStageResetTimeout();
+      return;
+    }
+
+    if (generationStage === "complete") {
+      clearStageResetTimeout();
+      const timeoutId = window.setTimeout(() => {
+        stageResetTimeoutRef.current = null;
+        setGenerationStage("idle");
+      }, 3000);
+      stageResetTimeoutRef.current = timeoutId;
+      return () => {
+        if (stageResetTimeoutRef.current === timeoutId) {
+          clearStageResetTimeout();
+        }
+      };
+    }
+
+    if (generationStage === "error") {
+      clearStageResetTimeout();
+      const timeoutId = window.setTimeout(() => {
+        stageResetTimeoutRef.current = null;
+        setGenerationStage("idle");
+      }, 5000);
+      stageResetTimeoutRef.current = timeoutId;
+      return () => {
+        if (stageResetTimeoutRef.current === timeoutId) {
+          clearStageResetTimeout();
+        }
+      };
+    }
+
+    if (generationStage === "idle") {
+      clearStageResetTimeout();
+    }
+
+    return undefined;
+  }, [generationStage, clearStageResetTimeout]);
+
+  useEffect(() => {
+    return () => {
+      clearStageResetTimeout();
+      closeProgressStream();
+    };
+  }, [clearStageResetTimeout, closeProgressStream]);
+
   return {
     beginDropZoneSelection,
     handleIframeLoad,
@@ -298,6 +406,7 @@ export function useOverlayBridge({
     isInsertingSection,
     isSelectingDropZone,
     requestOverlayInit,
+    generationStage,
   };
 }
 

@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from importlib import util as importlib_util
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
+from typing import Any, Callable, Literal
 from html.parser import HTMLParser
 
 from app.ai.base import SectionGenerator, SectionGeneratorError
@@ -403,6 +403,12 @@ class HorizonSectionLibraryService:
         section_key: str,
         slot: str,
         custom_prompt: str | None = None,
+        *,
+        progress_callback: Callable[
+            [Literal["generating", "validating"]],
+            None,
+        ]
+        | None = None,
     ) -> HorizonSectionInsertionResult:
         site_dir = self._sites_root / site_slug
         if not site_dir.exists():
@@ -428,6 +434,8 @@ class HorizonSectionLibraryService:
             )
             generator = self._resolve_section_generator()
             try:
+                if progress_callback is not None:
+                    progress_callback("generating")
                 generated_html = generator.generate(
                     user_prompt=custom_prompt.strip(),
                     template_html=CUSTOM_SECTION_TEMPLATE_HTML,
@@ -438,6 +446,8 @@ class HorizonSectionLibraryService:
                 ) from exc
 
             try:
+                if progress_callback is not None:
+                    progress_callback("validating")
                 sanitised = _sanitise_custom_section_html(generated_html)
             except HorizonSectionInsertionError:
                 raise

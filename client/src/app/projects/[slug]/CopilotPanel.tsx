@@ -3,27 +3,31 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
+import { GenerationStageBar } from "./GenerationStageBar";
+import type { GenerationStage } from "./useOverlayBridge";
+
 type CopilotPanelProps = {
-  instructions: string[];
   isEditMode: boolean;
   isCopilotVisible: boolean;
   leftPaneStyle: CSSProperties | undefined;
   onToggleCopilotVisibility: () => void;
   onToggleInlineEditing: () => void;
   onOpenSectionLibrary: () => void;
+  generationStage: GenerationStage;
 };
 
 export function CopilotPanel({
-  instructions,
   isEditMode,
   isCopilotVisible,
   leftPaneStyle,
   onToggleCopilotVisibility,
   onToggleInlineEditing,
   onOpenSectionLibrary,
+  generationStage,
 }: CopilotPanelProps) {
   const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
   const editMenuRef = useRef<HTMLDivElement>(null);
+  const isGenerating = generationStage === "generating" || generationStage === "validating";
 
   useEffect(() => {
     if (!isEditMenuOpen) {
@@ -69,25 +73,9 @@ export function CopilotPanel({
 
       <div className="flex-1 overflow-y-auto px-4 py-3">
         <div className="space-y-4">
-          <article className="rounded-2xl bg-stone-50 p-3 text-sm text-slate-700">
-            <p className="font-medium text-slate-900">
-              Ready when you are—here’s how to start editing this site:
-            </p>
-            <ol className="mt-3 space-y-2">
-              {instructions.map((step, index) => (
-                <li key={step} className="flex gap-3">
-                  <span className="mt-0.5 inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded-full bg-white text-xs font-semibold text-slate-600">
-                    {index + 1}
-                  </span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-          </article>
-          <article className="rounded-2xl border border-dashed border-stone-200 p-3 text-sm text-slate-500">
-            Ask the copilot to adjust copy, capture screenshots, or explain how to edit a section.
-            We’ll record every patch here once persistence lands.
-          </article>
+          {generationStage !== "idle" ? (
+            <GenerationStageBar stage={generationStage} />
+          ) : null}
         </div>
       </div>
 
@@ -99,12 +87,14 @@ export function CopilotPanel({
           <textarea
             id="copilot-input"
             placeholder="Ask Studio Copilot to tweak copy or track a change…"
-            className="h-16 w-full resize-none rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
+            className="h-16 w-full resize-none rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={isGenerating}
           />
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
             aria-label="Send message"
+            disabled={isGenerating}
           >
             →
           </button>

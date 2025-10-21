@@ -23,10 +23,17 @@ vi.mock("@/generated/sections/horizon", () => ({
   ],
 }));
 
-const dialogPropsRef: { current: any } = { current: undefined };
+type SectionLibraryDialogSnapshot = {
+  open: boolean;
+  insertFeedback?: { message?: string } | null;
+} & Record<string, unknown>;
+
+const dialogPropsRef: { current: SectionLibraryDialogSnapshot | undefined } = {
+  current: undefined,
+};
 
 vi.mock("@/app/projects/[slug]/SectionLibraryDialog", () => ({
-  SectionLibraryDialog: (props: any) => {
+  SectionLibraryDialog: (props: SectionLibraryDialogSnapshot) => {
     dialogPropsRef.current = props;
     if (!props.open) {
       return null;
@@ -55,15 +62,16 @@ vi.mock("@/api/overlay", () => ({
 }));
 
 vi.mock("@/api/sections", () => ({
-  insertSection: vi.fn(),
+  streamInsertSection: vi.fn(),
 }));
 
 import ProjectPreviewPage from "@/app/projects/[slug]/page";
 import { getStudioProject, type StudioProject } from "@/lib/studioProjects";
 import { swapPalette, type HorizonPaletteSwapResponse } from "@/api/palette";
 import {
-  insertSection,
+  streamInsertSection,
   type HorizonSectionInsertResponse,
+  type SectionInsertStage,
 } from "@/api/sections";
 
 describe("ProjectPreviewPage", () => {
@@ -71,7 +79,9 @@ describe("ProjectPreviewPage", () => {
     typeof getStudioProject
   >;
   const mockSwapPalette = swapPalette as MockedFunction<typeof swapPalette>;
-  const mockInsertSection = insertSection as MockedFunction<typeof insertSection>;
+  const mockStreamInsertSection = streamInsertSection as MockedFunction<
+    typeof streamInsertSection
+  >;
 
   const project: StudioProject = {
     slug: "horizon-example",
@@ -101,12 +111,13 @@ describe("ProjectPreviewPage", () => {
     },
   };
 
-  const insertResponse: HorizonSectionInsertResponse = {
-    component_relative_path: "src/components/Hero__copy.jsx",
-    import_identifier: "HeroCopy",
-    section_id: "hero--copy",
-    slot: "before-section",
-  };
+  let latestStreamHandlers:
+    | {
+        onStage?: (stage: SectionInsertStage) => void;
+        onCompleted?: (result: HorizonSectionInsertResponse) => void;
+        onFailed?: (message: string) => void;
+      }
+    | null = null;
 
   beforeAll(() => {
     Object.defineProperty(window, "matchMedia", {
@@ -126,7 +137,11 @@ describe("ProjectPreviewPage", () => {
   beforeEach(() => {
     mockGetStudioProject.mockReturnValue(project);
     mockSwapPalette.mockResolvedValue(paletteResponse);
-    mockInsertSection.mockResolvedValue(insertResponse);
+    latestStreamHandlers = null;
+    mockStreamInsertSection.mockImplementation((_input, handlers) => {
+      latestStreamHandlers = handlers;
+      return vi.fn();
+    });
     dialogPropsRef.current = undefined;
     window.localStorage.clear();
   });
@@ -261,9 +276,6 @@ describe("ProjectPreviewPage", () => {
       expect(dialogPropsRef.current?.selectedSectionKey).toBeTruthy(),
     );
 
-    const error = new Error("Insert failed");
-    mockInsertSection.mockRejectedValueOnce(error);
-
     const selectedKey = dialogPropsRef.current?.selectedSectionKey ?? "hero";
 
     await act(async () => {
@@ -285,15 +297,26 @@ describe("ProjectPreviewPage", () => {
       );
     });
 
-    await waitFor(() =>
-      expect(mockInsertSection).toHaveBeenCalledWith({
+    await waitFor(() => expect(mockStreamInsertSection).toHaveBeenCalled());
+    expect(mockStreamInsertSection).toHaveBeenCalledWith(
+      {
         projectSlug: project.slug,
         sectionKey: selectedKey,
         customSectionPrompt: undefined,
         position: "before",
         targetSectionId: "existing-section",
+      },
+      expect.objectContaining({
+        onStage: expect.any(Function),
+        onCompleted: expect.any(Function),
+        onFailed: expect.any(Function),
       }),
     );
+
+    const error = new Error("Insert failed");
+    await act(async () => {
+      latestStreamHandlers?.onFailed?.(error.message);
+    });
 
     expect(await screen.findByText(error.message)).toBeInTheDocument();
     expect(dialogPropsRef.current?.isSelectingDropZone).toBe(false);

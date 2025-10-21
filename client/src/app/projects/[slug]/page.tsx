@@ -67,17 +67,13 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
     isInsertingSection,
     isSelectingDropZone,
     requestOverlayInit,
+    generationStage,
   } = overlay;
 
   const lastSwapAppliedAt = lastSwap?.applied_at ?? null;
   const paletteSwapTimestamp = lastSwapAppliedAt
     ? new Date(lastSwapAppliedAt).toLocaleTimeString()
     : null;
-
-  const instructions = useMemo(
-    () => project.instructions,
-    [project.instructions],
-  );
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -224,7 +220,6 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
       <PreviewHeader
         project={project}
         isCopilotVisible={isCopilotVisible}
-        onToggleCopilotVisibility={toggleCopilotVisibility}
         onShowCopilot={showCopilot}
         onSwapPalette={handleSwapPalette}
         isSwappingPalette={isSwapping}
@@ -244,13 +239,13 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
         >
           {isCopilotVisible ? (
             <CopilotPanel
-              instructions={instructions}
               isEditMode={isEditMode}
               isCopilotVisible={isCopilotVisible}
               leftPaneStyle={leftPaneStyle}
               onToggleCopilotVisibility={toggleCopilotVisibility}
               onToggleInlineEditing={handleToggleInlineEditing}
               onOpenSectionLibrary={openSectionLibrary}
+              generationStage={generationStage}
             />
           ) : null}
 
@@ -292,6 +287,7 @@ export default function ProjectPreviewPage({ params }: ProjectPageProps) {
         isSelectingDropZone={isSelectingDropZone}
         isInsertingSection={isInsertingSection}
         insertFeedback={insertFeedback}
+        generationStage={generationStage}
       />
     </div>
   );

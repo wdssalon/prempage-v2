@@ -8,6 +8,7 @@ dependencies = [
     "httpcore>=1.0.0",
     "loguru>=0.7.3",
     "openai>=1.55.3",
+    "sse-starlette>=1.8.1",
     "pytest>=8.3.3",
     "uvicorn[standard]>=0.36.0",
 ]

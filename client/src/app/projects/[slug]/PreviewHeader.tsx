@@ -9,7 +9,6 @@ import type { StudioProject } from "@/lib/studioProjects";
 type PreviewHeaderProps = {
   project: StudioProject;
   isCopilotVisible: boolean;
-  onToggleCopilotVisibility: () => void;
   onShowCopilot: () => void;
   onSwapPalette: () => void;
   isSwappingPalette: boolean;
@@ -24,7 +23,6 @@ type PreviewHeaderProps = {
 export function PreviewHeader({
   project,
   isCopilotVisible,
-  onToggleCopilotVisibility,
   onShowCopilot,
   onSwapPalette,
   isSwappingPalette,

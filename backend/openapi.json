@@ -175,6 +175,103 @@
           }
         }
       }
+    },
+    "/projects/{project_slug}/sections/insert/stream": {
+      "get": {
+        "tags": [
+          "sections"
+        ],
+        "summary": "Stream Insert Section",
+        "description": "Stream generation progress events while inserting a Horizon section.",
+        "operationId": "stream_insert_section_projects__project_slug__sections_insert_stream_get",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Slug"
+            }
+          },
+          {
+            "name": "position",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "start",
+                "end",
+                "before",
+                "after"
+              ],
+              "type": "string",
+              "title": "Position"
+            }
+          },
+          {
+            "name": "section_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Section Key"
+            }
+          },
+          {
+            "name": "target_section_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Target Section Id"
+            }
+          },
+          {
+            "name": "custom_section_prompt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Custom Section Prompt"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

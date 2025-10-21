@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState, useId, type ReactElement } from "react";
 
 import { HORIZON_SECTIONS } from "@/generated/sections/horizon";
+import { GenerationStageBar } from "./GenerationStageBar";
+import type { GenerationStage } from "./useOverlayBridge";
 
 type SectionLibraryDialogProps = {
   open: boolean;
@@ -15,6 +17,7 @@ type SectionLibraryDialogProps = {
   isSelectingDropZone: boolean;
   isInsertingSection: boolean;
   insertFeedback: InsertFeedback;
+  generationStage: GenerationStage;
 };
 
 type SectionLibraryDropRequest = {
@@ -43,6 +46,7 @@ export function SectionLibraryDialog({
   isSelectingDropZone,
   isInsertingSection,
   insertFeedback,
+  generationStage,
 }: SectionLibraryDialogProps): ReactElement | null {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [customSectionPrompt, setCustomSectionPrompt] = useState("");
@@ -270,6 +274,7 @@ export function SectionLibraryDialog({
                   isSelecting={isSelectingDropZone}
                   isInserting={isInsertingSection}
                   selectedSectionLabel={selectedSectionLabel}
+                  generationStage={generationStage}
                 />
               </div>
             </div>
@@ -296,12 +301,18 @@ function InsertionStatus({
   isInserting,
   feedback,
   selectedSectionLabel,
+  generationStage,
 }: {
   isSelecting: boolean;
   isInserting: boolean;
   feedback: InsertFeedback;
   selectedSectionLabel: string | null;
+  generationStage: GenerationStage;
 }) {
+  if (generationStage !== "idle") {
+    return <GenerationStageBar stage={generationStage} />;
+  }
+
   if (feedback.status === "success") {
     return <p className="text-xs text-emerald-600">{feedback.message ?? "Section inserted."}</p>;
   }
